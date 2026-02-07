@@ -1,0 +1,1322 @@
+{
+  "version": "v3",
+  "week": 14,
+  "title": "Week 14 - Accuracy reset",
+  "domain": "general_tech_balanced",
+  "week_profile": {
+    "phase": "Integration",
+    "cefr_target": "B1-B2-",
+    "domain_mix": {
+      "general": 60,
+      "tech": 40
+    },
+    "cognitive_load": "high",
+    "central_task": "limpieza de errores fosiles"
+  },
+  "focus": {
+    "grammar": [
+      "Primary linguistic focus: articulos y countability",
+      "Explicit form focus before communication",
+      "Weekly transfer of corrected forms into speaking"
+    ],
+    "functions": [
+      "Core function: limpieza de errores fosiles",
+      "Sustain conversation with follow-up and repair",
+      "Switch between general and tech contexts without breakdown"
+    ],
+    "pronunciation": [
+      "Intelligibility first: stress, rhythm, and endings",
+      "Repair-friendly speech under pressure",
+      "Chunk prosody for fluent delivery"
+    ]
+  },
+  "book_modules": {
+    "grammar": [
+      "egiu_intermediate_01"
+    ],
+    "vocabulary": [
+      "ows_intermediate_01",
+      "eviu_intermediate_01"
+    ],
+    "pronunciation": [
+      "epiu_intermediate_01"
+    ],
+    "reader": [
+      "reader_penguin_b1"
+    ],
+    "theory": [
+      "method_fluent_forever"
+    ]
+  },
+  "assessment": {
+    "type": "daily_progress",
+    "checkpoint_week": false,
+    "pass_criteria": [
+      "Weekly KPI minima achieved",
+      "Rubric trend stable or improving",
+      "Metrics trend stable or improving",
+      "Complete evidence for 7 sessions"
+    ]
+  },
+  "adaptive_overrides": [
+    "repair_success_boost",
+    "error_density_precision_cycle",
+    "turn_length_support",
+    "pronunciation_intensive_week",
+    "anti_fatigue_protocol",
+    "difficulty_upgrade",
+    "extension_risk_w05",
+    "extension_auto_w10"
+  ],
+  "weekly_gate": {
+    "description": "Week closes only with KPI compliance, evidence completeness, and adaptive review.",
+    "checks": [
+      "Speaking >= 480 min (target 540)",
+      "Listening intensivo >= 180 min",
+      "Reading activo >= 120 min",
+      "Writing >= 4 outputs",
+      "Accuracy drills >= 6",
+      "Checklist completion >= 85%",
+      "Evidence complete in tracking/daily"
+    ]
+  },
+  "days": {
+    "Mon": {
+      "minutes": 120,
+      "goal": "Launch week objective: articulos y countability",
+      "task_design": "Input -> Explicit instruction -> Guided practice -> Output1 -> Feedback -> Output2 -> Transfer",
+      "blocks": [
+        {
+          "name": "Retrieval engine",
+          "minutes": 15,
+          "instructions": "Repaso D+1, D+3, D+7 con tarjetas y errores reales."
+        },
+        {
+          "name": "Book module explicit lesson",
+          "minutes": 20,
+          "instructions": "Microleccion + 8 microdrills del modulo asignado."
+        },
+        {
+          "name": "Guided listening",
+          "minutes": 20,
+          "instructions": "Tres pasadas: gist, detail, inference."
+        },
+        {
+          "name": "Speaking task",
+          "minutes": 35,
+          "instructions": "Fluency -> Accuracy -> Repair bajo tiempo controlado."
+        },
+        {
+          "name": "Pronunciation lab",
+          "minutes": 10,
+          "instructions": "Pares minimos, stress y shadowing de chunks."
+        },
+        {
+          "name": "Writing transfer",
+          "minutes": 20,
+          "instructions": "Produccion guiada, correccion y reescritura parcial."
+        }
+      ],
+      "sesame": {
+        "prompt": "You are my strict speaking coach. Week 14 focus: articulos y countability. Day goal: Launch week objective: articulos y countability. Keep me speaking, avoid translation, and force self-correction after each round.",
+        "rounds": [
+          "Fluency round: sustained answer with minimal pauses",
+          "Accuracy round: self-correct top errors",
+          "Repair round: recover meaning under interruption"
+        ]
+      },
+      "reading": {
+        "task": "Read a graded text aligned to this week focus and extract reusable patterns.",
+        "output": "3 key ideas + 8 reusable chunks"
+      },
+      "writing": {
+        "task": "Write transfer output and rewrite after correction.",
+        "genre": "daily transfer",
+        "min_words": 140,
+        "output": "final corrected version + chunk list"
+      },
+      "daily_exercises": [
+        {
+          "type": "retrieval_quiz",
+          "instructions": "Recupera estructuras objetivo sin apoyo.",
+          "output": "10 respuestas orales"
+        },
+        {
+          "type": "error_rewrite",
+          "instructions": "Corrige 10 errores propios y verbaliza patron.",
+          "output": "10 pares error->correccion"
+        },
+        {
+          "type": "guided_listening_sheet",
+          "instructions": "Completa gist, detail e inference del audio.",
+          "output": "Hoja de listening completa"
+        },
+        {
+          "type": "chunk_extraction",
+          "instructions": "Extrae 8 chunks reutilizables del input.",
+          "output": "Lista de 8 chunks"
+        },
+        {
+          "type": "roleplay_task",
+          "instructions": "Completa roleplay con objetivo del dia.",
+          "output": "Audio 3-5 min"
+        },
+        {
+          "type": "repair_drill",
+          "instructions": "Practica aclarar, parafrasear y recuperar.",
+          "output": "5 reparaciones limpias"
+        },
+        {
+          "type": "pron_shadow_task",
+          "instructions": "Shadowing con ritmo y finales claros.",
+          "output": "Audio 60-90 segundos"
+        },
+        {
+          "type": "writing_transform_task",
+          "instructions": "Escribe y reescribe salida del dia.",
+          "output": "120-190 palabras"
+        }
+      ],
+      "resource_pack": [
+        {
+          "id": "chatgpt_accuracy",
+          "minutes": 15,
+          "purpose": "retrieval and warm-up"
+        },
+        {
+          "id": "anki_or_quizlet",
+          "minutes": 20,
+          "purpose": "guided listening"
+        },
+        {
+          "id": "bbc_6min_tech",
+          "minutes": 35,
+          "purpose": "speaking rounds"
+        },
+        {
+          "id": "voa_learn_daily",
+          "minutes": 20,
+          "purpose": "writing transfer"
+        }
+      ],
+      "book_modules": [
+        "egiu_intermediate_01",
+        "ows_intermediate_01",
+        "eviu_intermediate_01",
+        "epiu_intermediate_01",
+        "reader_penguin_b1",
+        "method_fluent_forever"
+      ],
+      "deliverables": [
+        "Speaking audio evidence",
+        "Writing corrected output",
+        "Metrics and rubric log",
+        "Adaptive notes with next focus"
+      ],
+      "rubric": {
+        "fluency": {
+          "target": 2,
+          "descriptor": "Sustained speech with functional pause control"
+        },
+        "accuracy": {
+          "target": 2,
+          "descriptor": "Grammar and word choice are reliable enough"
+        },
+        "interaction": {
+          "target": 2,
+          "descriptor": "Handles follow-up, challenge, and repair"
+        },
+        "pronunciation": {
+          "target": 2,
+          "descriptor": "Clear intelligibility under pressure"
+        }
+      },
+      "metrics": {
+        "error_density": "<= 8 errors per 100 words",
+        "repair_success": ">= 70%",
+        "turn_length": ">= 75 seconds",
+        "comprehension_split": "gist >= 80% / detail >= 60%",
+        "lexical_reuse": ">= 12 chunks"
+      },
+      "metrics_targets": {
+        "error_density_max": 8,
+        "repair_success_min": 70,
+        "turn_length_min_seconds": 75,
+        "gist_min": 80,
+        "detail_min": 60,
+        "lexical_reuse_min": 12,
+        "pronunciation_score_min": 2.0
+      },
+      "adaptive_overrides": [
+        "repair_success_boost",
+        "error_density_precision_cycle",
+        "turn_length_support",
+        "pronunciation_intensive_week",
+        "anti_fatigue_protocol",
+        "difficulty_upgrade",
+        "extension_risk_w05",
+        "extension_auto_w10"
+      ],
+      "daily_gate": "Register baseline metrics and complete all artifacts."
+    },
+    "Tue": {
+      "minutes": 120,
+      "goal": "Accuracy + listening transfer",
+      "task_design": "Input -> Explicit instruction -> Guided practice -> Output1 -> Feedback -> Output2 -> Transfer",
+      "blocks": [
+        {
+          "name": "Retrieval engine",
+          "minutes": 15,
+          "instructions": "Repaso D+1, D+3, D+7 con tarjetas y errores reales."
+        },
+        {
+          "name": "Book module explicit lesson",
+          "minutes": 20,
+          "instructions": "Microleccion + 8 microdrills del modulo asignado."
+        },
+        {
+          "name": "Guided listening",
+          "minutes": 20,
+          "instructions": "Tres pasadas: gist, detail, inference."
+        },
+        {
+          "name": "Speaking task",
+          "minutes": 35,
+          "instructions": "Fluency -> Accuracy -> Repair bajo tiempo controlado."
+        },
+        {
+          "name": "Pronunciation lab",
+          "minutes": 10,
+          "instructions": "Pares minimos, stress y shadowing de chunks."
+        },
+        {
+          "name": "Writing transfer",
+          "minutes": 20,
+          "instructions": "Produccion guiada, correccion y reescritura parcial."
+        }
+      ],
+      "sesame": {
+        "prompt": "You are my strict speaking coach. Week 14 focus: articulos y countability. Day goal: Accuracy + listening transfer. Keep me speaking, avoid translation, and force self-correction after each round.",
+        "rounds": [
+          "Fluency round: sustained answer with minimal pauses",
+          "Accuracy round: self-correct top errors",
+          "Repair round: recover meaning under interruption"
+        ]
+      },
+      "reading": {
+        "task": "Read a graded text aligned to this week focus and extract reusable patterns.",
+        "output": "3 key ideas + 8 reusable chunks"
+      },
+      "writing": {
+        "task": "Write transfer output and rewrite after correction.",
+        "genre": "daily transfer",
+        "min_words": 140,
+        "output": "final corrected version + chunk list"
+      },
+      "daily_exercises": [
+        {
+          "type": "retrieval_quiz",
+          "instructions": "Recupera estructuras objetivo sin apoyo.",
+          "output": "10 respuestas orales"
+        },
+        {
+          "type": "error_rewrite",
+          "instructions": "Corrige 10 errores propios y verbaliza patron.",
+          "output": "10 pares error->correccion"
+        },
+        {
+          "type": "guided_listening_sheet",
+          "instructions": "Completa gist, detail e inference del audio.",
+          "output": "Hoja de listening completa"
+        },
+        {
+          "type": "chunk_extraction",
+          "instructions": "Extrae 8 chunks reutilizables del input.",
+          "output": "Lista de 8 chunks"
+        },
+        {
+          "type": "roleplay_task",
+          "instructions": "Completa roleplay con objetivo del dia.",
+          "output": "Audio 3-5 min"
+        },
+        {
+          "type": "repair_drill",
+          "instructions": "Practica aclarar, parafrasear y recuperar.",
+          "output": "5 reparaciones limpias"
+        },
+        {
+          "type": "pron_shadow_task",
+          "instructions": "Shadowing con ritmo y finales claros.",
+          "output": "Audio 60-90 segundos"
+        },
+        {
+          "type": "writing_transform_task",
+          "instructions": "Escribe y reescribe salida del dia.",
+          "output": "120-190 palabras"
+        }
+      ],
+      "resource_pack": [
+        {
+          "id": "chatgpt_accuracy",
+          "minutes": 15,
+          "purpose": "retrieval and warm-up"
+        },
+        {
+          "id": "anki_or_quizlet",
+          "minutes": 20,
+          "purpose": "guided listening"
+        },
+        {
+          "id": "bbc_6min_tech",
+          "minutes": 35,
+          "purpose": "speaking rounds"
+        },
+        {
+          "id": "voa_learn_daily",
+          "minutes": 20,
+          "purpose": "writing transfer"
+        }
+      ],
+      "book_modules": [
+        "egiu_intermediate_01",
+        "ows_intermediate_01",
+        "eviu_intermediate_01",
+        "epiu_intermediate_01",
+        "reader_penguin_b1",
+        "method_fluent_forever"
+      ],
+      "deliverables": [
+        "Speaking audio evidence",
+        "Writing corrected output",
+        "Metrics and rubric log",
+        "Adaptive notes with next focus"
+      ],
+      "rubric": {
+        "fluency": {
+          "target": 2,
+          "descriptor": "Sustained speech with functional pause control"
+        },
+        "accuracy": {
+          "target": 2,
+          "descriptor": "Grammar and word choice are reliable enough"
+        },
+        "interaction": {
+          "target": 2,
+          "descriptor": "Handles follow-up, challenge, and repair"
+        },
+        "pronunciation": {
+          "target": 2,
+          "descriptor": "Clear intelligibility under pressure"
+        }
+      },
+      "metrics": {
+        "error_density": "<= 8 errors per 100 words",
+        "repair_success": ">= 70%",
+        "turn_length": ">= 75 seconds",
+        "comprehension_split": "gist >= 80% / detail >= 60%",
+        "lexical_reuse": ">= 12 chunks"
+      },
+      "metrics_targets": {
+        "error_density_max": 8,
+        "repair_success_min": 70,
+        "turn_length_min_seconds": 75,
+        "gist_min": 80,
+        "detail_min": 60,
+        "lexical_reuse_min": 12,
+        "pronunciation_score_min": 2.0
+      },
+      "adaptive_overrides": [
+        "repair_success_boost",
+        "error_density_precision_cycle",
+        "turn_length_support",
+        "pronunciation_intensive_week",
+        "anti_fatigue_protocol",
+        "difficulty_upgrade",
+        "extension_risk_w05",
+        "extension_auto_w10"
+      ],
+      "daily_gate": "Report comprehension split and corrected retell."
+    },
+    "Wed": {
+      "minutes": 120,
+      "goal": "Controlled output and self-correction",
+      "task_design": "Input -> Explicit instruction -> Guided practice -> Output1 -> Feedback -> Output2 -> Transfer",
+      "blocks": [
+        {
+          "name": "Retrieval engine",
+          "minutes": 15,
+          "instructions": "Repaso D+1, D+3, D+7 con tarjetas y errores reales."
+        },
+        {
+          "name": "Book module explicit lesson",
+          "minutes": 20,
+          "instructions": "Microleccion + 8 microdrills del modulo asignado."
+        },
+        {
+          "name": "Guided listening",
+          "minutes": 20,
+          "instructions": "Tres pasadas: gist, detail, inference."
+        },
+        {
+          "name": "Speaking task",
+          "minutes": 35,
+          "instructions": "Fluency -> Accuracy -> Repair bajo tiempo controlado."
+        },
+        {
+          "name": "Pronunciation lab",
+          "minutes": 10,
+          "instructions": "Pares minimos, stress y shadowing de chunks."
+        },
+        {
+          "name": "Writing transfer",
+          "minutes": 20,
+          "instructions": "Produccion guiada, correccion y reescritura parcial."
+        }
+      ],
+      "sesame": {
+        "prompt": "You are my strict speaking coach. Week 14 focus: articulos y countability. Day goal: Controlled output and self-correction. Keep me speaking, avoid translation, and force self-correction after each round.",
+        "rounds": [
+          "Fluency round: sustained answer with minimal pauses",
+          "Accuracy round: self-correct top errors",
+          "Repair round: recover meaning under interruption"
+        ]
+      },
+      "reading": {
+        "task": "Read a graded text aligned to this week focus and extract reusable patterns.",
+        "output": "3 key ideas + 8 reusable chunks"
+      },
+      "writing": {
+        "task": "Write transfer output and rewrite after correction.",
+        "genre": "daily transfer",
+        "min_words": 140,
+        "output": "final corrected version + chunk list"
+      },
+      "daily_exercises": [
+        {
+          "type": "retrieval_quiz",
+          "instructions": "Recupera estructuras objetivo sin apoyo.",
+          "output": "10 respuestas orales"
+        },
+        {
+          "type": "error_rewrite",
+          "instructions": "Corrige 10 errores propios y verbaliza patron.",
+          "output": "10 pares error->correccion"
+        },
+        {
+          "type": "guided_listening_sheet",
+          "instructions": "Completa gist, detail e inference del audio.",
+          "output": "Hoja de listening completa"
+        },
+        {
+          "type": "chunk_extraction",
+          "instructions": "Extrae 8 chunks reutilizables del input.",
+          "output": "Lista de 8 chunks"
+        },
+        {
+          "type": "roleplay_task",
+          "instructions": "Completa roleplay con objetivo del dia.",
+          "output": "Audio 3-5 min"
+        },
+        {
+          "type": "repair_drill",
+          "instructions": "Practica aclarar, parafrasear y recuperar.",
+          "output": "5 reparaciones limpias"
+        },
+        {
+          "type": "pron_shadow_task",
+          "instructions": "Shadowing con ritmo y finales claros.",
+          "output": "Audio 60-90 segundos"
+        },
+        {
+          "type": "writing_transform_task",
+          "instructions": "Escribe y reescribe salida del dia.",
+          "output": "120-190 palabras"
+        }
+      ],
+      "resource_pack": [
+        {
+          "id": "chatgpt_accuracy",
+          "minutes": 15,
+          "purpose": "retrieval and warm-up"
+        },
+        {
+          "id": "anki_or_quizlet",
+          "minutes": 20,
+          "purpose": "guided listening"
+        },
+        {
+          "id": "bbc_6min_tech",
+          "minutes": 35,
+          "purpose": "speaking rounds"
+        },
+        {
+          "id": "voa_learn_daily",
+          "minutes": 20,
+          "purpose": "writing transfer"
+        }
+      ],
+      "book_modules": [
+        "egiu_intermediate_01",
+        "ows_intermediate_01",
+        "eviu_intermediate_01",
+        "epiu_intermediate_01",
+        "reader_penguin_b1",
+        "method_fluent_forever"
+      ],
+      "deliverables": [
+        "Speaking audio evidence",
+        "Writing corrected output",
+        "Metrics and rubric log",
+        "Adaptive notes with next focus"
+      ],
+      "rubric": {
+        "fluency": {
+          "target": 2,
+          "descriptor": "Sustained speech with functional pause control"
+        },
+        "accuracy": {
+          "target": 2,
+          "descriptor": "Grammar and word choice are reliable enough"
+        },
+        "interaction": {
+          "target": 2,
+          "descriptor": "Handles follow-up, challenge, and repair"
+        },
+        "pronunciation": {
+          "target": 2,
+          "descriptor": "Clear intelligibility under pressure"
+        }
+      },
+      "metrics": {
+        "error_density": "<= 8 errors per 100 words",
+        "repair_success": ">= 70%",
+        "turn_length": ">= 75 seconds",
+        "comprehension_split": "gist >= 80% / detail >= 60%",
+        "lexical_reuse": ">= 12 chunks"
+      },
+      "metrics_targets": {
+        "error_density_max": 8,
+        "repair_success_min": 70,
+        "turn_length_min_seconds": 75,
+        "gist_min": 80,
+        "detail_min": 60,
+        "lexical_reuse_min": 12,
+        "pronunciation_score_min": 2.0
+      },
+      "adaptive_overrides": [
+        "repair_success_boost",
+        "error_density_precision_cycle",
+        "turn_length_support",
+        "pronunciation_intensive_week",
+        "anti_fatigue_protocol",
+        "difficulty_upgrade",
+        "extension_risk_w05",
+        "extension_auto_w10"
+      ],
+      "daily_gate": "Show error-density trend against Monday baseline."
+    },
+    "Thu": {
+      "minutes": 120,
+      "goal": "Task-based interaction and negotiation",
+      "task_design": "Input -> Explicit instruction -> Guided practice -> Output1 -> Feedback -> Output2 -> Transfer",
+      "blocks": [
+        {
+          "name": "Retrieval engine",
+          "minutes": 15,
+          "instructions": "Repaso D+1, D+3, D+7 con tarjetas y errores reales."
+        },
+        {
+          "name": "Book module explicit lesson",
+          "minutes": 20,
+          "instructions": "Microleccion + 8 microdrills del modulo asignado."
+        },
+        {
+          "name": "Guided listening",
+          "minutes": 20,
+          "instructions": "Tres pasadas: gist, detail, inference."
+        },
+        {
+          "name": "Speaking task",
+          "minutes": 35,
+          "instructions": "Fluency -> Accuracy -> Repair bajo tiempo controlado."
+        },
+        {
+          "name": "Pronunciation lab",
+          "minutes": 10,
+          "instructions": "Pares minimos, stress y shadowing de chunks."
+        },
+        {
+          "name": "Writing transfer",
+          "minutes": 20,
+          "instructions": "Produccion guiada, correccion y reescritura parcial."
+        }
+      ],
+      "sesame": {
+        "prompt": "You are my strict speaking coach. Week 14 focus: articulos y countability. Day goal: Task-based interaction and negotiation. Keep me speaking, avoid translation, and force self-correction after each round.",
+        "rounds": [
+          "Fluency round: sustained answer with minimal pauses",
+          "Accuracy round: self-correct top errors",
+          "Repair round: recover meaning under interruption"
+        ]
+      },
+      "reading": {
+        "task": "Read a graded text aligned to this week focus and extract reusable patterns.",
+        "output": "3 key ideas + 8 reusable chunks"
+      },
+      "writing": {
+        "task": "Write transfer output and rewrite after correction.",
+        "genre": "daily transfer",
+        "min_words": 140,
+        "output": "final corrected version + chunk list"
+      },
+      "daily_exercises": [
+        {
+          "type": "retrieval_quiz",
+          "instructions": "Recupera estructuras objetivo sin apoyo.",
+          "output": "10 respuestas orales"
+        },
+        {
+          "type": "error_rewrite",
+          "instructions": "Corrige 10 errores propios y verbaliza patron.",
+          "output": "10 pares error->correccion"
+        },
+        {
+          "type": "guided_listening_sheet",
+          "instructions": "Completa gist, detail e inference del audio.",
+          "output": "Hoja de listening completa"
+        },
+        {
+          "type": "chunk_extraction",
+          "instructions": "Extrae 8 chunks reutilizables del input.",
+          "output": "Lista de 8 chunks"
+        },
+        {
+          "type": "roleplay_task",
+          "instructions": "Completa roleplay con objetivo del dia.",
+          "output": "Audio 3-5 min"
+        },
+        {
+          "type": "repair_drill",
+          "instructions": "Practica aclarar, parafrasear y recuperar.",
+          "output": "5 reparaciones limpias"
+        },
+        {
+          "type": "pron_shadow_task",
+          "instructions": "Shadowing con ritmo y finales claros.",
+          "output": "Audio 60-90 segundos"
+        },
+        {
+          "type": "writing_transform_task",
+          "instructions": "Escribe y reescribe salida del dia.",
+          "output": "120-190 palabras"
+        }
+      ],
+      "resource_pack": [
+        {
+          "id": "chatgpt_accuracy",
+          "minutes": 15,
+          "purpose": "retrieval and warm-up"
+        },
+        {
+          "id": "anki_or_quizlet",
+          "minutes": 20,
+          "purpose": "guided listening"
+        },
+        {
+          "id": "bbc_6min_tech",
+          "minutes": 35,
+          "purpose": "speaking rounds"
+        },
+        {
+          "id": "voa_learn_daily",
+          "minutes": 20,
+          "purpose": "writing transfer"
+        }
+      ],
+      "book_modules": [
+        "egiu_intermediate_01",
+        "ows_intermediate_01",
+        "eviu_intermediate_01",
+        "epiu_intermediate_01",
+        "reader_penguin_b1",
+        "method_fluent_forever"
+      ],
+      "deliverables": [
+        "Speaking audio evidence",
+        "Writing corrected output",
+        "Metrics and rubric log",
+        "Adaptive notes with next focus"
+      ],
+      "rubric": {
+        "fluency": {
+          "target": 2,
+          "descriptor": "Sustained speech with functional pause control"
+        },
+        "accuracy": {
+          "target": 2,
+          "descriptor": "Grammar and word choice are reliable enough"
+        },
+        "interaction": {
+          "target": 2,
+          "descriptor": "Handles follow-up, challenge, and repair"
+        },
+        "pronunciation": {
+          "target": 2,
+          "descriptor": "Clear intelligibility under pressure"
+        }
+      },
+      "metrics": {
+        "error_density": "<= 8 errors per 100 words",
+        "repair_success": ">= 70%",
+        "turn_length": ">= 75 seconds",
+        "comprehension_split": "gist >= 80% / detail >= 60%",
+        "lexical_reuse": ">= 12 chunks"
+      },
+      "metrics_targets": {
+        "error_density_max": 8,
+        "repair_success_min": 70,
+        "turn_length_min_seconds": 75,
+        "gist_min": 80,
+        "detail_min": 60,
+        "lexical_reuse_min": 12,
+        "pronunciation_score_min": 2.0
+      },
+      "adaptive_overrides": [
+        "repair_success_boost",
+        "error_density_precision_cycle",
+        "turn_length_support",
+        "pronunciation_intensive_week",
+        "anti_fatigue_protocol",
+        "difficulty_upgrade",
+        "extension_risk_w05",
+        "extension_auto_w10"
+      ],
+      "daily_gate": "Complete task objective with interaction target achieved."
+    },
+    "Fri": {
+      "minutes": 120,
+      "goal": "Error clinic and consolidation",
+      "task_design": "Input -> Explicit instruction -> Guided practice -> Output1 -> Feedback -> Output2 -> Transfer",
+      "blocks": [
+        {
+          "name": "Retrieval engine",
+          "minutes": 15,
+          "instructions": "Repaso D+1, D+3, D+7 con tarjetas y errores reales."
+        },
+        {
+          "name": "Book module explicit lesson",
+          "minutes": 20,
+          "instructions": "Microleccion + 8 microdrills del modulo asignado."
+        },
+        {
+          "name": "Guided listening",
+          "minutes": 20,
+          "instructions": "Tres pasadas: gist, detail, inference."
+        },
+        {
+          "name": "Speaking task",
+          "minutes": 35,
+          "instructions": "Fluency -> Accuracy -> Repair bajo tiempo controlado."
+        },
+        {
+          "name": "Pronunciation lab",
+          "minutes": 10,
+          "instructions": "Pares minimos, stress y shadowing de chunks."
+        },
+        {
+          "name": "Writing transfer",
+          "minutes": 20,
+          "instructions": "Produccion guiada, correccion y reescritura parcial."
+        }
+      ],
+      "sesame": {
+        "prompt": "You are my strict speaking coach. Week 14 focus: articulos y countability. Day goal: Error clinic and consolidation. Keep me speaking, avoid translation, and force self-correction after each round.",
+        "rounds": [
+          "Fluency round: sustained answer with minimal pauses",
+          "Accuracy round: self-correct top errors",
+          "Repair round: recover meaning under interruption"
+        ]
+      },
+      "reading": {
+        "task": "Read a graded text aligned to this week focus and extract reusable patterns.",
+        "output": "3 key ideas + 8 reusable chunks"
+      },
+      "writing": {
+        "task": "Write transfer output and rewrite after correction.",
+        "genre": "daily transfer",
+        "min_words": 140,
+        "output": "final corrected version + chunk list"
+      },
+      "daily_exercises": [
+        {
+          "type": "retrieval_quiz",
+          "instructions": "Recupera estructuras objetivo sin apoyo.",
+          "output": "10 respuestas orales"
+        },
+        {
+          "type": "error_rewrite",
+          "instructions": "Corrige 10 errores propios y verbaliza patron.",
+          "output": "10 pares error->correccion"
+        },
+        {
+          "type": "guided_listening_sheet",
+          "instructions": "Completa gist, detail e inference del audio.",
+          "output": "Hoja de listening completa"
+        },
+        {
+          "type": "chunk_extraction",
+          "instructions": "Extrae 8 chunks reutilizables del input.",
+          "output": "Lista de 8 chunks"
+        },
+        {
+          "type": "roleplay_task",
+          "instructions": "Completa roleplay con objetivo del dia.",
+          "output": "Audio 3-5 min"
+        },
+        {
+          "type": "repair_drill",
+          "instructions": "Practica aclarar, parafrasear y recuperar.",
+          "output": "5 reparaciones limpias"
+        },
+        {
+          "type": "pron_shadow_task",
+          "instructions": "Shadowing con ritmo y finales claros.",
+          "output": "Audio 60-90 segundos"
+        },
+        {
+          "type": "writing_transform_task",
+          "instructions": "Escribe y reescribe salida del dia.",
+          "output": "120-190 palabras"
+        }
+      ],
+      "resource_pack": [
+        {
+          "id": "chatgpt_accuracy",
+          "minutes": 15,
+          "purpose": "retrieval and warm-up"
+        },
+        {
+          "id": "anki_or_quizlet",
+          "minutes": 20,
+          "purpose": "guided listening"
+        },
+        {
+          "id": "bbc_6min_tech",
+          "minutes": 35,
+          "purpose": "speaking rounds"
+        },
+        {
+          "id": "voa_learn_daily",
+          "minutes": 20,
+          "purpose": "writing transfer"
+        }
+      ],
+      "book_modules": [
+        "egiu_intermediate_01",
+        "ows_intermediate_01",
+        "eviu_intermediate_01",
+        "epiu_intermediate_01",
+        "reader_penguin_b1",
+        "method_fluent_forever"
+      ],
+      "deliverables": [
+        "Speaking audio evidence",
+        "Writing corrected output",
+        "Metrics and rubric log",
+        "Adaptive notes with next focus"
+      ],
+      "rubric": {
+        "fluency": {
+          "target": 2,
+          "descriptor": "Sustained speech with functional pause control"
+        },
+        "accuracy": {
+          "target": 2,
+          "descriptor": "Grammar and word choice are reliable enough"
+        },
+        "interaction": {
+          "target": 2,
+          "descriptor": "Handles follow-up, challenge, and repair"
+        },
+        "pronunciation": {
+          "target": 2,
+          "descriptor": "Clear intelligibility under pressure"
+        }
+      },
+      "metrics": {
+        "error_density": "<= 8 errors per 100 words",
+        "repair_success": ">= 70%",
+        "turn_length": ">= 75 seconds",
+        "comprehension_split": "gist >= 80% / detail >= 60%",
+        "lexical_reuse": ">= 12 chunks"
+      },
+      "metrics_targets": {
+        "error_density_max": 8,
+        "repair_success_min": 70,
+        "turn_length_min_seconds": 75,
+        "gist_min": 80,
+        "detail_min": 60,
+        "lexical_reuse_min": 12,
+        "pronunciation_score_min": 2.0
+      },
+      "adaptive_overrides": [
+        "repair_success_boost",
+        "error_density_precision_cycle",
+        "turn_length_support",
+        "pronunciation_intensive_week",
+        "anti_fatigue_protocol",
+        "difficulty_upgrade",
+        "extension_risk_w05",
+        "extension_auto_w10"
+      ],
+      "daily_gate": "Deliver correction log with top 5 weekly errors."
+    },
+    "Sat": {
+      "minutes": 120,
+      "goal": "Integration scenario general + tech",
+      "task_design": "Input -> Explicit instruction -> Guided practice -> Output1 -> Feedback -> Output2 -> Transfer",
+      "blocks": [
+        {
+          "name": "Retrieval engine",
+          "minutes": 15,
+          "instructions": "Repaso D+1, D+3, D+7 con tarjetas y errores reales."
+        },
+        {
+          "name": "Book module explicit lesson",
+          "minutes": 20,
+          "instructions": "Microleccion + 8 microdrills del modulo asignado."
+        },
+        {
+          "name": "Guided listening",
+          "minutes": 20,
+          "instructions": "Tres pasadas: gist, detail, inference."
+        },
+        {
+          "name": "Speaking task",
+          "minutes": 35,
+          "instructions": "Fluency -> Accuracy -> Repair bajo tiempo controlado."
+        },
+        {
+          "name": "Pronunciation lab",
+          "minutes": 10,
+          "instructions": "Pares minimos, stress y shadowing de chunks."
+        },
+        {
+          "name": "Writing transfer",
+          "minutes": 20,
+          "instructions": "Produccion guiada, correccion y reescritura parcial."
+        }
+      ],
+      "sesame": {
+        "prompt": "You are my strict speaking coach. Week 14 focus: articulos y countability. Day goal: Integration scenario general + tech. Keep me speaking, avoid translation, and force self-correction after each round.",
+        "rounds": [
+          "Fluency round: sustained answer with minimal pauses",
+          "Accuracy round: self-correct top errors",
+          "Repair round: recover meaning under interruption"
+        ]
+      },
+      "reading": {
+        "task": "Read a graded text aligned to this week focus and extract reusable patterns.",
+        "output": "3 key ideas + 8 reusable chunks"
+      },
+      "writing": {
+        "task": "Write transfer output and rewrite after correction.",
+        "genre": "daily transfer",
+        "min_words": 220,
+        "output": "final corrected version + chunk list"
+      },
+      "daily_exercises": [
+        {
+          "type": "retrieval_quiz",
+          "instructions": "Recupera estructuras objetivo sin apoyo.",
+          "output": "10 respuestas orales"
+        },
+        {
+          "type": "error_rewrite",
+          "instructions": "Corrige 10 errores propios y verbaliza patron.",
+          "output": "10 pares error->correccion"
+        },
+        {
+          "type": "guided_listening_sheet",
+          "instructions": "Completa gist, detail e inference del audio.",
+          "output": "Hoja de listening completa"
+        },
+        {
+          "type": "chunk_extraction",
+          "instructions": "Extrae 8 chunks reutilizables del input.",
+          "output": "Lista de 8 chunks"
+        },
+        {
+          "type": "roleplay_task",
+          "instructions": "Completa roleplay con objetivo del dia.",
+          "output": "Audio 3-5 min"
+        },
+        {
+          "type": "repair_drill",
+          "instructions": "Practica aclarar, parafrasear y recuperar.",
+          "output": "5 reparaciones limpias"
+        },
+        {
+          "type": "pron_shadow_task",
+          "instructions": "Shadowing con ritmo y finales claros.",
+          "output": "Audio 60-90 segundos"
+        },
+        {
+          "type": "writing_transform_task",
+          "instructions": "Escribe y reescribe salida del dia.",
+          "output": "120-190 palabras"
+        }
+      ],
+      "resource_pack": [
+        {
+          "id": "chatgpt_accuracy",
+          "minutes": 15,
+          "purpose": "retrieval and warm-up"
+        },
+        {
+          "id": "anki_or_quizlet",
+          "minutes": 20,
+          "purpose": "guided listening"
+        },
+        {
+          "id": "bbc_6min_tech",
+          "minutes": 35,
+          "purpose": "speaking rounds"
+        },
+        {
+          "id": "voa_learn_daily",
+          "minutes": 20,
+          "purpose": "writing transfer"
+        }
+      ],
+      "book_modules": [
+        "egiu_intermediate_01",
+        "ows_intermediate_01",
+        "eviu_intermediate_01",
+        "epiu_intermediate_01",
+        "reader_penguin_b1",
+        "method_fluent_forever"
+      ],
+      "deliverables": [
+        "Speaking audio evidence",
+        "Writing corrected output",
+        "Metrics and rubric log",
+        "Adaptive notes with next focus"
+      ],
+      "rubric": {
+        "fluency": {
+          "target": 2,
+          "descriptor": "Sustained speech with functional pause control"
+        },
+        "accuracy": {
+          "target": 2,
+          "descriptor": "Grammar and word choice are reliable enough"
+        },
+        "interaction": {
+          "target": 2,
+          "descriptor": "Handles follow-up, challenge, and repair"
+        },
+        "pronunciation": {
+          "target": 2,
+          "descriptor": "Clear intelligibility under pressure"
+        }
+      },
+      "metrics": {
+        "error_density": "<= 8 errors per 100 words",
+        "repair_success": ">= 70%",
+        "turn_length": ">= 75 seconds",
+        "comprehension_split": "gist >= 80% / detail >= 60%",
+        "lexical_reuse": ">= 12 chunks"
+      },
+      "metrics_targets": {
+        "error_density_max": 8,
+        "repair_success_min": 70,
+        "turn_length_min_seconds": 75,
+        "gist_min": 80,
+        "detail_min": 60,
+        "lexical_reuse_min": 12,
+        "pronunciation_score_min": 2.0
+      },
+      "adaptive_overrides": [
+        "repair_success_boost",
+        "error_density_precision_cycle",
+        "turn_length_support",
+        "pronunciation_intensive_week",
+        "anti_fatigue_protocol",
+        "difficulty_upgrade",
+        "extension_risk_w05",
+        "extension_auto_w10"
+      ],
+      "daily_gate": "Sustain integrated output and pass writing threshold."
+    },
+    "Sun": {
+      "minutes": 300,
+      "goal": "Weekly gate, diagnostics, and adaptive planning",
+      "task_design": "Input -> Explicit instruction -> Guided practice -> Output1 -> Feedback -> Output2 -> Transfer",
+      "blocks": [
+        {
+          "name": "Weekly diagnostics",
+          "minutes": 25,
+          "instructions": "Analiza KPI, rubrica, extension risk y prioridad adaptativa."
+        },
+        {
+          "name": "Listening deep work",
+          "minutes": 45,
+          "instructions": "Dos piezas con hoja gist/detail/inference y feedback final."
+        },
+        {
+          "name": "Reading long-form",
+          "minutes": 30,
+          "instructions": "Lectura graduada larga con mapa de ideas."
+        },
+        {
+          "name": "Speaking mock long run",
+          "minutes": 100,
+          "instructions": "Cuatro rondas: fluency, accuracy, pressure, repair."
+        },
+        {
+          "name": "Writing long-form",
+          "minutes": 50,
+          "instructions": "Texto largo con correccion, reescritura y version final."
+        },
+        {
+          "name": "Pronunciation clinic",
+          "minutes": 20,
+          "instructions": "Shadowing de chunks criticos y finales consonanticos."
+        },
+        {
+          "name": "Weekly review and adaptive plan",
+          "minutes": 30,
+          "instructions": "Cierra semana y define ajustes D+1, D+3, D+7."
+        }
+      ],
+      "sesame": {
+        "prompt": "You are my strict speaking coach. Week 14 focus: articulos y countability. Day goal: Weekly gate, diagnostics, and adaptive planning. Keep me speaking, avoid translation, and force self-correction after each round.",
+        "rounds": [
+          "Fluency long run",
+          "Accuracy long run",
+          "Pressure long run",
+          "Repair long run"
+        ]
+      },
+      "reading": {
+        "task": "Read a graded text aligned to this week focus and extract reusable patterns.",
+        "output": "3 key ideas + 8 reusable chunks"
+      },
+      "writing": {
+        "task": "Write transfer output and rewrite after correction.",
+        "genre": "weekly report",
+        "min_words": 260,
+        "output": "final corrected version + chunk list"
+      },
+      "daily_exercises": [
+        {
+          "type": "retrieval_quiz",
+          "instructions": "Ejecuta retrieval de D+1, D+3, D+7, D+14, D+30.",
+          "output": "Score por ciclo"
+        },
+        {
+          "type": "guided_listening_sheet",
+          "instructions": "Completa hoja full de listening profundo.",
+          "output": "Gist/detail/inference completado"
+        },
+        {
+          "type": "roleplay_task",
+          "instructions": "Mock speaking 4 rondas con objetivos B2.",
+          "output": "Audio 6-10 min"
+        },
+        {
+          "type": "pron_shadow_task",
+          "instructions": "Shadowing de 12 chunks criticos.",
+          "output": "Audio shadowing"
+        },
+        {
+          "type": "writing_transform_task",
+          "instructions": "Escribe version final tras correccion.",
+          "output": "Texto final 260+ palabras"
+        }
+      ],
+      "resource_pack": [
+        {
+          "id": "chatgpt_accuracy",
+          "minutes": 15,
+          "purpose": "retrieval and warm-up"
+        },
+        {
+          "id": "anki_or_quizlet",
+          "minutes": 20,
+          "purpose": "guided listening"
+        },
+        {
+          "id": "bbc_6min_tech",
+          "minutes": 35,
+          "purpose": "speaking rounds"
+        },
+        {
+          "id": "voa_learn_daily",
+          "minutes": 20,
+          "purpose": "writing transfer"
+        }
+      ],
+      "book_modules": [
+        "egiu_intermediate_01",
+        "ows_intermediate_01",
+        "eviu_intermediate_01",
+        "epiu_intermediate_01",
+        "reader_penguin_b1",
+        "method_fluent_forever"
+      ],
+      "deliverables": [
+        "Speaking audio evidence",
+        "Writing corrected output",
+        "Metrics and rubric log",
+        "Adaptive notes with next focus"
+      ],
+      "rubric": {
+        "fluency": {
+          "target": 2,
+          "descriptor": "Sustained speech with functional pause control"
+        },
+        "accuracy": {
+          "target": 2,
+          "descriptor": "Grammar and word choice are reliable enough"
+        },
+        "interaction": {
+          "target": 2,
+          "descriptor": "Handles follow-up, challenge, and repair"
+        },
+        "pronunciation": {
+          "target": 2,
+          "descriptor": "Clear intelligibility under pressure"
+        }
+      },
+      "metrics": {
+        "error_density": "<= 8 errors per 100 words",
+        "repair_success": ">= 70%",
+        "turn_length": ">= 75 seconds",
+        "comprehension_split": "gist >= 80% / detail >= 60%",
+        "lexical_reuse": ">= 12 chunks"
+      },
+      "metrics_targets": {
+        "error_density_max": 8,
+        "repair_success_min": 70,
+        "turn_length_min_seconds": 75,
+        "gist_min": 80,
+        "detail_min": 60,
+        "lexical_reuse_min": 12,
+        "pronunciation_score_min": 2.0
+      },
+      "adaptive_overrides": [
+        "repair_success_boost",
+        "error_density_precision_cycle",
+        "turn_length_support",
+        "pronunciation_intensive_week",
+        "anti_fatigue_protocol",
+        "difficulty_upgrade",
+        "extension_risk_w05",
+        "extension_auto_w10"
+      ],
+      "daily_gate": "Close weekly gate and publish adaptive action plan."
+    }
+  }
+}

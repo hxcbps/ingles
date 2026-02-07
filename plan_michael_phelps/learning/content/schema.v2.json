@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://english-sprint.local/schema.v2.json",
+  "title": "English Sprint Week Content V2",
+  "type": "object",
+  "required": [
+    "version",
+    "week",
+    "title",
+    "domain",
+    "focus",
+    "weekly_gate",
+    "days"
+  ],
+  "properties": {
+    "version": { "type": "string", "const": "v2" },
+    "week": { "type": "integer", "minimum": 1, "maximum": 16 },
+    "title": { "type": "string", "minLength": 3 },
+    "domain": { "type": "string", "enum": ["software_tech"] },
+    "focus": {
+      "type": "object",
+      "required": ["grammar", "functions", "pronunciation"],
+      "properties": {
+        "grammar": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "functions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "pronunciation": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "weekly_gate": {
+      "type": "object",
+      "required": ["description", "checks"],
+      "properties": {
+        "description": { "type": "string" },
+        "checks": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "days": {
+      "type": "object",
+      "required": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      "additionalProperties": false,
+      "properties": {
+        "Mon": { "$ref": "#/$defs/day" },
+        "Tue": { "$ref": "#/$defs/day" },
+        "Wed": { "$ref": "#/$defs/day" },
+        "Thu": { "$ref": "#/$defs/day" },
+        "Fri": { "$ref": "#/$defs/day" },
+        "Sat": { "$ref": "#/$defs/day" },
+        "Sun": { "$ref": "#/$defs/day" }
+      }
+    }
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "required": ["name", "minutes", "instructions"],
+      "properties": {
+        "name": { "type": "string" },
+        "minutes": { "type": "integer", "minimum": 1 },
+        "instructions": { "type": "string" }
+      }
+    },
+    "rubric_dimension": {
+      "type": "object",
+      "required": ["target", "descriptor"],
+      "properties": {
+        "target": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "descriptor": { "type": "string" }
+      }
+    },
+    "day": {
+      "type": "object",
+      "required": [
+        "minutes",
+        "goal",
+        "task_design",
+        "blocks",
+        "sesame",
+        "reading",
+        "writing",
+        "deliverables",
+        "rubric",
+        "metrics",
+        "daily_gate"
+      ],
+      "properties": {
+        "minutes": { "type": "integer", "minimum": 1 },
+        "goal": { "type": "string" },
+        "task_design": { "type": "string" },
+        "blocks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/block" } },
+        "sesame": {
+          "type": "object",
+          "required": ["prompt", "rounds"],
+          "properties": {
+            "prompt": { "type": "string", "minLength": 8 },
+            "rounds": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+          }
+        },
+        "reading": {
+          "type": "object",
+          "required": ["task", "output"],
+          "properties": {
+            "task": { "type": "string" },
+            "output": { "type": "string" }
+          }
+        },
+        "writing": {
+          "type": "object",
+          "required": ["task", "genre", "min_words", "output"],
+          "properties": {
+            "task": { "type": "string" },
+            "genre": { "type": "string" },
+            "min_words": { "type": "integer", "minimum": 30 },
+            "output": { "type": "string" }
+          }
+        },
+        "deliverables": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "rubric": {
+          "type": "object",
+          "required": ["fluency", "accuracy", "interaction", "pronunciation"],
+          "properties": {
+            "fluency": { "$ref": "#/$defs/rubric_dimension" },
+            "accuracy": { "$ref": "#/$defs/rubric_dimension" },
+            "interaction": { "$ref": "#/$defs/rubric_dimension" },
+            "pronunciation": { "$ref": "#/$defs/rubric_dimension" }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "required": [
+            "error_density",
+            "repair_success",
+            "turn_length",
+            "comprehension_split",
+            "lexical_reuse"
+          ],
+          "properties": {
+            "error_density": { "type": "string" },
+            "repair_success": { "type": "string" },
+            "turn_length": { "type": "string" },
+            "comprehension_split": { "type": "string" },
+            "lexical_reuse": { "type": "string" }
+          }
+        },
+        "daily_gate": { "type": "string", "minLength": 8 }
+      }
+    }
+  }
+}

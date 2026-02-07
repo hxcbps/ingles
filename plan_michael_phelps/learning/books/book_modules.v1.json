@@ -1,0 +1,213 @@
+{
+  "version": "v1",
+  "description": "Book module registry for guided daily integration",
+  "modules": [
+    {
+      "id": "egiu_foundation_01",
+      "book": "English Grammar in Use",
+      "chapter_ref": "Units 1-8",
+      "objective": "present forms and question basics",
+      "exercise_templates": [
+        "retrieval_quiz",
+        "error_rewrite"
+      ]
+    },
+    {
+      "id": "egiu_foundation_02",
+      "book": "English Grammar in Use",
+      "chapter_ref": "Units 9-16",
+      "objective": "past narration basics",
+      "exercise_templates": [
+        "error_rewrite",
+        "writing_transform_task"
+      ]
+    },
+    {
+      "id": "egiu_foundation_03",
+      "book": "English Grammar in Use",
+      "chapter_ref": "Units 17-24",
+      "objective": "future and planning forms",
+      "exercise_templates": [
+        "retrieval_quiz",
+        "roleplay_task"
+      ]
+    },
+    {
+      "id": "egiu_intermediate_01",
+      "book": "English Grammar in Use",
+      "chapter_ref": "Units 25-40",
+      "objective": "modals and conditionals",
+      "exercise_templates": [
+        "roleplay_task",
+        "error_rewrite"
+      ]
+    },
+    {
+      "id": "egiu_intermediate_02",
+      "book": "English Grammar in Use",
+      "chapter_ref": "Units 41-60",
+      "objective": "passive and reported speech",
+      "exercise_templates": [
+        "guided_listening_sheet",
+        "writing_transform_task"
+      ]
+    },
+    {
+      "id": "egiu_b2_bridge",
+      "book": "English Grammar in Use",
+      "chapter_ref": "Units 61-90",
+      "objective": "advanced cohesion and precision",
+      "exercise_templates": [
+        "error_rewrite",
+        "roleplay_task"
+      ]
+    },
+    {
+      "id": "ows_basic_01",
+      "book": "Oxford Word Skills",
+      "chapter_ref": "Basic 1-20",
+      "objective": "daily communication chunks",
+      "exercise_templates": [
+        "chunk_extraction",
+        "retrieval_quiz"
+      ]
+    },
+    {
+      "id": "ows_basic_02",
+      "book": "Oxford Word Skills",
+      "chapter_ref": "Basic 21-40",
+      "objective": "story and scheduling vocabulary",
+      "exercise_templates": [
+        "chunk_extraction",
+        "roleplay_task"
+      ]
+    },
+    {
+      "id": "ows_intermediate_01",
+      "book": "Oxford Word Skills",
+      "chapter_ref": "Intermediate 1-25",
+      "objective": "work and discussion vocabulary",
+      "exercise_templates": [
+        "chunk_extraction",
+        "error_rewrite"
+      ]
+    },
+    {
+      "id": "ows_intermediate_02",
+      "book": "Oxford Word Skills",
+      "chapter_ref": "Intermediate 26-50",
+      "objective": "argumentation and reporting vocabulary",
+      "exercise_templates": [
+        "chunk_extraction",
+        "writing_transform_task"
+      ]
+    },
+    {
+      "id": "eviu_elementary_01",
+      "book": "English Vocabulary in Use",
+      "chapter_ref": "Elementary 1-20",
+      "objective": "high-frequency conversation vocabulary",
+      "exercise_templates": [
+        "retrieval_quiz",
+        "chunk_extraction"
+      ]
+    },
+    {
+      "id": "eviu_preint_01",
+      "book": "English Vocabulary in Use",
+      "chapter_ref": "Pre-Intermediate 1-25",
+      "objective": "contextual lexical expansion",
+      "exercise_templates": [
+        "chunk_extraction",
+        "roleplay_task"
+      ]
+    },
+    {
+      "id": "eviu_intermediate_01",
+      "book": "English Vocabulary in Use",
+      "chapter_ref": "Intermediate 1-25",
+      "objective": "B1 to B2 lexical transfer",
+      "exercise_templates": [
+        "chunk_extraction",
+        "writing_transform_task"
+      ]
+    },
+    {
+      "id": "epiu_elementary_01",
+      "book": "English Pronunciation in Use",
+      "chapter_ref": "Elementary 1-20",
+      "objective": "phoneme discrimination and stress",
+      "exercise_templates": [
+        "pron_shadow_task"
+      ]
+    },
+    {
+      "id": "epiu_intermediate_01",
+      "book": "English Pronunciation in Use",
+      "chapter_ref": "Intermediate 1-30",
+      "objective": "connected speech and rhythm",
+      "exercise_templates": [
+        "pron_shadow_task",
+        "repair_drill"
+      ]
+    },
+    {
+      "id": "reader_oxford_a2",
+      "book": "Oxford Bookworms",
+      "chapter_ref": "Stage 1-2",
+      "objective": "graded extensive reading A2",
+      "exercise_templates": [
+        "guided_listening_sheet",
+        "chunk_extraction"
+      ]
+    },
+    {
+      "id": "reader_penguin_b1",
+      "book": "Penguin Readers",
+      "chapter_ref": "Level 2-3",
+      "objective": "graded extensive reading B1",
+      "exercise_templates": [
+        "chunk_extraction",
+        "writing_transform_task"
+      ]
+    },
+    {
+      "id": "reader_penguin_b2",
+      "book": "Penguin Readers",
+      "chapter_ref": "Level 4",
+      "objective": "graded extensive reading B2 bridge",
+      "exercise_templates": [
+        "chunk_extraction",
+        "roleplay_task"
+      ]
+    },
+    {
+      "id": "theory_hlal_core",
+      "book": "How Languages are Learned",
+      "chapter_ref": "Ch. 1-4",
+      "objective": "understand evidence-based learning cycle",
+      "exercise_templates": [
+        "retrieval_quiz"
+      ]
+    },
+    {
+      "id": "theory_hlal_transfer",
+      "book": "How Languages are Learned",
+      "chapter_ref": "Ch. 5-8",
+      "objective": "transfer, feedback, and form focus",
+      "exercise_templates": [
+        "error_rewrite"
+      ]
+    },
+    {
+      "id": "method_fluent_forever",
+      "book": "Fluent Forever",
+      "chapter_ref": "SRS + pronunciation sections",
+      "objective": "spaced repetition with pronunciation loop",
+      "exercise_templates": [
+        "retrieval_quiz",
+        "pron_shadow_task"
+      ]
+    }
+  ]
+}

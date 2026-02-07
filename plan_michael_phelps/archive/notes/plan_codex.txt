@@ -1,0 +1,236 @@
+PLAN INTENSIVO DE INGLÉS (RUTA B2) BASADO EN "HOW TO ENGLISH: 31 DAYS TO BE AN INDEPENDENT LEARNER"
+
+Compromiso horario fijo: L-V 18:00-20:00, S-D 12:00-14:00 (14h/semana).
+Meta central (12 semanas): Consolidar B1 fuerte en 31 días y escalar a B2 en tres ciclos del plan.
+Resultado esperado del primer ciclo de 31 días: dominar rutinas de autoestudio, producir >120 minutos de speaking dirigido semanal, comprender 70-80% de listening guiado B1 y crear sistema de seguimiento.
+
+Indicadores clave (revisa cada domingo):
+- Diario de progreso con checklist de hábitos (mínimo 6/7 días cumplidos por semana).
+- 2 sesiones de roleplay con ChatGPT Voice + 1 sesión en Sesame.com por semana.
+- Vocabulario activo: +50 ítems semanales incorporados en frases (usa Anki/Quizlet gratuito).
+- Listening intensivo: 4 ejercicios por semana con transcripción (YouGlish, ESLPod, BBC Learning English).
+- Escritura: 3 microtextos (120-150 palabras) por semana con feedback automático de Grammarly o ChatGPT.
+- Autoevaluación CEFR cada 4 semanas usando Cambridge Test (gratuito) y rúbrica propia de speaking (fluidez, precisión, pronunciación).
+
+Herramientas base (gratuitas y recomendadas):
+- ChatGPT Voice (speaking guiado, roleplays, corrección inmediata).
+- Sesame.com (clubes de conversación, shadowing y listening activo).
+- YouGlish, BBC Learning English, Voice of America Learning English (listening graduado).
+- Corpus gratuito + DeepL/Word Reference para aclarar vocabulario.
+- Google Sheets/Notion para bitácora y matriz de debilidades.
+- Anki o Quizlet (tarjetas spaced repetition), Sounds of English (app gratuita) para pronunciación.
+
+Ritual estándar de sesión (120 minutos):
+1. 10' Activación: repaso SRS + lectura en voz alta de frases trabajadas el día anterior.
+2. 35' Input guiado: lectura del capítulo asignado de "How To English" + extracción de principios y acciones concretas.
+3. 35' Output guiado: speaking con ChatGPT Voice (o writing si el capítulo lo requiere). Graba audio cuando sea posible para autoevaluar pronunciación.
+4. 30' Enfoque específico: tarea clave del día (listening intensivo, análisis de errores, diseño de materiales, preparación de proyecto).
+5. 10' Cierre: resumen escrito en diario ("Qué aprendí", "Qué ajustar mañana") + registro de vocabulario.
+
+Semana 0 (Domingo previo, 12:00-14:00) – Preparación total:
+- Lee el Prefacio e Introducción para interiorizar la filosofía de autonomía.
+- Crea en tu gestor (Notion/Sheets) tres secciones: Objetivos, Matriz de Debilidades, Bitácora diaria.
+- Define metas cuantificables (ej. IELTS 6.0 en 9 meses, completar 3 charlas en Sesame por semana).
+- Configura plantillas: tabla con columnas Fecha | Capítulo | Qué hice | KPI | Próximo micro-objetivo.
+- Haz prueba de nivel gratuita (Cambridge/EF SET) para punto de partida y guarda resultados.
+- Selecciona 3 temas personales prioritarios (trabajo, viajes, intereses) para orientar vocabulario relevante.
+- Prepara playlist de recursos listening (3 podcasts) y reading (2 blogs) alineados a tus temas.
+
+Cronograma detallado – Primer ciclo de 31 días
+Semana 1 – Fundamentos y control del aprendizaje (Capítulos Day 1-8)
+Lunes (Día 1-2) 18:00-20:00
+- Activación: repasa diagnóstico y horarios.
+- Input: lee Day 1 y Day 2; redacta planificador semanal y lista de motivaciones "por qué".
+- Output: roleplay con ChatGPT Voice explicando tu plan y compromiso (graba audio).
+- Enfoque: crea calendario semanal bloqueado + sistema de recompensas; abre hoja "Errores frecuentes".
+- Cierre: checklist cumplimiento y reflexión sobre control del aprendizaje.
+
+Martes (Día 3) 18:00-20:00
+- Input: lee Day 3; diseña plantilla de notas (vocab + gramática + ejemplos).
+- Output: speaking con ChatGPT narrando cómo organizarás tus notas; pide feedback.
+- Enfoque: implementa Notion/Sheet con 3 secciones (Vocab activo, Gramática, Expresiones).
+- Cierre: registra primer set de 10 palabras relevantes y márcalas para revisión SRS.
+
+Miércoles (Día 4) 18:00-20:00
+- Input: Day 4 (Improve Fluency); extrae técnicas de chunking.
+- Output: ChatGPT Voice ejercicios de "4/3/2 speaking" (cuenta historia en 4 min, 3 min, 2 min).
+- Enfoque: crea grabación corta leyendo texto simple; evalúa fluidez con rúbrica (velocidad, pausas, fillers).
+- Cierre: anota sensación de fluidez y planes de mejora.
+
+Jueves (Día 5) 18:00-20:00
+- Input: Day 5; identifica métricas de fluidez (frases por minuto, precisión).
+- Output: roleplay de negociación o situación laboral; solicita correcciones on the spot.
+- Enfoque: construye lista de fillers y conectores (e.g., "actually", "as far as I’m concerned").
+- Cierre: evalúa si aplicaste nuevos conectores; planifica práctica del viernes.
+
+Viernes (Día 6) 18:00-20:00
+- Input: Day 6 (Listening específico); aplica ejercicio: escucha clip (BBC 3-4 min) 3 veces con tareas diferentes.
+- Output: explicar a ChatGPT lo entendido; pide que te formule preguntas de detalle.
+- Enfoque: usa YouGlish para repetir 10 frases clave; practica shadowing.
+- Cierre: registra porcentaje de comprensión y dificultades fonéticas.
+
+Sábado (Día 7) 12:00-14:00
+- Input: Day 7 (aprende escuchando); selecciona episodio de Sesame o podcast graduado.
+- Output: realiza shadowing con Sesame (primer 15 min) y roleplay con host/comunidad si disponible.
+- Enfoque: crea mapa mental del tema escuchado; extrae vocabulario por categorías.
+- Cierre: autoevaluación de listening global + plan de exposición diaria (mínimo 20' extra-curriculares).
+
+Domingo (Día 8) 12:00-14:00
+- Input: Day 8 (Motivación); revisa hábitos y define disparadores.
+- Output: escribe declaración de compromiso (200 palabras) y léela en voz alta grabándote.
+- Enfoque: revisa bitácora semanal, identifica 3 logros y 2 ajustes.
+- Cierre: prepara objetivos de Semana 2; agenda sesiones Sesame (elige horarios).
+
+Semana 2 – Relevancia total y corrección de errores (Capítulos Day 9-16)
+Lunes (Día 9) 18:00-20:00
+- Input: Day 9; diseña checklists para práctica deliberada.
+- Output: ChatGPT Voice simulación de tutor explicando cómo practicas.
+- Enfoque: crea tablero Kanban (Pendiente/En progreso/Hecho) para micro-habilidades.
+- Cierre: registra KPI de práctica (tiempo speaking efectivo, listening activo).
+
+Martes (Día 10) 18:00-20:00
+- Input: Day 10; lista contextos personales (trabajo, ocio, networking).
+- Output: roleplay sobre uno de tus contextos prioritarios con ChatGPT (10 preguntas).
+- Enfoque: crea banco de frases modelo para cada contexto (mínimo 8 por tema).
+- Cierre: sube frases a Anki/Quizlet.
+
+Miércoles (Día 11) 18:00-20:00
+- Input: Day 11; aprende a formular dudas precisas.
+- Output: sesión con ChatGPT: plantea 5 dudas reales, profundiza en cada una.
+- Enfoque: documenta las dudas resueltas en tabla "Preguntas y Respuestas".
+- Cierre: define qué investigarás en Sesame (preguntas para coaches/compañeros).
+
+Jueves (Día 12) 18:00-20:00
+- Input: Day 12 (Errores buenos vs malos); analiza tus grabaciones.
+- Output: expón a ChatGPT 3 errores frecuentes y pide correcciones + ejercicios.
+- Enfoque: crea ritual de corrección (escuchar, transcribir, corregir, volver a grabar).
+- Cierre: elige un error clave para erradicar la semana siguiente.
+
+Viernes (Día 13) 18:00-20:00
+- Input: Day 13; aprende a identificar errores en vivo.
+- Output: roleplay conversacional con ChatGPT; pausa cada vez que detectes error y corrige.
+- Enfoque: usa Grammarly (free) para revisar microtexto escrito ese día.
+- Cierre: añade error detectado y solución a bitácora.
+
+Sábado (Día 14) 12:00-14:00
+- Input: Day 14 (Aprender de textos); trabaja con artículo de BBC Learning English.
+- Output: resume en voz alta + conversación en Sesame comentando el artículo.
+- Enfoque: diseña plantilla de lectura intensiva: vocabulario, estructuras, hechos clave.
+- Cierre: actualiza banco de vocabulario con 10 palabras/frases del artículo.
+
+Domingo (Día 15-16) 12:00-14:00
+- Input: lee Day 15 y Day 16; completa checklist de debilidades y plan motivacional.
+- Output: video/voz de 2 minutos presentando tu principal debilidad y plan de ataque.
+- Enfoque: planifica Semana 3 con foco en debilidad principal (ej. listening rápido).
+- Cierre: autoevaluación semanal; puntúa motivación (1-10) y define recompensa.
+
+Semana 3 – Vocabulario, gramática y pronunciación (Capítulos Day 17-24)
+Lunes (Día 17) 18:00-20:00
+- Input: Day 17; selecciona libro graduado/lectura continua (Graded Readers o artículos largos).
+- Output: cuenta a ChatGPT argumento del capítulo leído.
+- Enfoque: diseña rutina de lectura extensiva (20' diarios extra).
+- Cierre: planifica materiales de lectura para toda la semana.
+
+Martes (Día 18) 18:00-20:00
+- Input: Day 18; elige método de vocabulario activo.
+- Output: ejercicios de producción (frases propias con nuevo vocab).
+- Enfoque: crea tarjetas Anki (15 palabras) con ejemplo + audio (puedes usar AWS Polly gratuito limitado o TTS gratuito).
+- Cierre: programa repasos spaced (D+1, D+3, D+6).
+
+Miércoles (Día 19) 18:00-20:00
+- Input: Day 19; repasa estructura gramática relevante (p. ej. tiempos perfectos).
+- Output: speaking con ChatGPT centrado en usar esa gramática (corrección inmediata).
+- Enfoque: mini proyecto: redacta esquema de gramática con ejemplos propios.
+- Cierre: añade errores gramatic. detectados al tracker.
+
+Jueves (Día 20) 18:00-20:00
+- Input: Day 20; profundiza en precisión gramatical.
+- Output: escribe micro ensayo (150 palabras) usando la estructura; pide feedback.
+- Enfoque: crea lista de comprobación (checklist) para revisar writing (sujeto-verbo, tiempos, conectores).
+- Cierre: aplica checklist a texto y guarda versión final.
+
+Viernes (Día 21) 18:00-20:00
+- Input: Day 21 (Pronunciación); identifica fonemas difíciles.
+- Output: práctica con app (Sounds of English) + shadowing con Sesame / YouTube Rachel's English.
+- Enfoque: crea tabla de minimal pairs para tus fonemas problemáticos; practica grabándote.
+- Cierre: registra percepción de mejora (0-10) y próxima práctica.
+
+Sábado (Día 22) 12:00-14:00
+- Input: Day 22 (claridad al hablar); practica entonación.
+- Output: simula presentaciones con ChatGPT (pide feedback en ritmo y entonación).
+- Enfoque: haz actividad "Dialogue Build": escribe diálogo breve y practícalo varias veces.
+- Cierre: comparte en Sesame (si hay sesión) para feedback real.
+
+Domingo (Día 23-24) 12:00-14:00
+- Input: lee Day 23 y Day 24 (memoria + autodisciplina).
+- Output: diseña plan de repasos (SRS, revisión semanal, mensual).
+- Enfoque: establece ritual de disciplina (alarma, espacio de estudio, recompensas).
+- Cierre: repasa progreso 3 semanas, ajusta objetivos de vocabulario y listening.
+
+Semana 4 – Independencia y consolidación (Capítulos Day 25-31)
+Lunes (Día 25) 18:00-20:00
+- Input: Day 25; selecciona debilidad crítica (ej. listening rápido).
+- Output: ChatGPT brainstorming actividades específicas para esa debilidad.
+- Enfoque: diseña plan SMART de mejora (objetivo, métricas, recursos, timeline).
+- Cierre: registra primer dato de referencia (baseline) para esa debilidad.
+
+Martes (Día 26) 18:00-20:00
+- Input: Day 26; define metas semanales, mensuales y trimestrales.
+- Output: expone metas en voz alta y pide feedback / reformulación a ChatGPT.
+- Enfoque: crea hoja de cálculo con metas + hitos + evidencias.
+- Cierre: marca recordatorios automáticos (Google Calendar).
+
+Miércoles (Día 27) 18:00-20:00
+- Input: Day 27; diseña tu primer curso intensivo de 1 semana (tema específico).
+- Output: presenta curso a ChatGPT, pide mejoras.
+- Enfoque: selecciona materiales gratuitos (videos, lecturas, speaking tasks) para ese mini-curso.
+- Cierre: integra mini-curso en plan de la semana 5 (continuación).
+
+Jueves (Día 28) 18:00-20:00
+- Input: Day 28; desarrolla metas corto/medio/largo plazo.
+- Output: writing (200 palabras) describiendo tu roadmap a B2; pide feedback de cohesión.
+- Enfoque: mapear hitos (A2 consolidado, B1, B2) con exámenes de validación.
+- Cierre: registra en bitácora y comparte con mentor/amigo para accountability.
+
+Viernes (Día 29) 18:00-20:00
+- Input: Day 29; contempla control total sobre tu aprendizaje.
+- Output: roleplay dirigiendo a un alumno ficticio (tú mismo) y explicando agenda semanal.
+- Enfoque: actualiza tablero de tareas con lo que continuarás en semana 5.
+- Cierre: prepara checklist de "independencia" (recursos, hábitos, métricas listos).
+
+Sábado (Día 30) 12:00-14:00
+- Input: Day 30; implementa hábito definitivo.
+- Output: graba en video/voz la rutina diaria ideal y comprométete públicamente (compártelo con alguien de confianza).
+- Enfoque: diseña trigger->rutina->recompensa para mantener sesiones de 2h aun en días complicados.
+- Cierre: evalúa cumplimiento de 4 semanas (% sesiones completas, speaking horas, vocab).
+
+Domingo (Día 31) 12:00-14:00
+- Input: Day 31; integra todo.
+- Output: realiza autoevaluación CEFR (uso Cambridge/EF SET) y réplica de speaking de 5 minutos grabada.
+- Enfoque: crea plan de continuación (Semanas 5-12) replicando metodología con nuevos objetivos.
+- Cierre: celebra logros, documenta aprendizajes clave y define reto para la semana siguiente (ej. simulación examen B1).
+
+Continuación después del ciclo (Semanas 5-12):
+- Repite plantilla semanal ajustando foco (Listening avanzado, Writing académico, Pronunciación).
+- Introduce proyectos temáticos: p. ej., 2 semanas preparando presentación laboral; 2 semanas enfocadas en debates.
+- Incrementa dificultad del input (podcasts nativos: "6 Minute English", "TED-Ed") y output (artículos largos).
+- Integra conversación real en Sesame mínimo 2 veces por semana; cuando puedas, añade partner de intercambio (Tandem, Speaky).
+- Cada 4 semanas, realiza mock test B1/B2 (gratis: Cambridge Sample, IELTS progress check sample) y ajusta plan.
+- Mantén bitácora y rúbrica; si un KPI baja (ej. <100 min speaking), rediseña agenda inmediatamente.
+
+Estrategia de accountability y motivación:
+- Coloca recordatorio visible con el compromiso diario.
+- Usa método "Daily Highlight": cada mañana define el impacto principal que lograrás en la sesión.
+- Celebra microvictorias: tras semana completa, permítete recompensa (actividad favorita).
+- Comparte avances con tutor/amigo; pide que te pregunte semanalmente por tus KPIs.
+- Mantén mentalidad de deportista (estilo Michael Phelps): descanso activo (stretching, respiración) 5' antes de cada sesión para entrar en modo estudio.
+
+Checklist semanal (Domingo):
+- ¿Cumplí las 7 sesiones de 2h? (Sí/No, %).
+- Horas speaking real vs objetivo (>=120').
+- Nuevas palabras consolidadas (>=50) y cuántas usé en speaking/writing.
+- Progreso en debilidad principal (evidencia concreta).
+- Nivel de motivación (1-10) y ajustes para subirlo.
+- Metas de la semana siguiente listas y calendarizadas.
+
+¡Compromiso total! Mantén este plan visible y úsalo como base de tus próximos ciclos hasta alcanzar B2.

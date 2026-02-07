@@ -1,0 +1,84 @@
+Este es un plan ambicioso pero totalmente alcanzable, especialmente con tu nivel de compromiso. La clave para pasar de A2 a B2 en 4 meses no es solo la gramática, es la **exposición masiva y la producción constante**.
+
+Tu idea de usar *Essential English Grammar in Use* de Raymond Murphy es un punto de partida excelente. Ese libro es perfecto para solidificar tu base (A2-B1). Seguir el orden del libro (Presente, Pasado, etc.) es la forma más lógica de construir tu conocimiento, ya que los temas se basan entre sí.
+
+Vamos a estructurar tus 14 horas semanales usando la técnica Pomodoro y tu libro como eje central.
+
+Aquí tienes la estrategia detallada.
+
+### La Filosofía del Plan (A2 a B2 en 4 Meses)
+
+1.  **Meses 1-2: La Fundación (Objetivo: B1 Sólido)**
+    * **Enfoque:** Completar *Essential English Grammar in Use*. La meta es dominar cada regla que estudies, no solo "verla". Usaremos materiales de audio/lectura para principiantes (A2/B1).
+2.  **Meses 3-4: La Aceleración (Objetivo: B2)**
+    * **Enfoque:** La gramática pasa a segundo plano (se vuelve revisión) y el **vocabulario y la fluidez** son la prioridad. Cambiamos los materiales a contenido nativo real y nos enfocamos en el lenguaje técnico para tu entrevista.
+
+---
+
+### Tu Bloque de Estudio Diario (Lunes a Sábado: 6 PM - 8 PM)
+
+Tu sesión de 2 horas (120 minutos) se divide en **cuatro Pomodoros de 25 minutos**, con 5 minutos de descanso entre cada uno.
+
+Cada día, te enfocarás en **una unidad** del libro de Murphy.
+
+* **Pomodoro 1: Gramática (Estudio) 📚 (25 min)**
+    1.  Toma la unidad del día (ej. Unidad 1: *am/is/are*).
+    2.  Lee la página de la izquierda (la explicación) con atención.
+    3.  Haz los ejercicios de la página derecha (la práctica) **escribiéndolos a mano** en una libreta.
+    * *Descanso de 5 minutos.*
+
+* **Pomodoro 2: Escritura (Aplicación) ✍️ (25 min)**
+    1.  En esa misma libreta, escribe **10 frases originales** usando la regla gramatical que acabas de aprender.
+    2.  **Importante:** No escribas frases del libro. Escribe sobre *tu vida*, *tu trabajo como ingeniero de software*, o *tus opiniones*. (Ej. "I *am* a software engineer. My colleagues *are* working on a new feature. This bug *is* complicated.")
+    * *Descanso de 5 minutos.*
+
+* **Pomodoro 3: Comprensión (Input Inmersivo) 🎧📖 (25 min)**
+    1.  Busca un recurso de audio o lectura corto que se relacione con el tema.
+    2.  **Escucha Activa:** Tu objetivo no es entender el 100%, sino **cazar** ejemplos de la gramática que estás estudiando.
+    3.  **Recursos Gratuitos:**
+        * **Para Gramática de Tiempos (Pasado, etc.):** Podcasts de historias como "ESL Podcast" o "Culips".
+        * **General:** "BBC 6 Minute English" o "VOA Learning English".
+    * *Descanso de 5 minutos.*
+
+* **Pomodoro 4: Habla (Producción) 🗣️ (25 min)**
+    1.  Abre tu herramienta de IA en modo voz.
+    2.  **Tarea 1 (Calentamiento):** Lee en voz alta las 10 frases que escribiste en el Pomodoro 2. Pídele a la IA que corrija tu pronunciación.
+    3.  **Tarea 2 (Práctica):** Ten una conversación de 15-20 minutos con la IA. El desafío es **forzarte a usar la nueva estructura gramatical** tantas veces como sea posible.
+    4.  (Ej. si estudiaste el Pasado Simple, cuéntale a la IA qué hiciste ayer, qué comiste, cómo te fue en el trabajo. Pídele que te corrija *cada vez* que uses mal el tiempo verbal).
+
+---
+
+### Tu Sesión de Domingo (10 AM - 12 PM)
+
+El domingo no es para nueva gramática. Es para **Revisión y Expansión**.
+
+* **Pomodoro 1: Revisión de Gramática (25 min)**
+    * Revisa rápidamente las 6 unidades de gramática que viste durante la semana.
+* **Pomodoro 2: Escritura Larga (25 min)**
+    * Escribe un texto de 150-200 palabras (un email, una opinión de blog, un resumen) intentando usar *todas* las estructuras de la semana.
+* **Pomodoro 3 y 4: Inmersión Profunda y Técnica (55 min)**
+    * **Meses 1-2:** Escucha un podcast de interés general (TED en inglés, por ejemplo) o mira una serie en inglés (con subtítulos en inglés).
+    * **Meses 3-4 (Enfoque B2/Técnico):**
+        1.  Ve a YouTube y busca charlas de conferencias de tecnología (ej. "Google I/O", "WWDC", "Microsoft Build").
+        2.  Mírala con subtítulos en inglés.
+        3.  Prepara y **di en voz alta** un resumen de 3 minutos de la charla, como si se lo estuvieras presentando a tu equipo. Aquí practicarás el vocabulario técnico que necesitas para tu entrevista.
+
+### Recursos Adicionales (Totalmente Gratuitos)
+
+| Habilidad | Recurso Recomendado | Cómo Usarlo |
+| :--- | :--- | :--- |
+| **Input (L+R)** | **BBC 6 Minute English** | Perfecto para A2/B1. Tienen audio, transcripción y vocabulario. |
+| **Input (L+R)** | **Newsela** | Artículos de noticias reales adaptados a diferentes niveles de lectura. |
+| **Input (B2)** | **Medium / Dev.to** | Blogs de tecnología. En los meses 3-4, debes leer un artículo técnico por día. |
+| **Input (B2)** | **The Guardian / NYT** | Noticias reales para nativos. |
+| **Vocabulario** | **Anki (App)** | Un sistema de *flashcards* (tarjetas de memoria). Cada palabra nueva que encuentres, añádela a Anki y repásala 10 minutos al día. |
+
+### ⚠️ Una Advertencia de Tutor
+
+Tu plan de seguir el libro de Murphy es sólido, pero ese libro te llevará a B1. Para alcanzar B2 y manejar una entrevista técnica, el salto en los meses 3 y 4 debe ser grande.
+
+**El secreto:** Debes pasar de "materiales para aprender inglés" a "materiales en inglés" (artículos técnicos, podcasts de nativos, conferencias reales). Tu plan de domingo está diseñado para forzar ese salto.
+
+Este es un plan intensivo, pero has dicho que eres implacable. Si sigues esta estructura de Pomodoros integrados, combinando la gramática de Murphy con la producción y la inmersión, tu progreso será evidente.
+
+¿Qué opinas de esta estructura para tus sesiones diarias de 2 horas? ¿Ves claro cómo cada Pomodoro construye sobre el anterior?

@@ -1,0 +1,367 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+REQUIRED_METRICS = {
+    "error_density",
+    "repair_success",
+    "turn_length",
+    "comprehension_split",
+    "lexical_reuse",
+}
+REQUIRED_RUBRIC = {"fluency", "accuracy", "interaction", "pronunciation"}
+REQUIRED_V3_DAY_FIELDS = {
+    "minutes",
+    "goal",
+    "task_design",
+    "blocks",
+    "sesame",
+    "reading",
+    "writing",
+    "daily_exercises",
+    "resource_pack",
+    "book_modules",
+    "deliverables",
+    "rubric",
+    "metrics",
+    "metrics_targets",
+    "adaptive_overrides",
+    "daily_gate",
+}
+REQUIRED_V3_WEEK_FIELDS = {
+    "version",
+    "week",
+    "title",
+    "domain",
+    "week_profile",
+    "focus",
+    "book_modules",
+    "assessment",
+    "adaptive_overrides",
+    "weekly_gate",
+    "days",
+}
+ALL_EXERCISE_TYPES = {
+    "retrieval_quiz",
+    "error_rewrite",
+    "guided_listening_sheet",
+    "chunk_extraction",
+    "roleplay_task",
+    "repair_drill",
+    "pron_shadow_task",
+    "writing_transform_task",
+}
+REQUIRED_WEEKDAY_EXERCISES = set(ALL_EXERCISE_TYPES)
+REQUIRED_SUNDAY_EXERCISES = {
+    "retrieval_quiz",
+    "guided_listening_sheet",
+    "roleplay_task",
+    "pron_shadow_task",
+    "writing_transform_task",
+}
+CHECKPOINT_EXPECTATIONS = {
+    10: {"cefr": "B1+", "criteria_tokens": ["b1+", "15-20", "checkpoint"]},
+    15: {"cefr": "B2-", "criteria_tokens": ["b2-", "20", "checkpoint"]},
+    20: {"cefr": "B2", "criteria_tokens": ["b2", "25-30", "mock"]},
+}
+
+
+def fail(msg: str) -> None:
+    print(f"[FAIL] {msg}")
+
+
+def ok(msg: str) -> None:
+    print(f"[OK] {msg}")
+
+
+def _read_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def validate_common_day(path_name: str, day: str, entry: dict, expected_minutes: int) -> list[str]:
+    errors: list[str] = []
+
+    minutes = entry.get("minutes")
+    if minutes != expected_minutes:
+        errors.append(f"{path_name}:{day}: minutes must be {expected_minutes}, got {minutes}")
+
+    blocks = entry.get("blocks")
+    if not isinstance(blocks, list) or not blocks:
+        errors.append(f"{path_name}:{day}: blocks must be a non-empty list")
+    else:
+        total = 0
+        for i, block in enumerate(blocks, start=1):
+            if not isinstance(block, dict):
+                errors.append(f"{path_name}:{day}: block #{i} must be object")
+                continue
+            for key in ("name", "minutes", "instructions"):
+                if key not in block:
+                    errors.append(f"{path_name}:{day}: block #{i} missing '{key}'")
+            total += int(block.get("minutes", 0) or 0)
+        if total != expected_minutes:
+            errors.append(f"{path_name}:{day}: block minutes sum {total} != {expected_minutes}")
+
+    sesame = entry.get("sesame")
+    if not isinstance(sesame, dict) or not sesame.get("prompt") or not isinstance(sesame.get("rounds"), list):
+        errors.append(f"{path_name}:{day}: sesame.prompt and sesame.rounds are required")
+
+    reading = entry.get("reading")
+    if not isinstance(reading, dict) or not reading.get("task") or not reading.get("output"):
+        errors.append(f"{path_name}:{day}: reading.task and reading.output are required")
+
+    writing = entry.get("writing")
+    if not isinstance(writing, dict):
+        errors.append(f"{path_name}:{day}: writing must be object")
+    else:
+        for key in ("task", "genre", "min_words", "output"):
+            if key not in writing:
+                errors.append(f"{path_name}:{day}: writing missing '{key}'")
+
+    deliverables = entry.get("deliverables")
+    if not isinstance(deliverables, list) or len(deliverables) < 3:
+        errors.append(f"{path_name}:{day}: deliverables must have at least 3 items")
+
+    rubric = entry.get("rubric")
+    if not isinstance(rubric, dict):
+        errors.append(f"{path_name}:{day}: rubric must be object")
+    else:
+        for key in REQUIRED_RUBRIC:
+            rk = rubric.get(key)
+            if not isinstance(rk, dict) or "target" not in rk:
+                errors.append(f"{path_name}:{day}: rubric.{key}.target missing")
+
+    metrics = entry.get("metrics")
+    if not isinstance(metrics, dict):
+        errors.append(f"{path_name}:{day}: metrics must be object")
+    else:
+        missing_metrics = REQUIRED_METRICS - set(metrics.keys())
+        if missing_metrics:
+            errors.append(f"{path_name}:{day}: missing metrics {sorted(missing_metrics)}")
+
+    if not isinstance(entry.get("daily_gate"), str) or len(entry.get("daily_gate", "")) < 8:
+        errors.append(f"{path_name}:{day}: daily_gate is required")
+
+    return errors
+
+
+def validate_week_file_v3(path: Path, data: dict, resource_ids: set[str], book_ids: set[str]) -> list[str]:
+    errors: list[str] = []
+
+    missing_top = REQUIRED_V3_WEEK_FIELDS - set(data.keys())
+    if missing_top:
+        errors.append(f"{path.name}: missing v3 fields {sorted(missing_top)}")
+
+    if data.get("version") != "v3":
+        errors.append(f"{path.name}: version must be 'v3'")
+
+    if data.get("domain") not in {"general_tech_balanced", "software_tech"}:
+        errors.append(f"{path.name}: invalid domain '{data.get('domain')}'")
+
+    if not isinstance(data.get("assessment"), dict):
+        errors.append(f"{path.name}: missing assessment object")
+
+    if not isinstance(data.get("book_modules"), dict):
+        errors.append(f"{path.name}: missing book_modules object")
+    else:
+        for track, module_ids in data.get("book_modules", {}).items():
+            if not isinstance(module_ids, list):
+                errors.append(f"{path.name}: book_modules.{track} must be a list")
+                continue
+            unknown_modules = sorted(module_id for module_id in module_ids if module_id not in book_ids)
+            if unknown_modules:
+                errors.append(f"{path.name}: unknown week-level book modules in '{track}' {unknown_modules}")
+
+    week_number = int(data.get("week", 0) or 0)
+    if week_number in CHECKPOINT_EXPECTATIONS:
+        expectation = CHECKPOINT_EXPECTATIONS[week_number]
+        cefr_target = str(((data.get("week_profile") or {}).get("cefr_target", "")))
+        if cefr_target != expectation["cefr"]:
+            errors.append(
+                f"{path.name}: week_profile.cefr_target must be '{expectation['cefr']}' for checkpoint W{week_number:02d}, got '{cefr_target}'"
+            )
+
+        assessment = data.get("assessment") or {}
+        if not assessment.get("checkpoint_week", False):
+            errors.append(f"{path.name}: checkpoint_week must be true for W{week_number:02d}")
+
+        pass_criteria = assessment.get("pass_criteria") or []
+        pass_text = " ".join(str(item).lower() for item in pass_criteria)
+        for token in expectation["criteria_tokens"]:
+            if token not in pass_text:
+                errors.append(
+                    f"{path.name}: pass_criteria for W{week_number:02d} must include token '{token}'"
+                )
+
+    days = data.get("days")
+    if not isinstance(days, dict):
+        errors.append(f"{path.name}: missing days object")
+        return errors
+
+    for day in DAYS:
+        entry = days.get(day)
+        if not isinstance(entry, dict):
+            errors.append(f"{path.name}: missing day '{day}'")
+            continue
+
+        missing = REQUIRED_V3_DAY_FIELDS - set(entry.keys())
+        if missing:
+            errors.append(f"{path.name}:{day}: missing fields {sorted(missing)}")
+
+        expected = 300 if day == "Sun" else 120
+        errors.extend(validate_common_day(path.name, day, entry, expected))
+
+        if not isinstance(entry.get("daily_exercises"), list) or len(entry.get("daily_exercises")) < 1:
+            errors.append(f"{path.name}:{day}: daily_exercises must be non-empty list")
+        else:
+            exercise_types = {
+                str(item.get("type"))
+                for item in entry.get("daily_exercises")
+                if isinstance(item, dict) and item.get("type")
+            }
+            invalid_types = sorted(exercise_types - ALL_EXERCISE_TYPES)
+            if invalid_types:
+                errors.append(f"{path.name}:{day}: invalid exercise types {invalid_types}")
+            if day == "Sun":
+                missing = sorted(REQUIRED_SUNDAY_EXERCISES - exercise_types)
+                if missing:
+                    errors.append(
+                        f"{path.name}:{day}: missing required sunday exercises {missing}"
+                    )
+            else:
+                missing = sorted(REQUIRED_WEEKDAY_EXERCISES - exercise_types)
+                if missing:
+                    errors.append(
+                        f"{path.name}:{day}: missing required weekday exercises {missing}"
+                    )
+
+        if not isinstance(entry.get("resource_pack"), list) or len(entry.get("resource_pack")) < 1:
+            errors.append(f"{path.name}:{day}: resource_pack must be non-empty list")
+        else:
+            for resource in entry.get("resource_pack"):
+                rid = resource.get("id") if isinstance(resource, dict) else None
+                if not rid or rid not in resource_ids:
+                    errors.append(f"{path.name}:{day}: unknown resource id '{rid}'")
+
+        if not isinstance(entry.get("book_modules"), list) or len(entry.get("book_modules")) < 1:
+            errors.append(f"{path.name}:{day}: book_modules must be non-empty list")
+        else:
+            unknown_modules = sorted(
+                module_id for module_id in entry.get("book_modules") if module_id not in book_ids
+            )
+            if unknown_modules:
+                errors.append(f"{path.name}:{day}: unknown book modules {unknown_modules}")
+
+        if not isinstance(entry.get("metrics_targets"), dict):
+            errors.append(f"{path.name}:{day}: metrics_targets must be object")
+
+        if not isinstance(entry.get("adaptive_overrides"), list):
+            errors.append(f"{path.name}:{day}: adaptive_overrides must be list")
+
+    return errors
+
+
+def validate_week_file_v2(path: Path, data: dict) -> list[str]:
+    errors: list[str] = []
+
+    if data.get("version") != "v2":
+        errors.append(f"{path.name}: version must be 'v2' for legacy files")
+
+    days = data.get("days")
+    if not isinstance(days, dict):
+        errors.append(f"{path.name}: missing days object")
+        return errors
+
+    for day in DAYS:
+        entry = days.get(day)
+        if not isinstance(entry, dict):
+            errors.append(f"{path.name}: missing day '{day}'")
+            continue
+        expected = 300 if day == "Sun" else 120
+        errors.extend(validate_common_day(path.name, day, entry, expected))
+
+    return errors
+
+
+def validate_tracking(root: Path) -> list[str]:
+    errors: list[str] = []
+    tracking = (root / "tracking" / "TRACKING.md").read_text(encoding="utf-8")
+    weekly = (root / "tracking" / "templates" / "weekly_review.md").read_text(encoding="utf-8")
+
+    tracking_lc = tracking.lower()
+    weekly_lc = weekly.lower()
+    required_tokens = [">= 8h", ">= 180 min", "accuracy", "repair"]
+    for token in required_tokens:
+        if token not in tracking_lc:
+            errors.append(f"tracking/TRACKING.md must include '{token}'")
+        if token not in weekly_lc:
+            errors.append(f"tracking/templates/weekly_review.md must include '{token}'")
+
+    return errors
+
+
+def main() -> int:
+    root = Path(__file__).resolve().parents[1]
+    settings = _read_json(root / "config" / "settings.json")
+    program_weeks = int(settings.get("program_weeks", 20) or 20)
+
+    resources = _read_json(root / "learning" / "resources" / "resources_catalog.v1.json")
+    books = _read_json(root / "learning" / "books" / "book_modules.v1.json")
+    resource_ids = {
+        str(item.get("id"))
+        for item in (resources.get("items") or [])
+        if isinstance(item, dict) and item.get("id")
+    }
+    book_ids = {
+        str(item.get("id"))
+        for item in (books.get("modules") or [])
+        if isinstance(item, dict) and item.get("id")
+    }
+    if not resource_ids:
+        errors.append("learning/resources/resources_catalog.v1.json must include valid items[].id")
+    if not book_ids:
+        errors.append("learning/books/book_modules.v1.json must include valid modules[].id")
+
+    content_dir = root / "learning" / "content"
+    week_files = [content_dir / f"week{i:02d}.json" for i in range(1, program_weeks + 1)]
+
+    errors: list[str] = []
+    for wf in week_files:
+        if not wf.exists():
+            errors.append(f"Missing file: {wf}")
+
+    if errors:
+        for e in errors:
+            fail(e)
+        return 1
+
+    ok(f"Found week01..week{program_weeks:02d} JSON files")
+
+    for wf in week_files:
+        data = _read_json(wf)
+        version = data.get("version")
+        if version == "v3":
+            errors.extend(validate_week_file_v3(wf, data, resource_ids, book_ids))
+        else:
+            errors.extend(validate_week_file_v2(wf, data))
+
+    errors.extend(validate_tracking(root))
+
+    if errors:
+        for e in errors:
+            fail(e)
+        return 1
+
+    ok("All week files passed structural validation")
+    ok("Minutes constraints validated (Mon-Sat 120, Sun 300)")
+    ok("V2 compatibility and V3-specific fields validated")
+    ok("Tracking KPI consistency validated")
+    print("Validation completed successfully")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

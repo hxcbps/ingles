@@ -1,0 +1,35 @@
+{
+  "start_date": "",
+  "program_weeks": 20,
+  "daily_minutes": 120,
+  "sunday_minutes": 300,
+  "content_version": "v3",
+  "target_cefr": "B2",
+  "pace_mode": "accelerated_sustainable",
+  "conversation_scope": "general_tech_balanced",
+  "domain_mix_default": {
+    "general": 60,
+    "tech": 40
+  },
+  "adaptation_enabled": true,
+  "book_track_enabled": true,
+  "checkpoint_weeks": [1, 5, 10, 15, 20],
+  "extension_policy": {
+    "enabled": true,
+    "min_weeks": 8,
+    "max_weeks": 12
+  },
+  "focus_mode": "sesame_only",
+  "domain": "general_tech_balanced",
+  "reading_minutes_daily": 15,
+  "writing_min_words_daily": 120,
+  "kpi_targets": {
+    "speaking_min_minutes": 480,
+    "speaking_target_minutes": 540,
+    "listening_intensive_min_minutes": 180,
+    "shadowing_min_minutes": 60,
+    "reading_active_min_minutes": 120,
+    "writing_min_outputs": 4,
+    "accuracy_drills_min": 6
+  }
+}

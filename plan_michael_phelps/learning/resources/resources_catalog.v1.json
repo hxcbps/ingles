@@ -1,0 +1,132 @@
+{
+  "version": "v1",
+  "description": "Open and book-linked resources for English Sprint V3",
+  "items": [
+    {
+      "id": "bbc_6min_tech",
+      "skill": "listening",
+      "level": "A2-B1",
+      "source": "BBC Learning English",
+      "url_or_ref": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english",
+      "minutes": 20,
+      "purpose": "guided_listening_sheet"
+    },
+    {
+      "id": "voa_learn_daily",
+      "skill": "listening",
+      "level": "A2-B1",
+      "source": "VOA Learning English",
+      "url_or_ref": "https://learningenglish.voanews.com/",
+      "minutes": 20,
+      "purpose": "gist_detail_practice"
+    },
+    {
+      "id": "esl_cyber_listen",
+      "skill": "listening",
+      "level": "A1-B2",
+      "source": "ESL Cyber Listening",
+      "url_or_ref": "https://www.esl-lab.com/",
+      "minutes": 20,
+      "purpose": "intensive_listening"
+    },
+    {
+      "id": "youglish_pron",
+      "skill": "pronunciation",
+      "level": "A1-B2",
+      "source": "YouGlish",
+      "url_or_ref": "https://youglish.com/",
+      "minutes": 10,
+      "purpose": "pron_shadow_task"
+    },
+    {
+      "id": "cambridge_dict",
+      "skill": "pronunciation",
+      "level": "A1-B2",
+      "source": "Cambridge Dictionary",
+      "url_or_ref": "https://dictionary.cambridge.org/",
+      "minutes": 10,
+      "purpose": "stress_and_phonemes"
+    },
+    {
+      "id": "oxford_reader_ref",
+      "skill": "reading",
+      "level": "A1-B1",
+      "source": "Oxford Bookworms",
+      "url_or_ref": "Book series reference",
+      "minutes": 30,
+      "purpose": "extensive_reading"
+    },
+    {
+      "id": "penguin_reader_ref",
+      "skill": "reading",
+      "level": "A1-B2",
+      "source": "Penguin Readers",
+      "url_or_ref": "Book series reference",
+      "minutes": 30,
+      "purpose": "extensive_reading"
+    },
+    {
+      "id": "sesame_coach",
+      "skill": "speaking",
+      "level": "A1-B2",
+      "source": "Sesame",
+      "url_or_ref": "https://www.sesame.com/",
+      "minutes": 35,
+      "purpose": "roleplay_task"
+    },
+    {
+      "id": "chatgpt_accuracy",
+      "skill": "writing",
+      "level": "A1-B2",
+      "source": "ChatGPT",
+      "url_or_ref": "https://chat.openai.com/",
+      "minutes": 20,
+      "purpose": "error_rewrite"
+    },
+    {
+      "id": "efset_checkpoint",
+      "skill": "assessment",
+      "level": "A1-B2",
+      "source": "EF SET",
+      "url_or_ref": "https://www.efset.org/quick-check/",
+      "minutes": 20,
+      "purpose": "checkpoint"
+    },
+    {
+      "id": "cambridge_test",
+      "skill": "assessment",
+      "level": "A1-B2",
+      "source": "Cambridge",
+      "url_or_ref": "https://www.cambridgeenglish.org/test-your-english/",
+      "minutes": 20,
+      "purpose": "checkpoint"
+    },
+    {
+      "id": "fluent_forever_srs",
+      "skill": "vocabulary",
+      "level": "A1-B2",
+      "source": "Fluent Forever",
+      "url_or_ref": "Method reference",
+      "minutes": 15,
+      "purpose": "retrieval_quiz"
+    },
+    {
+      "id": "anki_or_quizlet",
+      "skill": "vocabulary",
+      "level": "A1-B2",
+      "source": "SRS Tool",
+      "url_or_ref": "Local deck or preferred app",
+      "minutes": 15,
+      "purpose": "spaced_repetition"
+    },
+    {
+      "id": "how_languages_learned",
+      "skill": "theory",
+      "level": "A1-B2",
+      "source": "How Languages are Learned",
+      "url_or_ref": "Book reference",
+      "minutes": 15,
+      "purpose": "metacognition"
+    }
+  ]
+}

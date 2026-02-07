@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>English Sprint UX Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero reveal" aria-label="Resumen diario">
+        <div>
+          <p class="eyebrow">English Sprint | Sesame-first | V3</p>
+          <h1>Ejecuta el dia con cero friccion</h1>
+          <p id="status-line" class="status-line" role="status" aria-live="polite">Cargando mision y siguiente accion...</p>
+        </div>
+        <div class="hero-meta" aria-label="Estado de sesion">
+          <span id="session-pill" class="pill">-- min</span>
+          <span id="week-pill" class="pill pill-alt">Semana --</span>
+        </div>
+      </header>
+
+      <section class="route card reveal" aria-label="Ruta de hoy">
+        <p class="route-eyebrow">Ruta de ejecucion</p>
+        <p class="route-caption">Secuencia recomendada para completar el dia en una sola pasada.</p>
+        <ol class="route-list">
+          <li class="route-step"><a href="#step-action">1. Accion inmediata</a></li>
+          <li class="route-step"><a href="#step-prompt">2. Prompt de sesion</a></li>
+          <li class="route-step"><a href="#step-timer">3. Ejecucion con timer</a></li>
+          <li class="route-step"><a href="#step-checklist">4. Cierre y evidencia</a></li>
+        </ol>
+      </section>
+
+      <section id="step-action" class="now card card-priority reveal" aria-label="Siguiente accion">
+        <h2>Empieza por aqui</h2>
+        <p id="next-action" class="next-action" aria-live="polite">En 30 segundos: abre Sesame y ejecuta el primer bloque.</p>
+        <div class="action-row">
+          <a class="btn" href="https://www.sesame.com/" target="_blank" rel="noreferrer">Abrir Sesame</a>
+          <a class="btn btn-alt" href="https://chat.openai.com" target="_blank" rel="noreferrer">Abrir ChatGPT</a>
+          <button id="copy-evidence" class="btn btn-soft" type="button">Copiar ruta evidencia</button>
+        </div>
+        <p class="micro-hint">Regla: sigue el orden de esta pantalla de arriba hacia abajo.</p>
+      </section>
+
+      <section class="layout reveal" aria-label="Plan diario">
+        <div class="column column-primary">
+          <article id="step-prompt" class="card card-priority" aria-label="Prompt Sesame">
+            <h3>Prompt para Sesame (copiar y pegar)</h3>
+            <p id="prompt-text" class="prompt">Cargando prompt del dia...</p>
+            <button id="copy-prompt" class="btn btn-soft" type="button">Copiar prompt</button>
+            <p class="hint">Pega el prompt completo y empieza la ronda 1 sin traducir.</p>
+          </article>
+
+          <article id="step-timer" class="card card-priority" aria-label="Timer de sesion">
+            <h3>Timer de sesion (bloque completo)</h3>
+            <p id="timer-display" class="timer">00:00:00</p>
+            <div class="action-row">
+              <button id="timer-start" class="btn" type="button">Iniciar</button>
+              <button id="timer-pause" class="btn btn-alt" type="button">Pausar</button>
+              <button id="timer-reset" class="btn btn-soft" type="button">Reiniciar</button>
+            </div>
+            <p class="hint">Si pausas, retoma de inmediato. Objetivo: completar el bloque sin saltos.</p>
+          </article>
+
+          <article id="step-checklist" class="card card-priority" aria-label="Checklist de ejecucion">
+            <h3>Checklist de ejecucion (si/no)</h3>
+            <p id="progress-text" class="hint">0% completado (0/5)</p>
+            <div class="progress-track" aria-hidden="true">
+              <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <ul id="checklist" class="checklist"></ul>
+          </article>
+
+          <article class="card card-priority" aria-label="Plan adaptativo">
+            <h3>Plan adaptativo del dia</h3>
+            <p id="adaptive-focus" class="target">Cargando foco adaptativo...</p>
+            <p id="extension-risk" class="hint">Extension risk: evaluando...</p>
+            <ul id="adaptive-recommendations" class="list"></ul>
+          </article>
+
+          <article class="card card-priority" aria-label="Ejercicios de hoy">
+            <h3>Ejercicios generados hoy</h3>
+            <ul id="exercises-list" class="list"></ul>
+          </article>
+
+          <article class="card card-priority" aria-label="Recursos de hoy">
+            <h3>Recursos a usar hoy</h3>
+            <ul id="resources-list" class="list"></ul>
+          </article>
+
+          <article class="card card-priority" aria-label="Deliverables y gate">
+            <h3>Entregables y criterio de cierre</h3>
+            <ul id="deliverables" class="list"></ul>
+            <p class="label">Daily gate (dia valido si cumples esto)</p>
+            <p id="daily-gate" class="hint">Cargando criterio de cierre diario...</p>
+          </article>
+
+          <article id="step-evidence" class="card card-priority" aria-label="Evidencia y notas">
+            <h3>Evidencia final y nota rapida</h3>
+            <p id="evidence-path" class="mono">Cargando ruta de evidencia...</p>
+            <label class="label" for="artifact-audio">Ruta audio (obligatorio)</label>
+            <input id="artifact-audio" class="field" type="text" placeholder="tracking/daily/YYYY-MM-DD/audio/file.mp3" />
+            <label class="label" for="artifact-writing">Ruta writing (obligatorio)</label>
+            <input id="artifact-writing" class="field" type="text" placeholder="tracking/daily/YYYY-MM-DD/writing/file.md" />
+            <label class="label" for="quick-note">Nota rapida (3-5 lineas)</label>
+            <textarea id="quick-note" class="note" rows="4" placeholder="Que salio bien, error principal, correccion aplicada, siguiente foco"></textarea>
+            <p class="micro-hint">Sin evidencia + score + metricas, el dia no cuenta.</p>
+          </article>
+        </div>
+
+        <div class="column column-secondary">
+          <article class="card card-support" aria-label="Objetivo del dia">
+            <h3>Objetivo del dia (contexto)</h3>
+            <p id="mission-target" class="target">Cargando objetivo del dia...</p>
+            <ul id="mission-bullets" class="list"></ul>
+          </article>
+
+          <article class="card card-support" aria-label="Bloque guiado">
+            <h3>Bloque guiado minuto a minuto</h3>
+            <ol id="session-plan" class="list list-ordered"></ol>
+          </article>
+
+          <article class="card card-meta" aria-label="Rubrica diaria">
+            <h3>Rubrica diaria (0-3, autoevaluacion)</h3>
+            <p id="score-summary" class="hint">Aun sin evaluar</p>
+            <div id="rubric-grid" class="form-grid"></div>
+          </article>
+
+          <article class="card card-meta" aria-label="Metricas de desempeno">
+            <h3>Metricas numericas (motor adaptativo)</h3>
+            <div id="metrics-grid" class="form-grid"></div>
+            <p class="label">Notas cualitativas de metricas</p>
+            <div id="metrics-notes-grid" class="form-grid"></div>
+          </article>
+
+          <article class="card card-meta" aria-label="Modulos de libro">
+            <h3>Modulos de libro asignados</h3>
+            <ul id="book-modules" class="list"></ul>
+            <p id="book-progress" class="hint">Book progress: cargando...</p>
+          </article>
+
+          <article class="card card-meta" aria-label="Tendencia">
+            <h3>Tendencia 14 dias</h3>
+            <p id="trend-snapshot" class="hint">Cargando tendencia...</p>
+          </article>
+
+          <article class="card card-meta" aria-label="Foco semanal">
+            <h3>Foco semanal (referencia)</h3>
+            <p id="week-title" class="hint">Cargando foco semanal...</p>
+            <p id="week-profile" class="hint">Cargando perfil semanal...</p>
+            <p id="week-assessment" class="hint">Cargando assessment...</p>
+            <ul id="weekly-targets" class="list"></ul>
+            <p class="label">Weekly gate (criterio de semana)</p>
+            <ul id="week-gate-checks" class="list"></ul>
+            <p id="week-source" class="mono"></p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

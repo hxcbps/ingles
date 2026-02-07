@@ -1,0 +1,515 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import datetime as dt
+import json
+from pathlib import Path
+from statistics import mean
+
+WEEKDAY_TAGS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+ADAPTIVE_HISTORY_FILE = Path("tracking/state/adaptive_history.v1.json")
+ADAPTATION_RULES = {
+    "repair_success_boost": "repair_success_boost",
+    "error_density_precision_cycle": "error_density_precision_cycle",
+    "turn_length_support": "turn_length_support",
+    "pronunciation_intensive_week": "pronunciation_intensive_week",
+    "anti_fatigue_protocol": "anti_fatigue_protocol",
+    "difficulty_upgrade": "difficulty_upgrade",
+    "extension_risk_w05": "extension_risk_w05",
+    "extension_auto_w10": "extension_auto_w10",
+}
+
+
+def _read_json(path: Path) -> dict:
+    try:
+        raw = path.read_text(encoding="utf-8")
+        data = json.loads(raw)
+        if isinstance(data, dict):
+            return data
+    except Exception:
+        pass
+    return {}
+
+
+def _write_json(path: Path, data: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+
+
+def _parse_date(s: str) -> dt.date | None:
+    s = (s or "").strip()
+    if not s:
+        return None
+    try:
+        return dt.date.fromisoformat(s)
+    except ValueError:
+        return None
+
+
+def _ensure_daily_evidence(root: Path, today: dt.date) -> Path:
+    p = root / "tracking" / "daily" / today.isoformat()
+    (p / "audio").mkdir(parents=True, exist_ok=True)
+    (p / "writing").mkdir(parents=True, exist_ok=True)
+    (p / "kpi").mkdir(parents=True, exist_ok=True)
+    return p
+
+
+def _default_adaptive_history() -> dict:
+    return {
+        "version": "v1",
+        "updated_at": "",
+        "history": [],
+        "extension": {"weeks_assigned": 0, "trigger_week": 0},
+    }
+
+
+def _normalize_history(data: list[dict]) -> list[dict]:
+    items = []
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        iso = item.get("isoDate")
+        if not isinstance(iso, str) or not iso:
+            continue
+        items.append(item)
+    items.sort(key=lambda item: str(item.get("isoDate", "")))
+    return items[-30:]
+
+
+def _load_adaptive_history(root: Path) -> dict:
+    path = root / ADAPTIVE_HISTORY_FILE
+    data = _read_json(path)
+    if not data:
+        data = _default_adaptive_history()
+    history = _normalize_history(data.get("history") or [])
+    extension = data.get("extension") or {}
+    weeks_assigned = int(extension.get("weeks_assigned", 0) or 0)
+    trigger_week = int(extension.get("trigger_week", 0) or 0)
+    return {
+        "path": path,
+        "data": {
+            "version": "v1",
+            "updated_at": str(data.get("updated_at", "")),
+            "history": history,
+            "extension": {
+                "weeks_assigned": max(0, weeks_assigned),
+                "trigger_week": max(0, trigger_week),
+            },
+        },
+    }
+
+
+def _save_adaptive_history(path: Path, history_data: dict, updated_at: dt.date) -> None:
+    payload = dict(history_data)
+    payload["updated_at"] = updated_at.isoformat()
+    _write_json(path, payload)
+
+
+def _recent(history: list[dict], days: int) -> list[dict]:
+    safe_days = max(1, int(days or 1))
+    return _normalize_history(history)[-safe_days:]
+
+
+def _metric(item: dict, field: str) -> float:
+    try:
+        return float(((item.get("metrics_numeric") or {}).get(field)))
+    except Exception:
+        return float("nan")
+
+
+def _every_metric_below(items: list[dict], field: str, threshold: float) -> bool:
+    if not items:
+        return False
+    values = [_metric(item, field) for item in items]
+    return all(value < threshold for value in values if value == value) and len(values) > 0
+
+
+def _every_metric_above(items: list[dict], field: str, threshold: float) -> bool:
+    if not items:
+        return False
+    values = [_metric(item, field) for item in items]
+    return all(value >= threshold for value in values if value == value) and len(values) > 0
+
+
+def _average_metric(items: list[dict], field: str) -> float | None:
+    values = [_metric(item, field) for item in items]
+    finite = [v for v in values if v == v]
+    if not finite:
+        return None
+    return sum(finite) / len(finite)
+
+
+def _has_no_improvement_error_density(history: list[dict]) -> bool:
+    recent14 = _recent(history, 14)
+    if len(recent14) < 10:
+        return False
+    split = len(recent14) // 2
+    first_half = recent14[:split]
+    second_half = recent14[split:]
+    first_avg = _average_metric(first_half, "error_density_per_100w")
+    second_avg = _average_metric(second_half, "error_density_per_100w")
+    if first_avg is None or second_avg is None:
+        return False
+    return second_avg >= first_avg
+
+
+def _checklist_completion(history: list[dict], days: int = 7) -> int:
+    recent = _recent(history, days)
+    if not recent:
+        return 0
+
+    completions = []
+    for item in recent:
+        checklist = item.get("checklist") or {}
+        if not isinstance(checklist, dict):
+            continue
+        total = max(1, len(checklist))
+        done = sum(1 for value in checklist.values() if bool(value))
+        completions.append(done / total)
+
+    if not completions:
+        return 0
+    return round((sum(completions) / len(completions)) * 100)
+
+
+def _recent_streak(history: list[dict], predicate) -> int:
+    streak = 0
+    for item in reversed(_normalize_history(history)):
+        if not predicate(item):
+            break
+        streak += 1
+    return streak
+
+
+def _rubric_average(item: dict) -> float:
+    scores = item.get("scores") or {}
+    values = []
+    for key in ("fluency", "accuracy", "interaction", "pronunciation"):
+        try:
+            values.append(float(scores.get(key, 0)))
+        except Exception:
+            values.append(0.0)
+    return mean(values) if values else 0.0
+
+
+def _evaluate_adaptive_plan(
+    history: list[dict], week_number: int, targets: dict, rubric_average: float
+) -> dict:
+    if len(history) < 3:
+        return {
+            "focusLabel": "Insufficient history: keep current plan and collect full metrics.",
+            "appliedRules": [],
+            "recommendations": ["insufficient history"],
+            "extensionRisk": False,
+            "checklistPct": _checklist_completion(history, 7),
+            "insufficientHistory": True,
+        }
+
+    applied_rules: list[str] = []
+    recommendations: list[str] = []
+    extension_risk = False
+
+    recent3 = _recent(history, 3)
+    recent4 = _recent(history, 4)
+    recent14 = _recent(history, 14)
+    checklist_pct = _checklist_completion(history, 7)
+
+    if _every_metric_below(recent3, "repair_success_pct", 60):
+        applied_rules.append(ADAPTATION_RULES["repair_success_boost"])
+        recommendations.append("Move 10 minutes from reading to repair speaking for 4 days.")
+
+    if _has_no_improvement_error_density(history):
+        applied_rules.append(ADAPTATION_RULES["error_density_precision_cycle"])
+        recommendations.append("Activate 3-day precision microcycle focused on error correction.")
+
+    turn_target = float(targets.get("turn_length_min_seconds", 60) or 60)
+    if _every_metric_below(recent4, "turn_length_seconds", turn_target):
+        applied_rules.append(ADAPTATION_RULES["turn_length_support"])
+        recommendations.append("Enable long-turn support with 90-second structured responses.")
+
+    pronunciation_target = float(targets.get("pronunciation_score_min", 2) or 2)
+    pronunciation_streak = _recent_streak(
+        history,
+        lambda item: (_metric(item, "pronunciation_score") == _metric(item, "pronunciation_score"))
+        and _metric(item, "pronunciation_score") < pronunciation_target,
+    )
+    if pronunciation_streak >= 14 or (
+        len(recent14) >= 10 and _every_metric_below(recent14[-10:], "pronunciation_score", pronunciation_target)
+    ):
+        applied_rules.append(ADAPTATION_RULES["pronunciation_intensive_week"])
+        recommendations.append("Add 10 daily minutes of pronunciation for one week.")
+
+    if checklist_pct < 85:
+        applied_rules.append(ADAPTATION_RULES["anti_fatigue_protocol"])
+        recommendations.append("Apply anti-fatigue mode: same minutes, lower task complexity.")
+
+    repair_target = float(targets.get("repair_success_min", 70) or 70)
+    error_target = float(targets.get("error_density_max", 8) or 8)
+    high_performance = (
+        len(recent14) >= 10
+        and _every_metric_above(recent14[-10:], "repair_success_pct", repair_target)
+        and _every_metric_below(recent14[-10:], "error_density_per_100w", error_target)
+        and rubric_average >= 2
+    )
+    if high_performance:
+        applied_rules.append(ADAPTATION_RULES["difficulty_upgrade"])
+        recommendations.append("Increase topic difficulty and pressure rounds for next week.")
+
+    if week_number >= 5:
+        low_w5_performance = len(recent14) >= 10 and (not high_performance)
+        if low_w5_performance:
+            extension_risk = True
+            applied_rules.append(ADAPTATION_RULES["extension_risk_w05"])
+            recommendations.append("Mark extension risk and trigger intensive remediation plan.")
+
+    if week_number >= 10:
+        still_at_risk = extension_risk or (len(recent14) >= 10 and (not high_performance))
+        if still_at_risk:
+            extension_risk = True
+            applied_rules.append(ADAPTATION_RULES["extension_auto_w10"])
+            recommendations.append("Enable automatic extension window (+8 to +12 weeks).")
+
+    focus_label = recommendations[0] if recommendations else "Keep current plan. Focus on consistency and transfer."
+    return {
+        "focusLabel": focus_label,
+        "appliedRules": applied_rules,
+        "recommendations": recommendations,
+        "extensionRisk": extension_risk,
+        "checklistPct": checklist_pct,
+        "insufficientHistory": False,
+    }
+
+
+def _fmt_blocks(blocks: list[dict]) -> list[str]:
+    out: list[str] = []
+    for idx, block in enumerate(blocks, start=1):
+        name = block.get("name", "Block")
+        minutes = block.get("minutes", "?")
+        instr = block.get("instructions", "")
+        out.append(f"{idx}. ({minutes} min) {name}: {instr}")
+    return out
+
+
+def _fmt_exercises(exercises: list[dict]) -> list[str]:
+    out: list[str] = []
+    for idx, exercise in enumerate(exercises, start=1):
+        etype = exercise.get("type", "exercise")
+        instr = exercise.get("instructions", "")
+        out.append(f"{idx}. {etype}: {instr}")
+    return out
+
+
+def _fmt_resources(resources: list[dict]) -> list[str]:
+    out: list[str] = []
+    for idx, resource in enumerate(resources, start=1):
+        rid = resource.get("id", "resource")
+        mins = resource.get("minutes", "?")
+        purpose = resource.get("purpose", "")
+        out.append(f"{idx}. ({mins} min) {rid}: {purpose}")
+    return out
+
+
+def _clamp_extension_weeks(config: dict, preferred: int) -> int:
+    policy = config.get("extension_policy") or {}
+    min_weeks = int(policy.get("min_weeks", 8) or 8)
+    max_weeks = int(policy.get("max_weeks", 12) or 12)
+    return max(min_weeks, min(preferred, max_weeks))
+
+
+def main() -> int:
+    script = Path(__file__).resolve()
+    root = script.parents[1]
+
+    cfg = _read_json(root / "config" / "settings.json")
+
+    today = dt.date.today()
+    start_date = _parse_date(str(cfg.get("start_date", ""))) or today
+    program_weeks = int(cfg.get("program_weeks", 20) or 20)
+
+    diff_days = (today - start_date).days
+    week = max(1, diff_days // 7 + 1)
+    weekday_tag = WEEKDAY_TAGS[today.weekday()]
+
+    evidence_dir = _ensure_daily_evidence(root, today)
+    adaptive_history = _load_adaptive_history(root)
+    adaptive_data = adaptive_history["data"]
+    history = adaptive_data.get("history") or []
+
+    print("=== English Sprint V3 (Adaptive Local-first) ===")
+    print(f"Date: {today.isoformat()} ({weekday_tag})")
+    print(f"Start date: {start_date.isoformat()}")
+    print(f"Program week: W{week:02d}/{program_weeks:02d}")
+    print(f"Target CEFR: {cfg.get('target_cefr', 'B2')}")
+    print(f"Pace mode: {cfg.get('pace_mode', 'accelerated_sustainable')}")
+    print()
+    print(f"Evidence folder: {evidence_dir}")
+    print(f"Dashboard: http://127.0.0.1:8787/app/web/ (run ./dashboard)")
+    print()
+
+    assigned_extension_weeks = int((adaptive_data.get("extension") or {}).get("weeks_assigned", 0) or 0)
+    extension_trigger_week = int((adaptive_data.get("extension") or {}).get("trigger_week", 0) or 0)
+    effective_program_weeks = program_weeks + assigned_extension_weeks
+
+    content_week = min(week, program_weeks)
+    week_file = root / "learning" / "content" / f"week{content_week:02d}.json"
+    if not week_file.exists():
+        print(f"Missing week file: {week_file}")
+        print(f"Expected: learning/content/week01.json ... week{program_weeks:02d}.json")
+        return 2
+
+    week_data = _read_json(week_file)
+    day = (week_data.get("days") or {}).get(weekday_tag)
+    if not isinstance(day, dict):
+        print(f"Missing day data for {weekday_tag} in {week_file}")
+        return 2
+
+    rubric_values = [
+        _rubric_average(item) for item in history[-10:] if isinstance(item, dict)
+    ]
+    rubric_average = mean(rubric_values) if rubric_values else 0.0
+    adaptive_plan = _evaluate_adaptive_plan(
+        history=history,
+        week_number=week,
+        targets=day.get("metrics_targets") or {},
+        rubric_average=rubric_average,
+    )
+
+    if (
+        assigned_extension_weeks == 0
+        and ADAPTATION_RULES["extension_auto_w10"] in adaptive_plan["appliedRules"]
+        and (cfg.get("extension_policy") or {}).get("enabled", True)
+    ):
+        assigned_extension_weeks = _clamp_extension_weeks(cfg, 10)
+        extension_trigger_week = week
+        effective_program_weeks = program_weeks + assigned_extension_weeks
+        adaptive_data["extension"] = {
+            "weeks_assigned": assigned_extension_weeks,
+            "trigger_week": extension_trigger_week,
+        }
+        _save_adaptive_history(adaptive_history["path"], adaptive_data, today)
+
+    if week > effective_program_weeks:
+        print("Program completed.")
+        if assigned_extension_weeks > 0:
+            print(
+                f"Extension consumed: +{assigned_extension_weeks} weeks (triggered at W{extension_trigger_week:02d})."
+            )
+        elif (cfg.get("extension_policy") or {}).get("enabled"):
+            ext = cfg.get("extension_policy")
+            print(
+                f"Extension policy active: +{ext.get('min_weeks', 8)} to +{ext.get('max_weeks', 12)} weeks if needed."
+            )
+        print("Next: reset start_date and start a new cycle.")
+        return 0
+
+    print(f"Open: {week_file}")
+    print(f"Title: {week_data.get('title', 'N/A')}")
+    print(f"Session target: {day.get('minutes', '?')} min")
+    profile = week_data.get("week_profile") or {}
+    print(
+        f"Week profile: {profile.get('phase', 'N/A')} | CEFR {profile.get('cefr_target', 'N/A')} | central task: {profile.get('central_task', 'N/A')}"
+    )
+    if assigned_extension_weeks > 0:
+        print(
+            f"Extension window: +{assigned_extension_weeks} weeks (triggered at W{extension_trigger_week:02d}) | effective end W{effective_program_weeks:02d}"
+        )
+    print()
+
+    print(f"--- Mission ({weekday_tag}) ---")
+    print(f"Goal: {day.get('goal', 'N/A')}")
+    print(f"Task design: {day.get('task_design', 'N/A')}")
+    print()
+
+    print("Blocks:")
+    for line in _fmt_blocks(day.get("blocks") or []):
+        print(line)
+    print()
+
+    sesame = day.get("sesame") or {}
+    print("Sesame prompt:")
+    print(sesame.get("prompt", "N/A"))
+    print()
+
+    print("Exercises generated:")
+    for line in _fmt_exercises(day.get("daily_exercises") or []):
+        print(line)
+    print()
+
+    print("Resource pack:")
+    for line in _fmt_resources(day.get("resource_pack") or []):
+        print(line)
+    print()
+
+    print("Book modules:")
+    for item in day.get("book_modules") or []:
+        print(f"- {item}")
+    print()
+
+    print("Deliverables:")
+    for item in day.get("deliverables") or []:
+        print(f"- {item}")
+    print()
+
+    rubric = day.get("rubric") or {}
+    print("Rubric targets (0-3):")
+    for key in ("fluency", "accuracy", "interaction", "pronunciation"):
+        item = rubric.get(key) or {}
+        target = item.get("target", "?")
+        print(f"- {key}: >= {target}")
+    print()
+
+    print("Numeric metric targets:")
+    metric_targets = day.get("metrics_targets") or {}
+    for key, value in metric_targets.items():
+        print(f"- {key}: {value}")
+    print()
+
+    assessment = week_data.get("assessment") or {}
+    print("Assessment checkpoint:")
+    print(
+        f"- type: {assessment.get('type', 'N/A')} | checkpoint week: {assessment.get('checkpoint_week', False)}"
+    )
+    print()
+
+    print("Adaptive focus today:")
+    print(f"- {adaptive_plan.get('focusLabel', 'N/A')}")
+    if adaptive_plan.get("insufficientHistory"):
+        print("- Note: insufficient history")
+    print()
+
+    print("Applied rules:")
+    applied_rules = adaptive_plan.get("appliedRules") or []
+    if not applied_rules:
+        print("- none")
+    else:
+        for rule in applied_rules:
+            print(f"- {rule}")
+    print()
+
+    checklist_pct = adaptive_plan.get("checklistPct", 0)
+    if adaptive_plan.get("insufficientHistory"):
+        weekly_risk = "insufficient history"
+    elif adaptive_plan.get("extensionRisk"):
+        weekly_risk = "high"
+    elif checklist_pct < 85:
+        weekly_risk = "medium"
+    else:
+        weekly_risk = "low"
+    print("Weekly risk:")
+    print(f"- level: {weekly_risk}")
+    print(f"- checklist completion: {checklist_pct}%")
+    recommendations = adaptive_plan.get("recommendations") or []
+    if recommendations and recommendations[0] != "insufficient history":
+        print(f"- next action: {recommendations[0]}")
+    print()
+
+    print("Daily gate:")
+    print(day.get("daily_gate", "N/A"))
+    print()
+    print("Finish: save audio + writing + KPI + rubric + metrics + adaptive notes in the evidence folder.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
