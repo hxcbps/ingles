@@ -40,6 +40,10 @@ import { wireClipboardAction } from "../ui/actions/clipboard_actions.js";
 import { createTimerController } from "../ui/actions/timer_actions.js";
 import { wireNoteActions } from "../ui/actions/note_actions.js";
 import { summarizeRubric } from "../domain/rubric.js";
+import { createHashRouter } from "../routing/hash_router.js";
+import { evaluateSoftGuard } from "../routing/route_guards.js";
+import { applyRouteVisibility } from "../routing/view_switcher.js";
+import { canonicalHashForRoute, DEFAULT_ROUTE_ID, getRouteLabel } from "../routing/routes.js";
 
 const VALIDATE_HINT = "Revisa learning/content y ejecuta ./plan_michael_phelps/bin/validate_content.";
 
@@ -108,6 +112,20 @@ function resolveExtensionWeeks(config) {
   return Math.max(minWeeks, Math.min(10, maxWeeks));
 }
 
+function formatRouteGuardMessage(guard) {
+  if (!guard || guard.level === "none" || !guard.message) {
+    return "";
+  }
+
+  if (!guard.recommendedRouteId) {
+    return guard.message;
+  }
+
+  return `${guard.message} Recomendado: ${getRouteLabel(guard.recommendedRouteId)} (${canonicalHashForRoute(
+    guard.recommendedRouteId
+  )}).`;
+}
+
 export async function bootstrap({
   documentRef = document,
   windowRef = window,
@@ -134,8 +152,24 @@ export async function bootstrap({
   let sharedAdaptiveHistory = null;
   let adaptivePlan = null;
   let config = null;
+  let router = null;
+  let baseStatusMessage = "";
+  let routeStatusMessage = "";
 
-  const setStatus = (message) => renderStatus(dom, message);
+  const publishStatus = () => {
+    const status = [baseStatusMessage, routeStatusMessage].filter(Boolean).join(" | ");
+    renderStatus(dom, status || "Listo.");
+  };
+
+  const setStatus = (message) => {
+    baseStatusMessage = String(message || "");
+    publishStatus();
+  };
+
+  const setRouteStatus = (message = "") => {
+    routeStatusMessage = String(message || "");
+    publishStatus();
+  };
 
   const persistState = () => {
     if (!state || !program) return;
@@ -177,7 +211,7 @@ export async function bootstrap({
     const dayModules = Array.isArray(viewModel.day.bookModules) ? viewModel.day.bookModules : weekModules;
     const progressSummary = summarizeBookProgress(state.book_progress, viewModel.week);
 
-    renderHeader(dom, program, config, viewModel.day.minutes);
+    renderHeader(dom, program, config, viewModel.day.minutes, setStatus);
     renderAdaptive(dom, adaptivePlan);
     renderExercises(dom, exercises);
     renderResources(dom, viewModel.day.resourcePack, resourcesCatalog?.data);
@@ -188,6 +222,9 @@ export async function bootstrap({
   const dispose = () => {
     if (timerController) {
       timerController.dispose();
+    }
+    if (router) {
+      router.dispose();
     }
     events.clear();
   };
@@ -211,8 +248,8 @@ export async function bootstrap({
     program.effectiveProgramWeeks = program.programWeeks + state.extension_weeks_assigned;
 
     if (program.weekNumber > program.effectiveProgramWeeks) {
-      renderStatus(
-        dom,
+      setRouteStatus("");
+      setStatus(
         `Programa completado en semana efectiva ${program.effectiveProgramWeeks}. Reinicia ciclo en config/settings.json.`
       );
       renderNextAction(dom, "Reinicia start_date y vuelve a ejecutar.");
@@ -250,6 +287,31 @@ export async function bootstrap({
     updateAdaptiveState();
     persistState();
 
+    const refreshRouteStatus = () => {
+      if (!router) return;
+
+      const routeState = router.current();
+      if (routeState.isInvalid) {
+        const raw = routeState.rawHash || "#";
+        setRouteStatus(`Ruta '${raw}' no valida. Redirigida a ${routeState.canonicalHash}.`);
+        return;
+      }
+
+      const guard = evaluateSoftGuard({
+        routeId: routeState.routeId,
+        checklist: state.checklist
+      });
+      const guardMessage = formatRouteGuardMessage(guard);
+
+      if (routeState.redirectedFromLegacy) {
+        const legacyMessage = `Ruta legacy convertida a ${routeState.canonicalHash}.`;
+        setRouteStatus(guardMessage ? `${legacyMessage} ${guardMessage}` : legacyMessage);
+        return;
+      }
+
+      setRouteStatus(guardMessage);
+    };
+
     const rerenderChecklist = () => {
       renderChecklist(dom, state.checklist, (itemId, checked) => {
         state.checklist[itemId] = checked;
@@ -265,6 +327,7 @@ export async function bootstrap({
         persistState();
         rerenderChecklist();
         renderAdaptivePanels();
+        refreshRouteStatus();
       });
     };
 
@@ -279,7 +342,7 @@ export async function bootstrap({
     };
 
     safeRender(dom, "header", () => {
-      renderHeader(dom, program, config, viewModel.day.minutes);
+      renderHeader(dom, program, config, viewModel.day.minutes, setStatus);
     });
 
     safeRender(
@@ -434,12 +497,37 @@ export async function bootstrap({
       timerController.init();
     });
 
+    safeRender(
+      dom,
+      "router",
+      () => {
+        router = createHashRouter({
+          windowRef,
+          onRouteChange: (routeState) => {
+            applyRouteVisibility({
+              documentRef,
+              routeId: routeState.routeId
+            });
+            refreshRouteStatus();
+          },
+          onInvalidRoute: ({ rawHash, canonicalHash }) => {
+            const raw = rawHash || "#";
+            setRouteStatus(`Ruta '${raw}' no valida. Redirigida a ${canonicalHash}.`);
+          }
+        });
+        router.start();
+      },
+      () => {
+        applyRouteVisibility({ documentRef, routeId: DEFAULT_ROUTE_ID });
+      }
+    );
+
     events.on(windowRef, "beforeunload", persistState);
     events.on(windowRef, "error", () => {
-      renderStatus(dom, `Error en runtime UI. ${VALIDATE_HINT}`);
+      setStatus(`Error en runtime UI. ${VALIDATE_HINT}`);
     });
     events.on(windowRef, "unhandledrejection", () => {
-      renderStatus(dom, `Operacion no completada. ${VALIDATE_HINT}`);
+      setStatus(`Operacion no completada. ${VALIDATE_HINT}`);
     });
 
     return { dispose };

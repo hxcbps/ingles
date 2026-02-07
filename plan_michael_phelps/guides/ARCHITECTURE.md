@@ -15,6 +15,11 @@ Mantener un sistema Basico->B2 medible por desempeno, con baja friccion diaria, 
 - `bootstrap.js`: inicializacion, flujo principal, manejo de errores globales.
 - `dom.js`: mapa de nodos DOM y helpers de listas.
 - `events.js`: registro centralizado de listeners y limpieza.
+- `app/web/js/routing/`
+- `routes.js`: contrato de rutas canonicas, aliases y resolucion de hashes legacy.
+- `hash_router.js`: escucha `hashchange`, canonicaliza URL y publica cambios de ruta.
+- `route_guards.js`: guardrails suaves por etapa (`close`, `evaluate`) sin bloqueo.
+- `view_switcher.js`: visibilidad por `data-route-group`, estado activo y foco accesible.
 - `app/web/js/content/`
 - `repository.js`: carga de `config/settings.json` y `learning/content/weekXX.json`.
 - `day_model.js`: contexto temporal + transformacion de JSON diario a view model.
@@ -38,11 +43,27 @@ Mantener un sistema Basico->B2 medible por desempeno, con baja friccion diaria, 
 - `./today`: briefing diario por terminal.
 - `./plan_michael_phelps/bin/validate_content`: verificacion estructural y KPI.
 
+## Rutas web
+- Base: `#/today/action`.
+- Canonicas:
+  - `#/today/action`
+  - `#/today/session`
+  - `#/today/close`
+  - `#/today/evaluate`
+- Alias:
+  - `#/today` -> `#/today/action`.
+- Legacy:
+  - `#step-action` -> `#/today/action`
+  - `#step-prompt` y `#step-timer` -> `#/today/session`
+  - `#step-checklist` y `#step-evidence` -> `#/today/close`
+- Cualquier hash invalido redirige a `#/today/action`.
+
 ## Compatibilidad garantizada
 1. Soporta contrato JSON V3 (`learning/content/week01..week20.json`) y mantiene lectura tolerante de V2 legado.
 2. No cambia el flujo funcional de dashboard (checklist, timer, rubrica, metricas, artifacts, notes, prompt, gates).
 3. No cambia la estrategia de persistencia (`english-sprint:` + migracion automatica).
 4. No cambian comandos operativos (`./dashboard`, `./today`, `bin/validate_content`).
+5. Mantiene compatibilidad de enlaces legacy con anclas antiguas `#step-*`.
 
 ## Runtime errors y degradacion
 1. Si una seccion falla al renderizar, la UI mantiene pantalla activa y publica error recuperable en `status-line`.

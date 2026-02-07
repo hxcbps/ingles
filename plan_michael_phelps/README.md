@@ -9,6 +9,10 @@ Estado tecnico: frontend modular interno (ESM por feature), local-first, uso ext
 3. Ejecuta la sesion diaria completa.
 4. Guarda evidencia y completa score/metricas.
 
+## GitHub Pages
+- URL publica: `https://hxcbps.github.io/ingles/`.
+- Entrada publica del sitio: `index.html` en la raiz de `plan_michael_phelps` (redirige a `app/web/`).
+
 ## Inicio alterno (terminal)
 - `./today` muestra mision, bloques, deliverables y gate del dia.
 
