@@ -54,6 +54,10 @@ export function buildWeekContentPath(weekLabel) {
   return fromWebRoot(`learning/content/week${formatWeekLabel(Number(weekLabel))}.json`);
 }
 
+export function buildWeekContentV4Path(weekLabel) {
+  return fromWebRoot(`learning/content/week${formatWeekLabel(Number(weekLabel))}.v4.json`);
+}
+
 export async function loadConfig(fetcher = fetch) {
   try {
     const data = await fetchJSON(fromWebRoot("config/settings.json"), fetcher);
@@ -65,6 +69,12 @@ export async function loadConfig(fetcher = fetch) {
 
 export async function loadWeekContent(weekLabel, fetcher = fetch) {
   const path = buildWeekContentPath(weekLabel);
+  const data = await fetchJSON(path, fetcher);
+  return { path, data };
+}
+
+export async function loadWeekContentV4(weekLabel, fetcher = fetch) {
+  const path = buildWeekContentV4Path(weekLabel);
   const data = await fetchJSON(path, fetcher);
   return { path, data };
 }

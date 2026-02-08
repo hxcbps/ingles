@@ -1,0 +1,576 @@
+import { orchestrator as defaultOrchestrator, STEP_STATUS } from "../core/orchestrator.js";
+
+function asNumber(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function countWords(text) {
+  const cleaned = String(text || "").trim();
+  if (!cleaned) return 0;
+  return cleaned.split(/\s+/).filter(Boolean).length;
+}
+
+function formatClock(totalSeconds) {
+  const safe = Math.max(0, Math.floor(totalSeconds));
+  const m = Math.floor(safe / 60);
+  const s = safe % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
+function escapeHTML(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function statusLabel(status) {
+  switch (status) {
+    case STEP_STATUS.ACTIVE:
+      return "Activo";
+    case STEP_STATUS.DONE:
+      return "Completado";
+    case STEP_STATUS.RECOVERED:
+      return "Recovery";
+    case STEP_STATUS.FAILED:
+      return "Fallido";
+    case STEP_STATUS.LOCKED:
+    default:
+      return "Bloqueado";
+  }
+}
+
+function collectNeeds(gate, needs = {}) {
+  if (!gate || typeof gate !== "object") return needs;
+
+  if (gate.type === "compound" && Array.isArray(gate.rules)) {
+    gate.rules.forEach((rule) => collectNeeds(rule, needs));
+    return needs;
+  }
+
+  if (gate.type === "timer_complete") needs.timer = true;
+  if (gate.type === "self_score") needs.score = true;
+  if (gate.type === "min_words" || gate.type === "evidence_log_min_words") needs.text = true;
+  if (gate.type === "artifact_uploaded" || gate.type === "evidence_upload") needs.artifact = true;
+  if (gate.type === "manual_check") needs.check = true;
+  if (gate.type === "min_turns") needs.turns = true;
+  if (gate.type === "rubric_min") needs.rubric = true;
+  if (gate.type === "metrics_threshold") needs.metrics = true;
+  return needs;
+}
+
+function collectMetricKeys(gate, keys = new Set()) {
+  if (!gate || typeof gate !== "object") return keys;
+  if (gate.type === "compound" && Array.isArray(gate.rules)) {
+    gate.rules.forEach((rule) => collectMetricKeys(rule, keys));
+    return keys;
+  }
+
+  if (gate.type !== "metrics_threshold") return keys;
+
+  if (Array.isArray(gate.value)) {
+    gate.value.forEach((rule) => {
+      if (rule?.metric) keys.add(String(rule.metric));
+    });
+    return keys;
+  }
+
+  if (gate.value && typeof gate.value === "object") {
+    if (gate.value.metric) {
+      keys.add(String(gate.value.metric));
+      return keys;
+    }
+    Object.keys(gate.value).forEach((key) => keys.add(key));
+    return keys;
+  }
+
+  if (typeof gate.value === "string") {
+    keys.add(gate.value);
+  }
+  return keys;
+}
+
+function readResourceLocator(content = {}) {
+  if (content.resource_locator) return content.resource_locator;
+  return null;
+}
+
+function readPromptRef(step) {
+  return step?.content?.prompt_ref || step?.prompt_ref || "";
+}
+
+export class SessionWizard {
+  constructor(containerId, { orchestrator = defaultOrchestrator } = {}) {
+    this.container = document.getElementById(containerId);
+    this.orchestrator = orchestrator;
+    this.timer = {
+      stepId: null,
+      totalSec: 0,
+      leftSec: 0,
+      running: false,
+      completed: false,
+      intervalId: null
+    };
+    this.feedback = { tone: "info", text: "" };
+  }
+
+  dispose() {
+    this.stopTimer();
+  }
+
+  stopTimer() {
+    if (this.timer.intervalId) {
+      clearInterval(this.timer.intervalId);
+      this.timer.intervalId = null;
+    }
+    this.timer.running = false;
+  }
+
+  ensureTimer(stepId, durationMin) {
+    const totalSec = Math.max(0, Math.floor((Number(durationMin) || 0) * 60));
+    if (this.timer.stepId === stepId) return;
+    this.stopTimer();
+    this.timer = {
+      stepId,
+      totalSec,
+      leftSec: totalSec,
+      running: false,
+      completed: false,
+      intervalId: null
+    };
+  }
+
+  renderCompletion() {
+    const progress = this.orchestrator.getProgress();
+    this.container.innerHTML = `
+      <section class="wizard-complete" aria-label="Sesion completada">
+        <h2>Sesion completada</h2>
+        <p>Excelente ejecucion. Progreso final: <strong>${progress}%</strong>.</p>
+        <p>Revisa tu cierre diario y prepara el foco de manana.</p>
+      </section>
+    `;
+  }
+
+  renderResource(step) {
+    const content = step?.content || {};
+    const locator = readResourceLocator(content);
+    const promptRef = readPromptRef(step);
+
+    if (content.url) {
+      return `
+        <article class="resource-card">
+          <h3>Recurso</h3>
+          <p class="resource-help">Abre este recurso y ejecuta la instruccion exacta.</p>
+          <a class="resource-link" href="${escapeHTML(content.url)}" target="_blank" rel="noopener noreferrer">
+            Abrir recurso externo
+          </a>
+          ${content.offline_ref ? `<p class="resource-alt">Alternativa offline: ${escapeHTML(content.offline_ref)}</p>` : ""}
+        </article>
+      `;
+    }
+
+    if (locator) {
+      return `
+        <article class="resource-card">
+          <h3>Localizador de recurso</h3>
+          <ul class="locator-list">
+            <li><span>Libro</span><strong>${escapeHTML(locator.book || "-")}</strong></li>
+            <li><span>Unidad</span><strong>${escapeHTML(locator.unit || "-")}</strong></li>
+            <li><span>Pagina</span><strong>${escapeHTML(locator.page || "-")}</strong></li>
+            <li><span>Ejercicio</span><strong>${escapeHTML(locator.exercise || "-")}</strong></li>
+          </ul>
+          ${locator.fallback_url ? `<a class="resource-link" href="${escapeHTML(locator.fallback_url)}" target="_blank" rel="noopener noreferrer">Abrir fallback</a>` : ""}
+        </article>
+      `;
+    }
+
+    if (promptRef) {
+      const promptVersion = step?.content?.prompt_version || step?.prompt_version || "v1";
+      const prompt = `Prompt ref: ${promptRef}\nPrompt version: ${promptVersion}\nInstruccion: ${step?.content?.instructions || ""}`;
+      return `
+        <article class="resource-card">
+          <h3>Prompt IA</h3>
+          <p class="resource-help">Copia el prompt y ejecuta la practica sin traducir.</p>
+          <textarea id="prompt-text" class="prompt-text" readonly>${escapeHTML(prompt)}</textarea>
+          <button id="copy-prompt-v4" class="btn-secondary" type="button">Copiar prompt</button>
+        </article>
+      `;
+    }
+
+    return `
+      <article class="resource-card">
+        <h3>Recurso</h3>
+        <p class="resource-help">Sigue la instruccion del paso y registra evidencia.</p>
+      </article>
+    `;
+  }
+
+  renderEvidenceFields(step) {
+    const needs = collectNeeds(step.gate, {});
+    const metricKeys = [...collectMetricKeys(step.gate)];
+    const keys = metricKeys.length ? metricKeys : ["error_density", "pronunciation_score"];
+
+    return `
+      <div class="evidence-grid">
+        ${needs.text ? `
+          <label class="field-block" for="evidence-text">
+            <span>Registro textual</span>
+            <textarea id="evidence-text" rows="4" placeholder="Describe output, errores y correcciones aplicadas."></textarea>
+          </label>
+        ` : ""}
+
+        ${needs.score ? `
+          <label class="field-block" for="evidence-score">
+            <span>Auto-score</span>
+            <input id="evidence-score" type="number" min="0" max="100" step="1" placeholder="0-100" />
+          </label>
+        ` : ""}
+
+        ${needs.turns ? `
+          <label class="field-block" for="evidence-turns">
+            <span>Turnos completados</span>
+            <input id="evidence-turns" type="number" min="0" step="1" placeholder="0" />
+          </label>
+        ` : ""}
+
+        ${needs.artifact ? `
+          <label class="field-block" for="evidence-artifact">
+            <span>Ruta o enlace de evidencia</span>
+            <input id="evidence-artifact" type="text" placeholder="tracking/daily/YYYY-MM-DD/audio/file.mp3" />
+          </label>
+        ` : ""}
+
+        ${needs.check ? `
+          <label class="checkbox-row" for="evidence-check">
+            <input id="evidence-check" type="checkbox" />
+            <span>Confirmo que complete el paso segun instrucciones</span>
+          </label>
+        ` : ""}
+      </div>
+
+      ${needs.rubric ? `
+        <fieldset class="rubric-grid">
+          <legend>Rubrica rapida (0-3)</legend>
+          <label for="rubric-fluency">Fluency</label>
+          <input data-rubric="fluency" id="rubric-fluency" type="number" min="0" max="3" step="1" />
+          <label for="rubric-accuracy">Accuracy</label>
+          <input data-rubric="accuracy" id="rubric-accuracy" type="number" min="0" max="3" step="1" />
+          <label for="rubric-pronunciation">Pronunciation</label>
+          <input data-rubric="pronunciation" id="rubric-pronunciation" type="number" min="0" max="3" step="1" />
+          <label for="rubric-completion">Task completion</label>
+          <input data-rubric="completion" id="rubric-completion" type="number" min="0" max="3" step="1" />
+        </fieldset>
+      ` : ""}
+
+      ${needs.metrics ? `
+        <fieldset class="metrics-grid">
+          <legend>Metricas requeridas</legend>
+          ${keys.map((metricKey, index) => `
+            <label for="metric-${index}">${escapeHTML(metricKey)}</label>
+            <input data-metric="${escapeHTML(metricKey)}" id="metric-${index}" type="number" step="0.1" />
+          `).join("")}
+        </fieldset>
+      ` : ""}
+    `;
+  }
+
+  render() {
+    if (!this.container) return;
+
+    const current = this.orchestrator.getCurrentStep();
+    if (!current.definition) {
+      this.renderCompletion();
+      return;
+    }
+
+    const step = current.definition;
+    const progress = this.orchestrator.getProgress();
+    const instructions = step?.content?.instructions || "Sigue la instruccion del paso.";
+    const successCriteria = step?.success_criteria || "Cumplir gate del paso activo.";
+    const status = current.status || STEP_STATUS.ACTIVE;
+
+    this.ensureTimer(step.step_id, step.duration_min);
+
+    this.container.innerHTML = `
+      <section class="session-shell" aria-label="Ejecucion guiada del paso">
+        <header class="wizard-top">
+          <div>
+            <p class="kicker">Sesion activa</p>
+            <h2>Paso ${current.stepIndex} de ${current.totalSteps}</h2>
+          </div>
+          <div class="top-meta">
+            <span class="status-badge status-${escapeHTML(status)}">${statusLabel(status)}</span>
+            <span class="progress-pill">${progress}%</span>
+          </div>
+        </header>
+
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-fill" style="width:${progress}%"></div>
+        </div>
+
+        <article class="step-card">
+          <p class="step-type">${escapeHTML(step.type || "step")}</p>
+          <h3>${escapeHTML(step.title || "Paso activo")}</h3>
+          <div class="instruction-grid">
+            <div>
+              <h4>Haz esto ahora</h4>
+              <p>${escapeHTML(instructions)}</p>
+            </div>
+            <div>
+              <h4>Duracion objetivo</h4>
+              <p>${escapeHTML(step.duration_min || 0)} min</p>
+            </div>
+            <div>
+              <h4>Criterio de exito</h4>
+              <p>${escapeHTML(successCriteria)}</p>
+            </div>
+            <div>
+              <h4>Como se valida</h4>
+              <p>${escapeHTML(step.gate?.type || "manual_check")}</p>
+            </div>
+          </div>
+
+          ${this.renderResource(step)}
+
+          <article class="evidence-card" aria-label="Captura de evidencia">
+            <h4>Evidencia del paso</h4>
+            ${this.renderEvidenceFields(step)}
+          </article>
+
+          <p id="gate-feedback" class="gate-feedback tone-${escapeHTML(this.feedback.tone)}" role="status" aria-live="polite">
+            ${escapeHTML(this.feedback.text || "Completa evidencia y valida el paso para avanzar.")}
+          </p>
+        </article>
+
+        <footer class="wizard-footer">
+          <div class="timer-panel">
+            <p class="timer-label">Timer del paso</p>
+            <p id="wizard-timer" class="timer-value">${formatClock(this.timer.leftSec)}</p>
+            <div class="timer-actions">
+              <button id="btn-timer-toggle" class="btn-secondary" type="button">
+                ${this.timer.running ? "Pausar timer" : "Iniciar timer"}
+              </button>
+              <button id="btn-timer-reset" class="btn-ghost" type="button">Reiniciar</button>
+            </div>
+          </div>
+
+          <button id="btn-submit-step" class="btn-primary" type="button" disabled>
+            Validar y continuar
+          </button>
+        </footer>
+      </section>
+    `;
+
+    this.bindEvents(step);
+    this.updateSubmitState(step);
+  }
+
+  timerElapsedSec() {
+    return Math.max(0, this.timer.totalSec - this.timer.leftSec);
+  }
+
+  gatherInput() {
+    const text = this.container.querySelector("#evidence-text")?.value || "";
+    const score = asNumber(this.container.querySelector("#evidence-score")?.value);
+    const turnCount = asNumber(this.container.querySelector("#evidence-turns")?.value);
+    const artifactPath = this.container.querySelector("#evidence-artifact")?.value || "";
+    const checked = this.container.querySelector("#evidence-check")?.checked === true;
+
+    const rubric = {};
+    this.container.querySelectorAll("[data-rubric]").forEach((node) => {
+      const key = node.getAttribute("data-rubric");
+      const value = asNumber(node.value);
+      if (key && value !== null) rubric[key] = value;
+    });
+
+    const metrics = {};
+    this.container.querySelectorAll("[data-metric]").forEach((node) => {
+      const key = node.getAttribute("data-metric");
+      const value = asNumber(node.value);
+      if (key && value !== null) metrics[key] = value;
+    });
+
+    return {
+      text,
+      log: text,
+      score,
+      turnCount,
+      artifactPath: String(artifactPath).trim(),
+      checked,
+      rubric,
+      metrics,
+      timeElapsedSec: this.timerElapsedSec(),
+      timeElapsedMin: this.timerElapsedSec() / 60,
+      timeElapsed: this.timerElapsedSec()
+    };
+  }
+
+  isSoftReady(step, input) {
+    const needs = collectNeeds(step.gate, {});
+
+    if (needs.timer && !this.timer.completed) return false;
+    if (needs.text && countWords(input.text) < 1) return false;
+    if (needs.score && input.score === null) return false;
+    if (needs.turns && input.turnCount === null) return false;
+    if (needs.artifact && !input.artifactPath) return false;
+    if (needs.check && input.checked !== true) return false;
+    if (needs.rubric && Object.keys(input.rubric || {}).length === 0) return false;
+
+    if (needs.metrics) {
+      const requiredKeys = [...collectMetricKeys(step.gate)];
+      if (!requiredKeys.length) {
+        return Object.keys(input.metrics || {}).length > 0;
+      }
+      return requiredKeys.every((key) => asNumber(input.metrics?.[key]) !== null);
+    }
+
+    return true;
+  }
+
+  setFeedback(tone, text) {
+    this.feedback = {
+      tone: tone || "info",
+      text: text || ""
+    };
+  }
+
+  updateSubmitState(step) {
+    const submit = this.container.querySelector("#btn-submit-step");
+    if (!submit) return;
+    const input = this.gatherInput();
+    submit.disabled = !this.isSoftReady(step, input);
+  }
+
+  updateTimerUI() {
+    const timerEl = this.container.querySelector("#wizard-timer");
+    const toggleBtn = this.container.querySelector("#btn-timer-toggle");
+    if (timerEl) {
+      timerEl.textContent = this.timer.completed ? "COMPLETADO" : formatClock(this.timer.leftSec);
+      timerEl.classList.toggle("timer-complete", this.timer.completed);
+    }
+    if (toggleBtn) {
+      toggleBtn.textContent = this.timer.running ? "Pausar timer" : "Iniciar timer";
+    }
+  }
+
+  startTimer(step) {
+    if (this.timer.running || this.timer.completed) return;
+    this.timer.running = true;
+    this.updateTimerUI();
+
+    this.timer.intervalId = setInterval(() => {
+      if (this.timer.leftSec <= 0) {
+        this.stopTimer();
+        this.timer.completed = true;
+        this.timer.leftSec = 0;
+        this.setFeedback("success", `Timer completo para ${step.duration_min} min.`);
+        this.updateTimerUI();
+        this.updateSubmitState(step);
+        return;
+      }
+      this.timer.leftSec -= 1;
+      this.updateTimerUI();
+      this.updateSubmitState(step);
+    }, 1000);
+  }
+
+  pauseTimer() {
+    if (!this.timer.running) return;
+    this.stopTimer();
+    this.updateTimerUI();
+  }
+
+  resetTimer(step) {
+    this.stopTimer();
+    this.timer.leftSec = this.timer.totalSec;
+    this.timer.completed = false;
+    this.setFeedback("info", "Timer reiniciado.");
+    this.updateTimerUI();
+    this.updateSubmitState(step);
+  }
+
+  async copyPrompt() {
+    const promptText = this.container.querySelector("#prompt-text")?.value || "";
+    if (!promptText) return;
+
+    try {
+      await navigator.clipboard.writeText(promptText);
+      this.setFeedback("success", "Prompt copiado al portapapeles.");
+    } catch {
+      this.setFeedback("warning", "No se pudo copiar automaticamente. Copia manualmente.");
+    }
+    this.render();
+  }
+
+  handleSubmit(step) {
+    const input = this.gatherInput();
+    const result = this.orchestrator.submitStep(step.step_id, input);
+
+    if (result.success) {
+      this.setFeedback("success", "Gate validado. Pasando al siguiente paso.");
+      this.render();
+      return;
+    }
+
+    if (result.action === "retry") {
+      this.setFeedback(
+        "warning",
+        `${result.error || "Gate no cumplido."} Intento ${result.attempt}/${result.maxRetries}.`
+      );
+      this.render();
+      return;
+    }
+
+    if (result.action === "fallback") {
+      this.setFeedback("warning", "Gate no cumplido. Entrando en modo recovery.");
+      this.render();
+      return;
+    }
+
+    if (result.action === "blocked") {
+      this.setFeedback("error", result.error || "Paso bloqueado por gate.");
+      this.render();
+      return;
+    }
+
+    this.setFeedback("error", result.error || "No se pudo validar el paso.");
+    this.render();
+  }
+
+  bindEvents(step) {
+    const timerToggle = this.container.querySelector("#btn-timer-toggle");
+    const timerReset = this.container.querySelector("#btn-timer-reset");
+    const submit = this.container.querySelector("#btn-submit-step");
+    const copyPrompt = this.container.querySelector("#copy-prompt-v4");
+
+    if (timerToggle) {
+      timerToggle.addEventListener("click", () => {
+        if (this.timer.running) {
+          this.pauseTimer();
+        } else {
+          this.startTimer(step);
+        }
+      });
+    }
+
+    if (timerReset) {
+      timerReset.addEventListener("click", () => this.resetTimer(step));
+    }
+
+    if (submit) {
+      submit.addEventListener("click", () => this.handleSubmit(step));
+    }
+
+    if (copyPrompt) {
+      copyPrompt.addEventListener("click", () => this.copyPrompt());
+    }
+
+    this.container.querySelectorAll("input, textarea").forEach((node) => {
+      node.addEventListener("input", () => this.updateSubmitState(step));
+      node.addEventListener("change", () => this.updateSubmitState(step));
+    });
+  }
+}

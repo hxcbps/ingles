@@ -4,16 +4,23 @@ import assert from "node:assert/strict";
 import {
   FALLBACK_CONFIG,
   buildWeekContentPath,
+  buildWeekContentV4Path,
   loadAdaptiveHistory,
   loadBookModulesRegistry,
   loadConfig,
   loadResourcesCatalog,
-  loadWeekContent
+  loadWeekContent,
+  loadWeekContentV4
 } from "../content/repository.js";
 
 test("repository builds canonical week path", () => {
   assert.equal(buildWeekContentPath(1), "../../learning/content/week01.json");
   assert.equal(buildWeekContentPath("20"), "../../learning/content/week20.json");
+});
+
+test("repository builds canonical V4 week path", () => {
+  assert.equal(buildWeekContentV4Path(1), "../../learning/content/week01.v4.json");
+  assert.equal(buildWeekContentV4Path("20"), "../../learning/content/week20.v4.json");
 });
 
 test("repository loadConfig merges and normalizes numeric fields", async () => {
@@ -58,6 +65,19 @@ test("repository loadWeekContent returns path and data", async () => {
   const week = await loadWeekContent("07", fakeFetch);
   assert.equal(week.path, "../../learning/content/week07.json");
   assert.equal(week.data.title, "loaded:../../learning/content/week07.json");
+});
+
+test("repository loadWeekContentV4 returns path and data", async () => {
+  const fakeFetch = async (path) => ({
+    ok: true,
+    async json() {
+      return { title: `loaded:${path}` };
+    }
+  });
+
+  const week = await loadWeekContentV4("07", fakeFetch);
+  assert.equal(week.path, "../../learning/content/week07.v4.json");
+  assert.equal(week.data.title, "loaded:../../learning/content/week07.v4.json");
 });
 
 test("repository loadWeekContent throws when file is missing", async () => {

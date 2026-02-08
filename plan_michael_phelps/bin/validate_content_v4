@@ -1,0 +1,165 @@
+#!/usr/bin/env node
+
+/**
+ * validate_content_v4.js
+ * 
+ * Validates Week/Day JSON files against Schema V4 and Business Rules.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Colors for output
+const LC = {
+    reset: "\x1b[0m",
+    red: "\x1b[31m",
+    green: "\x1b[32m",
+    yellow: "\x1b[33m",
+    blue: "\x1b[34m",
+    cyan: "\x1b[36m"
+};
+
+const SCHEMA_PATH = path.join(__dirname, '../learning/content/schema.v4.json');
+const CONTENT_DIR = path.join(__dirname, "../learning/content");
+const MILESTONE_WEEKS = [1, 5, 10, 15, 20];
+
+// Load Schema
+if (!fs.existsSync(SCHEMA_PATH)) {
+    console.error(`${LC.red}FATAL: Schema V4 not found at ${SCHEMA_PATH}${LC.reset}`);
+    process.exit(1);
+}
+const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, 'utf8'));
+
+function validateWeek(filePath) {
+    console.log(`${LC.blue}Validating: ${path.basename(filePath)}${LC.reset}`);
+    let content;
+    try {
+        content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch (e) {
+        console.error(`${LC.red}[JSON] Parse Error in ${filePath}${LC.reset}`);
+        return false;
+    }
+
+    if (content.version !== 'v4') {
+        console.log(`${LC.yellow}[SKIP] File is version ${content.version}, skipping V4 validation.${LC.reset}`);
+        return true;
+    }
+
+    let isValid = true;
+    const weekNum = content.week;
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    const requiredTopLevel = ["version", "week", "title", "week_profile", "days"];
+    requiredTopLevel.forEach((field) => {
+        if (!(field in content)) {
+            console.error(`${LC.red}[SCHEMA] ${path.basename(filePath)} missing top-level field '${field}'.${LC.reset}`);
+            isValid = false;
+        }
+    });
+
+    // Check Assessment Event for Milestones
+    if (MILESTONE_WEEKS.includes(weekNum)) {
+        let hasAssessment = false;
+        days.forEach(d => {
+            if (content.days[d] && content.days[d].assessment_event) hasAssessment = true;
+        });
+        if (!hasAssessment) {
+            console.error(`${LC.red}[MILESTONE] Week ${weekNum} is a milestone but has no 'assessment_event'.${LC.reset}`);
+            isValid = false;
+        }
+    }
+
+    days.forEach(dayName => {
+        const day = content.days[dayName];
+        if (!day) return;
+
+        const dayId = day.day_id;
+        const totalMin = day.session_script.reduce((acc, step) => acc + (step.duration_min || 0), 0);
+        const expectedMin = dayName === 'Sun' ? 300 : 120;
+
+        // 1. Time Budget (+/- 10%)
+        if (totalMin < expectedMin * 0.9 || totalMin > expectedMin * 1.1) {
+            console.error(`${LC.red}[TIME] ${dayName} (${dayId}): Total ${totalMin} min. Expected ~${expectedMin} min.${LC.reset}`);
+            isValid = false;
+        }
+
+        const stepIds = new Set();
+        day.session_script.forEach((step, index) => {
+            // 2. Step ID Uniqueness
+            if (!step.step_id) {
+                console.error(`${LC.red}[STEP] ${dayName} Step #${index} missing step_id.${LC.reset}`);
+                isValid = false;
+            } else {
+                if (stepIds.has(step.step_id)) {
+                    console.error(`${LC.red}[ID] ${dayName} Duplicate step_id: ${step.step_id}.${LC.reset}`);
+                    isValid = false;
+                }
+                stepIds.add(step.step_id);
+            }
+
+            // 3. Gate Presence
+            if (!step.gate) {
+                console.error(`${LC.red}[GATE] ${dayName} Step ${step.step_id} missing GATE.${LC.reset}`);
+                isValid = false;
+            }
+
+            // 4. Critical Steps Evidence (Rule: Roleplay/Drill need objective evidence)
+            const criticalTypes = ['ai_roleplay', 'recording_task', 'repair_drill'];
+            if (criticalTypes.includes(step.type)) {
+                if (!step.evidence_required || step.evidence_required === 'none') {
+                    console.error(`${LC.red}[EVIDENCE] ${dayName} Step ${step.step_id} (${step.type}) requires evidence.${LC.reset}`);
+                    isValid = false;
+                }
+            }
+
+            // 5. Resource Locator Validation
+            if (step.type === 'textbook_drill' && (!step.content || !step.content.resource_locator)) {
+                console.error(`${LC.red}[RESOURCE] ${dayName} Step ${step.step_id} is textbook_drill but missing resource_locator.${LC.reset}`);
+                isValid = false;
+            }
+        });
+
+        // 6. Referential Integrity (Fallback)
+        day.session_script.forEach(step => {
+            if (step.fallback_step_id && !stepIds.has(step.fallback_step_id)) {
+                console.error(`${LC.red}[REF] ${dayName} Step ${step.step_id} refers to missing fallback: ${step.fallback_step_id}.${LC.reset}`);
+                isValid = false;
+            }
+        });
+    });
+
+    return isValid;
+}
+
+function run() {
+    let hasErrors = false;
+    if (!fs.existsSync(CONTENT_DIR)) {
+        console.error(`${LC.red}Content directory not found.${LC.reset}`);
+        process.exit(1);
+    }
+
+    const files = fs
+        .readdirSync(CONTENT_DIR)
+        .filter((f) => /^week\d{2}\.v4\.json$/i.test(f))
+        .sort();
+
+    if (files.length === 0) {
+        console.error(`${LC.red}No V4 content files found in ${CONTENT_DIR}.${LC.reset}`);
+        process.exit(1);
+    }
+
+    files.forEach(file => {
+        const fullPath = path.join(CONTENT_DIR, file);
+        if (!validateWeek(fullPath)) hasErrors = true;
+    });
+
+    if (hasErrors) {
+        console.error(`${LC.red}\nVALIDATION FAILED.${LC.reset}`);
+        process.exit(1);
+    } else {
+        console.log(`${LC.green}\nALL V4 CONTENT IS VALID.${LC.reset}`);
+        process.exit(0);
+    }
+}
+
+run();
