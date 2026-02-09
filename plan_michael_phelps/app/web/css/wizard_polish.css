@@ -1,69 +1,59 @@
-body.app-mode-v4 .wizard-workspace .step-card,
-body.app-mode-v4 .wizard-workspace .wizard-footer,
-body.app-mode-v4 .wizard-workspace .wizard-complete,
-body.app-mode-v4 .wizard-workspace .wizard-top,
-body.app-mode-v4 .wizard-workspace .v4-error {
-  animation: v4-rise 320ms ease both;
+/*
+  GOVERNED DESIGN SYSTEM - WIZARD POLISH
+  Layer: components
+*/
+
+.wizard-workspace .step-card,
+.wizard-workspace .wizard-footer,
+.wizard-workspace .wizard-complete,
+.wizard-workspace .wizard-top {
+  animation: wizard-rise 0.4s var(--motion-ease-out) both;
 }
 
-body.app-mode-v4 .wizard-workspace .instruction-grid > div,
-body.app-mode-v4 .wizard-workspace .gate-spec,
-body.app-mode-v4 .wizard-workspace .resource-card,
-body.app-mode-v4 .wizard-workspace .evidence-card,
-body.app-mode-v4 .wizard-workspace .step-rail-item {
-  transition:
-    transform var(--motion-fast),
-    box-shadow var(--motion-standard),
-    border-color var(--motion-fast),
-    background var(--motion-standard);
+.wizard-workspace .instruction-grid>div,
+.wizard-workspace .gate-spec,
+.wizard-workspace .resource-card,
+.wizard-workspace .evidence-card,
+.wizard-workspace .step-rail-item {
+  transition: all 0.2s var(--motion-ease-out);
 }
 
-body.app-mode-v4 .wizard-workspace .instruction-grid > div:hover,
-body.app-mode-v4 .wizard-workspace .gate-spec:hover,
-body.app-mode-v4 .wizard-workspace .resource-card:hover,
-body.app-mode-v4 .wizard-workspace .evidence-card:hover,
-body.app-mode-v4 .wizard-workspace .step-rail-item:hover {
+.wizard-workspace .instruction-grid>div:hover,
+.wizard-workspace .gate-spec:hover,
+.wizard-workspace .resource-card:hover,
+.wizard-workspace .evidence-card:hover,
+.wizard-workspace .step-rail-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(18, 34, 56, 0.16);
-  border-color: #b6cbe1;
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-brand);
 }
 
-body.app-mode-v4 .wizard-workspace .progress-fill {
-  transition: width 340ms ease;
+.wizard-workspace .progress-fill {
+  transition: width 0.4s var(--motion-ease-out);
 }
 
-body.app-mode-v4 .btn-primary,
-body.app-mode-v4 .btn-secondary,
-body.app-mode-v4 .btn-ghost {
-  transition:
-    transform 130ms ease,
-    filter 180ms ease,
-    box-shadow 220ms ease;
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  transition: all 0.2s var(--motion-ease-out);
 }
 
-body.app-mode-v4 .btn-primary:hover,
-body.app-mode-v4 .btn-secondary:hover,
-body.app-mode-v4 .btn-ghost:hover {
-  transform: translateY(-1px);
-  filter: saturate(1.06);
-  box-shadow: 0 10px 20px rgba(17, 34, 56, 0.22);
-}
-
-body.app-mode-v4 .btn-primary:active,
-body.app-mode-v4 .btn-secondary:active,
-body.app-mode-v4 .btn-ghost:active {
+.btn-primary:active,
+.btn-secondary:active,
+.btn-ghost:active {
   transform: translateY(0);
 }
 
-body.app-mode-v4 .wizard-workspace .timer-value {
-  transition: color 180ms ease, text-shadow 220ms ease;
+.wizard-workspace .timer-value {
+  transition: color 0.2s ease;
 }
 
-body.app-mode-v4 .wizard-workspace .timer-value.timer-complete {
-  text-shadow: 0 0 14px rgba(31, 116, 80, 0.34);
+.wizard-workspace .timer-value.timer-complete {
+  color: var(--status-success-txt);
+  text-shadow: 0 0 10px var(--status-success-bg);
 }
 
-@keyframes v4-rise {
+@keyframes wizard-rise {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -76,24 +66,8 @@ body.app-mode-v4 .wizard-workspace .timer-value.timer-complete {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body.app-mode-v4 .wizard-workspace .step-card,
-  body.app-mode-v4 .wizard-workspace .wizard-footer,
-  body.app-mode-v4 .wizard-workspace .wizard-complete,
-  body.app-mode-v4 .wizard-workspace .wizard-top,
-  body.app-mode-v4 .wizard-workspace .v4-error {
-    animation: none;
-  }
-
-  body.app-mode-v4 .wizard-workspace .instruction-grid > div,
-  body.app-mode-v4 .wizard-workspace .gate-spec,
-  body.app-mode-v4 .wizard-workspace .resource-card,
-  body.app-mode-v4 .wizard-workspace .evidence-card,
-  body.app-mode-v4 .wizard-workspace .step-rail-item,
-  body.app-mode-v4 .wizard-workspace .progress-fill,
-  body.app-mode-v4 .btn-primary,
-  body.app-mode-v4 .btn-secondary,
-  body.app-mode-v4 .btn-ghost,
-  body.app-mode-v4 .wizard-workspace .timer-value {
-    transition: none;
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }

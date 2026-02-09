@@ -1,2 +1,11 @@
-@import "wizard.css";
-@import "wizard_polish.css";
+@layer reset, tokens, base, components, utilities, overrides;
+
+@import "tokens.css" layer(tokens);
+@import "base.css" layer(base);
+@import "layout.css" layer(components);
+/* Temporary: legacy layout */
+@import "components.css" layer(components);
+@import "wizard.css" layer(components);
+/* Legacy wizard styles */
+@import "wizard_polish.css" layer(components);
+@import "responsive.css" layer(utilities);

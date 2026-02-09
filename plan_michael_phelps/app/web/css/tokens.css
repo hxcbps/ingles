@@ -1,60 +1,121 @@
+/*
+  GOVERNED DESIGN SYSTEM - TOKENS
+  Layer: tokens
+  Strategy: Primitives -> Semantics -> Component usage
+*/
+
 :root {
-  --font-display: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
-  --font-body: "DM Sans", "Segoe UI", sans-serif;
-  --font-mono: "IBM Plex Mono", "Menlo", monospace;
+  /* --- PRIMITIVES (The Palette) --- */
 
-  --canvas-100: #d8d8d2;
-  --canvas-200: #c5cdd2;
-  --surface-100: #e3e8ee;
-  --surface-200: #d7dfe8;
-  --surface-300: #eff3f7;
+  /* Brand - Deep, Professional Navy */
+  --palette-brand-950: #0f172a;
+  --palette-brand-900: #1e293b;
+  --palette-brand-800: #334155;
+  --palette-brand-700: #475569;
+  --palette-brand-600: #64748b;
+  /* Slate-ish for neutrality */
+  --palette-brand-500: #3b82f6;
+  /* Impact Blue */
+  --palette-brand-400: #60a5fa;
+  --palette-brand-100: #dbeafe;
+  --palette-brand-50: #eff6ff;
 
-  --ink-950: #121c2b;
-  --ink-900: #1b2a40;
-  --ink-700: #36506f;
-  --ink-500: #607a98;
-  --ink-300: #8fa1b5;
+  /* Accent - Warm/Human (replacing the old brown/orange) */
+  --palette-accent-600: #be185d;
+  /* Pink/Rose for high impact */
+  --palette-accent-500: #ec4899;
+  --palette-accent-100: #fce7f3;
 
-  --line-soft: #bfcbd8;
-  --line-strong: #95aac0;
+  /* Neutrals (Ink & Surface) */
+  --palette-ink-950: #020617;
+  --palette-ink-900: #0f172a;
+  --palette-ink-700: #334155;
+  --palette-ink-500: #64748b;
+  --palette-ink-300: #cbd5e1;
+  --palette-ink-200: #e2e8f0;
+  --palette-ink-100: #f1f5f9;
+  --palette-ink-050: #f8fafc;
+  --palette-white: #ffffff;
 
-  --brand-700: #294b73;
-  --brand-600: #3a638f;
-  --brand-500: #5a84b2;
-  --brand-soft: rgba(58, 99, 143, 0.14);
+  /* Semantic Status Colors */
+  --palette-success-700: #15803d;
+  --palette-success-100: #dcfce7;
+  --palette-warning-700: #a16207;
+  --palette-warning-100: #fef9c3;
+  --palette-danger-700: #b91c1c;
+  --palette-danger-100: #fee2e2;
 
-  --accent-700: #84533a;
-  --accent-600: #9b6547;
-  --accent-500: #b67f61;
-  --accent-soft: rgba(155, 101, 71, 0.16);
+  /* --- SEMANTICS (The usage contract) --- */
 
-  --success-700: #2a6a4d;
-  --success-soft: rgba(42, 106, 77, 0.15);
+  /* Typography families */
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
 
-  --warning-700: #88582d;
-  --warning-soft: rgba(136, 88, 45, 0.16);
+  /* Backgrounds / Surfaces */
+  --surface-base: var(--palette-ink-050);
+  /* App background */
+  --surface-card: var(--palette-white);
+  /* Cards, modals */
+  --surface-sunken: var(--palette-ink-100);
+  /* Inputs, wells */
+  --surface-overlay: rgba(15, 23, 42, 0.6);
+  /* Modal backdrops */
 
-  --danger-700: #893f43;
-  --danger-soft: rgba(137, 63, 67, 0.16);
+  /* Text Colors */
+  --text-primary: var(--palette-ink-900);
+  /* Headings, main text */
+  --text-secondary: var(--palette-ink-500);
+  /* Subtitles, secondary */
+  --text-tertiary: var(--palette-ink-300);
+  /* Placeholders, disabled */
+  --text-inverse: var(--palette-white);
+  /* Text on dark backgrounds */
+  --text-brand: var(--palette-brand-500);
+  /* Brand highlights */
 
-  --sidebar-bg-start: #1a2431;
-  --sidebar-bg-mid: #243344;
-  --sidebar-bg-end: #2c3f57;
-  --sidebar-ink: #ecf2fb;
-  --sidebar-muted: #bcc9da;
-  --sidebar-line: rgba(170, 186, 206, 0.34);
+  /* Borders / Dividers */
+  --border-subtle: var(--palette-ink-100);
+  --border-default: var(--palette-ink-200);
+  /* Standard card borders */
+  --border-strong: var(--palette-ink-300);
+  /* Inputs, focused areas */
+  --border-brand: var(--palette-brand-500);
 
-  --radius-xs: 8px;
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 26px;
-  --radius-pill: 999px;
+  /* Actions (Buttons, Links) */
+  --action-primary-bg: var(--palette-brand-900);
+  --action-primary-fg: var(--palette-white);
+  --action-primary-hover: var(--palette-brand-800);
 
-  --shadow-soft: 0 14px 30px rgba(18, 30, 47, 0.16);
-  --shadow-elevated: 0 24px 48px rgba(14, 25, 40, 0.24);
-  --shadow-sidebar: 0 24px 48px rgba(8, 14, 24, 0.42);
+  --action-secondary-bg: var(--palette-white);
+  --action-secondary-fg: var(--palette-ink-700);
+  --action-secondary-border: var(--palette-ink-200);
+  --action-secondary-hover: var(--palette-ink-050);
 
-  --motion-fast: 170ms cubic-bezier(0.4, 0, 0.2, 1);
-  --motion-standard: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --motion-spring: 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Status Indicators */
+  --status-success-bg: var(--palette-success-100);
+  --status-success-txt: var(--palette-success-700);
+
+  --status-warning-bg: var(--palette-warning-100);
+  --status-warning-txt: var(--palette-warning-700);
+
+  --status-danger-bg: var(--palette-danger-100);
+  --status-danger-txt: var(--palette-danger-700);
+
+  /* Radii & Spacing */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --radius-pill: 9999px;
+
+  /* Shadows (Elevations) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Motion */
+  --motion-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
 }

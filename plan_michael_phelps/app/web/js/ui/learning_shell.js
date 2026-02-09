@@ -1,25 +1,46 @@
-const VIEW_IDS = Object.freeze(["hoy", "ruta", "sesion", "modulos", "progreso"]);
+const VIEW_IDS = Object.freeze(["hoy", "sesion", "modulos", "ruta", "biblioteca", "progreso"]);
+
+const NAV_GROUPS = Object.freeze([
+  Object.freeze({
+    id: "daily",
+    label: "Flujo diario"
+  }),
+  Object.freeze({
+    id: "program",
+    label: "Control del programa"
+  })
+]);
 
 const VIEW_META = Object.freeze({
   hoy: Object.freeze({
-    label: "Hoy",
-    subtitle: "Inicio operativo"
+    label: "1. Hoy",
+    subtitle: "Inicio operativo",
+    group: "daily"
+  }),
+  sesion: Object.freeze({
+    label: "2. Sesion guiada",
+    subtitle: "Ejecucion paso a paso",
+    group: "daily"
+  }),
+  modulos: Object.freeze({
+    label: "3. Modulos",
+    subtitle: "Semana y dias",
+    group: "daily"
   }),
   ruta: Object.freeze({
     label: "Ruta 0 -> B2",
-    subtitle: "Mapa completo"
+    subtitle: "Fases y checkpoints",
+    group: "program"
   }),
-  sesion: Object.freeze({
-    label: "Sesion guiada",
-    subtitle: "Modo enfoque"
-  }),
-  modulos: Object.freeze({
-    label: "Modulos",
-    subtitle: "Semanas y dias"
+  biblioteca: Object.freeze({
+    label: "Biblioteca",
+    subtitle: "Libros por nivel",
+    group: "program"
   }),
   progreso: Object.freeze({
     label: "Progreso",
-    subtitle: "Control de avance"
+    subtitle: "Metricas y evidencia",
+    group: "program"
   })
 });
 
@@ -53,10 +74,18 @@ const ROADMAP_PHASES = Object.freeze([
     cefr: "A0 -> A2",
     weekStart: 1,
     weekEnd: 5,
+    checkpoint: "Checkpoint A2 (fin W05)",
+    checkpointTag: "CP A2",
+    bookStack: [
+      "American English File 1",
+      "English Grammar in Use (Units 1-30)",
+      "Oxford Word Skills Basic",
+      "English Pronunciation in Use Elementary"
+    ],
     outcomes: [
-      "Habitos diarios de estudio y control de progreso",
-      "Comprension basica y produccion guiada",
-      "Estructuras esenciales para conversar"
+      "Binding forma-significado sin traduccion compulsiva",
+      "Input comprensible + practica guiada diaria",
+      "Bases de pronunciacion y supervivencia conversacional"
     ]
   }),
   Object.freeze({
@@ -66,10 +95,18 @@ const ROADMAP_PHASES = Object.freeze([
     cefr: "A2 -> B1",
     weekStart: 6,
     weekEnd: 10,
+    checkpoint: "Checkpoint B1 inicial (fin W10)",
+    checkpointTag: "CP B1",
+    bookStack: [
+      "American English File 2",
+      "Speakout Pre-Intermediate",
+      "English Grammar in Use (Units 31-60)",
+      "Oxford Word Skills Basic -> Intermediate"
+    ],
     outcomes: [
-      "Fluidez inicial con menos bloqueos",
+      "Fluidez inicial con tareas de interaccion real",
       "Consolidacion de tiempos verbales nucleares",
-      "Primer checkpoint formal de desempeno"
+      "Primer checkpoint formal de desempeno oral y escrito"
     ]
   }),
   Object.freeze({
@@ -79,10 +116,18 @@ const ROADMAP_PHASES = Object.freeze([
     cefr: "B1 -> B2-",
     weekStart: 11,
     weekEnd: 15,
+    checkpoint: "Checkpoint B1+ bajo presion (fin W15)",
+    checkpointTag: "CP B1+",
+    bookStack: [
+      "American English File 3",
+      "Roadmap B1+",
+      "Practice Makes Perfect: English Conversation",
+      "Oxford Word Skills Intermediate"
+    ],
     outcomes: [
-      "Conversaciones de mayor duracion",
-      "Transferencia lexical y precision",
-      "Checkpoint B2- con tareas bajo presion"
+      "Conversaciones de mayor duracion y menos bloqueos",
+      "Transferencia lexical y precision de registro",
+      "Escenarios TBLT con feedback de recuperacion"
     ]
   }),
   Object.freeze({
@@ -92,32 +137,60 @@ const ROADMAP_PHASES = Object.freeze([
     cefr: "B2",
     weekStart: 16,
     weekEnd: 20,
+    checkpoint: "Mock final B2 + certificacion conversacional (W20)",
+    checkpointTag: "CP B2",
+    bookStack: [
+      "Speakout Upper Intermediate",
+      "Roadmap B2",
+      "Compelling Conversations",
+      "English Grammar in Use (Units 61-90)"
+    ],
     outcomes: [
-      "Simulaciones reales y retroalimentacion fina",
-      "Control de reparacion y pronunciacion",
-      "Mock final y certificacion conversacional B2"
+      "Simulaciones reales con control de reparacion",
+      "Pronunciacion conectada y precision pragmatica",
+      "Entrega de performance B2 en condiciones reales"
     ]
   })
 ]);
 
 const METHOD_PILLARS = Object.freeze([
   Object.freeze({
-    title: "Control activo",
-    detail: "La app dirige ejecucion diaria y evita navegacion desordenada."
+    title: "Input + accion",
+    detail: "Input comprensible con salida activa para construir automaticidad."
   }),
   Object.freeze({
-    title: "Practica relevante",
-    detail: "Cada paso conecta con un objetivo comunicativo real."
+    title: "TBLT realista",
+    detail: "Cada semana usa tareas con objetivo comunicativo real, no ejercicios aislados."
   }),
   Object.freeze({
-    title: "Evidencia obligatoria",
-    detail: "No hay avance sin pruebas y validacion de gate."
+    title: "IA de baja ansiedad",
+    detail: "Roleplays con IA para practicar alto volumen sin bloqueo afectivo."
   }),
   Object.freeze({
-    title: "Escalado por fases",
-    detail: "El plan progresa desde base A0/A1 hasta performance B2."
+    title: "Scaffolding humano",
+    detail: "Feedback humano para matiz, intencion y transferencia a interaccion autentica."
   })
 ]);
+
+const LIBRARY_TRACKS = Object.freeze({
+  studentCore: Object.freeze([
+    "American English File",
+    "Speakout",
+    "Roadmap",
+    "English Grammar in Use",
+    "Oxford Word Skills"
+  ]),
+  fluencyBoosters: Object.freeze([
+    "Compelling Conversations",
+    "Practice Makes Perfect: English Conversation"
+  ]),
+  methodology: Object.freeze([
+    "The Practice of English Language Teaching (Jeremy Harmer)",
+    "Learning Teaching (Jim Scrivener)",
+    "How to Teach Speaking (Scott Thornbury)",
+    "A Course in Language Teaching (Penny Ur)"
+  ])
+});
 
 function escapeHTML(value) {
   return String(value || "")
@@ -477,6 +550,11 @@ export class LearningShell {
 
     if (action === "open-modules") {
       this.navigate("modulos");
+      return;
+    }
+
+    if (action === "open-library") {
+      this.navigate("biblioteca");
     }
   }
 
@@ -529,13 +607,16 @@ export class LearningShell {
         <p class="section-kicker">${escapeHTML(formatWeekLabel(weekEntry.week))}</p>
         <h3>${escapeHTML(toSentence(weekEntry.title, "Semana"))}</h3>
         <p class="muted-text">${escapeHTML(toSentence(profile.focus_theme, "Sin tema declarado"))}</p>
+        <p class="muted-text">Ruta esperada: ${escapeHTML(phase.title)} · ${escapeHTML(phase.cefr)}</p>
         <div class="chip-row">
-          <span class="chip">CEFR: ${escapeHTML(toSentence(profile.cefr_target, phase.cefr))}</span>
-          <span class="chip">Fase: ${escapeHTML(phase.title)}</span>
+          <span class="chip">Meta semana: ${escapeHTML(toSentence(profile.cefr_target, phase.cefr))}</span>
+          <span class="chip">${escapeHTML(phase.checkpointTag || "Checkpoint")}</span>
           <span class="chip">Dias activos: ${summary.activeDays.length}</span>
           <span class="chip">Pasos: ${summary.totalSteps}</span>
           <span class="chip">Carga: ${formatMinutes(summary.totalMinutes)}</span>
         </div>
+        <p class="muted-text">Checkpoint fase: ${escapeHTML(phase.checkpoint || "Sin checkpoint")}</p>
+        <p class="muted-text">Libros foco: ${escapeHTML((phase.bookStack || []).slice(0, 2).join(" · "))}</p>
       </article>
     `;
 
@@ -561,6 +642,7 @@ export class LearningShell {
     }).join("");
   }
 
+
   renderLayout() {
     const activePhase = getPhaseForWeek(this.activeWeek);
 
@@ -577,26 +659,36 @@ export class LearningShell {
             <p class="section-kicker">Fase activa</p>
             <h2>${escapeHTML(activePhase.title)}</h2>
             <p>${escapeHTML(activePhase.cefr)}</p>
+            <p class="muted-text">${escapeHTML(activePhase.checkpoint || "Sin checkpoint")}</p>
           </div>
 
           <nav class="module-nav" aria-label="Modulos del producto">
-            ${VIEW_IDS.map((viewId) => {
-              const meta = VIEW_META[viewId];
-              return `
-                <button class="module-nav-item" type="button" data-view-nav="${viewId}">
-                  <span>${escapeHTML(meta.label)}</span>
-                  <small>${escapeHTML(meta.subtitle)}</small>
-                </button>
-              `;
-            }).join("")}
+            ${NAV_GROUPS.map((group) => `
+              <div class="module-nav-group">
+                <p class="module-nav-group-label">${escapeHTML(group.label)}</p>
+                ${VIEW_IDS
+                  .filter((viewId) => VIEW_META[viewId]?.group === group.id)
+                  .map((viewId) => {
+                    const meta = VIEW_META[viewId];
+                    return `
+                      <button class="module-nav-item" type="button" data-view-nav="${viewId}">
+                        <span>${escapeHTML(meta.label)}</span>
+                        <small>${escapeHTML(meta.subtitle)}</small>
+                      </button>
+                    `;
+                  })
+                  .join("")}
+              </div>
+            `).join("")}
           </nav>
 
           <section class="sidebar-guide">
             <p class="section-kicker">Flujo recomendado</p>
             <ol>
-              <li>Revisar ruta y objetivo de hoy.</li>
-              <li>Ejecutar sesion guiada completa.</li>
-              <li>Consolidar avance semanal y evidencia.</li>
+              <li>Confirmar fase, semana y checkpoint activo.</li>
+              <li>Ejecutar 1.Hoy -> 2.Sesion guiada sin saltos.</li>
+              <li>Validar 3.Modulos para sostener coherencia semanal.</li>
+              <li>Cerrar evidencia y metricas en Progreso.</li>
             </ol>
           </section>
         </aside>
@@ -605,8 +697,8 @@ export class LearningShell {
           <header class="shell-topbar">
             <div>
               <p class="section-kicker">Control diario</p>
-              <h2>Arquitectura modular de aprendizaje</h2>
-              <p class="muted-text">Navegacion clara, modulos congruentes y ejecucion guiada con gates.</p>
+              <h2>Arquitectura de progresion 0 -> B2</h2>
+              <p class="muted-text">Flujo lineal diario, ruta semanal y biblioteca de libros por fase.</p>
             </div>
 
             <div class="topbar-chip-grid">
@@ -671,7 +763,10 @@ export class LearningShell {
                   <p class="section-kicker">Estado de sesion</p>
                   <h4 id="today-step">Sesion no iniciada</h4>
                   <p id="today-next-action" class="muted-text">Comienza por la sesion guiada para desbloquear avance.</p>
-                  <button class="btn-ghost" type="button" data-shell-action="open-modules">Explorar modulos semanales</button>
+                  <div class="button-row">
+                    <button class="btn-ghost" type="button" data-shell-action="open-modules">Explorar modulos semanales</button>
+                    <button class="btn-ghost" type="button" data-shell-action="open-library">Ver biblioteca por fase</button>
+                  </div>
                 </article>
               </div>
 
@@ -682,27 +777,6 @@ export class LearningShell {
                     <p>${escapeHTML(item.detail)}</p>
                   </article>
                 `).join("")}
-              </section>
-            </section>
-
-            <section class="module-panel" data-view-panel="ruta" aria-hidden="true" hidden>
-              <h3 class="panel-title" data-view-heading="ruta">Ruta completa 0 -> B2</h3>
-              <section class="phase-grid">
-                ${ROADMAP_PHASES.map((phase) => {
-                  const isCurrent = this.activeWeek >= phase.weekStart && this.activeWeek <= phase.weekEnd;
-                  return `
-                    <article class="surface-card phase-card ${isCurrent ? "is-current" : ""}">
-                      <header>
-                        <p class="section-kicker">${escapeHTML(phase.weeks)}</p>
-                        <h4>${escapeHTML(phase.title)}</h4>
-                        <span>${escapeHTML(phase.cefr)}</span>
-                      </header>
-                      <ul>
-                        ${phase.outcomes.map((outcome) => `<li>${escapeHTML(outcome)}</li>`).join("")}
-                      </ul>
-                    </article>
-                  `;
-                }).join("")}
               </section>
             </section>
 
@@ -718,7 +792,7 @@ export class LearningShell {
             </section>
 
             <section class="module-panel" data-view-panel="modulos" aria-hidden="true" hidden>
-              <h3 class="panel-title" data-view-heading="modulos">Modulos semanales estructurados</h3>
+              <h3 class="panel-title" data-view-heading="modulos">Plan semanal y progresion por fase</h3>
 
               <article class="surface-card week-controls">
                 <label for="week-picker">Selecciona semana</label>
@@ -742,7 +816,8 @@ export class LearningShell {
                       <h4>${escapeHTML(toSentence(weekEntry.title, "Semana"))}</h4>
                       <p class="muted-text">${escapeHTML(toSentence(profile.focus_theme, phase.title))}</p>
                       <div class="chip-row">
-                        <span class="chip">${escapeHTML(toSentence(profile.cefr_target, phase.cefr))}</span>
+                        <span class="chip">${escapeHTML(phase.cefr)}</span>
+                        <span class="chip">${escapeHTML(phase.checkpointTag || "CP")}</span>
                         <span class="chip">${summary.activeDays.length} dias</span>
                         <span class="chip">${summary.totalSteps} pasos</span>
                       </div>
@@ -754,6 +829,80 @@ export class LearningShell {
 
               <div id="week-detail"></div>
               <section id="week-days-grid" class="day-grid"></section>
+            </section>
+
+            <section class="module-panel" data-view-panel="ruta" aria-hidden="true" hidden>
+              <h3 class="panel-title" data-view-heading="ruta">Ruta completa 0 -> B2</h3>
+              <article class="surface-card info-card">
+                <p class="section-kicker">Secuencia oficial</p>
+                <p>La progresion esta dividida en 4 fases, cada una con checkpoint y stack de libros para evitar saltos de nivel.</p>
+              </article>
+              <section class="phase-grid">
+                ${ROADMAP_PHASES.map((phase) => {
+                  const isCurrent = this.activeWeek >= phase.weekStart && this.activeWeek <= phase.weekEnd;
+                  return `
+                    <article class="surface-card phase-card ${isCurrent ? "is-current" : ""}">
+                      <header>
+                        <p class="section-kicker">${escapeHTML(phase.weeks)}</p>
+                        <h4>${escapeHTML(phase.title)}</h4>
+                        <span>${escapeHTML(phase.cefr)}</span>
+                      </header>
+                      <ul>
+                        ${phase.outcomes.map((outcome) => `<li>${escapeHTML(outcome)}</li>`).join("")}
+                      </ul>
+                      <p class="phase-checkpoint"><strong>Checkpoint:</strong> ${escapeHTML(phase.checkpoint || "-")}</p>
+                      <ul class="mini-bullet-list">
+                        ${(phase.bookStack || []).map((book) => `<li>${escapeHTML(book)}</li>`).join("")}
+                      </ul>
+                    </article>
+                  `;
+                }).join("")}
+              </section>
+            </section>
+
+            <section class="module-panel" data-view-panel="biblioteca" aria-hidden="true" hidden>
+              <h3 class="panel-title" data-view-heading="biblioteca">Biblioteca de referencia (0 -> B2)</h3>
+
+              <article class="surface-card info-card">
+                <p class="section-kicker">Criterio de seleccion</p>
+                <p>Estos libros estan mapeados por fase para sostener coherencia de dificultad y transferencia a conversacion real.</p>
+              </article>
+
+              <section class="book-grid" aria-label="Libros por fase">
+                ${ROADMAP_PHASES.map((phase) => `
+                  <article class="surface-card book-card">
+                    <p class="section-kicker">${escapeHTML(phase.weeks)}</p>
+                    <h4>${escapeHTML(phase.title)} · ${escapeHTML(phase.cefr)}</h4>
+                    <p class="muted-text">${escapeHTML(phase.checkpoint || "-")}</p>
+                    <ul class="mini-bullet-list">
+                      ${(phase.bookStack || []).map((book) => `<li>${escapeHTML(book)}</li>`).join("")}
+                    </ul>
+                  </article>
+                `).join("")}
+              </section>
+
+              <section class="book-grid book-grid-3" aria-label="Bibliografia complementaria">
+                <article class="surface-card book-card">
+                  <p class="section-kicker">Core del estudiante</p>
+                  <ul class="mini-bullet-list">
+                    ${LIBRARY_TRACKS.studentCore.map((book) => `<li>${escapeHTML(book)}</li>`).join("")}
+                  </ul>
+                </article>
+
+                <article class="surface-card book-card">
+                  <p class="section-kicker">Fluidez conversacional</p>
+                  <ul class="mini-bullet-list">
+                    ${LIBRARY_TRACKS.fluencyBoosters.map((book) => `<li>${escapeHTML(book)}</li>`).join("")}
+                  </ul>
+                </article>
+
+                <article class="surface-card book-card">
+                  <p class="section-kicker">Marco metodologico</p>
+                  <ul class="mini-bullet-list">
+                    ${LIBRARY_TRACKS.methodology.map((book) => `<li>${escapeHTML(book)}</li>`).join("")}
+                  </ul>
+                </article>
+              </section>
             </section>
 
             <section class="module-panel" data-view-panel="progreso" aria-hidden="true" hidden>
@@ -782,7 +931,7 @@ export class LearningShell {
                 <article class="surface-card info-card">
                   <p class="section-kicker">Avance del programa</p>
                   <h4 id="progress-program">W01 de W20</h4>
-                  <p class="muted-text">Sigue el orden por modulos para sostener consistencia y llegar a B2 conversacional.</p>
+                  <p class="muted-text">Sigue el flujo 1-2-3 para sostener consistencia y llegar a B2 conversacional.</p>
                 </article>
 
                 <article class="surface-card info-card">
@@ -816,7 +965,7 @@ export class LearningShell {
 
     return {
       tone: "info",
-      text: "Comienza en el modulo Hoy y ejecuta la sesion guiada para desbloquear avance diario."
+      text: "Inicia en 1.Hoy y completa 2.Sesion guiada para desbloquear avance diario con coherencia."
     };
   }
 
@@ -839,7 +988,7 @@ export class LearningShell {
       return "Retoma la sesion guiada y valida el gate del paso activo.";
     }
 
-    return "Abre Sesion guiada y completa el primer paso para iniciar traccion.";
+    return "Abre 2.Sesion guiada y completa el primer paso para iniciar traccion.";
   }
 
   describeSessionState(snapshot) {

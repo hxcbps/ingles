@@ -46,98 +46,86 @@ a {
   color: inherit;
 }
 
+background-color: var(--surface-base);
+color: var(--text-primary);
+line-height: 1.5;
+-webkit-font-smoothing: antialiased;
+min-height: 100vh;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  margin: 0;
   font-family: var(--font-display);
-  letter-spacing: -0.018em;
-  line-height: 1.18;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 p {
-  margin: 0;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
 }
 
+a {
+  color: var(--text-brand);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--palette-brand-600);
+}
+
+/* Utilities likely to be used in Markdown/Content */
 ul,
 ol {
-  margin: 0;
-  padding: 0;
+  list-style-position: inside;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+}
+
+li {
+  margin-bottom: 0.25rem;
+}
+
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
 button,
 input,
-textarea,
-select {
-  font: inherit;
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
 }
 
-.app-shell-root {
-  min-height: 100vh;
-  padding: clamp(0.78rem, 1.8vw, 1.4rem);
+/* Scrollbar refinement */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.loading-shell {
-  min-height: calc(100vh - 2rem);
-  display: grid;
-  place-items: center;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.loading-card {
-  width: min(600px, 94vw);
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius-lg);
-  background:
-    linear-gradient(160deg, rgba(238, 244, 250, 0.95) 0%, rgba(222, 231, 241, 0.93) 100%),
-    linear-gradient(120deg, rgba(182, 127, 97, 0.14) 0%, rgba(90, 132, 178, 0.12) 100%);
-  box-shadow: var(--shadow-elevated);
-  padding: clamp(1.4rem, 2vw, 2rem);
-  display: grid;
-  gap: 0.78rem;
-  animation: shell-enter 540ms var(--motion-spring) both;
+::-webkit-scrollbar-thumb {
+  background: var(--palette-ink-300);
+  border-radius: 4px;
 }
 
-.loading-card h1 {
-  font-size: clamp(1.24rem, 3vw, 1.9rem);
-}
-
-.section-kicker {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.13em;
-  font-size: 0.7rem;
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--accent-700);
-}
-
-.muted-text {
-  color: var(--ink-500);
-}
-
-@keyframes shell-enter {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes panel-enter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--palette-ink-500);
 }
