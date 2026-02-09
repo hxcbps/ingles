@@ -1,7 +1,7 @@
 import { formatWeekLabel } from "../../utils/format.js";
 
 export function buildHeaderStatusMessage(program, config) {
-  return `${program.isoDate} | Inicio ${program.startDateISO} | ${program.dayLabel} | ${config.domain} | CEFR ${program.targetCEFR} | ${program.paceMode}`;
+  return `Dia ${program.dayLabel} | Semana ${program.weekLabel}/${formatWeekLabel(program.effectiveProgramWeeks || program.programWeeks)} | CEFR ${program.targetCEFR} | Dominio ${config.domain}`;
 }
 
 export function renderHeader(dom, program, config, dayMinutes, setStatusLine) {

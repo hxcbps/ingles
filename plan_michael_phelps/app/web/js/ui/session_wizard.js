@@ -27,6 +27,11 @@ function escapeHTML(value) {
     .replaceAll("'", "&#39;");
 }
 
+function inputValue(value) {
+  if (value === null || value === undefined) return "";
+  return escapeHTML(String(value));
+}
+
 function statusLabel(status) {
   switch (status) {
     case STEP_STATUS.ACTIVE:
@@ -34,13 +39,46 @@ function statusLabel(status) {
     case STEP_STATUS.DONE:
       return "Completado";
     case STEP_STATUS.RECOVERED:
-      return "Recovery";
+      return "Recuperado";
     case STEP_STATUS.FAILED:
       return "Fallido";
     case STEP_STATUS.LOCKED:
     default:
       return "Bloqueado";
   }
+}
+
+function gateTypeLabel(type) {
+  switch (type) {
+    case "timer_complete":
+      return "Tiempo minimo";
+    case "self_score":
+      return "Auto-score";
+    case "manual_check":
+      return "Confirmacion manual";
+    case "artifact_uploaded":
+    case "evidence_upload":
+      return "Evidencia cargada";
+    case "min_words":
+    case "evidence_log_min_words":
+      return "Minimo de palabras";
+    case "min_turns":
+      return "Minimo de turnos";
+    case "rubric_min":
+      return "Rubrica minima";
+    case "metrics_threshold":
+      return "Umbral de metricas";
+    case "compound":
+      return "Validacion compuesta";
+    default:
+      return type || "manual_check";
+  }
+}
+
+function formatStepType(stepType) {
+  const raw = String(stepType || "step").replaceAll("_", " ").trim();
+  if (!raw) return "Paso";
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
 }
 
 function collectNeeds(gate, needs = {}) {
@@ -64,6 +102,7 @@ function collectNeeds(gate, needs = {}) {
 
 function collectMetricKeys(gate, keys = new Set()) {
   if (!gate || typeof gate !== "object") return keys;
+
   if (gate.type === "compound" && Array.isArray(gate.rules)) {
     gate.rules.forEach((rule) => collectMetricKeys(rule, keys));
     return keys;
@@ -83,6 +122,7 @@ function collectMetricKeys(gate, keys = new Set()) {
       keys.add(String(gate.value.metric));
       return keys;
     }
+
     Object.keys(gate.value).forEach((key) => keys.add(key));
     return keys;
   }
@@ -90,7 +130,28 @@ function collectMetricKeys(gate, keys = new Set()) {
   if (typeof gate.value === "string") {
     keys.add(gate.value);
   }
+
   return keys;
+}
+
+function flattenGateTypes(gate, acc = []) {
+  if (!gate || typeof gate !== "object") return acc;
+
+  if (gate.type === "compound" && Array.isArray(gate.rules)) {
+    gate.rules.forEach((rule) => flattenGateTypes(rule, acc));
+    return acc;
+  }
+
+  if (gate.type) {
+    acc.push(gate.type);
+  }
+  return acc;
+}
+
+function metricLabel(key) {
+  const raw = String(key || "").replaceAll("_", " ").trim();
+  if (!raw) return "Metrica";
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
 }
 
 function readResourceLocator(content = {}) {
@@ -115,6 +176,7 @@ export class SessionWizard {
       intervalId: null
     };
     this.feedback = { tone: "info", text: "" };
+    this.draftByStep = {};
   }
 
   dispose() {
@@ -132,6 +194,7 @@ export class SessionWizard {
   ensureTimer(stepId, durationMin) {
     const totalSec = Math.max(0, Math.floor((Number(durationMin) || 0) * 60));
     if (this.timer.stepId === stepId) return;
+
     this.stopTimer();
     this.timer = {
       stepId,
@@ -143,13 +206,33 @@ export class SessionWizard {
     };
   }
 
+  getStepDraft(stepId, fallbackData = {}) {
+    if (this.draftByStep[stepId] && typeof this.draftByStep[stepId] === "object") {
+      return this.draftByStep[stepId];
+    }
+
+    if (fallbackData && typeof fallbackData === "object") {
+      return fallbackData;
+    }
+
+    return {};
+  }
+
+  rememberStepDraft(stepId, input) {
+    if (!stepId) return;
+    this.draftByStep[stepId] = {
+      ...(this.draftByStep[stepId] || {}),
+      ...(input || {})
+    };
+  }
+
   renderCompletion() {
     const progress = this.orchestrator.getProgress();
     this.container.innerHTML = `
       <section class="wizard-complete" aria-label="Sesion completada">
-        <h2>Sesion completada</h2>
-        <p>Excelente ejecucion. Progreso final: <strong>${progress}%</strong>.</p>
-        <p>Revisa tu cierre diario y prepara el foco de manana.</p>
+        <p class="kicker">Sesion finalizada</p>
+        <h2>Excelente bloque de ejecucion</h2>
+        <p>Progreso final: <strong>${progress}%</strong>. Ya puedes cerrar evidencia y publicar tu evaluacion.</p>
       </section>
     `;
   }
@@ -161,9 +244,9 @@ export class SessionWizard {
 
     if (content.url) {
       return `
-        <article class="resource-card">
-          <h3>Recurso</h3>
-          <p class="resource-help">Abre este recurso y ejecuta la instruccion exacta.</p>
+        <article class="resource-card" aria-label="Recurso principal del paso">
+          <h3>Recurso del paso</h3>
+          <p class="resource-help">Abre este recurso y ejecuta exactamente lo indicado en la instruccion.</p>
           <a class="resource-link" href="${escapeHTML(content.url)}" target="_blank" rel="noopener noreferrer">
             Abrir recurso externo
           </a>
@@ -174,7 +257,7 @@ export class SessionWizard {
 
     if (locator) {
       return `
-        <article class="resource-card">
+        <article class="resource-card" aria-label="Localizador de recurso">
           <h3>Localizador de recurso</h3>
           <ul class="locator-list">
             <li><span>Libro</span><strong>${escapeHTML(locator.book || "-")}</strong></li>
@@ -191,7 +274,7 @@ export class SessionWizard {
       const promptVersion = step?.content?.prompt_version || step?.prompt_version || "v1";
       const prompt = `Prompt ref: ${promptRef}\nPrompt version: ${promptVersion}\nInstruccion: ${step?.content?.instructions || ""}`;
       return `
-        <article class="resource-card">
+        <article class="resource-card" aria-label="Prompt IA">
           <h3>Prompt IA</h3>
           <p class="resource-help">Copia el prompt y ejecuta la practica sin traducir.</p>
           <textarea id="prompt-text" class="prompt-text" readonly>${escapeHTML(prompt)}</textarea>
@@ -201,51 +284,79 @@ export class SessionWizard {
     }
 
     return `
-      <article class="resource-card">
+      <article class="resource-card" aria-label="Recurso no especificado">
         <h3>Recurso</h3>
-        <p class="resource-help">Sigue la instruccion del paso y registra evidencia.</p>
+        <p class="resource-help">Sigue la instruccion del paso y registra evidencia valida.</p>
       </article>
     `;
   }
 
-  renderEvidenceFields(step) {
+  renderGateChecklist(step) {
+    const needs = collectNeeds(step.gate, {});
+    const items = [];
+
+    if (needs.timer) items.push("Completa el tiempo del timer del paso.");
+    if (needs.text) items.push("Escribe evidencia textual suficiente.");
+    if (needs.score) items.push("Registra un auto-score valido.");
+    if (needs.turns) items.push("Declara los turnos completados.");
+    if (needs.artifact) items.push("Adjunta ruta o enlace de evidencia.");
+    if (needs.check) items.push("Marca confirmacion manual del paso.");
+    if (needs.rubric) items.push("Completa la rubrica requerida.");
+    if (needs.metrics) items.push("Ingresa las metricas solicitadas.");
+
+    if (!items.length) {
+      items.push("Cumple la validacion definida para habilitar el siguiente paso.");
+    }
+
+    return `
+      <article class="gate-spec" aria-label="Checklist de validacion del paso">
+        <h4>Checklist de validacion</h4>
+        <ul class="gate-spec-list">
+          ${items.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}
+        </ul>
+      </article>
+    `;
+  }
+
+  renderEvidenceFields(step, draft = {}) {
     const needs = collectNeeds(step.gate, {});
     const metricKeys = [...collectMetricKeys(step.gate)];
     const keys = metricKeys.length ? metricKeys : ["error_density", "pronunciation_score"];
+    const draftText = String(draft.text ?? draft.log ?? "");
 
     return `
       <div class="evidence-grid">
         ${needs.text ? `
           <label class="field-block" for="evidence-text">
             <span>Registro textual</span>
-            <textarea id="evidence-text" rows="4" placeholder="Describe output, errores y correcciones aplicadas."></textarea>
+            <textarea id="evidence-text" rows="4" placeholder="Describe output, errores y correcciones aplicadas.">${escapeHTML(draftText)}</textarea>
           </label>
         ` : ""}
 
         ${needs.score ? `
           <label class="field-block" for="evidence-score">
             <span>Auto-score</span>
-            <input id="evidence-score" type="number" min="0" max="100" step="1" placeholder="0-100" />
+            <input id="evidence-score" type="number" min="0" max="100" step="1" placeholder="0-100" value="${inputValue(draft.score)}" />
           </label>
         ` : ""}
 
         ${needs.turns ? `
           <label class="field-block" for="evidence-turns">
             <span>Turnos completados</span>
-            <input id="evidence-turns" type="number" min="0" step="1" placeholder="0" />
+            <input id="evidence-turns" type="number" min="0" step="1" placeholder="0" value="${inputValue(draft.turnCount)}" />
           </label>
         ` : ""}
 
         ${needs.artifact ? `
           <label class="field-block" for="evidence-artifact">
             <span>Ruta o enlace de evidencia</span>
-            <input id="evidence-artifact" type="text" placeholder="tracking/daily/YYYY-MM-DD/audio/file.mp3" />
+            <input id="evidence-artifact" type="text" placeholder="tracking/daily/YYYY-MM-DD/audio/file.mp3" value="${inputValue(draft.artifactPath)}" />
           </label>
         ` : ""}
 
         ${needs.check ? `
           <label class="checkbox-row" for="evidence-check">
-            <input id="evidence-check" type="checkbox" />
+            <input id="evidence-check" type="checkbox" ${draft.checked ? "checked" : ""} />
             <span>Confirmo que complete el paso segun instrucciones</span>
           </label>
         ` : ""}
@@ -255,23 +366,27 @@ export class SessionWizard {
         <fieldset class="rubric-grid">
           <legend>Rubrica rapida (0-3)</legend>
           <label for="rubric-fluency">Fluency</label>
-          <input data-rubric="fluency" id="rubric-fluency" type="number" min="0" max="3" step="1" />
+          <input data-rubric="fluency" id="rubric-fluency" type="number" min="0" max="3" step="1" value="${inputValue(draft?.rubric?.fluency)}" />
           <label for="rubric-accuracy">Accuracy</label>
-          <input data-rubric="accuracy" id="rubric-accuracy" type="number" min="0" max="3" step="1" />
+          <input data-rubric="accuracy" id="rubric-accuracy" type="number" min="0" max="3" step="1" value="${inputValue(draft?.rubric?.accuracy)}" />
           <label for="rubric-pronunciation">Pronunciation</label>
-          <input data-rubric="pronunciation" id="rubric-pronunciation" type="number" min="0" max="3" step="1" />
+          <input data-rubric="pronunciation" id="rubric-pronunciation" type="number" min="0" max="3" step="1" value="${inputValue(draft?.rubric?.pronunciation)}" />
           <label for="rubric-completion">Task completion</label>
-          <input data-rubric="completion" id="rubric-completion" type="number" min="0" max="3" step="1" />
+          <input data-rubric="completion" id="rubric-completion" type="number" min="0" max="3" step="1" value="${inputValue(draft?.rubric?.completion)}" />
         </fieldset>
       ` : ""}
 
       ${needs.metrics ? `
         <fieldset class="metrics-grid">
           <legend>Metricas requeridas</legend>
-          ${keys.map((metricKey, index) => `
-            <label for="metric-${index}">${escapeHTML(metricKey)}</label>
-            <input data-metric="${escapeHTML(metricKey)}" id="metric-${index}" type="number" step="0.1" />
-          `).join("")}
+          ${keys
+            .map(
+              (metricKey, index) => `
+            <label for="metric-${index}">${escapeHTML(metricLabel(metricKey))}</label>
+            <input data-metric="${escapeHTML(metricKey)}" id="metric-${index}" type="number" step="0.1" value="${inputValue(draft?.metrics?.[metricKey])}" />
+          `
+            )
+            .join("")}
         </fieldset>
       ` : ""}
     `;
@@ -291,6 +406,11 @@ export class SessionWizard {
     const instructions = step?.content?.instructions || "Sigue la instruccion del paso.";
     const successCriteria = step?.success_criteria || "Cumplir gate del paso activo.";
     const status = current.status || STEP_STATUS.ACTIVE;
+    const gateTypes = flattenGateTypes(step.gate, []);
+    const gateSummary = gateTypes.length
+      ? gateTypes.map((item) => gateTypeLabel(item)).join(" + ")
+      : gateTypeLabel(step?.gate?.type || "manual_check");
+    const draft = this.getStepDraft(step.step_id, current.data);
 
     this.ensureTimer(step.step_id, step.duration_min);
 
@@ -300,6 +420,7 @@ export class SessionWizard {
           <div>
             <p class="kicker">Sesion activa</p>
             <h2>Paso ${current.stepIndex} de ${current.totalSteps}</h2>
+            <p class="step-summary">${escapeHTML(formatStepType(step.type))} · ${escapeHTML(step.duration_min || 0)} min</p>
           </div>
           <div class="top-meta">
             <span class="status-badge status-${escapeHTML(status)}">${statusLabel(status)}</span>
@@ -312,32 +433,34 @@ export class SessionWizard {
         </div>
 
         <article class="step-card">
-          <p class="step-type">${escapeHTML(step.type || "step")}</p>
+          <p class="step-type">${escapeHTML(formatStepType(step.type || "step"))}</p>
           <h3>${escapeHTML(step.title || "Paso activo")}</h3>
+
           <div class="instruction-grid">
             <div>
               <h4>Haz esto ahora</h4>
               <p>${escapeHTML(instructions)}</p>
             </div>
             <div>
-              <h4>Duracion objetivo</h4>
-              <p>${escapeHTML(step.duration_min || 0)} min</p>
-            </div>
-            <div>
               <h4>Criterio de exito</h4>
               <p>${escapeHTML(successCriteria)}</p>
             </div>
             <div>
-              <h4>Como se valida</h4>
-              <p>${escapeHTML(step.gate?.type || "manual_check")}</p>
+              <h4>Validacion</h4>
+              <p>${escapeHTML(gateSummary)}</p>
+            </div>
+            <div>
+              <h4>Reintentos</h4>
+              <p>${Number.isInteger(Number(step?.retry_policy?.max_attempts)) ? escapeHTML(step.retry_policy.max_attempts) : "0"} intentos antes de recovery</p>
             </div>
           </div>
 
+          ${this.renderGateChecklist(step)}
           ${this.renderResource(step)}
 
           <article class="evidence-card" aria-label="Captura de evidencia">
             <h4>Evidencia del paso</h4>
-            ${this.renderEvidenceFields(step)}
+            ${this.renderEvidenceFields(step, draft)}
           </article>
 
           <p id="gate-feedback" class="gate-feedback tone-${escapeHTML(this.feedback.tone)}" role="status" aria-live="polite">
@@ -366,6 +489,7 @@ export class SessionWizard {
 
     this.bindEvents(step);
     this.updateSubmitState(step);
+    this.updateTimerUI();
   }
 
   timerElapsedSec() {
@@ -373,21 +497,21 @@ export class SessionWizard {
   }
 
   gatherInput() {
-    const text = this.container.querySelector("#evidence-text")?.value || "";
-    const score = asNumber(this.container.querySelector("#evidence-score")?.value);
-    const turnCount = asNumber(this.container.querySelector("#evidence-turns")?.value);
-    const artifactPath = this.container.querySelector("#evidence-artifact")?.value || "";
-    const checked = this.container.querySelector("#evidence-check")?.checked === true;
+    const text = this.container?.querySelector("#evidence-text")?.value || "";
+    const score = asNumber(this.container?.querySelector("#evidence-score")?.value);
+    const turnCount = asNumber(this.container?.querySelector("#evidence-turns")?.value);
+    const artifactPath = this.container?.querySelector("#evidence-artifact")?.value || "";
+    const checked = this.container?.querySelector("#evidence-check")?.checked === true;
 
     const rubric = {};
-    this.container.querySelectorAll("[data-rubric]").forEach((node) => {
+    this.container?.querySelectorAll("[data-rubric]").forEach((node) => {
       const key = node.getAttribute("data-rubric");
       const value = asNumber(node.value);
       if (key && value !== null) rubric[key] = value;
     });
 
     const metrics = {};
-    this.container.querySelectorAll("[data-metric]").forEach((node) => {
+    this.container?.querySelectorAll("[data-metric]").forEach((node) => {
       const key = node.getAttribute("data-metric");
       const value = asNumber(node.value);
       if (key && value !== null) metrics[key] = value;
@@ -438,19 +562,23 @@ export class SessionWizard {
   }
 
   updateSubmitState(step) {
-    const submit = this.container.querySelector("#btn-submit-step");
+    const submit = this.container?.querySelector("#btn-submit-step");
     if (!submit) return;
+
     const input = this.gatherInput();
+    this.rememberStepDraft(step.step_id, input);
     submit.disabled = !this.isSoftReady(step, input);
   }
 
   updateTimerUI() {
-    const timerEl = this.container.querySelector("#wizard-timer");
-    const toggleBtn = this.container.querySelector("#btn-timer-toggle");
+    const timerEl = this.container?.querySelector("#wizard-timer");
+    const toggleBtn = this.container?.querySelector("#btn-timer-toggle");
+
     if (timerEl) {
       timerEl.textContent = this.timer.completed ? "COMPLETADO" : formatClock(this.timer.leftSec);
       timerEl.classList.toggle("timer-complete", this.timer.completed);
     }
+
     if (toggleBtn) {
       toggleBtn.textContent = this.timer.running ? "Pausar timer" : "Iniciar timer";
     }
@@ -458,6 +586,7 @@ export class SessionWizard {
 
   startTimer(step) {
     if (this.timer.running || this.timer.completed) return;
+
     this.timer.running = true;
     this.updateTimerUI();
 
@@ -471,6 +600,7 @@ export class SessionWizard {
         this.updateSubmitState(step);
         return;
       }
+
       this.timer.leftSec -= 1;
       this.updateTimerUI();
       this.updateSubmitState(step);
@@ -493,7 +623,7 @@ export class SessionWizard {
   }
 
   async copyPrompt() {
-    const promptText = this.container.querySelector("#prompt-text")?.value || "";
+    const promptText = this.container?.querySelector("#prompt-text")?.value || "";
     if (!promptText) return;
 
     try {
@@ -502,14 +632,18 @@ export class SessionWizard {
     } catch {
       this.setFeedback("warning", "No se pudo copiar automaticamente. Copia manualmente.");
     }
+
     this.render();
   }
 
   handleSubmit(step) {
     const input = this.gatherInput();
+    this.rememberStepDraft(step.step_id, input);
+
     const result = this.orchestrator.submitStep(step.step_id, input);
 
     if (result.success) {
+      delete this.draftByStep[step.step_id];
       this.setFeedback("success", "Gate validado. Pasando al siguiente paso.");
       this.render();
       return;
@@ -541,10 +675,10 @@ export class SessionWizard {
   }
 
   bindEvents(step) {
-    const timerToggle = this.container.querySelector("#btn-timer-toggle");
-    const timerReset = this.container.querySelector("#btn-timer-reset");
-    const submit = this.container.querySelector("#btn-submit-step");
-    const copyPrompt = this.container.querySelector("#copy-prompt-v4");
+    const timerToggle = this.container?.querySelector("#btn-timer-toggle");
+    const timerReset = this.container?.querySelector("#btn-timer-reset");
+    const submit = this.container?.querySelector("#btn-submit-step");
+    const copyPrompt = this.container?.querySelector("#copy-prompt-v4");
 
     if (timerToggle) {
       timerToggle.addEventListener("click", () => {
@@ -568,7 +702,7 @@ export class SessionWizard {
       copyPrompt.addEventListener("click", () => this.copyPrompt());
     }
 
-    this.container.querySelectorAll("input, textarea").forEach((node) => {
+    this.container?.querySelectorAll("input, textarea").forEach((node) => {
       node.addEventListener("input", () => this.updateSubmitState(step));
       node.addEventListener("change", () => this.updateSubmitState(step));
     });

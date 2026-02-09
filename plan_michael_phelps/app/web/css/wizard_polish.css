@@ -1,24 +1,29 @@
 body.app-mode-v4 .v4-header,
 body.app-mode-v4 .step-card,
-body.app-mode-v4 .wizard-footer {
+body.app-mode-v4 .wizard-footer,
+body.app-mode-v4 .wizard-complete,
+body.app-mode-v4 .v4-error {
   animation: v4-rise 320ms ease both;
 }
 
 body.app-mode-v4 .instruction-grid > div,
+body.app-mode-v4 .gate-spec,
 body.app-mode-v4 .resource-card,
 body.app-mode-v4 .evidence-card {
   transition:
     transform 180ms ease,
     box-shadow 220ms ease,
-    border-color 180ms ease;
+    border-color 180ms ease,
+    background 220ms ease;
 }
 
 body.app-mode-v4 .instruction-grid > div:hover,
+body.app-mode-v4 .gate-spec:hover,
 body.app-mode-v4 .resource-card:hover,
 body.app-mode-v4 .evidence-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 24px rgba(45, 34, 20, 0.12);
-  border-color: #cbb690;
+  box-shadow: 0 14px 30px rgba(40, 33, 21, 0.14);
+  border-color: #cbb590;
 }
 
 body.app-mode-v4 .progress-fill {
@@ -38,7 +43,8 @@ body.app-mode-v4 .btn-primary:hover,
 body.app-mode-v4 .btn-secondary:hover,
 body.app-mode-v4 .btn-ghost:hover {
   transform: translateY(-1px);
-  filter: saturate(1.06);
+  filter: saturate(1.05);
+  box-shadow: 0 12px 22px rgba(27, 21, 13, 0.18);
 }
 
 body.app-mode-v4 .btn-primary:active,
@@ -70,11 +76,14 @@ body.app-mode-v4 .timer-value.timer-complete {
 @media (prefers-reduced-motion: reduce) {
   body.app-mode-v4 .v4-header,
   body.app-mode-v4 .step-card,
-  body.app-mode-v4 .wizard-footer {
+  body.app-mode-v4 .wizard-footer,
+  body.app-mode-v4 .wizard-complete,
+  body.app-mode-v4 .v4-error {
     animation: none;
   }
 
   body.app-mode-v4 .instruction-grid > div,
+  body.app-mode-v4 .gate-spec,
   body.app-mode-v4 .resource-card,
   body.app-mode-v4 .evidence-card,
   body.app-mode-v4 .progress-fill,

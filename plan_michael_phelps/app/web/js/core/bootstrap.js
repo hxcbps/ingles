@@ -43,9 +43,10 @@ import { summarizeRubric } from "../domain/rubric.js";
 import { createHashRouter } from "../routing/hash_router.js";
 import { evaluateSoftGuard } from "../routing/route_guards.js";
 import { applyRouteVisibility } from "../routing/view_switcher.js";
-import { canonicalHashForRoute, DEFAULT_ROUTE_ID, getRouteLabel } from "../routing/routes.js";
+import { DEFAULT_ROUTE_ID, getRouteLabel } from "../routing/routes.js";
 
 const VALIDATE_HINT = "Revisa learning/content y ejecuta ./plan_michael_phelps/bin/validate_content.";
+const ROUTE_SEQUENCE = ["action", "session", "close", "evaluate"];
 
 function safeRender(dom, sectionName, renderFn, fallbackFn) {
   try {
@@ -121,11 +122,46 @@ function formatRouteGuardMessage(guard) {
     return guard.message;
   }
 
-  return `${guard.message} Recomendado: ${getRouteLabel(guard.recommendedRouteId)} (${canonicalHashForRoute(
-    guard.recommendedRouteId
-  )}).`;
+  return `${guard.message} Recomendado: ${getRouteLabel(guard.recommendedRouteId)}.`;
 }
 
+function setRouteLinkState(documentRef, routeId, { locked = false, hint = "" } = {}) {
+  const link = documentRef.querySelector(`[data-route-link="${routeId}"]`);
+  if (!link) return;
+
+  link.classList.toggle("is-locked", locked);
+  link.setAttribute("aria-disabled", locked ? "true" : "false");
+
+  if (locked) {
+    link.setAttribute("tabindex", "-1");
+    if (hint) {
+      link.setAttribute("title", hint);
+    }
+    return;
+  }
+
+  if (link.getAttribute("tabindex") === "-1") {
+    link.removeAttribute("tabindex");
+  }
+
+  if (link.hasAttribute("title")) {
+    link.removeAttribute("title");
+  }
+}
+
+function refreshRouteLinkLocks(documentRef, checklist = {}) {
+  ROUTE_SEQUENCE.forEach((routeId) => {
+    const guard = evaluateSoftGuard({ routeId, checklist });
+    const locked = Boolean(
+      guard.level === "warning" && guard.recommendedRouteId && guard.recommendedRouteId !== routeId
+    );
+
+    setRouteLinkState(documentRef, routeId, {
+      locked,
+      hint: guard.message || ""
+    });
+  });
+}
 export async function bootstrap({
   documentRef = document,
   windowRef = window,
@@ -291,9 +327,11 @@ export async function bootstrap({
       if (!router) return;
 
       const routeState = router.current();
+      refreshRouteLinkLocks(documentRef, state.checklist);
+
       if (routeState.isInvalid) {
         const raw = routeState.rawHash || "#";
-        setRouteStatus(`Ruta '${raw}' no valida. Redirigida a ${routeState.canonicalHash}.`);
+        setRouteStatus(`Ruta '${raw}' no valida. Te llevamos a ${getRouteLabel(routeState.routeId)}.`);
         return;
       }
 
@@ -301,10 +339,21 @@ export async function bootstrap({
         routeId: routeState.routeId,
         checklist: state.checklist
       });
+
+      if (
+        guard.level === "warning" &&
+        guard.recommendedRouteId &&
+        guard.recommendedRouteId !== routeState.routeId
+      ) {
+        setRouteStatus(`${guard.message} Te llevamos a ${getRouteLabel(guard.recommendedRouteId)}.`);
+        router.navigate(guard.recommendedRouteId, { replace: true });
+        return;
+      }
+
       const guardMessage = formatRouteGuardMessage(guard);
 
       if (routeState.redirectedFromLegacy) {
-        const legacyMessage = `Ruta legacy convertida a ${routeState.canonicalHash}.`;
+        const legacyMessage = `Ruta anterior convertida a ${getRouteLabel(routeState.routeId)}.`;
         setRouteStatus(guardMessage ? `${legacyMessage} ${guardMessage}` : legacyMessage);
         return;
       }
@@ -510,9 +559,9 @@ export async function bootstrap({
             });
             refreshRouteStatus();
           },
-          onInvalidRoute: ({ rawHash, canonicalHash }) => {
+          onInvalidRoute: ({ rawHash }) => {
             const raw = rawHash || "#";
-            setRouteStatus(`Ruta '${raw}' no valida. Redirigida a ${canonicalHash}.`);
+            setRouteStatus(`Ruta '${raw}' no valida. Te llevamos a ${getRouteLabel(DEFAULT_ROUTE_ID)}.`);
           }
         });
         router.start();

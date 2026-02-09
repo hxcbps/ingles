@@ -31,11 +31,12 @@ function ensureV4Shell(container) {
     <div id="v4-root" class="v4-container">
       <header class="v4-header" aria-label="Estado de sesion">
         <div class="v4-brand">
-          <p class="v4-kicker">English Sprint</p>
-          <h1>Sesion de ejecucion V4</h1>
+          <p class="v4-kicker">English Sprint | Modo enfoque</p>
+          <h1>Ejecucion guiada del dia</h1>
+          <p class="v4-subtitle">Un solo paso activo. Validacion obligatoria para avanzar.</p>
         </div>
         <p id="session-status" class="v4-status" role="status" aria-live="polite">
-          Cargando sesion...
+          Preparando sesion...
         </p>
       </header>
       <main id="wizard-container" class="wizard-wrapper" aria-label="Wizard de sesion"></main>

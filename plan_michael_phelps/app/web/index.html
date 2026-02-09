@@ -9,154 +9,198 @@
   </head>
   <body>
     <main id="app" class="app">
-      <header class="hero reveal" aria-label="Resumen diario" data-route-group="always">
-        <div>
-          <p class="eyebrow">English Sprint | Sesame-first | V3</p>
-          <h1 data-route-focus="always">Ejecuta el dia con cero friccion</h1>
-          <p id="status-line" class="status-line" role="status" aria-live="polite">Cargando mision y siguiente accion...</p>
-        </div>
-        <div class="hero-meta" aria-label="Estado de sesion">
-          <span id="session-pill" class="pill">-- min</span>
-          <span id="week-pill" class="pill pill-alt">Semana --</span>
-        </div>
-      </header>
+      <div class="page-shell">
+        <header class="hero reveal" aria-label="Resumen diario" data-route-group="always">
+          <div class="hero-copy">
+            <p class="eyebrow">English Sprint | Sesame-first | V3</p>
+            <h1 data-route-focus="always">Ejecuta el dia con precision y ritmo</h1>
+            <p id="status-line" class="status-line" role="status" aria-live="polite">Cargando mision y siguiente accion...</p>
+          </div>
+          <div class="hero-meta" aria-label="Estado de sesion">
+            <span id="session-pill" class="pill">-- min</span>
+            <span id="week-pill" class="pill pill-alt">Semana --</span>
+            <p class="hero-meta-note">Modo de trabajo: una accion clara por fase</p>
+          </div>
+        </header>
 
-      <section class="route card reveal" aria-label="Ruta de hoy" data-route-group="always">
-        <p class="route-eyebrow">Ruta de ejecucion</p>
-        <p class="route-caption">Secuencia recomendada para completar el dia en una sola pasada.</p>
-        <ol class="route-list">
-          <li class="route-step"><a href="#/today/action" data-route-link="action">1. Accion inmediata</a></li>
-          <li class="route-step"><a href="#/today/session" data-route-link="session">2. Sesion</a></li>
-          <li class="route-step"><a href="#/today/close" data-route-link="close">3. Cierre</a></li>
-          <li class="route-step"><a href="#/today/evaluate" data-route-link="evaluate">4. Evaluacion</a></li>
-        </ol>
-      </section>
-
-      <section id="step-action" class="now card card-priority reveal" aria-label="Siguiente accion" data-route-group="action">
-        <h2 data-route-focus="action">Empieza por aqui</h2>
-        <p id="next-action" class="next-action" aria-live="polite">En 30 segundos: abre Sesame y ejecuta el primer bloque.</p>
-        <div class="action-row">
-          <a class="btn" href="https://www.sesame.com/" target="_blank" rel="noreferrer">Abrir Sesame</a>
-          <a class="btn btn-alt" href="https://chat.openai.com" target="_blank" rel="noreferrer">Abrir ChatGPT</a>
-          <button id="copy-evidence" class="btn btn-soft" type="button">Copiar ruta evidencia</button>
-        </div>
-        <p class="micro-hint">Regla: sigue el orden de esta pantalla de arriba hacia abajo.</p>
-      </section>
-
-      <section class="layout reveal" aria-label="Plan diario" data-route-group="always">
-        <div class="column column-primary">
-          <article id="step-prompt" class="card card-priority" aria-label="Prompt Sesame" data-route-group="session">
-            <h3 data-route-focus="session">Prompt para Sesame (copiar y pegar)</h3>
-            <p id="prompt-text" class="prompt">Cargando prompt del dia...</p>
-            <button id="copy-prompt" class="btn btn-soft" type="button">Copiar prompt</button>
-            <p class="hint">Pega el prompt completo y empieza la ronda 1 sin traducir.</p>
-          </article>
-
-          <article id="step-timer" class="card card-priority" aria-label="Timer de sesion" data-route-group="session">
-            <h3>Timer de sesion (bloque completo)</h3>
-            <p id="timer-display" class="timer">00:00:00</p>
-            <div class="action-row">
-              <button id="timer-start" class="btn" type="button">Iniciar</button>
-              <button id="timer-pause" class="btn btn-alt" type="button">Pausar</button>
-              <button id="timer-reset" class="btn btn-soft" type="button">Reiniciar</button>
+        <section class="route card reveal" aria-label="Ruta de hoy" data-route-group="always">
+          <div class="route-head">
+            <div>
+              <p class="route-eyebrow">Ruta de ejecucion</p>
+              <p class="route-caption">Avanza por fases. Si una fase esta bloqueada, completa la anterior.</p>
             </div>
-            <p class="hint">Si pausas, retoma de inmediato. Objetivo: completar el bloque sin saltos.</p>
-          </article>
+            <p class="route-note">Flujo guiado</p>
+          </div>
+          <ol class="route-list">
+            <li class="route-step">
+              <a href="#/today/action" data-route-link="action">
+                <span class="route-step-index">01</span>
+                <span class="route-step-label">Accion inmediata</span>
+              </a>
+            </li>
+            <li class="route-step">
+              <a href="#/today/session" data-route-link="session">
+                <span class="route-step-index">02</span>
+                <span class="route-step-label">Sesion guiada</span>
+              </a>
+            </li>
+            <li class="route-step">
+              <a href="#/today/close" data-route-link="close">
+                <span class="route-step-index">03</span>
+                <span class="route-step-label">Cierre del dia</span>
+              </a>
+            </li>
+            <li class="route-step">
+              <a href="#/today/evaluate" data-route-link="evaluate">
+                <span class="route-step-index">04</span>
+                <span class="route-step-label">Evaluacion</span>
+              </a>
+            </li>
+          </ol>
+        </section>
 
-          <article id="step-checklist" class="card card-priority" aria-label="Checklist de ejecucion" data-route-group="close">
-            <h3 data-route-focus="close">Checklist de ejecucion (si/no)</h3>
-            <p id="progress-text" class="hint">0% completado (0/5)</p>
-            <div class="progress-track" aria-hidden="true">
-              <div id="progress-fill" class="progress-fill"></div>
-            </div>
-            <ul id="checklist" class="checklist"></ul>
-          </article>
+        <section id="step-action" class="now card card-priority reveal" aria-label="Siguiente accion" data-route-group="action">
+          <p class="card-kicker">Inicio recomendado</p>
+          <h2 data-route-focus="action">Empieza por aqui</h2>
+          <p id="next-action" class="next-action" aria-live="polite">En 30 segundos: abre Sesame y ejecuta el primer bloque.</p>
+          <div class="action-row action-row-main">
+            <a class="btn" href="https://www.sesame.com/" target="_blank" rel="noreferrer">Abrir Sesame</a>
+            <a class="btn btn-alt" href="https://chat.openai.com" target="_blank" rel="noreferrer">Abrir ChatGPT</a>
+            <button id="copy-evidence" class="btn btn-soft" type="button">Copiar ruta evidencia</button>
+          </div>
+          <p class="micro-hint">Regla operativa: completa esta fase antes de pasar a la siguiente.</p>
+        </section>
 
-          <article class="card card-priority" aria-label="Plan adaptativo" data-route-group="session">
-            <h3>Plan adaptativo del dia</h3>
-            <p id="adaptive-focus" class="target">Cargando foco adaptativo...</p>
-            <p id="extension-risk" class="hint">Extension risk: evaluando...</p>
-            <ul id="adaptive-recommendations" class="list"></ul>
-          </article>
+        <section class="layout reveal" aria-label="Plan diario" data-route-group="always">
+          <div class="column column-primary">
+            <article id="step-prompt" class="card card-priority card-main" aria-label="Prompt Sesame" data-route-group="session">
+              <p class="card-kicker">Sesion</p>
+              <h3 data-route-focus="session">Prompt para Sesame (copiar y pegar)</h3>
+              <p id="prompt-text" class="prompt">Cargando prompt del dia...</p>
+              <button id="copy-prompt" class="btn btn-soft" type="button">Copiar prompt</button>
+              <p class="hint">Pega el prompt completo y empieza la ronda 1 sin traducir.</p>
+            </article>
 
-          <article class="card card-priority" aria-label="Ejercicios de hoy" data-route-group="session">
-            <h3>Ejercicios generados hoy</h3>
-            <ul id="exercises-list" class="list"></ul>
-          </article>
+            <article id="step-timer" class="card card-priority card-main" aria-label="Timer de sesion" data-route-group="session">
+              <p class="card-kicker">Tiempo de enfoque</p>
+              <h3>Timer de sesion (bloque completo)</h3>
+              <p id="timer-display" class="timer">00:00:00</p>
+              <div class="action-row">
+                <button id="timer-start" class="btn" type="button">Iniciar</button>
+                <button id="timer-pause" class="btn btn-alt" type="button">Pausar</button>
+                <button id="timer-reset" class="btn btn-soft" type="button">Reiniciar</button>
+              </div>
+              <p class="hint">Si pausas, retoma de inmediato. Objetivo: completar el bloque sin saltos.</p>
+            </article>
 
-          <article class="card card-priority" aria-label="Recursos de hoy" data-route-group="session">
-            <h3>Recursos a usar hoy</h3>
-            <ul id="resources-list" class="list"></ul>
-          </article>
+            <article id="step-checklist" class="card card-priority card-main" aria-label="Checklist de ejecucion" data-route-group="close">
+              <p class="card-kicker">Control de cierre</p>
+              <h3 data-route-focus="close">Checklist de ejecucion (si/no)</h3>
+              <p id="progress-text" class="hint">0% completado (0/5)</p>
+              <div class="progress-track" aria-hidden="true">
+                <div id="progress-fill" class="progress-fill"></div>
+              </div>
+              <ul id="checklist" class="checklist"></ul>
+            </article>
 
-          <article class="card card-priority" aria-label="Deliverables y gate" data-route-group="close">
-            <h3>Entregables y criterio de cierre</h3>
-            <ul id="deliverables" class="list"></ul>
-            <p class="label">Daily gate (dia valido si cumples esto)</p>
-            <p id="daily-gate" class="hint">Cargando criterio de cierre diario...</p>
-          </article>
+            <article class="card card-priority card-main" aria-label="Plan adaptativo" data-route-group="session">
+              <p class="card-kicker">Adaptacion</p>
+              <h3>Plan adaptativo del dia</h3>
+              <p id="adaptive-focus" class="target">Cargando foco adaptativo...</p>
+              <p id="extension-risk" class="hint">Extension risk: evaluando...</p>
+              <ul id="adaptive-recommendations" class="list"></ul>
+            </article>
 
-          <article id="step-evidence" class="card card-priority" aria-label="Evidencia y notas" data-route-group="close">
-            <h3>Evidencia final y nota rapida</h3>
-            <p id="evidence-path" class="mono">Cargando ruta de evidencia...</p>
-            <label class="label" for="artifact-audio">Ruta audio (obligatorio)</label>
-            <input id="artifact-audio" class="field" type="text" placeholder="tracking/daily/YYYY-MM-DD/audio/file.mp3" />
-            <label class="label" for="artifact-writing">Ruta writing (obligatorio)</label>
-            <input id="artifact-writing" class="field" type="text" placeholder="tracking/daily/YYYY-MM-DD/writing/file.md" />
-            <label class="label" for="quick-note">Nota rapida (3-5 lineas)</label>
-            <textarea id="quick-note" class="note" rows="4" placeholder="Que salio bien, error principal, correccion aplicada, siguiente foco"></textarea>
-            <p class="micro-hint">Sin evidencia + score + metricas, el dia no cuenta.</p>
-          </article>
-        </div>
+            <article class="card card-priority card-main" aria-label="Ejercicios de hoy" data-route-group="session">
+              <p class="card-kicker">Practica activa</p>
+              <h3>Ejercicios generados hoy</h3>
+              <ul id="exercises-list" class="list"></ul>
+            </article>
 
-        <div class="column column-secondary">
-          <article class="card card-support" aria-label="Objetivo del dia" data-route-group="action session">
-            <h3>Objetivo del dia (contexto)</h3>
-            <p id="mission-target" class="target">Cargando objetivo del dia...</p>
-            <ul id="mission-bullets" class="list"></ul>
-          </article>
+            <article class="card card-priority card-main" aria-label="Recursos de hoy" data-route-group="session">
+              <p class="card-kicker">Recursos</p>
+              <h3>Recursos a usar hoy</h3>
+              <ul id="resources-list" class="list"></ul>
+            </article>
 
-          <article class="card card-support" aria-label="Bloque guiado" data-route-group="session">
-            <h3>Bloque guiado minuto a minuto</h3>
-            <ol id="session-plan" class="list list-ordered"></ol>
-          </article>
+            <article class="card card-priority card-main" aria-label="Deliverables y gate" data-route-group="close">
+              <p class="card-kicker">Validacion final</p>
+              <h3>Entregables y criterio de cierre</h3>
+              <ul id="deliverables" class="list"></ul>
+              <p class="label">Daily gate (dia valido si cumples esto)</p>
+              <p id="daily-gate" class="hint">Cargando criterio de cierre diario...</p>
+            </article>
 
-          <article class="card card-meta" aria-label="Rubrica diaria" data-route-group="evaluate">
-            <h3 data-route-focus="evaluate">Rubrica diaria (0-3, autoevaluacion)</h3>
-            <p id="score-summary" class="hint">Aun sin evaluar</p>
-            <div id="rubric-grid" class="form-grid"></div>
-          </article>
+            <article id="step-evidence" class="card card-priority card-main" aria-label="Evidencia y notas" data-route-group="close">
+              <p class="card-kicker">Evidencia</p>
+              <h3>Evidencia final y nota rapida</h3>
+              <p id="evidence-path" class="mono">Cargando ruta de evidencia...</p>
+              <label class="label" for="artifact-audio">Ruta audio (obligatorio)</label>
+              <input id="artifact-audio" class="field" type="text" placeholder="tracking/daily/YYYY-MM-DD/audio/file.mp3" />
+              <label class="label" for="artifact-writing">Ruta writing (obligatorio)</label>
+              <input id="artifact-writing" class="field" type="text" placeholder="tracking/daily/YYYY-MM-DD/writing/file.md" />
+              <label class="label" for="quick-note">Nota rapida (3-5 lineas)</label>
+              <textarea id="quick-note" class="note" rows="4" placeholder="Que salio bien, error principal, correccion aplicada, siguiente foco"></textarea>
+              <p class="micro-hint">Sin evidencia + score + metricas, el dia no cuenta.</p>
+            </article>
+          </div>
 
-          <article class="card card-meta" aria-label="Metricas de desempeno" data-route-group="evaluate">
-            <h3>Metricas numericas (motor adaptativo)</h3>
-            <div id="metrics-grid" class="form-grid"></div>
-            <p class="label">Notas cualitativas de metricas</p>
-            <div id="metrics-notes-grid" class="form-grid"></div>
-          </article>
+          <aside class="column column-secondary">
+            <article class="card card-support" aria-label="Objetivo del dia" data-route-group="action session">
+              <p class="card-kicker">Contexto</p>
+              <h3>Objetivo del dia</h3>
+              <p id="mission-target" class="target">Cargando objetivo del dia...</p>
+              <ul id="mission-bullets" class="list"></ul>
+            </article>
 
-          <article class="card card-meta" aria-label="Modulos de libro" data-route-group="evaluate">
-            <h3>Modulos de libro asignados</h3>
-            <ul id="book-modules" class="list"></ul>
-            <p id="book-progress" class="hint">Book progress: cargando...</p>
-          </article>
+            <article class="card card-support" aria-label="Bloque guiado" data-route-group="session">
+              <p class="card-kicker">Guia operativa</p>
+              <h3>Bloque guiado minuto a minuto</h3>
+              <ol id="session-plan" class="list list-ordered"></ol>
+            </article>
 
-          <article class="card card-meta" aria-label="Tendencia" data-route-group="evaluate">
-            <h3>Tendencia 14 dias</h3>
-            <p id="trend-snapshot" class="hint">Cargando tendencia...</p>
-          </article>
+            <article class="card card-meta" aria-label="Rubrica diaria" data-route-group="evaluate">
+              <p class="card-kicker">Evaluacion</p>
+              <h3 data-route-focus="evaluate">Rubrica diaria (0-3, autoevaluacion)</h3>
+              <p id="score-summary" class="hint">Aun sin evaluar</p>
+              <div id="rubric-grid" class="form-grid"></div>
+            </article>
 
-          <article class="card card-meta" aria-label="Foco semanal" data-route-group="evaluate">
-            <h3>Foco semanal (referencia)</h3>
-            <p id="week-title" class="hint">Cargando foco semanal...</p>
-            <p id="week-profile" class="hint">Cargando perfil semanal...</p>
-            <p id="week-assessment" class="hint">Cargando assessment...</p>
-            <ul id="weekly-targets" class="list"></ul>
-            <p class="label">Weekly gate (criterio de semana)</p>
-            <ul id="week-gate-checks" class="list"></ul>
-            <p id="week-source" class="mono"></p>
-          </article>
-        </div>
-      </section>
+            <article class="card card-meta" aria-label="Metricas de desempeno" data-route-group="evaluate">
+              <p class="card-kicker">Motor adaptativo</p>
+              <h3>Metricas numericas</h3>
+              <div id="metrics-grid" class="form-grid"></div>
+              <p class="label">Notas cualitativas de metricas</p>
+              <div id="metrics-notes-grid" class="form-grid"></div>
+            </article>
+
+            <article class="card card-meta" aria-label="Modulos de libro" data-route-group="evaluate">
+              <p class="card-kicker">Libro</p>
+              <h3>Modulos asignados</h3>
+              <ul id="book-modules" class="list"></ul>
+              <p id="book-progress" class="hint">Book progress: cargando...</p>
+            </article>
+
+            <article class="card card-meta" aria-label="Tendencia" data-route-group="evaluate">
+              <p class="card-kicker">Historico</p>
+              <h3>Tendencia 14 dias</h3>
+              <p id="trend-snapshot" class="hint">Cargando tendencia...</p>
+            </article>
+
+            <article class="card card-meta" aria-label="Foco semanal" data-route-group="evaluate">
+              <p class="card-kicker">Semana</p>
+              <h3>Foco semanal (referencia)</h3>
+              <p id="week-title" class="hint">Cargando foco semanal...</p>
+              <p id="week-profile" class="hint">Cargando perfil semanal...</p>
+              <p id="week-assessment" class="hint">Cargando assessment...</p>
+              <ul id="weekly-targets" class="list"></ul>
+              <p class="label">Weekly gate (criterio de semana)</p>
+              <ul id="week-gate-checks" class="list"></ul>
+              <p id="week-source" class="mono"></p>
+            </article>
+          </aside>
+        </section>
+      </div>
     </main>
 
     <script type="module" src="./js/main.js"></script>
