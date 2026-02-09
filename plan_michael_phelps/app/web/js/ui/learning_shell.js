@@ -27,13 +27,33 @@ function toSentence(str, def) {
 }
 
 export class LearningShell {
-  constructor(containerId, profile = {}, program = {}) {
+  constructor(containerId, context = {}) {
     this.container = document.getElementById(containerId);
-    this.profile = profile || {};
-    this.program = program || {};
-    this.activeWeek = this.profile.progress?.current_week || "w01";
-    this.activeDayLabel = "Lunes"; // Fallback
+
+    // Context mapping from bootstrap_v4
+    this.context = context;
+    this.program = context.program || {};
+    this.config = context.config || {};
+    this.weekSummaries = context.weekSummaries || [];
+
+    // Profile extraction (assuming config contains user profile or using defaults)
+    this.profile = this.config.user || {
+      name: "Estudiante",
+      level: "Nivel 1",
+      progress: {
+        current_week: context.activeWeekLabel || "w01",
+        phase_id: "phase1"
+      }
+    };
+
+    // State initialization
+    this.activeWeek = context.activeWeekLabel || "w01";
+    this.activeDayLabel = context.activeDayLabel || "Lunes";
     this.activeView = "hoy"; // Default view
+
+    // Callbacks
+    this.onViewChange = context.onViewChange || (() => { });
+    this.getSessionSnapshot = context.getSessionSnapshot || (() => ({}));
   }
 
   setSessionHostId(id) {
@@ -44,11 +64,65 @@ export class LearningShell {
     return this.sessionHostId || "session-host";
   }
 
-  render(state) {
+  refresh() {
+    // Called by bootstrap interval
+    this.render({ view: this.activeView, isRefresh: true });
+  }
+
+  dispose() {
+    // Cleanup if needed
+    this.container.innerHTML = "";
+  }
+
+  render(state = {}) {
     if (!this.container) return;
-    this.activeView = state.view || "hoy";
-    this.container.innerHTML = this.renderLayout(state);
+
+    // If state is empty, use current state
+    const view = state.view || this.activeView;
+    const isRefresh = state.isRefresh || false;
+
+    // Only update active view if explicitly changed
+    if (state.view) {
+      this.activeView = state.view;
+    }
+
+    // Retain scroll position/focus if refreshing? 
+    // For now, simple re-render. Ideally we should diff, but innerHTML is fast enough for this scale.
+    // To prevent input loss during refresh, we might want to skip full render if just polling unless changes detected.
+    // For this fix, we render.
+
+    // Optimization: If refreshing and Wizard is active, we might NOT want to blow away the container 
+    // because the Wizard is managing its own DOM in #session-host.
+    // We should only re-render the Shell Parts (Sidebar, Header, Widgets) and leave content area properly?
+    // The current renderLayout returns a string string, causing full DOM thrash.
+    // 'renderShell' pattern usually implies full render. 
+
+    // CRITICAL: If view is 'sesion', we must NOT destroy #session-host if it's already there and we are just refreshing stats.
+    // But since we transitioned to a string-template re-render, we might be stuck with replacements.
+    // Let's rely on the fact that bootstrap calls render() once, and then refresh() periodically.
+    // If refresh() nukes the DOM, the wizard (which is appended to #session-host) will be destroyed!
+
+    // FIX: refresh() should only update specific dynamic elements if possible, or we skip full re-render if we are in 'sesion' mode and just updating stats.
+
+    if (isRefresh && this.activeView === "sesion") {
+      // Do not re-render layout to avoid killing the Wizard
+      this.updateStats();
+      return;
+    }
+
+    this.container.innerHTML = this.renderLayout({ view });
     this.bindEvents();
+    this.updateActiveState(view);
+  }
+
+  updateStats() {
+    // Helper to update specific DOM elements without full re-render
+    const snapshot = this.getSessionSnapshot();
+    // Update progress bars or status text if elements exist
+    const sessionProgress = document.getElementById("session-progress-fill");
+    if (sessionProgress && snapshot.progressPct) {
+      sessionProgress.style.width = `${snapshot.progressPct}%`;
+    }
   }
 
   renderLayout(state) {
