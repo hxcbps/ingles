@@ -79,6 +79,31 @@ export async function loadWeekContentV4(weekLabel, fetcher = fetch) {
   return { path, data };
 }
 
+export async function loadWeekSummariesV4({ fromWeek = 1, toWeek = 20, fetcher = fetch } = {}) {
+  const startWeek = Math.max(1, asPositiveInteger(fromWeek, 1));
+  const endWeek = Math.max(startWeek, asPositiveInteger(toWeek, startWeek));
+  const tasks = [];
+
+  for (let week = startWeek; week <= endWeek; week += 1) {
+    tasks.push(
+      loadWeekContentV4(week, fetcher)
+        .then(({ path, data }) => ({
+          week,
+          path,
+          title: data?.title || `Week ${formatWeekLabel(week)}`,
+          week_profile: data?.week_profile || {},
+          days: data?.days || {}
+        }))
+        .catch(() => null)
+    );
+  }
+
+  const loaded = await Promise.all(tasks);
+  return loaded
+    .filter(Boolean)
+    .sort((a, b) => Number(a.week) - Number(b.week));
+}
+
 export async function loadResourcesCatalog(fetcher = fetch) {
   const path = fromWebRoot("learning/resources/resources_catalog.v1.json");
   const data = await fetchJSON(path, fetcher);

@@ -6,8 +6,23 @@ Estado tecnico: frontend modular interno (ESM por feature), local-first, uso ext
 ## Inicio recomendado (web)
 1. Corre `./dashboard` desde `/Users/dfernandez/ingles`.
 2. Abre `http://127.0.0.1:8787/app/web/`.
-3. Ejecuta la sesion diaria completa.
-4. Guarda evidencia y completa score/metricas.
+3. Sigue el flujo modular: `Hoy -> Ruta 0->B2 -> Sesion guiada -> Modulos -> Progreso`.
+4. Ejecuta la sesion diaria completa.
+5. Guarda evidencia y completa score/metricas.
+
+## Arquitectura frontend modular (V6)
+La app web ahora usa un shell de navegacion por modulos con hash routes canonicas:
+- `#/modulo/hoy`
+- `#/modulo/ruta`
+- `#/modulo/sesion`
+- `#/modulo/modulos`
+- `#/modulo/progreso`
+
+Objetivo de la arquitectura:
+- eliminar confusion de navegacion,
+- guiar la ejecucion diaria de forma lineal,
+- mostrar mapa completo A0/A1 -> B2 por fases,
+- mantener la sesion bloqueante con gates y evidencia.
 
 ## GitHub Pages
 - URL publica: `https://hxcbps.github.io/ingles/`.

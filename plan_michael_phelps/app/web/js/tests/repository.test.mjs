@@ -10,7 +10,8 @@ import {
   loadConfig,
   loadResourcesCatalog,
   loadWeekContent,
-  loadWeekContentV4
+  loadWeekContentV4,
+  loadWeekSummariesV4
 } from "../content/repository.js";
 
 test("repository builds canonical week path", () => {
@@ -78,6 +79,38 @@ test("repository loadWeekContentV4 returns path and data", async () => {
   const week = await loadWeekContentV4("07", fakeFetch);
   assert.equal(week.path, "../../learning/content/week07.v4.json");
   assert.equal(week.data.title, "loaded:../../learning/content/week07.v4.json");
+});
+
+test("repository loadWeekSummariesV4 returns ordered summaries and skips missing weeks", async () => {
+  const fakeFetch = async (path) => {
+    if (path.includes("week02.v4.json")) {
+      return { ok: false };
+    }
+
+    return {
+      ok: true,
+      async json() {
+        return {
+          title: `title:${path}`,
+          week_profile: { cefr_target: "A1" },
+          days: { Mon: { session_script: [] } }
+        };
+      }
+    };
+  };
+
+  const summaries = await loadWeekSummariesV4({
+    fromWeek: 1,
+    toWeek: 3,
+    fetcher: fakeFetch
+  });
+
+  assert.deepEqual(
+    summaries.map((item) => item.week),
+    [1, 3]
+  );
+  assert.equal(summaries[0].title, "title:../../learning/content/week01.v4.json");
+  assert.equal(summaries[1].title, "title:../../learning/content/week03.v4.json");
 });
 
 test("repository loadWeekContent throws when file is missing", async () => {

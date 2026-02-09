@@ -1,50 +1,88 @@
-import { loadConfig, loadWeekContentV4 } from "../content/repository.js";
+import { loadConfig, loadWeekContentV4, loadWeekSummariesV4 } from "../content/repository.js";
 import { getProgramContext } from "../content/day_model.js";
 import { orchestrator } from "./orchestrator.js";
 import { SessionWizard } from "../ui/session_wizard.js";
+import { LearningShell } from "../ui/learning_shell.js";
 
 const MODE_CLASS = "app-mode-v4";
 
-function resolveAppContainer(documentRef = document) {
-  return documentRef.getElementById("app") || documentRef.querySelector(".app");
+const DAY_ORDER = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const DAY_LABEL_ES = Object.freeze({
+  Mon: "Lunes",
+  Tue: "Martes",
+  Wed: "Miercoles",
+  Thu: "Jueves",
+  Fri: "Viernes",
+  Sat: "Sabado",
+  Sun: "Domingo"
+});
+
+function formatDayLabel(dayLabel) {
+  return DAY_LABEL_ES[dayLabel] || dayLabel || "Dia";
 }
 
-function setStatus(documentRef, text) {
-  const statusEl = documentRef.getElementById("session-status");
-  if (statusEl) {
-    statusEl.textContent = text;
-  }
+function hasExecutableSession(dayData) {
+  return Boolean(Array.isArray(dayData?.session_script) && dayData.session_script.length > 0);
 }
 
-function renderFatal(container, message) {
-  if (!container) {
-    console.error("Fatal error (and no container):", message);
-    return;
+function resolvePlayableDay(daysByLabel, preferredDayLabel) {
+  const days = daysByLabel && typeof daysByLabel === "object" ? daysByLabel : {};
+
+  if (hasExecutableSession(days[preferredDayLabel])) {
+    return {
+      dayLabel: preferredDayLabel,
+      dayContent: days[preferredDayLabel],
+      fallbackNotice: ""
+    };
   }
+
+  const firstPlayableLabel = DAY_ORDER.find((dayLabel) => hasExecutableSession(days[dayLabel]));
+  if (!firstPlayableLabel) return null;
+
+  return {
+    dayLabel: firstPlayableLabel,
+    dayContent: days[firstPlayableLabel],
+    fallbackNotice: `No habia sesion ejecutable para ${formatDayLabel(preferredDayLabel)}. Se cargo ${formatDayLabel(firstPlayableLabel)} como reemplazo.`
+  };
+}
+
+function buildSessionSnapshot(orchestratorRef) {
+  const current = orchestratorRef?.getCurrentStep ? orchestratorRef.getCurrentStep() : {};
+  const progressPct = orchestratorRef?.getProgress ? Number(orchestratorRef.getProgress()) || 0 : 0;
+  const primarySteps = typeof orchestratorRef?.getPrimaryStepIds === "function" ? orchestratorRef.getPrimaryStepIds() : [];
+  const totalSteps = Number(current?.totalSteps) || primarySteps.length || 0;
+  const completed = !current?.definition && progressPct >= 100;
+
+  return {
+    progressPct,
+    completed,
+    currentStepTitle: current?.definition?.title || (completed ? "Sesion completada" : "Sesion no iniciada"),
+    currentStepType: current?.definition?.type || "-",
+    currentStepIndex: Number(current?.stepIndex) || (completed ? totalSteps : 0),
+    totalSteps,
+    status: current?.status || (completed ? "done" : "locked"),
+    retryCount: Number(current?.retryCount) || 0
+  };
+}
+
+function renderFatal(container, title, message) {
+  if (!container) return;
+
   container.innerHTML = `
-    <section class="session-shell" style="display: flex; align-items: center; justify-content: center; height: 80vh;">
-      <div class="card" style="border-color: #ef4444; box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);">
-        <h2 style="color: #ef4444;">System Failure</h2>
-        <p style="color: #fff; margin: 1rem 0;">${message}</p>
-        <button class="btn-secondary" onclick="location.reload()">Reintentar</button>
-      </div>
+    <section class="fatal-shell" aria-live="assertive">
+      <article class="fatal-card">
+        <p class="section-kicker">Error de inicializacion</p>
+        <h2>${title}</h2>
+        <p>${message}</p>
+        <button id="btn-reload-app" class="btn-primary" type="button">Reintentar</button>
+      </article>
     </section>
   `;
-}
 
-function ensureV4Shell(container) {
-  // Premium shell is already in index.html. 
-  // We only clear it if it's NOT the premium shell
-  if (!container.querySelector('.session-shell')) {
-    console.log("[V4] Injecting shell (should be pre-rendered)");
-    container.innerHTML = `
-        <div id="v4-root" class="session-shell">
-          <header class="wizard-top">
-             <div><h2 style="color:red">Error: Shell not found</h2></div>
-          </header>
-          <main id="wizard-container" class="wizard-wrapper"></main>
-        </div>
-      `;
+  const reloadButton = container.querySelector("#btn-reload-app");
+  if (reloadButton) {
+    reloadButton.addEventListener("click", () => window.location.reload());
   }
 }
 
@@ -53,45 +91,79 @@ export async function bootstrapV4({
   windowRef = window,
   fetcher = fetch
 } = {}) {
-  // Always target the main root for the cinematic experience
   const rootContainer = documentRef.getElementById("v4-root");
-
   if (!rootContainer) {
     console.error("Critical: #v4-root not found in DOM");
-    return { dispose() { } };
+    return { dispose() {} };
   }
 
   documentRef.body.classList.add(MODE_CLASS);
 
+  let shell = null;
   let wizard = null;
   let unloadHandler = null;
+  let refreshInterval = null;
 
   try {
     const config = await loadConfig(fetcher);
     const program = getProgramContext(config);
-    const weekLabel = String(program.weekNumber).padStart(2, "0");
-    const weekFile = await loadWeekContentV4(weekLabel, fetcher);
-    // Safe access
-    const days = weekFile?.data?.days || {};
-    const dayContent = days[program.dayLabel];
 
-    if (!dayContent || !Array.isArray(dayContent.session_script) || dayContent.session_script.length === 0) {
-      // Content missing error
-      const msg = `Sin contenido para ${program.dayLabel} (Semana ${weekLabel})`;
-      console.warn(msg);
-      renderFatal(rootContainer, msg);
-      return { dispose() { } };
+    const contentWeekNumber = Math.min(program.weekNumber, program.programWeeks);
+    const weekLabel = String(contentWeekNumber).padStart(2, "0");
+
+    const [weekFile, weekSummaries] = await Promise.all([
+      loadWeekContentV4(weekLabel, fetcher),
+      loadWeekSummariesV4({
+        fromWeek: 1,
+        toWeek: program.programWeeks,
+        fetcher
+      })
+    ]);
+
+    const days = weekFile?.data?.days || {};
+    const resolvedDay = resolvePlayableDay(days, program.dayLabel);
+
+    if (!resolvedDay) {
+      renderFatal(
+        rootContainer,
+        "Contenido incompleto",
+        `No existe una sesion ejecutable en Week ${weekLabel}. Revisa learning/content/week${weekLabel}.v4.json.`
+      );
+      return { dispose() {} };
     }
 
-    orchestrator.init(dayContent, {
-      onEvent: (evt) => {
-        console.info("[V4 telemetry]", evt);
+    orchestrator.init(resolvedDay.dayContent, {
+      onEvent: (event) => {
+        console.info("[V4 telemetry]", event);
       }
     });
 
-    // Mount wizard directly to root
-    wizard = new SessionWizard("v4-root", { orchestrator });
+    shell = new LearningShell("v4-root", {
+      program,
+      config,
+      weekSummaries,
+      activeWeekLabel: weekLabel,
+      activeDayLabel: resolvedDay.dayLabel,
+      activeDayContent: resolvedDay.dayContent,
+      fallbackNotice: resolvedDay.fallbackNotice,
+      getSessionSnapshot: () => buildSessionSnapshot(orchestrator),
+      onViewChange: ({ viewId }) => {
+        if (viewId === "sesion" && wizard) {
+          wizard.render();
+        }
+      }
+    });
+
+    shell.render();
+
+    wizard = new SessionWizard(shell.getSessionHostId(), { orchestrator });
     wizard.render();
+
+    refreshInterval = windowRef.setInterval(() => {
+      if (shell) {
+        shell.refresh();
+      }
+    }, 1000);
 
     unloadHandler = () => {
       orchestrator.abandon("before_unload");
@@ -99,13 +171,19 @@ export async function bootstrapV4({
     windowRef.addEventListener("beforeunload", unloadHandler);
   } catch (error) {
     console.error("[V4] Bootstrap error", error);
-    renderFatal(rootContainer, `Error de inicializacion: ${error.message}`);
+    renderFatal(rootContainer, "Fallo del sistema", `No se pudo iniciar la app: ${error.message}`);
   }
 
   return {
     dispose() {
+      if (refreshInterval) {
+        clearInterval(refreshInterval);
+      }
       if (wizard && typeof wizard.dispose === "function") {
         wizard.dispose();
+      }
+      if (shell && typeof shell.dispose === "function") {
+        shell.dispose();
       }
       if (unloadHandler) {
         windowRef.removeEventListener("beforeunload", unloadHandler);

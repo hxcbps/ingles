@@ -261,14 +261,16 @@ export class SessionWizard {
             <h2 id="step-title"></h2>
           </div>
           <div id="header-right" class="wizard-header-actions">
-            <div id="step-status" class="status-active" style="display:inline-block; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold;"></div>
+            <div id="step-status" class="status-tag status-active"></div>
             <div id="progress-text" class="progress-percent">0%</div>
           </div>
         </header>
 
         <div class="progress-track">
-          <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+          <div id="progress-fill" class="progress-fill"></div>
         </div>
+
+        <ol id="step-rail" class="step-rail" aria-label="Secuencia de pasos"></ol>
 
         <article class="card step-card">
           <div class="step-meta">
@@ -288,8 +290,8 @@ export class SessionWizard {
             <!-- Resource injected here -->
           </div>
 
-          <div id="evidence-area" class="evidence-card" style="display:none;">
-             <h4 style="margin-bottom: 1rem; color: var(--v4-text);">EVIDENCIA REQUERIDA</h4>
+          <div id="evidence-area" class="evidence-card" hidden>
+             <h4>Evidencia requerida</h4>
              <div id="evidence-fields" class="evidence-grid"></div>
           </div>
         </article>
@@ -307,7 +309,7 @@ export class SessionWizard {
           </div>
 
           <button id="btn-submit-step" class="btn-primary" type="button" disabled>
-            VALIDAR FASE
+            Validar y continuar
           </button>
         </footer>
       </section>
@@ -380,8 +382,10 @@ export class SessionWizard {
 
     this.ensureTimer(step.step_id, step.duration_min);
 
+    const progress = this.orchestrator.getProgress();
     this.updateHeader(current, step);
-    this.updateProgress(current.progress);
+    this.updateProgress(progress);
+    this.updateStepRail(current);
     this.updateTimerUI();
 
     if (isNewStep) {
@@ -397,14 +401,17 @@ export class SessionWizard {
 
   updateHeader(current, step) {
     const idx = this.container.querySelector("#step-index");
-    if (idx) idx.textContent = `FASE ${current.stepIndex} / ${current.totalSteps}`;
+    if (idx) idx.textContent = `Paso ${current.stepIndex} de ${current.totalSteps}`;
 
     const title = this.container.querySelector("#step-title");
     if (title) title.textContent = step.title || "Foco Activo";
 
     const status = current.status || STEP_STATUS.ACTIVE;
     const statusEl = this.container.querySelector("#step-status");
-    if (statusEl) statusEl.textContent = statusLabel(status).toUpperCase();
+    if (statusEl) {
+      statusEl.className = `status-tag status-${status}`;
+      statusEl.textContent = statusLabel(status);
+    }
 
     const typeEl = this.container.querySelector("#step-type");
     if (typeEl) typeEl.innerHTML = `${ICONS.idea} ${formatStepType(step.type)}`;
@@ -421,6 +428,48 @@ export class SessionWizard {
     if (fill) fill.style.width = `${progress}%`;
   }
 
+  updateStepRail(current) {
+    const rail = this.container.querySelector("#step-rail");
+    if (!rail) return;
+    if (typeof this.orchestrator.getPrimaryStepIds !== "function") {
+      rail.innerHTML = "";
+      return;
+    }
+
+    const stepIds = this.orchestrator.getPrimaryStepIds();
+    if (!Array.isArray(stepIds) || stepIds.length === 0) {
+      rail.innerHTML = "";
+      return;
+    }
+
+    const activeStepId = current?.definition?.step_id || this.currentStepId;
+    const stepStates = this.orchestrator?.state?.stepStates || {};
+
+    rail.innerHTML = stepIds
+      .map((stepId, index) => {
+        const definition = this.orchestrator.getStepById(stepId);
+        const rawStatus = stepStates[stepId];
+
+        let stateClass = "is-upcoming";
+        if (rawStatus === STEP_STATUS.DONE || rawStatus === STEP_STATUS.RECOVERED) {
+          stateClass = "is-done";
+        } else if (stepId === activeStepId || rawStatus === STEP_STATUS.ACTIVE) {
+          stateClass = "is-active";
+        } else if (rawStatus === STEP_STATUS.FAILED) {
+          stateClass = "is-failed";
+        }
+
+        const title = definition?.title || `Paso ${index + 1}`;
+        return `
+          <li class="step-rail-item ${stateClass}">
+            <span class="step-rail-index">${index + 1}</span>
+            <span class="step-rail-title">${escapeHTML(title)}</span>
+          </li>
+        `;
+      })
+      .join("");
+  }
+
   updateStepContent(step) {
     const instructions = step?.content?.instructions || "Sigue la instrucción del paso.";
     const successCriteria = step?.success_criteria || "Cumplir gate del paso activo.";
@@ -434,11 +483,11 @@ export class SessionWizard {
             <h4>${ICONS.idea} OBJETIVO PRINCIPAL</h4>
             <p class="instruction-text">${escapeHTML(instructions)}</p>
         </div>
-        <div class="animate-fade-in" style="animation-delay: 0.1s">
+        <div class="animate-fade-in delay-1">
             <h4>${ICONS.check} CRITERIO DE ÉXITO</h4>
             <p class="instruction-sub-text">${escapeHTML(successCriteria)}</p>
         </div>
-        <div class="animate-fade-in" style="animation-delay: 0.2s">
+        <div class="animate-fade-in delay-2">
             <h4>${ICONS.evidence} VALIDACIÓN</h4>
             <p class="instruction-sub-text">${escapeHTML(gateSummary)}</p>
         </div>
@@ -475,8 +524,6 @@ export class SessionWizard {
           </article>
         `;
 
-      // Cinematic Entrance: Delay 0.2s
-      area.style.animationDelay = "0.2s";
       area.classList.remove("animate-fade-in");
       void area.offsetWidth;
       area.classList.add("animate-fade-in");
@@ -535,8 +582,6 @@ export class SessionWizard {
     const area = this.container.querySelector("#resource-area");
     if (area) {
       area.innerHTML = html;
-      // Cinematic Entrance: Delay 0.3s
-      area.style.animationDelay = "0.3s";
       area.classList.remove("animate-fade-in");
       void area.offsetWidth;
       area.classList.add("animate-fade-in");
@@ -550,7 +595,7 @@ export class SessionWizard {
     const needs = collectNeeds(step.gate, {});
 
     const hasEvidenceNeeds = Object.values(needs).some(v => v);
-    area.style.display = hasEvidenceNeeds ? "block" : "none";
+    area.hidden = !hasEvidenceNeeds;
     if (!hasEvidenceNeeds) return;
 
     const metricKeys = [...collectMetricKeys(step.gate)];
@@ -627,8 +672,6 @@ export class SessionWizard {
     if (fieldsArea) {
       fieldsArea.innerHTML = html;
 
-      // Cinematic Entrance: Delay 0.4s (After resources)
-      area.style.animationDelay = "0.4s";
       area.classList.remove("animate-fade-in");
       void area.offsetWidth; // trigger reflow
       area.classList.add("animate-fade-in");
@@ -640,21 +683,24 @@ export class SessionWizard {
     this.container.innerHTML = `
       <section class="wizard-complete animate-in" aria-label="Sesión completada">
         <div class="completion-card">
-            <p class="kicker">MISIÓN CUMPLIDA</p>
-            <h1>Imparable.</h1>
+            <p class="kicker">Sesión completada</p>
+            <h1>Excelente trabajo.</h1>
             <p class="completion-text">
                 Has completado el <strong>${progress}%</strong> de tu objetivo diario.
             </p>
-            <div class="timer-panel" style="justify-content: center;">
-                <span class="timer-complete">${ICONS.check} DONE</span>
+            <div class="timer-panel timer-panel-center">
+                <span class="timer-complete">${ICONS.check} Sincronizado</span>
             </div>
-            <br>
             <div class="completion-actions">
-                <button class="btn-primary" onclick="location.reload()">Sincronizar Progreso</button>
+                <button id="btn-reload-session" class="btn-primary" type="button">Recargar sesión</button>
             </div>
         </div>
       </section>
     `;
+    const reloadBtn = this.container.querySelector("#btn-reload-session");
+    if (reloadBtn) {
+      reloadBtn.addEventListener("click", () => window.location.reload());
+    }
     this.rendered = false;
   }
 
