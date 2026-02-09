@@ -27,21 +27,19 @@ function renderFatal(container, message) {
 }
 
 function ensureV4Shell(container) {
-  container.innerHTML = `
-    <div id="v4-root" class="v4-container">
-      <header class="v4-header" aria-label="Estado de sesion">
-        <div class="v4-brand">
-          <p class="v4-kicker">English Sprint | Modo enfoque</p>
-          <h1>Ejecucion guiada del dia</h1>
-          <p class="v4-subtitle">Un solo paso activo. Validacion obligatoria para avanzar.</p>
+  // Premium shell is already in index.html. 
+  // We only clear it if it's NOT the premium shell
+  if (!container.querySelector('.session-shell')) {
+    console.log("[V4] Injecting shell (should be pre-rendered)");
+    container.innerHTML = `
+        <div id="v4-root" class="session-shell">
+          <header class="wizard-top">
+             <div><h2 style="color:red">Error: Shell not found</h2></div>
+          </header>
+          <main id="wizard-container" class="wizard-wrapper"></main>
         </div>
-        <p id="session-status" class="v4-status" role="status" aria-live="polite">
-          Preparando sesion...
-        </p>
-      </header>
-      <main id="wizard-container" class="wizard-wrapper" aria-label="Wizard de sesion"></main>
-    </div>
-  `;
+      `;
+  }
 }
 
 export async function bootstrapV4({
@@ -51,12 +49,20 @@ export async function bootstrapV4({
 } = {}) {
   const appContainer = resolveAppContainer(documentRef);
   if (!appContainer) {
-    return { dispose() {} };
+    return { dispose() { } };
   }
 
   documentRef.body.classList.add(MODE_CLASS);
-  ensureV4Shell(appContainer);
-  setStatus(documentRef, "Cargando plan del dia...");
+  documentRef.body.classList.add(MODE_CLASS);
+
+  // ensureV4Shell(appContainer); // Skip overwriting, use existing
+
+  // Clean loader if present
+  const existingShell = documentRef.getElementById("v4-root");
+  if (existingShell) {
+    // Keep shell, but maybe clear inner content if retrying? 
+    // For now, let's assume index.html has the "Loading" card, and we replace it.
+  }
 
   let wizard = null;
   let unloadHandler = null;
@@ -74,7 +80,7 @@ export async function bootstrapV4({
         documentRef.getElementById("wizard-container"),
         `No hay session_script valido para ${program.dayLabel}.`
       );
-      return { dispose() {} };
+      return { dispose() { } };
     }
 
     orchestrator.init(dayContent, {
@@ -83,13 +89,11 @@ export async function bootstrapV4({
       }
     });
 
-    wizard = new SessionWizard("wizard-container", { orchestrator });
+    // The wizard will render into 'v4-root' or a specific container
+    // Our index.html has <div id="v4-root" class="session-shell">
+    // SessionWizard expects a container ID.
+    wizard = new SessionWizard("v4-root", { orchestrator });
     wizard.render();
-
-    setStatus(
-      documentRef,
-      `Semana ${weekLabel} | ${program.dayLabel} | ${dayContent.goal || "Sesion activa"}`
-    );
 
     unloadHandler = () => {
       orchestrator.abandon("before_unload");

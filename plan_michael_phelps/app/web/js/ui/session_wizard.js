@@ -177,6 +177,11 @@ export class SessionWizard {
     };
     this.feedback = { tone: "info", text: "" };
     this.draftByStep = {};
+
+    // Clear the "Loading..." state immediately if container has content
+    if (this.container) {
+      this.container.innerHTML = "";
+    }
   }
 
   dispose() {
