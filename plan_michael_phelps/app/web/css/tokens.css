@@ -33,48 +33,6 @@
   --palette-ink-500: #64748b;
   --palette-ink-300: #cbd5e1;
   --palette-ink-200: #e2e8f0;
-  --palette-ink-100: #f1f5f9;
-  --palette-ink-050: #f8fafc;
-  --palette-white: #ffffff;
-
-  /* Semantic Status Colors */
-  --palette-success-700: #15803d;
-  --palette-success-100: #dcfce7;
-  --palette-warning-700: #a16207;
-  --palette-warning-100: #fef9c3;
-  --palette-danger-700: #b91c1c;
-  --palette-danger-100: #fee2e2;
-
-  /* --- SEMANTICS (The usage contract) --- */
-
-  /* Typography families */
-  --font-display: "Space Grotesk", "Inter", sans-serif;
-  --font-body: "Inter", "DM Sans", sans-serif;
-  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
-
-  /* Backgrounds / Surfaces */
-  --surface-base: var(--palette-ink-050);
-  /* App background */
-  --surface-card: var(--palette-white);
-  /* Cards, modals */
-  --surface-sunken: var(--palette-ink-100);
-  /* Inputs, wells */
-  --surface-overlay: rgba(15, 23, 42, 0.6);
-  /* Modal backdrops */
-
-  /* Text Colors */
-  --text-primary: var(--palette-ink-900);
-  /* Headings, main text */
-  --text-secondary: var(--palette-ink-500);
-  /* Subtitles, secondary */
-  --text-tertiary: var(--palette-ink-300);
-  /* Placeholders, disabled */
-  --text-inverse: var(--palette-white);
-  /* Text on dark backgrounds */
-  --text-brand: var(--palette-brand-500);
-  /* Brand highlights */
-
-  /* Borders / Dividers */
   --border-subtle: var(--palette-ink-100);
   --border-default: var(--palette-ink-200);
   /* Standard card borders */
@@ -118,4 +76,35 @@
   /* Motion */
   --motion-ease-out: cubic-bezier(0, 0, 0.2, 1);
   --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Animation */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* --- COMPATIBILITY ALIASES --- */
+  /* Mapping new Slate/Indigo system to legacy semantic names */
+
+  --surface-base: var(--palette-slate-50);
+  --surface-sunken: var(--palette-slate-100);
+
+  --border-default: var(--palette-slate-200);
+  --border-strong: var(--palette-slate-300);
+
+  --text-primary: var(--palette-slate-900);
+  --text-secondary: var(--palette-slate-500);
+  --text-brand: var(--palette-indigo-600);
+
+  --action-primary-bg: var(--palette-indigo-600);
+  --action-primary-fg: #ffffff;
+  --action-primary-hover: var(--palette-indigo-700);
+
+  --action-secondary-bg: #ffffff;
+  --action-secondary-fg: var(--palette-slate-700);
+  --action-secondary-border: var(--palette-slate-200);
+  --action-secondary-hover: var(--palette-slate-50);
+
+  --status-warning-bg: var(--palette-amber-50);
+  --status-warning-txt: var(--palette-amber-500);
+
+  --status-success-bg: var(--palette-emerald-50);
+  --status-success-txt: var(--palette-emerald-600);
 }

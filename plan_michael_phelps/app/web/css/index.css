@@ -3,9 +3,14 @@
 @import "tokens.css" layer(tokens);
 @import "base.css" layer(base);
 @import "layout.css" layer(components);
-/* Temporary: legacy layout */
+/* Structural layouts */
 @import "components.css" layer(components);
+/* BEM Components */
 @import "wizard.css" layer(components);
-/* Legacy wizard styles */
+/* Wizard Specifics */
 @import "wizard_polish.css" layer(components);
+
+@import "utilities.css" layer(utilities);
+/* Atomic Utility Classes */
 @import "responsive.css" layer(utilities);
+/* Media Query Overrides */

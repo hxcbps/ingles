@@ -1,192 +1,75 @@
 /*
-  GOVERNED DESIGN SYSTEM - LAYOUT
-  Layer: components (temporary legacy support)
+  PREMIUM SHELL LAYOUT
+  Complements utilities.css with complex effects and custom scrolling.
 */
 
-.learning-shell {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 1rem;
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 1.5rem;
-  align-items: start;
+.app-shell {
+  /* Base context */
+  position: relative;
+  isolation: isolate;
 }
 
-.shell-sidebar {
-  position: sticky;
-  top: 1rem;
-  height: calc(100vh - 2rem);
-  overflow-y: auto;
-  border-radius: var(--radius-lg);
-
-  /* Premium Dark Sidebar */
-  background-color: var(--palette-brand-950);
-  color: var(--palette-brand-100);
-
-  padding: 1.5rem;
-  display: grid;
-  align-content: start;
-  gap: 2rem;
-  box-shadow: var(--shadow-xl);
+/* --- GLASS EFFECTS --- */
+.glass-header {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  transition: all 0.3s ease;
 }
 
-.brand-block {
-  display: grid;
-  gap: 0.5rem;
+.glass-header.is-scrolled {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-.brand-overline {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.7rem;
-  color: var(--palette-brand-400);
-  font-weight: 600;
+/* --- SCROLLBARS --- */
+.shell-sidebar::-webkit-scrollbar {
+  width: 6px;
 }
 
-.brand-block h1 {
-  font-size: 1.5rem;
-  color: var(--palette-white);
-  line-height: 1.1;
-}
-
-.brand-caption {
-  color: var(--palette-brand-400);
-  font-size: 0.9rem;
-}
-
-/* Sidebar Phase Card */
-.sidebar-phase-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-  display: grid;
-  gap: 0.5rem;
-}
-
-.sidebar-phase-card .section-kicker {
-  color: var(--palette-brand-400);
-}
-
-.sidebar-phase-card h2 {
-  color: var(--palette-white);
-  font-size: 1.1rem;
-}
-
-.sidebar-phase-card p {
-  color: var(--palette-brand-100);
-  font-size: 0.9rem;
-}
-
-/* Navigation */
-.module-nav {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.module-nav-group {
-  display: grid;
-  gap: 0.5rem;
-}
-
-.module-nav-group-label {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 0.7rem;
-  color: var(--palette-brand-500);
-  font-weight: 700;
-  margin-left: 0.75rem;
-}
-
-.module-nav-item {
-  text-align: left;
+.shell-sidebar::-webkit-scrollbar-track {
   background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  padding: 0.75rem;
-  display: grid;
-  gap: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--palette-brand-100);
 }
 
-.module-nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+.shell-sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--palette-slate-200);
+  border-radius: 20px;
 }
 
-.module-nav-item.is-active {
-  background: var(--palette-brand-500);
-  color: var(--palette-white);
-  box-shadow: var(--shadow-lg);
+.shell-sidebar:hover::-webkit-scrollbar-thumb {
+  background-color: var(--palette-slate-300);
 }
 
-.module-nav-item span {
-  font-weight: 600;
-  font-size: 1rem;
+/* --- VIEW CONTAINER ANIMATIONS --- */
+.view-container {
+  animation: view-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.module-nav-item small {
-  font-size: 0.8rem;
-  opacity: 0.8;
-}
-
-/* Sidebar Guide */
-.sidebar-guide {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-  display: grid;
-  gap: 0.5rem;
-}
-
-.sidebar-guide ol {
-  padding-left: 1.25rem;
-  color: var(--palette-brand-100);
-  font-size: 0.85rem;
-}
-
-/* Main Stage */
-.shell-main {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.module-stage {
-  min-height: 60vh;
-}
-
-.module-panel {
-  animation: panel-fade-in 0.3s ease-out;
-}
-
-@keyframes panel-fade-in {
+@keyframes view-enter {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(10px) scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-/* Grids */
-.panel-grid {
-  display: grid;
-  gap: 1rem;
-}
+/* --- DECORATIVE SHAPES --- */
+/* Used in Hero Card via classes, but complex gradients can go here if needed */
 
-.panel-grid-2 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.method-grid {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
-.book-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+/* --- PROGRESS BAR STRIPES --- */
+.progress-fill-striped {
+  background-image: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 75%,
+      transparent);
+  background-size: 1rem 1rem;
 }
