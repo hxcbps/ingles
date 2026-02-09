@@ -1,0 +1,509 @@
+{
+  "version": "v4",
+  "week": 9,
+  "title": "Week 09 - Present Perfect vs Past",
+  "week_profile": {
+    "phase": "Foundation",
+    "cefr_target": "B1",
+    "focus_theme": "Time markers"
+  },
+  "days": {
+    "Mon": {
+      "day_id": "W09_D01",
+      "goal": "Master Time markers",
+      "assessment_event": false,
+      "retention_loop": [],
+      "session_script": [
+        {
+          "step_id": "W09_D01_S01",
+          "type": "input_video",
+          "title": "Concept Input",
+          "difficulty_level": "B1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Watch video about Time markers",
+            "url": "https://youtube.com/..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 20
+          },
+          "success_criteria": "Notes taken",
+          "evidence_required": "timer"
+        },
+        {
+          "step_id": "W09_D01_S02",
+          "type": "textbook_drill",
+          "title": "Core Practice",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Complete Exercises in Unit.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "unit": 9
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 60
+              },
+              {
+                "type": "self_score",
+                "min_value": 80
+              }
+            ]
+          },
+          "success_criteria": "Complete",
+          "evidence_required": "score"
+        },
+        {
+          "step_id": "W09_D01_S03",
+          "type": "ai_roleplay",
+          "title": "Activation",
+          "difficulty_level": "B1",
+          "duration_min": 40,
+          "content": {
+            "instructions": "Discuss Time markers with Coach.",
+            "prompt_ref": "W9_ROLEPLAY"
+          },
+          "gate": {
+            "type": "min_turns",
+            "value": 10
+          },
+          "success_criteria": "Fluency focus",
+          "evidence_required": "turn_count"
+        }
+      ]
+    },
+    "Tue": {
+      "day_id": "W09_D02",
+      "goal": "Master Time markers",
+      "assessment_event": false,
+      "retention_loop": [],
+      "session_script": [
+        {
+          "step_id": "W09_D02_S01",
+          "type": "input_video",
+          "title": "Concept Input",
+          "difficulty_level": "B1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Watch video about Time markers",
+            "url": "https://youtube.com/..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 20
+          },
+          "success_criteria": "Notes taken",
+          "evidence_required": "timer"
+        },
+        {
+          "step_id": "W09_D02_S02",
+          "type": "textbook_drill",
+          "title": "Core Practice",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Complete Exercises in Unit.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "unit": 9
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 60
+              },
+              {
+                "type": "self_score",
+                "min_value": 80
+              }
+            ]
+          },
+          "success_criteria": "Complete",
+          "evidence_required": "score"
+        },
+        {
+          "step_id": "W09_D02_S03",
+          "type": "ai_roleplay",
+          "title": "Activation",
+          "difficulty_level": "B1",
+          "duration_min": 40,
+          "content": {
+            "instructions": "Discuss Time markers with Coach.",
+            "prompt_ref": "W9_ROLEPLAY"
+          },
+          "gate": {
+            "type": "min_turns",
+            "value": 10
+          },
+          "success_criteria": "Fluency focus",
+          "evidence_required": "turn_count"
+        }
+      ]
+    },
+    "Wed": {
+      "day_id": "W09_D03",
+      "goal": "Master Time markers",
+      "assessment_event": false,
+      "retention_loop": [],
+      "session_script": [
+        {
+          "step_id": "W09_D03_S01",
+          "type": "input_video",
+          "title": "Concept Input",
+          "difficulty_level": "B1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Watch video about Time markers",
+            "url": "https://youtube.com/..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 20
+          },
+          "success_criteria": "Notes taken",
+          "evidence_required": "timer"
+        },
+        {
+          "step_id": "W09_D03_S02",
+          "type": "textbook_drill",
+          "title": "Core Practice",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Complete Exercises in Unit.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "unit": 9
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 60
+              },
+              {
+                "type": "self_score",
+                "min_value": 80
+              }
+            ]
+          },
+          "success_criteria": "Complete",
+          "evidence_required": "score"
+        },
+        {
+          "step_id": "W09_D03_S03",
+          "type": "ai_roleplay",
+          "title": "Activation",
+          "difficulty_level": "B1",
+          "duration_min": 40,
+          "content": {
+            "instructions": "Discuss Time markers with Coach.",
+            "prompt_ref": "W9_ROLEPLAY"
+          },
+          "gate": {
+            "type": "min_turns",
+            "value": 10
+          },
+          "success_criteria": "Fluency focus",
+          "evidence_required": "turn_count"
+        }
+      ]
+    },
+    "Thu": {
+      "day_id": "W09_D04",
+      "goal": "Master Time markers",
+      "assessment_event": false,
+      "retention_loop": [],
+      "session_script": [
+        {
+          "step_id": "W09_D04_S01",
+          "type": "input_video",
+          "title": "Concept Input",
+          "difficulty_level": "B1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Watch video about Time markers",
+            "url": "https://youtube.com/..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 20
+          },
+          "success_criteria": "Notes taken",
+          "evidence_required": "timer"
+        },
+        {
+          "step_id": "W09_D04_S02",
+          "type": "textbook_drill",
+          "title": "Core Practice",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Complete Exercises in Unit.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "unit": 9
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 60
+              },
+              {
+                "type": "self_score",
+                "min_value": 80
+              }
+            ]
+          },
+          "success_criteria": "Complete",
+          "evidence_required": "score"
+        },
+        {
+          "step_id": "W09_D04_S03",
+          "type": "ai_roleplay",
+          "title": "Activation",
+          "difficulty_level": "B1",
+          "duration_min": 40,
+          "content": {
+            "instructions": "Discuss Time markers with Coach.",
+            "prompt_ref": "W9_ROLEPLAY"
+          },
+          "gate": {
+            "type": "min_turns",
+            "value": 10
+          },
+          "success_criteria": "Fluency focus",
+          "evidence_required": "turn_count"
+        }
+      ]
+    },
+    "Fri": {
+      "day_id": "W09_D05",
+      "goal": "Master Time markers",
+      "assessment_event": false,
+      "retention_loop": [],
+      "session_script": [
+        {
+          "step_id": "W09_D05_S01",
+          "type": "input_video",
+          "title": "Concept Input",
+          "difficulty_level": "B1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Watch video about Time markers",
+            "url": "https://youtube.com/..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 20
+          },
+          "success_criteria": "Notes taken",
+          "evidence_required": "timer"
+        },
+        {
+          "step_id": "W09_D05_S02",
+          "type": "textbook_drill",
+          "title": "Core Practice",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Complete Exercises in Unit.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "unit": 9
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 60
+              },
+              {
+                "type": "self_score",
+                "min_value": 80
+              }
+            ]
+          },
+          "success_criteria": "Complete",
+          "evidence_required": "score"
+        },
+        {
+          "step_id": "W09_D05_S03",
+          "type": "ai_roleplay",
+          "title": "Activation",
+          "difficulty_level": "B1",
+          "duration_min": 40,
+          "content": {
+            "instructions": "Discuss Time markers with Coach.",
+            "prompt_ref": "W9_ROLEPLAY"
+          },
+          "gate": {
+            "type": "min_turns",
+            "value": 10
+          },
+          "success_criteria": "Fluency focus",
+          "evidence_required": "turn_count"
+        }
+      ]
+    },
+    "Sat": {
+      "day_id": "W09_D06",
+      "goal": "Master Time markers",
+      "assessment_event": false,
+      "retention_loop": [],
+      "session_script": [
+        {
+          "step_id": "W09_D06_S01",
+          "type": "input_video",
+          "title": "Concept Input",
+          "difficulty_level": "B1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Watch video about Time markers",
+            "url": "https://youtube.com/..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 20
+          },
+          "success_criteria": "Notes taken",
+          "evidence_required": "timer"
+        },
+        {
+          "step_id": "W09_D06_S02",
+          "type": "textbook_drill",
+          "title": "Core Practice",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Complete Exercises in Unit.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "unit": 9
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 60
+              },
+              {
+                "type": "self_score",
+                "min_value": 80
+              }
+            ]
+          },
+          "success_criteria": "Complete",
+          "evidence_required": "score"
+        },
+        {
+          "step_id": "W09_D06_S03",
+          "type": "ai_roleplay",
+          "title": "Activation",
+          "difficulty_level": "B1",
+          "duration_min": 40,
+          "content": {
+            "instructions": "Discuss Time markers with Coach.",
+            "prompt_ref": "W9_ROLEPLAY"
+          },
+          "gate": {
+            "type": "min_turns",
+            "value": 10
+          },
+          "success_criteria": "Fluency focus",
+          "evidence_required": "turn_count"
+        }
+      ]
+    },
+    "Sun": {
+      "day_id": "W09_D07",
+      "goal": "Master Time markers",
+      "assessment_event": false,
+      "retention_loop": [],
+      "session_script": [
+        {
+          "step_id": "W09_D07_S01",
+          "type": "input_video",
+          "title": "Concept Input",
+          "difficulty_level": "B1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Watch video about Time markers",
+            "url": "https://youtube.com/..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 20
+          },
+          "success_criteria": "Notes taken",
+          "evidence_required": "timer"
+        },
+        {
+          "step_id": "W09_D07_S02",
+          "type": "textbook_drill",
+          "title": "Core Practice",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Complete Exercises in Unit.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "unit": 9
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 60
+              },
+              {
+                "type": "self_score",
+                "min_value": 80
+              }
+            ]
+          },
+          "success_criteria": "Complete",
+          "evidence_required": "score"
+        },
+        {
+          "step_id": "W09_D07_S03",
+          "type": "ai_roleplay",
+          "title": "Activation",
+          "difficulty_level": "B1",
+          "duration_min": 40,
+          "content": {
+            "instructions": "Discuss Time markers with Coach.",
+            "prompt_ref": "W9_ROLEPLAY"
+          },
+          "gate": {
+            "type": "min_turns",
+            "value": 10
+          },
+          "success_criteria": "Fluency focus",
+          "evidence_required": "turn_count"
+        }
+      ]
+    }
+  }
+}

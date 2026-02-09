@@ -1,0 +1,394 @@
+{
+    "version": "v4",
+    "week": 2,
+    "title": "Week 02 - Questions and present continuous",
+    "week_profile": {
+        "phase": "Foundation",
+        "cefr_target": "A1-A2",
+        "focus_theme": "Present Continuous"
+    },
+    "days": {
+        "Mon": {
+            "day_id": "W02_D01",
+            "goal": "Launch week objective: preguntas y present continuous",
+            "session_script": [
+                {
+                    "step_id": "W02_D01_S01",
+                    "type": "input_video",
+                    "title": "Retrieval: Spaced Repetition",
+                    "difficulty_level": "A1",
+                    "duration_min": 15,
+                    "content": {
+                        "instructions": "Review cards D+1, D+3, D+7. Focus on previous errors.",
+                        "url": "https://quizlet.com/...",
+                        "offline_ref": "Flashcards_Week1_Review"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 15
+                    },
+                    "success_criteria": "Complete review session",
+                    "evidence_required": "timer"
+                },
+                {
+                    "step_id": "W02_D01_S02",
+                    "type": "textbook_drill",
+                    "title": "Explicit Lesson: Present Continuous",
+                    "difficulty_level": "A1",
+                    "duration_min": 20,
+                    "content": {
+                        "instructions": "Complete micro-lesson and 8 micro-drills.",
+                        "resource_locator": {
+                            "book": "American English File 1",
+                            "unit": 2,
+                            "page": 12,
+                            "exercise": "Grammar Bank 2A"
+                        }
+                    },
+                    "gate": {
+                        "type": "compound",
+                        "rules": [
+                            {
+                                "type": "self_score",
+                                "min_value": 80
+                            },
+                            {
+                                "type": "min_words",
+                                "value": 15
+                            }
+                        ]
+                    },
+                    "success_criteria": "80% Accuracy",
+                    "evidence_required": "log_answers"
+                },
+                {
+                    "step_id": "W02_D01_S03",
+                    "type": "input_video",
+                    "title": "Guided Listening: Gist & Detail",
+                    "difficulty_level": "A1",
+                    "duration_min": 20,
+                    "content": {
+                        "instructions": "Listen 3 times: 1. Main idea (Gist), 2. Specific details, 3. Inference.",
+                        "url": "https://esl-lab.com/...",
+                        "offline_ref": "Audio_W02_Listening.mp3"
+                    },
+                    "gate": {
+                        "type": "compound",
+                        "rules": [
+                            {
+                                "type": "timer_complete",
+                                "value": 20
+                            },
+                            {
+                                "type": "min_words",
+                                "value": 30
+                            }
+                        ]
+                    },
+                    "success_criteria": "Notes on Gist, Detail, Inference",
+                    "evidence_required": "notes"
+                },
+                {
+                    "step_id": "W02_D01_S04",
+                    "type": "ai_roleplay",
+                    "title": "Speaking Task: Fluency -> Accuracy",
+                    "difficulty_level": "A1",
+                    "duration_min": 35,
+                    "content": {
+                        "instructions": "Roleplay: Describe current activities (Present Continuous). Round 1: Fluency. Round 2: Accuracy.",
+                        "prompt_ref": "W02_PRES_CONT_DESCRIBE",
+                        "prompt_version": "v1.0"
+                    },
+                    "gate": {
+                        "type": "min_turns",
+                        "value": 10
+                    },
+                    "success_criteria": "10 turns with self-correction",
+                    "evidence_required": "turn_count"
+                },
+                {
+                    "step_id": "W02_D01_S05",
+                    "type": "pronunciation_lab",
+                    "title": "Pronunciation: Minimal Pairs",
+                    "difficulty_level": "A1",
+                    "duration_min": 10,
+                    "content": {
+                        "instructions": "Practice /ŋ/ sound ( -ing endings). Shadowing of chunks.",
+                        "url": "https://youglish.com/pronounce/ing/english",
+                        "offline_ref": "Audio_Pron_ING.mp3"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 10
+                    },
+                    "success_criteria": "Clear endings",
+                    "evidence_required": "timer"
+                },
+                {
+                    "step_id": "W02_D01_S06",
+                    "type": "writing_transfer",
+                    "title": "Writing Transfer",
+                    "difficulty_level": "A1",
+                    "duration_min": 20,
+                    "content": {
+                        "instructions": "Write a short paragraph describing what people in your house are doing right now.",
+                        "offline_ref": "Notebook"
+                    },
+                    "gate": {
+                        "type": "min_words",
+                        "value": 140
+                    },
+                    "success_criteria": "140 words using target grammar",
+                    "evidence_required": "text_log"
+                }
+            ],
+            "retention_loop": [
+                "W01_basic_present"
+            ],
+            "assessment_event": false
+        },
+        "Tue": {
+            "day_id": "W02_D02",
+            "goal": "Accuracy + listening transfer",
+            "session_script": [
+                {
+                    "step_id": "W02_D02_S01",
+                    "type": "input_video",
+                    "title": "Retrieval: Spaced Repetition",
+                    "difficulty_level": "A1",
+                    "duration_min": 15,
+                    "content": {
+                        "instructions": "Review Error Log from Monday.",
+                        "offline_ref": "Error_Log"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 15
+                    },
+                    "evidence_required": "timer"
+                },
+                {
+                    "step_id": "W02_D02_S02",
+                    "type": "textbook_drill",
+                    "title": "Drill: Question Forms",
+                    "difficulty_level": "A1",
+                    "duration_min": 20,
+                    "content": {
+                        "instructions": "Practice Word Order in Questions. Page 12, Exercise 2C.",
+                        "resource_locator": {
+                            "book": "American English File 1",
+                            "page": 12,
+                            "exercise": "2C",
+                            "unit": 2
+                        }
+                    },
+                    "gate": {
+                        "type": "self_score",
+                        "min_value": 80
+                    },
+                    "evidence_required": "score"
+                },
+                {
+                    "step_id": "W02_D02_S03",
+                    "type": "input_video",
+                    "title": "Guided Listening",
+                    "difficulty_level": "A1",
+                    "duration_min": 20,
+                    "content": {
+                        "instructions": "Listen to dialogue about daily routines vs now.",
+                        "url": "https://..."
+                    },
+                    "gate": {
+                        "type": "min_words",
+                        "value": 30
+                    },
+                    "evidence_required": "notes"
+                },
+                {
+                    "step_id": "W02_D02_S04",
+                    "type": "ai_roleplay",
+                    "title": "Speaking Task: Accuracy Focus",
+                    "difficulty_level": "A1",
+                    "duration_min": 35,
+                    "content": {
+                        "instructions": "Interview your coach about their schedule.",
+                        "prompt_ref": "W02_INTERVIEW_COACH"
+                    },
+                    "gate": {
+                        "type": "min_turns",
+                        "value": 8
+                    },
+                    "evidence_required": "turn_count"
+                },
+                {
+                    "step_id": "W02_D02_S05",
+                    "type": "pronunciation_lab",
+                    "title": "Pronunciation: Sentence Stress",
+                    "difficulty_level": "A1",
+                    "duration_min": 10,
+                    "content": {
+                        "instructions": "Practice sentence stress in questions.",
+                        "url": "https://..."
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 10
+                    },
+                    "evidence_required": "timer"
+                },
+                {
+                    "step_id": "W02_D02_S06",
+                    "type": "writing_transfer",
+                    "title": "Writing: Correction Rewrite",
+                    "difficulty_level": "A1",
+                    "duration_min": 20,
+                    "content": {
+                        "instructions": "Rewrite yesterday's text correcting all marked errors.",
+                        "offline_ref": "Notebook"
+                    },
+                    "gate": {
+                        "type": "compound",
+                        "rules": [
+                            {
+                                "type": "min_words",
+                                "value": 140
+                            },
+                            {
+                                "type": "manual_check",
+                                "value": true
+                            }
+                        ]
+                    },
+                    "evidence_required": "text_log"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Wed": {
+            "day_id": "W02_D03",
+            "goal": "Controlled output",
+            "session_script": [
+                {
+                    "step_id": "W02_D03_S01",
+                    "type": "textbook_drill",
+                    "title": "Placeholder - Midweek Practice",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Complete workbook exercises.",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Done",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Thu": {
+            "day_id": "W02_D04",
+            "goal": "Interaction",
+            "session_script": [
+                {
+                    "step_id": "W02_D04_S01",
+                    "type": "textbook_drill",
+                    "title": "Placeholder - Interaction",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Roleplay scenarios.",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Done",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Fri": {
+            "day_id": "W02_D05",
+            "goal": "Error clinic",
+            "session_script": [
+                {
+                    "step_id": "W02_D05_S01",
+                    "type": "textbook_drill",
+                    "title": "Placeholder - Consolidation",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Review weak points.",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Done",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Sat": {
+            "day_id": "W02_D06",
+            "goal": "Transfer",
+            "session_script": [
+                {
+                    "step_id": "W02_D06_S01",
+                    "type": "textbook_drill",
+                    "title": "Placeholder - Final Task",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Record final video.",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Done",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Sun": {
+            "day_id": "W02_D07",
+            "goal": "Weekly Assessment",
+            "session_script": [
+                {
+                    "step_id": "W02_D07_S01",
+                    "type": "quiz",
+                    "title": "Weekly Quiz",
+                    "difficulty_level": "A1",
+                    "duration_min": 300,
+                    "content": {
+                        "instructions": "Complete quiz",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 300
+                    },
+                    "success_criteria": "Pass",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        }
+    }
+}

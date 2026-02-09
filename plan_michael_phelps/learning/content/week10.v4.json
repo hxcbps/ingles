@@ -1,0 +1,136 @@
+{
+  "version": "v4",
+  "week": 10,
+  "title": "Week 10 - Checkpoint B1 Assessment",
+  "week_profile": {
+    "phase": "Consolidation",
+    "cefr_target": "B1",
+    "focus_theme": "Mid-Program Assessment"
+  },
+  "days": {
+    "Mon": {
+      "day_id": "W10_D01",
+      "goal": "Review: Present & Past Tenses",
+      "session_script": [
+        {
+          "step_id": "W10_D01_S01",
+          "type": "quiz",
+          "title": "Grammar Review 1",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Review Units 1-5 Grammar Bank.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "page": 132
+            }
+          },
+          "gate": {
+            "type": "self_score",
+            "min_value": 85
+          },
+          "evidence_required": "score"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Tue": {
+      "day_id": "W10_D02",
+      "goal": "Review: Future & Modals",
+      "session_script": [
+        {
+          "step_id": "W10_D02_S01",
+          "type": "quiz",
+          "title": "Grammar Review 2",
+          "difficulty_level": "B1",
+          "duration_min": 60,
+          "content": {
+            "instructions": "Review Units 6-9 Grammar Bank.",
+            "resource_locator": {
+              "book": "EF_Inter",
+              "page": 136
+            }
+          },
+          "gate": {
+            "type": "self_score",
+            "min_value": 85
+          },
+          "evidence_required": "score"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Wed": {
+      "day_id": "W10_D03",
+      "goal": "Speaking Assessment: Monologue",
+      "session_script": [
+        {
+          "step_id": "W10_D03_S01",
+          "type": "ai_roleplay",
+          "title": "B1 Monologue",
+          "difficulty_level": "B1",
+          "duration_min": 45,
+          "content": {
+            "instructions": "Record a 3-minute monologue about a past travel experience.",
+            "prompt_ref": "ASSESS_MONOLOGUE"
+          },
+          "gate": {
+            "type": "artifact_uploaded",
+            "value": true
+          },
+          "evidence_required": "upload"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Thu": {
+      "day_id": "W10_D04",
+      "goal": "Break",
+      "session_script": [],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Fri": {
+      "day_id": "W10_D05",
+      "goal": "Break",
+      "session_script": [],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Sat": {
+      "day_id": "W10_D06",
+      "goal": "Prep",
+      "session_script": [],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Sun": {
+      "day_id": "W10_D07",
+      "goal": "Mid-Term Exam",
+      "session_script": [
+        {
+          "step_id": "W10_D07_S01",
+          "type": "quiz",
+          "title": "Full B1 Practice Exam",
+          "difficulty_level": "B1",
+          "duration_min": 300,
+          "content": {
+            "instructions": "Complete Full Exam (Reading, Listening, Use of English).",
+            "url": "https://..."
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 300
+          },
+          "success_criteria": "Pass > 70%",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    }
+  }
+}

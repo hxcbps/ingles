@@ -1,0 +1,221 @@
+{
+    "version": "v4",
+    "week": 4,
+    "title": "Week 04 - Future Plans & Travel",
+    "week_profile": {
+        "phase": "Foundation",
+        "cefr_target": "A2",
+        "focus_theme": "Future be going to"
+    },
+    "days": {
+        "Mon": {
+            "day_id": "W04_D01",
+            "goal": "Discuss future plans",
+            "session_script": [
+                {
+                    "step_id": "W04_D01_S01",
+                    "type": "input_video",
+                    "title": "Input: Be Going To",
+                    "difficulty_level": "A2",
+                    "duration_min": 15,
+                    "content": {
+                        "instructions": "Watch video on 'Be Going To' for future plans.",
+                        "url": "https://www.youtube.com/watch?v=...",
+                        "offline_ref": "Video_Future_A2.mp4"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 15
+                    },
+                    "success_criteria": "Understand structure",
+                    "evidence_required": "timer"
+                },
+                {
+                    "step_id": "W04_D01_S02",
+                    "type": "textbook_drill",
+                    "title": "Drill: Future Plans",
+                    "difficulty_level": "A2",
+                    "duration_min": 25,
+                    "content": {
+                        "instructions": "Unit 3A, Exercises 1, 2, 5.",
+                        "resource_locator": {
+                            "book": "American English File 1",
+                            "unit": 3,
+                            "page": 20,
+                            "exercise": "1,2,5"
+                        }
+                    },
+                    "gate": {
+                        "type": "compound",
+                        "rules": [
+                            {
+                                "type": "self_score",
+                                "min_value": 80
+                            },
+                            {
+                                "type": "min_words",
+                                "value": 20
+                            }
+                        ]
+                    },
+                    "success_criteria": "80% correct",
+                    "evidence_required": "log"
+                }
+            ],
+            "retention_loop": [
+                "W03_past_simple"
+            ],
+            "assessment_event": false
+        },
+        "Tue": {
+            "day_id": "W04_D02",
+            "goal": "Draft",
+            "session_script": [
+                {
+                    "step_id": "W04_D02_S01",
+                    "type": "textbook_drill",
+                    "title": "Draft",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Draft",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Draft",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Wed": {
+            "day_id": "W04_D03",
+            "goal": "Draft",
+            "session_script": [
+                {
+                    "step_id": "W04_D03_S01",
+                    "type": "textbook_drill",
+                    "title": "Draft",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Draft",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Draft",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Thu": {
+            "day_id": "W04_D04",
+            "goal": "Draft",
+            "session_script": [
+                {
+                    "step_id": "W04_D04_S01",
+                    "type": "textbook_drill",
+                    "title": "Draft",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Draft",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Draft",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Fri": {
+            "day_id": "W04_D05",
+            "goal": "Draft",
+            "session_script": [
+                {
+                    "step_id": "W04_D05_S01",
+                    "type": "textbook_drill",
+                    "title": "Draft",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Draft",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Draft",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Sat": {
+            "day_id": "W04_D06",
+            "goal": "Draft",
+            "session_script": [
+                {
+                    "step_id": "W04_D06_S01",
+                    "type": "textbook_drill",
+                    "title": "Draft",
+                    "difficulty_level": "A1",
+                    "duration_min": 120,
+                    "content": {
+                        "instructions": "Draft",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 120
+                    },
+                    "success_criteria": "Draft",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        },
+        "Sun": {
+            "day_id": "W04_D07",
+            "goal": "Weekly Assessment",
+            "session_script": [
+                {
+                    "step_id": "W04_D07_S01",
+                    "type": "quiz",
+                    "title": "Weekly Quiz Week 4",
+                    "difficulty_level": "A1",
+                    "duration_min": 300,
+                    "content": {
+                        "instructions": "Complete quiz",
+                        "url": "http://example.com"
+                    },
+                    "gate": {
+                        "type": "timer_complete",
+                        "value": 300
+                    },
+                    "success_criteria": "Pass",
+                    "evidence_required": "timer"
+                }
+            ],
+            "retention_loop": [],
+            "assessment_event": false
+        }
+    }
+}

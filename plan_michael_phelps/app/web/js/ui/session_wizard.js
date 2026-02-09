@@ -229,10 +229,19 @@ export class SessionWizard {
   renderCompletion() {
     const progress = this.orchestrator.getProgress();
     this.container.innerHTML = `
-      <section class="wizard-complete" aria-label="Sesion completada">
-        <p class="kicker">Sesion finalizada</p>
-        <h2>Excelente bloque de ejecucion</h2>
-        <p>Progreso final: <strong>${progress}%</strong>. Ya puedes cerrar evidencia y publicar tu evaluacion.</p>
+      <section class="wizard-complete animate-in" aria-label="Sesion completada">
+        <div class="card" style="text-align: center; max-width: 600px; margin: 4rem auto;">
+            <p class="kicker">MISION CUMPLIDA</p>
+            <h1>Imparable.</h1>
+            <p style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 2rem;">
+                Has completado el <strong>${progress}%</strong> de tu objetivo diario.
+            </p>
+            <div class="timer-panel" style="justify-content: center;">
+                <span class="timer-complete">DONE</span>
+            </div>
+            <br>
+            <button class="btn-primary" onclick="location.reload()">Sincronizar Progreso</button>
+        </div>
       </section>
     `;
   }
@@ -380,13 +389,13 @@ export class SessionWizard {
         <fieldset class="metrics-grid">
           <legend>Metricas requeridas</legend>
           ${keys
-            .map(
-              (metricKey, index) => `
+          .map(
+            (metricKey, index) => `
             <label for="metric-${index}">${escapeHTML(metricLabel(metricKey))}</label>
             <input data-metric="${escapeHTML(metricKey)}" id="metric-${index}" type="number" step="0.1" value="${inputValue(draft?.metrics?.[metricKey])}" />
           `
-            )
-            .join("")}
+          )
+          .join("")}
         </fieldset>
       ` : ""}
     `;
@@ -415,75 +424,85 @@ export class SessionWizard {
     this.ensureTimer(step.step_id, step.duration_min);
 
     this.container.innerHTML = `
-      <section class="session-shell" aria-label="Ejecucion guiada del paso">
+      <section class="session-shell" aria-label="Ejecucion guiada">
+        
+        <!-- Header -->
         <header class="wizard-top">
           <div>
-            <p class="kicker">Sesion activa</p>
-            <h2>Paso ${current.stepIndex} de ${current.totalSteps}</h2>
-            <p class="step-summary">${escapeHTML(formatStepType(step.type))} · ${escapeHTML(step.duration_min || 0)} min</p>
+            <span class="kicker">Fase ${current.stepIndex} / ${current.totalSteps}</span>
+            <h2>${escapeHTML(step.title || "Foco Activo")}</h2>
           </div>
-          <div class="top-meta">
-            <span class="status-badge status-${escapeHTML(status)}">${statusLabel(status)}</span>
-            <span class="progress-pill">${progress}%</span>
+          <div style="text-align: right;">
+            <div class="status-active" style="font-family: var(--font-mono); font-size: 0.9rem;">
+                ${statusLabel(status).toUpperCase()}
+            </div>
+            <div style="font-size: 2rem; font-weight: 700; color: var(--brand-primary); line-height: 1;">
+                ${progress}%
+            </div>
           </div>
         </header>
 
-        <div class="progress-track" aria-hidden="true">
+        <!-- Progress Bar -->
+        <div class="progress-track">
           <div class="progress-fill" style="width:${progress}%"></div>
         </div>
 
-        <article class="step-card">
-          <p class="step-type">${escapeHTML(formatStepType(step.type || "step"))}</p>
-          <h3>${escapeHTML(step.title || "Paso activo")}</h3>
+        <!-- Main Card -->
+        <article class="card step-card">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+            <span class="step-summary" style="color: var(--brand-primary);">
+                /// ${escapeHTML(formatStepType(step.type))}
+            </span>
+            <span class="step-summary">${escapeHTML(step.duration_min || 0)} MIN</span>
+          </div>
 
           <div class="instruction-grid">
-            <div>
-              <h4>Haz esto ahora</h4>
-              <p>${escapeHTML(instructions)}</p>
+            <div style="grid-column: span 2;">
+                <h4>DIRECTIVA PRINCIPAL</h4>
+                <p style="font-size: 1.25rem; color: #fff; line-height: 1.5;">
+                    ${escapeHTML(instructions)}
+                </p>
             </div>
             <div>
-              <h4>Criterio de exito</h4>
-              <p>${escapeHTML(successCriteria)}</p>
+                <h4>CRITERIO DE EXITO</h4>
+                <p style="color: #cbd5e1;">${escapeHTML(successCriteria)}</p>
             </div>
             <div>
-              <h4>Validacion</h4>
-              <p>${escapeHTML(gateSummary)}</p>
-            </div>
-            <div>
-              <h4>Reintentos</h4>
-              <p>${Number.isInteger(Number(step?.retry_policy?.max_attempts)) ? escapeHTML(step.retry_policy.max_attempts) : "0"} intentos antes de recovery</p>
+                <h4>PROTOCOLO DE VALIDACION</h4>
+                <p style="color: #cbd5e1;">${escapeHTML(gateSummary)}</p>
             </div>
           </div>
 
           ${this.renderGateChecklist(step)}
           ${this.renderResource(step)}
 
-          <article class="evidence-card" aria-label="Captura de evidencia">
-            <h4>Evidencia del paso</h4>
+          <div class="evidence-card" style="margin-top: 2rem; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: var(--radius-md);">
+            <h4 style="margin-bottom: 1rem; color: #fff;">EVIDENCIA REQUERIDA</h4>
             ${this.renderEvidenceFields(step, draft)}
-          </article>
+          </div>
 
-          <p id="gate-feedback" class="gate-feedback tone-${escapeHTML(this.feedback.tone)}" role="status" aria-live="polite">
-            ${escapeHTML(this.feedback.text || "Completa evidencia y valida el paso para avanzar.")}
-          </p>
         </article>
 
-        <footer class="wizard-footer">
+        <!-- Footer / Timer -->
+        <footer class="wizard-footer" style="display: grid; gap: 1rem;">
           <div class="timer-panel">
-            <p class="timer-label">Timer del paso</p>
-            <p id="wizard-timer" class="timer-value">${formatClock(this.timer.leftSec)}</p>
+            <div>
+                <div style="font-family: var(--font-mono); font-size: 0.8rem; color: #64748b;">TIEMPO RESTANTE</div>
+                <div id="wizard-timer" class="timer-value">${formatClock(this.timer.leftSec)}</div>
+            </div>
             <div class="timer-actions">
               <button id="btn-timer-toggle" class="btn-secondary" type="button">
-                ${this.timer.running ? "Pausar timer" : "Iniciar timer"}
+                ${this.timer.running ? "PAUSAR" : "INICIAR"}
               </button>
-              <button id="btn-timer-reset" class="btn-ghost" type="button">Reiniciar</button>
+              <button id="btn-timer-reset" class="btn-ghost" type="button" style="color: #64748b; font-size: 0.9rem;">REINICIAR</button>
             </div>
           </div>
 
-          <button id="btn-submit-step" class="btn-primary" type="button" disabled>
-            Validar y continuar
+          <button id="btn-submit-step" class="btn-primary" type="button" style="width: 100%; padding: 1.2rem; font-size: 1.2rem;" disabled>
+            VALIDAR FASE
           </button>
         </footer>
+
       </section>
     `;
 
