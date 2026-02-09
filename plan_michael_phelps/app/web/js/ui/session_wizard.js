@@ -79,6 +79,20 @@ function gateTypeLabel(type) {
 function formatStepType(stepType) {
   const raw = String(stepType || "step").replaceAll("_", " ").trim();
   if (!raw) return "Paso";
+
+  // Quick manual map for common English types if they appear in data
+  const map = {
+    "focus": "Foco",
+    "practice": "Práctica",
+    "challenge": "Reto",
+    "review": "Repaso",
+    "warmup": "Calentamiento",
+    "cool_down": "Cierre"
+  };
+
+  const lower = raw.toLowerCase();
+  if (map[lower]) return map[lower];
+
   return raw.charAt(0).toUpperCase() + raw.slice(1);
 }
 
@@ -417,15 +431,15 @@ export class SessionWizard {
 
     const html = `
         <div class="instruction-primary animate-fade-in">
-            <h4>DIRECTIVA PRINCIPAL</h4>
+            <h4>${ICONS.idea} OBJETIVO PRINCIPAL</h4>
             <p class="instruction-text">${escapeHTML(instructions)}</p>
         </div>
         <div class="animate-fade-in" style="animation-delay: 0.1s">
-            <h4>CRITERIO DE ÉXITO</h4>
+            <h4>${ICONS.check} CRITERIO DE ÉXITO</h4>
             <p class="instruction-sub-text">${escapeHTML(successCriteria)}</p>
         </div>
         <div class="animate-fade-in" style="animation-delay: 0.2s">
-            <h4>PROTOCOLO DE VALIDACIÓN</h4>
+            <h4>${ICONS.evidence} VALIDACIÓN</h4>
             <p class="instruction-sub-text">${escapeHTML(gateSummary)}</p>
         </div>
       `;
