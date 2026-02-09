@@ -1,0 +1,207 @@
+.learning-shell {
+  max-width: min(1580px, 98vw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(270px, 320px) minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.6rem);
+  align-items: start;
+}
+
+.shell-sidebar {
+  position: sticky;
+  top: 0.9rem;
+  height: calc(100vh - 1.8rem);
+  overflow-y: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--sidebar-line);
+  background:
+    radial-gradient(circle at 8% -8%, rgba(223, 137, 82, 0.36), transparent 30%),
+    linear-gradient(200deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-mid) 54%, var(--sidebar-bg-end) 100%);
+  box-shadow: var(--shadow-sidebar);
+  padding: clamp(0.9rem, 1.4vw, 1.25rem);
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  color: var(--sidebar-ink);
+}
+
+.brand-block {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.brand-overline {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: #ffd0ad;
+}
+
+.brand-block h1 {
+  font-size: clamp(1.18rem, 1.9vw, 1.36rem);
+  color: #f6f9ff;
+}
+
+.brand-caption {
+  color: var(--sidebar-muted);
+  font-size: 0.93rem;
+}
+
+.sidebar-phase-card {
+  border: 1px solid rgba(180, 201, 232, 0.36);
+  border-radius: var(--radius-md);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.08) 100%);
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sidebar-phase-card .section-kicker {
+  color: #ffd4b3;
+}
+
+.sidebar-phase-card h2 {
+  color: #f4f8ff;
+  font-size: 1rem;
+}
+
+.sidebar-phase-card p {
+  color: #c8d7ec;
+}
+
+.module-nav {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.module-nav-item {
+  text-align: left;
+  border: 1px solid rgba(174, 195, 225, 0.28);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.07) 100%);
+  border-radius: 12px;
+  padding: 0.68rem 0.78rem;
+  display: grid;
+  gap: 0.12rem;
+  cursor: pointer;
+  color: var(--sidebar-ink);
+  transition:
+    transform var(--motion-fast),
+    border-color var(--motion-standard),
+    background var(--motion-standard),
+    box-shadow var(--motion-standard);
+}
+
+.module-nav-item span {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #f0f5fd;
+}
+
+.module-nav-item small {
+  color: var(--sidebar-muted);
+  font-size: 0.82rem;
+}
+
+.module-nav-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(222, 202, 184, 0.7);
+  box-shadow: 0 10px 18px rgba(8, 15, 28, 0.35);
+}
+
+.module-nav-item.is-active {
+  border-color: rgba(255, 207, 170, 0.9);
+  background: linear-gradient(130deg, rgba(223, 137, 82, 0.3) 0%, rgba(80, 139, 204, 0.3) 100%);
+  box-shadow: 0 12px 24px rgba(8, 15, 28, 0.4);
+}
+
+.sidebar-guide {
+  border: 1px dashed rgba(181, 201, 228, 0.45);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.sidebar-guide .section-kicker {
+  color: #ffcc9f;
+}
+
+.sidebar-guide ol {
+  list-style: decimal;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.38rem;
+  color: #d2def0;
+  font-size: 0.9rem;
+}
+
+.shell-main {
+  display: grid;
+  gap: 1rem;
+}
+
+.module-stage {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 251, 254, 0.93) 54%, rgba(245, 242, 236, 0.95) 100%);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(0.9rem, 1.5vw, 1.28rem);
+  min-height: 56vh;
+}
+
+.module-panel {
+  display: grid;
+  gap: 1rem;
+  animation: panel-enter 340ms var(--motion-spring) both;
+}
+
+.module-panel[hidden] {
+  display: none;
+}
+
+.panel-title {
+  font-size: clamp(1.1rem, 2vw, 1.56rem);
+}
+
+.panel-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.panel-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.72rem;
+}
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.week-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.72rem;
+}
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.68rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.72rem;
+}

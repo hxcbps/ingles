@@ -1,32 +1,34 @@
-body.app-mode-v4 .v4-header,
-body.app-mode-v4 .step-card,
-body.app-mode-v4 .wizard-footer,
-body.app-mode-v4 .wizard-complete,
-body.app-mode-v4 .v4-error {
+body.app-mode-v4 .wizard-workspace .step-card,
+body.app-mode-v4 .wizard-workspace .wizard-footer,
+body.app-mode-v4 .wizard-workspace .wizard-complete,
+body.app-mode-v4 .wizard-workspace .wizard-top,
+body.app-mode-v4 .wizard-workspace .v4-error {
   animation: v4-rise 320ms ease both;
 }
 
-body.app-mode-v4 .instruction-grid > div,
-body.app-mode-v4 .gate-spec,
-body.app-mode-v4 .resource-card,
-body.app-mode-v4 .evidence-card {
+body.app-mode-v4 .wizard-workspace .instruction-grid > div,
+body.app-mode-v4 .wizard-workspace .gate-spec,
+body.app-mode-v4 .wizard-workspace .resource-card,
+body.app-mode-v4 .wizard-workspace .evidence-card,
+body.app-mode-v4 .wizard-workspace .step-rail-item {
   transition:
-    transform 180ms ease,
-    box-shadow 220ms ease,
-    border-color 180ms ease,
-    background 220ms ease;
+    transform var(--motion-fast),
+    box-shadow var(--motion-standard),
+    border-color var(--motion-fast),
+    background var(--motion-standard);
 }
 
-body.app-mode-v4 .instruction-grid > div:hover,
-body.app-mode-v4 .gate-spec:hover,
-body.app-mode-v4 .resource-card:hover,
-body.app-mode-v4 .evidence-card:hover {
+body.app-mode-v4 .wizard-workspace .instruction-grid > div:hover,
+body.app-mode-v4 .wizard-workspace .gate-spec:hover,
+body.app-mode-v4 .wizard-workspace .resource-card:hover,
+body.app-mode-v4 .wizard-workspace .evidence-card:hover,
+body.app-mode-v4 .wizard-workspace .step-rail-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(40, 33, 21, 0.14);
-  border-color: #cbb590;
+  box-shadow: 0 14px 28px rgba(18, 34, 56, 0.16);
+  border-color: #b6cbe1;
 }
 
-body.app-mode-v4 .progress-fill {
+body.app-mode-v4 .wizard-workspace .progress-fill {
   transition: width 340ms ease;
 }
 
@@ -43,8 +45,8 @@ body.app-mode-v4 .btn-primary:hover,
 body.app-mode-v4 .btn-secondary:hover,
 body.app-mode-v4 .btn-ghost:hover {
   transform: translateY(-1px);
-  filter: saturate(1.05);
-  box-shadow: 0 12px 22px rgba(27, 21, 13, 0.18);
+  filter: saturate(1.06);
+  box-shadow: 0 10px 20px rgba(17, 34, 56, 0.22);
 }
 
 body.app-mode-v4 .btn-primary:active,
@@ -53,12 +55,12 @@ body.app-mode-v4 .btn-ghost:active {
   transform: translateY(0);
 }
 
-body.app-mode-v4 .timer-value {
+body.app-mode-v4 .wizard-workspace .timer-value {
   transition: color 180ms ease, text-shadow 220ms ease;
 }
 
-body.app-mode-v4 .timer-value.timer-complete {
-  text-shadow: 0 0 14px rgba(34, 197, 94, 0.38);
+body.app-mode-v4 .wizard-workspace .timer-value.timer-complete {
+  text-shadow: 0 0 14px rgba(31, 116, 80, 0.34);
 }
 
 @keyframes v4-rise {
@@ -74,23 +76,24 @@ body.app-mode-v4 .timer-value.timer-complete {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body.app-mode-v4 .v4-header,
-  body.app-mode-v4 .step-card,
-  body.app-mode-v4 .wizard-footer,
-  body.app-mode-v4 .wizard-complete,
-  body.app-mode-v4 .v4-error {
+  body.app-mode-v4 .wizard-workspace .step-card,
+  body.app-mode-v4 .wizard-workspace .wizard-footer,
+  body.app-mode-v4 .wizard-workspace .wizard-complete,
+  body.app-mode-v4 .wizard-workspace .wizard-top,
+  body.app-mode-v4 .wizard-workspace .v4-error {
     animation: none;
   }
 
-  body.app-mode-v4 .instruction-grid > div,
-  body.app-mode-v4 .gate-spec,
-  body.app-mode-v4 .resource-card,
-  body.app-mode-v4 .evidence-card,
-  body.app-mode-v4 .progress-fill,
+  body.app-mode-v4 .wizard-workspace .instruction-grid > div,
+  body.app-mode-v4 .wizard-workspace .gate-spec,
+  body.app-mode-v4 .wizard-workspace .resource-card,
+  body.app-mode-v4 .wizard-workspace .evidence-card,
+  body.app-mode-v4 .wizard-workspace .step-rail-item,
+  body.app-mode-v4 .wizard-workspace .progress-fill,
   body.app-mode-v4 .btn-primary,
   body.app-mode-v4 .btn-secondary,
   body.app-mode-v4 .btn-ghost,
-  body.app-mode-v4 .timer-value {
+  body.app-mode-v4 .wizard-workspace .timer-value {
     transition: none;
   }
 }

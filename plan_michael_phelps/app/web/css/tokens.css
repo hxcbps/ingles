@@ -1,0 +1,60 @@
+:root {
+  --font-display: "Sora", "Avenir Next", "Segoe UI", sans-serif;
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Menlo", monospace;
+
+  --canvas-100: #ece7de;
+  --canvas-200: #d9e3dc;
+  --surface-100: #f9f7f2;
+  --surface-200: #f3f5f8;
+  --surface-300: #ffffff;
+
+  --ink-950: #0e1a2b;
+  --ink-900: #17263a;
+  --ink-700: #334a67;
+  --ink-500: #5f7692;
+  --ink-300: #8ea1b7;
+
+  --line-soft: #c8d3df;
+  --line-strong: #9eb3cb;
+
+  --brand-700: #1f4f83;
+  --brand-600: #2f70b5;
+  --brand-500: #4e90d4;
+  --brand-soft: rgba(47, 112, 181, 0.14);
+
+  --accent-700: #ab4f1f;
+  --accent-600: #c86a31;
+  --accent-500: #df8952;
+  --accent-soft: rgba(200, 106, 49, 0.16);
+
+  --success-700: #1f7450;
+  --success-soft: rgba(31, 116, 80, 0.15);
+
+  --warning-700: #995f1f;
+  --warning-soft: rgba(153, 95, 31, 0.16);
+
+  --danger-700: #953c3c;
+  --danger-soft: rgba(149, 60, 60, 0.16);
+
+  --sidebar-bg-start: #0f1f35;
+  --sidebar-bg-mid: #1a3151;
+  --sidebar-bg-end: #27466f;
+  --sidebar-ink: #edf3fd;
+  --sidebar-muted: #b6c6de;
+  --sidebar-line: rgba(163, 186, 220, 0.35);
+
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 14px 32px rgba(20, 34, 53, 0.14);
+  --shadow-elevated: 0 24px 52px rgba(14, 29, 49, 0.22);
+  --shadow-sidebar: 0 30px 60px rgba(8, 15, 27, 0.45);
+
+  --motion-fast: 170ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-standard: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-spring: 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
