@@ -3,8 +3,8 @@
   "week": 15,
   "title": "Week 15 - Checkpoint B1",
   "week_profile": {
-    "phase": "Consolidation",
-    "cefr_target": "B1",
+    "phase": "Integration",
+    "cefr_target": "B1+",
     "focus_theme": "Assessment"
   },
   "days": {
@@ -40,7 +40,7 @@
           "content": {
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 3",
               "unit": 15
             }
           },
@@ -111,7 +111,7 @@
           "content": {
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 3",
               "unit": 15
             }
           },
@@ -182,7 +182,7 @@
           "content": {
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 3",
               "unit": 15
             }
           },
@@ -253,7 +253,7 @@
           "content": {
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 3",
               "unit": 15
             }
           },
@@ -324,7 +324,7 @@
           "content": {
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 3",
               "unit": 15
             }
           },
@@ -395,7 +395,7 @@
           "content": {
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 3",
               "unit": 15
             }
           },

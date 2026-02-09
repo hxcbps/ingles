@@ -1,194 +1,224 @@
 {
-    "version": "v4",
-    "week": 5,
-    "title": "Week 05 - Checkpoint A2",
-    "week_profile": {
-        "phase": "Foundation",
-        "cefr_target": "A2",
-        "focus_theme": "Assessment A2"
-    },
-    "days": {
-        "Mon": {
-            "day_id": "W05_D01",
-            "goal": "Review A1/A2 Concepts",
-            "session_script": [
-                {
-                    "step_id": "W05_D01_S01",
-                    "type": "quiz",
-                    "title": "Review: Grammar Bank Units 1-4",
-                    "difficulty_level": "A2",
-                    "duration_min": 45,
-                    "content": {
-                        "instructions": "Complete Review tests on page 130.",
-                        "resource_locator": {
-                            "book": "American English File 1",
-                            "page": 130,
-                            "unit": 4,
-                            "exercise": "Review"
-                        }
-                    },
-                    "gate": {
-                        "type": "self_score",
-                        "min_value": 85
-                    },
-                    "success_criteria": "85% on Review",
-                    "evidence_required": "score"
-                }
-            ],
-            "retention_loop": [
-                "W01_W04_review"
-            ],
-            "assessment_event": true
-        },
-        "Tue": {
-            "day_id": "W05_D02",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W05_D02_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": true
-        },
-        "Wed": {
-            "day_id": "W05_D03",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W05_D03_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": true
-        },
-        "Thu": {
-            "day_id": "W05_D04",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W05_D04_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": true
-        },
-        "Fri": {
-            "day_id": "W05_D05",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W05_D05_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": true
-        },
-        "Sat": {
-            "day_id": "W05_D06",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W05_D06_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": true
-        },
-        "Sun": {
-            "day_id": "W05_D07",
-            "goal": "Checkpoint Exam A2",
-            "session_script": [
-                {
-                    "step_id": "W05_D07_S01",
-                    "type": "quiz",
-                    "title": "Checkpoint A2 Exam",
-                    "difficulty_level": "A2",
-                    "duration_min": 300,
-                    "content": {
-                        "instructions": "Complete full Level 1 Exam.",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 300
-                    },
-                    "success_criteria": "Pass with 80%",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": true
+  "version": "v4",
+  "week": 5,
+  "title": "Week 05 - Checkpoint A2",
+  "week_profile": {
+    "phase": "Foundation",
+    "cefr_target": "A2",
+    "focus_theme": "Assessment A2"
+  },
+  "days": {
+    "Mon": {
+      "day_id": "W05_D01",
+      "goal": "Review A1/A2 Concepts",
+      "session_script": [
+        {
+          "step_id": "W05_D01_S01",
+          "type": "quiz",
+          "title": "Review: Grammar Bank Units 1-4",
+          "difficulty_level": "A2",
+          "duration_min": 45,
+          "content": {
+            "instructions": "Complete Review tests on page 130.",
+            "resource_locator": {
+              "book": "American English File 1",
+              "page": 130,
+              "unit": 4,
+              "exercise": "Review"
+            }
+          },
+          "gate": {
+            "type": "self_score",
+            "min_value": 85
+          },
+          "success_criteria": "85% on Review",
+          "evidence_required": "score"
         }
+      ],
+      "retention_loop": [
+        "W01_W04_review"
+      ],
+      "assessment_event": true
+    },
+    "Tue": {
+      "day_id": "W05_D02",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W05_D02_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 5,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Wed": {
+      "day_id": "W05_D03",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W05_D03_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 5,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Thu": {
+      "day_id": "W05_D04",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W05_D04_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 5,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Fri": {
+      "day_id": "W05_D05",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W05_D05_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 5,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Sat": {
+      "day_id": "W05_D06",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W05_D06_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 5,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
+    },
+    "Sun": {
+      "day_id": "W05_D07",
+      "goal": "Checkpoint Exam A2",
+      "session_script": [
+        {
+          "step_id": "W05_D07_S01",
+          "type": "quiz",
+          "title": "Checkpoint A2 Exam",
+          "difficulty_level": "A2",
+          "duration_min": 300,
+          "content": {
+            "instructions": "Complete full Level 1 Exam.",
+            "url": "http://example.com"
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 300
+          },
+          "success_criteria": "Pass with 80%",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
     }
+  }
 }

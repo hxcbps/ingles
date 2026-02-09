@@ -3,7 +3,7 @@
   "week": 10,
   "title": "Week 10 - Checkpoint B1 Assessment",
   "week_profile": {
-    "phase": "Consolidation",
+    "phase": "Build-up",
     "cefr_target": "B1",
     "focus_theme": "Mid-Program Assessment"
   },
@@ -21,7 +21,7 @@
           "content": {
             "instructions": "Review Units 1-5 Grammar Bank.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 2",
               "page": 132
             }
           },
@@ -48,7 +48,7 @@
           "content": {
             "instructions": "Review Units 6-9 Grammar Bank.",
             "resource_locator": {
-              "book": "EF_Inter",
+              "book": "American English File 2",
               "page": 136
             }
           },

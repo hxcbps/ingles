@@ -208,6 +208,139 @@
         "retrieval_quiz",
         "pron_shadow_task"
       ]
+    },
+    {
+      "id": "aef_1_foundation",
+      "book": "American English File 1",
+      "chapter_ref": "Starter-File 4",
+      "objective": "A0 to A2 core grammar and speaking confidence",
+      "exercise_templates": [
+        "guided_listening_sheet",
+        "roleplay_task",
+        "error_rewrite"
+      ]
+    },
+    {
+      "id": "aef_2_buildup",
+      "book": "American English File 2",
+      "chapter_ref": "File 1-10",
+      "objective": "A2 to B1 transition with functional speaking",
+      "exercise_templates": [
+        "roleplay_task",
+        "retrieval_quiz",
+        "writing_transform_task"
+      ]
+    },
+    {
+      "id": "aef_3_integration",
+      "book": "American English File 3",
+      "chapter_ref": "File 1-10",
+      "objective": "B1 integration for sustained interaction",
+      "exercise_templates": [
+        "roleplay_task",
+        "repair_drill",
+        "guided_listening_sheet"
+      ]
+    },
+    {
+      "id": "speakout_preint",
+      "book": "Speakout Pre-Intermediate",
+      "chapter_ref": "Units 1-12",
+      "objective": "authentic listening and everyday interaction scripts",
+      "exercise_templates": [
+        "guided_listening_sheet",
+        "chunk_extraction",
+        "roleplay_task"
+      ]
+    },
+    {
+      "id": "speakout_upperint",
+      "book": "Speakout Upper Intermediate",
+      "chapter_ref": "Units 1-12",
+      "objective": "B2 discussion control and argument clarity",
+      "exercise_templates": [
+        "guided_listening_sheet",
+        "writing_transform_task",
+        "roleplay_task"
+      ]
+    },
+    {
+      "id": "roadmap_b1plus",
+      "book": "Roadmap B1+",
+      "chapter_ref": "Units 1-10",
+      "objective": "bridge from B1 to B2- with task sequence coherence",
+      "exercise_templates": [
+        "roleplay_task",
+        "error_rewrite",
+        "chunk_extraction"
+      ]
+    },
+    {
+      "id": "roadmap_b2",
+      "book": "Roadmap B2",
+      "chapter_ref": "Units 1-10",
+      "objective": "B2 performance and task transfer under pressure",
+      "exercise_templates": [
+        "roleplay_task",
+        "repair_drill",
+        "writing_transform_task"
+      ]
+    },
+    {
+      "id": "compelling_conversations_b2",
+      "book": "Compelling Conversations",
+      "chapter_ref": "Topic sets 1-20",
+      "objective": "advanced speaking stamina and opinion development",
+      "exercise_templates": [
+        "roleplay_task",
+        "guided_listening_sheet"
+      ]
+    },
+    {
+      "id": "pmp_english_conversation",
+      "book": "Practice Makes Perfect: English Conversation",
+      "chapter_ref": "Ch. 1-15",
+      "objective": "structured conversation practice for B1-B2",
+      "exercise_templates": [
+        "roleplay_task",
+        "error_rewrite"
+      ]
+    },
+    {
+      "id": "method_harmer_practice",
+      "book": "The Practice of English Language Teaching",
+      "chapter_ref": "Core methodology chapters",
+      "objective": "teacher-level framework for lesson and task design",
+      "exercise_templates": [
+        "retrieval_quiz"
+      ]
+    },
+    {
+      "id": "method_scrivener_learning",
+      "book": "Learning Teaching",
+      "chapter_ref": "Practical classroom techniques",
+      "objective": "classroom facilitation and communicative execution",
+      "exercise_templates": [
+        "retrieval_quiz"
+      ]
+    },
+    {
+      "id": "method_thornbury_speaking",
+      "book": "How to Teach Speaking",
+      "chapter_ref": "Planning and fluency chapters",
+      "objective": "speaking-focused activity and feedback design",
+      "exercise_templates": [
+        "retrieval_quiz"
+      ]
+    },
+    {
+      "id": "method_ur_course",
+      "book": "A Course in Language Teaching",
+      "chapter_ref": "Method and task design sections",
+      "objective": "balanced theory-to-practice teaching decisions",
+      "exercise_templates": [
+        "retrieval_quiz"
+      ]
     }
   ]
 }

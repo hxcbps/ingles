@@ -1,297 +1,321 @@
 {
-    "version": "v4",
-    "week": 1,
-    "title": "Week 01 - Foundation & Greetings",
-    "week_profile": {
-        "phase": "Foundation",
-        "cefr_target": "A1",
-        "focus_theme": "Introductions and Basic Present"
-    },
-    "days": {
-        "Mon": {
-            "day_id": "W01_D01",
-            "goal": "Introduce yourself using simple present",
-            "session_script": [
-                {
-                    "step_id": "W01_D01_S01",
-                    "type": "input_video",
-                    "title": "Input: Basic Greetings",
-                    "difficulty_level": "A1",
-                    "duration_min": 15,
-                    "content": {
-                        "instructions": "Watch the video focusing on intonation and greeting patterns. Do not repeat yet.",
-                        "url": "https://www.youtube.com/watch?v=FwGdU0B5i70",
-                        "offline_ref": "Video_Greetings_A1.mp4"
-                    },
-                    "gate": {
-                        "type": "compound",
-                        "rules": [
-                            {
-                                "type": "timer_complete",
-                                "value": 15
-                            },
-                            {
-                                "type": "self_score",
-                                "min_value": 3
-                            }
-                        ]
-                    },
-                    "success_criteria": "Understand difference between formal and informal greetings.",
-                    "evidence_required": "timer_complete",
-                    "fallback_step_id": "W01_D01_S01_EASY"
-                },
-                {
-                    "step_id": "W01_D01_S02",
-                    "type": "textbook_drill",
-                    "title": "Drill: Verb Be (Singular)",
-                    "difficulty_level": "A1",
-                    "duration_min": 20,
-                    "content": {
-                        "instructions": "Complete exercises 1A and 1B. Check answers against key on page 130.",
-                        "resource_locator": {
-                            "book": "American English File 1",
-                            "unit": 1,
-                            "page": 6,
-                            "exercise": "1A & 1B",
-                            "fallback_url": "https://elt.oup.com/student/americanenglishfile/level01/unit01"
-                        }
-                    },
-                    "gate": {
-                        "type": "compound",
-                        "rules": [
-                            {
-                                "type": "self_score",
-                                "min_value": 80
-                            },
-                            {
-                                "type": "min_words",
-                                "value": 10
-                            }
-                        ]
-                    },
-                    "success_criteria": "80% accuracy on exercise check.",
-                    "evidence_required": "text_log",
-                    "retry_policy": {
-                        "max_attempts": 2,
-                        "action_on_fail": "fallback_step_id"
-                    },
-                    "fallback_step_id": "W01_D01_S02_REMEDIAL"
-                },
-                {
-                    "step_id": "W01_D01_S03",
-                    "type": "ai_roleplay",
-                    "title": "Production: Meet a New Colleague",
-                    "difficulty_level": "A1",
-                    "duration_min": 15,
-                    "content": {
-                        "instructions": "Use ChatGPT Voice/Sesame. Scenario: You meet a new colleague at a coffee machine.",
-                        "prompt_ref": "A1_GREETINGS_SIMIGOD",
-                        "prompt_version": "v1.0"
-                    },
-                    "gate": {
-                        "type": "evidence_log_min_words",
-                        "value": 20
-                    },
-                    "success_criteria": "Complete 5 exchange turns.",
-                    "evidence_required": "transcript_log"
-                },
-                {
-                    "step_id": "W01_D01_S01_EASY",
-                    "type": "input_video",
-                    "title": "Fallback: Slower Greetings",
-                    "difficulty_level": "A0",
-                    "duration_min": 15,
-                    "content": {
-                        "instructions": "Watch this slower version.",
-                        "url": "https://www.youtube.com/watch?v=tVdc6-S5V2Y"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 15
-                    },
-                    "success_criteria": "Basic comprehension",
-                    "evidence_required": "timer_only"
-                },
-                {
-                    "step_id": "W01_D01_S02_REMEDIAL",
-                    "type": "textbook_drill",
-                    "title": "Remedial: Verb Be Theory",
-                    "difficulty_level": "A1",
-                    "duration_min": 15,
-                    "content": {
-                        "instructions": "Read Grammar Bank 1A on page 124.",
-                        "resource_locator": {
-                            "book": "American English File 1",
-                            "page": 124,
-                            "unit": 1,
-                            "exercise": "Grammar Bank"
-                        }
-                    },
-                    "gate": {
-                        "type": "manual_check",
-                        "value": true
-                    },
-                    "success_criteria": "Read and understood rules",
-                    "evidence_required": "check"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
+  "version": "v4",
+  "week": 1,
+  "title": "Week 01 - Foundation & Greetings",
+  "week_profile": {
+    "phase": "Foundation",
+    "cefr_target": "A1",
+    "focus_theme": "Introductions and Basic Present"
+  },
+  "days": {
+    "Mon": {
+      "day_id": "W01_D01",
+      "goal": "Introduce yourself using simple present",
+      "session_script": [
+        {
+          "step_id": "W01_D01_S01",
+          "type": "input_video",
+          "title": "Input: Basic Greetings",
+          "difficulty_level": "A1",
+          "duration_min": 15,
+          "content": {
+            "instructions": "Watch the video focusing on intonation and greeting patterns. Do not repeat yet.",
+            "url": "https://www.youtube.com/watch?v=FwGdU0B5i70",
+            "offline_ref": "Video_Greetings_A1.mp4"
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "timer_complete",
+                "value": 15
+              },
+              {
+                "type": "self_score",
+                "min_value": 3
+              }
+            ]
+          },
+          "success_criteria": "Understand difference between formal and informal greetings.",
+          "evidence_required": "timer_complete",
+          "fallback_step_id": "W01_D01_S01_EASY"
         },
-        "Tue": {
-            "day_id": "W01_D02",
-            "goal": "Numbers and Days",
-            "session_script": [
-                {
-                    "step_id": "W01_D02_S01",
-                    "type": "textbook_drill",
-                    "title": "Vocab: Days and Numbers",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft placeholder for Tuesday content.",
-                        "resource_locator": {
-                            "book": "American English File 1",
-                            "unit": 1,
-                            "page": 8,
-                            "exercise": "2A"
-                        }
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
+        {
+          "step_id": "W01_D01_S02",
+          "type": "textbook_drill",
+          "title": "Drill: Verb Be (Singular)",
+          "difficulty_level": "A1",
+          "duration_min": 20,
+          "content": {
+            "instructions": "Complete exercises 1A and 1B. Check answers against key on page 130.",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 1,
+              "page": 6,
+              "exercise": "1A & 1B",
+              "fallback_url": "https://elt.oup.com/student/americanenglishfile/level01/unit01"
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "self_score",
+                "min_value": 80
+              },
+              {
+                "type": "min_words",
+                "value": 10
+              }
+            ]
+          },
+          "success_criteria": "80% accuracy on exercise check.",
+          "evidence_required": "text_log",
+          "retry_policy": {
+            "max_attempts": 2,
+            "action_on_fail": "fallback_step_id"
+          },
+          "fallback_step_id": "W01_D01_S02_REMEDIAL"
         },
-        "Wed": {
-            "day_id": "W01_D03",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W01_D03_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
+        {
+          "step_id": "W01_D01_S03",
+          "type": "ai_roleplay",
+          "title": "Production: Meet a New Colleague",
+          "difficulty_level": "A1",
+          "duration_min": 15,
+          "content": {
+            "instructions": "Use ChatGPT Voice/Sesame. Scenario: You meet a new colleague at a coffee machine.",
+            "prompt_ref": "A1_GREETINGS_SIMIGOD",
+            "prompt_version": "v1.0"
+          },
+          "gate": {
+            "type": "evidence_log_min_words",
+            "value": 20
+          },
+          "success_criteria": "Complete 5 exchange turns.",
+          "evidence_required": "transcript_log"
         },
-        "Thu": {
-            "day_id": "W01_D04",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W01_D04_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
+        {
+          "step_id": "W01_D01_S01_EASY",
+          "type": "input_video",
+          "title": "Fallback: Slower Greetings",
+          "difficulty_level": "A0",
+          "duration_min": 15,
+          "content": {
+            "instructions": "Watch this slower version.",
+            "url": "https://www.youtube.com/watch?v=tVdc6-S5V2Y"
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 15
+          },
+          "success_criteria": "Basic comprehension",
+          "evidence_required": "timer_only"
         },
-        "Fri": {
-            "day_id": "W01_D05",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W01_D05_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
-        },
-        "Sat": {
-            "day_id": "W01_D06",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W01_D06_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
-        },
-        "Sun": {
-            "day_id": "W01_D07",
-            "goal": "Weekly Assessment",
-            "session_script": [
-                {
-                    "step_id": "W01_D07_S01",
-                    "type": "quiz",
-                    "title": "Weekly Quiz",
-                    "difficulty_level": "A1",
-                    "duration_min": 300,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 300
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": true
+        {
+          "step_id": "W01_D01_S02_REMEDIAL",
+          "type": "textbook_drill",
+          "title": "Remedial: Verb Be Theory",
+          "difficulty_level": "A1",
+          "duration_min": 15,
+          "content": {
+            "instructions": "Read Grammar Bank 1A on page 124.",
+            "resource_locator": {
+              "book": "American English File 1",
+              "page": 124,
+              "unit": 1,
+              "exercise": "Grammar Bank"
+            }
+          },
+          "gate": {
+            "type": "manual_check",
+            "value": true
+          },
+          "success_criteria": "Read and understood rules",
+          "evidence_required": "check"
         }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Tue": {
+      "day_id": "W01_D02",
+      "goal": "Numbers and Days",
+      "session_script": [
+        {
+          "step_id": "W01_D02_S01",
+          "type": "textbook_drill",
+          "title": "Vocab: Days and Numbers",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Practica guiada de consolidacion y registro de evidencia.",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 1,
+              "page": 8,
+              "exercise": "2A"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Wed": {
+      "day_id": "W01_D03",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W01_D03_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 1,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Thu": {
+      "day_id": "W01_D04",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W01_D04_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 1,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Fri": {
+      "day_id": "W01_D05",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W01_D05_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 1,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Sat": {
+      "day_id": "W01_D06",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W01_D06_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 1,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Sun": {
+      "day_id": "W01_D07",
+      "goal": "Weekly Assessment",
+      "session_script": [
+        {
+          "step_id": "W01_D07_S01",
+          "type": "quiz",
+          "title": "Weekly Quiz",
+          "difficulty_level": "A1",
+          "duration_min": 300,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com"
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 300
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": true
     }
+  }
 }

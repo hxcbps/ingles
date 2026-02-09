@@ -1,221 +1,251 @@
 {
-    "version": "v4",
-    "week": 3,
-    "title": "Week 03 - Past Simple & Stories",
-    "week_profile": {
-        "phase": "Foundation",
-        "cefr_target": "A1+",
-        "focus_theme": "Past Simple"
-    },
-    "days": {
-        "Mon": {
-            "day_id": "W03_D01",
-            "goal": "Talk about yesterday",
-            "session_script": [
-                {
-                    "step_id": "W03_D01_S01",
-                    "type": "input_video",
-                    "title": "Input: Verbos Regulares -ed",
-                    "difficulty_level": "A1+",
-                    "duration_min": 15,
-                    "content": {
-                        "instructions": "Mira el video sobre la pronunciación de -ED /t/ /d/ /id/.",
-                        "url": "https://www.youtube.com/watch?v=...",
-                        "offline_ref": "Video_PastED_A1.mp4"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 15
-                    },
-                    "success_criteria": "Identificar 3 sonidos de ED",
-                    "evidence_required": "timer"
-                },
-                {
-                    "step_id": "W03_D01_S02",
-                    "type": "textbook_drill",
-                    "title": "Drill: Pasado Simple Regular",
-                    "difficulty_level": "A1+",
-                    "duration_min": 30,
-                    "content": {
-                        "instructions": "Página 38, Ejercicios 1-4.",
-                        "resource_locator": {
-                            "book": "American English File 1",
-                            "unit": 5,
-                            "page": 38,
-                            "exercise": "1-4"
-                        }
-                    },
-                    "gate": {
-                        "type": "compound",
-                        "rules": [
-                            {
-                                "type": "self_score",
-                                "min_value": 80
-                            },
-                            {
-                                "type": "min_words",
-                                "value": 15
-                            }
-                        ]
-                    },
-                    "success_criteria": "80% correcto",
-                    "evidence_required": "log"
-                }
-            ],
-            "retention_loop": [
-                "W02_present_continuous"
-            ],
-            "assessment_event": false
+  "version": "v4",
+  "week": 3,
+  "title": "Week 03 - Past Simple & Stories",
+  "week_profile": {
+    "phase": "Foundation",
+    "cefr_target": "A1+",
+    "focus_theme": "Past Simple"
+  },
+  "days": {
+    "Mon": {
+      "day_id": "W03_D01",
+      "goal": "Talk about yesterday",
+      "session_script": [
+        {
+          "step_id": "W03_D01_S01",
+          "type": "input_video",
+          "title": "Input: Verbos Regulares -ed",
+          "difficulty_level": "A1+",
+          "duration_min": 15,
+          "content": {
+            "instructions": "Mira el video sobre la pronunciación de -ED /t/ /d/ /id/.",
+            "url": "https://www.youtube.com/watch?v=...",
+            "offline_ref": "Video_PastED_A1.mp4"
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 15
+          },
+          "success_criteria": "Identificar 3 sonidos de ED",
+          "evidence_required": "timer"
         },
-        "Tue": {
-            "day_id": "W03_D02",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W03_D02_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
-        },
-        "Wed": {
-            "day_id": "W03_D03",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W03_D03_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
-        },
-        "Thu": {
-            "day_id": "W03_D04",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W03_D04_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
-        },
-        "Fri": {
-            "day_id": "W03_D05",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W03_D05_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
-        },
-        "Sat": {
-            "day_id": "W03_D06",
-            "goal": "Draft",
-            "session_script": [
-                {
-                    "step_id": "W03_D06_S01",
-                    "type": "textbook_drill",
-                    "title": "Draft",
-                    "difficulty_level": "A1",
-                    "duration_min": 120,
-                    "content": {
-                        "instructions": "Draft",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 120
-                    },
-                    "success_criteria": "Draft",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
-        },
-        "Sun": {
-            "day_id": "W03_D07",
-            "goal": "Weekly Assessment",
-            "session_script": [
-                {
-                    "step_id": "W03_D07_S01",
-                    "type": "quiz",
-                    "title": "Weekly Quiz Week 3",
-                    "difficulty_level": "A1",
-                    "duration_min": 300,
-                    "content": {
-                        "instructions": "Complete quiz",
-                        "url": "http://example.com"
-                    },
-                    "gate": {
-                        "type": "timer_complete",
-                        "value": 300
-                    },
-                    "success_criteria": "Pass",
-                    "evidence_required": "timer"
-                }
-            ],
-            "retention_loop": [],
-            "assessment_event": false
+        {
+          "step_id": "W03_D01_S02",
+          "type": "textbook_drill",
+          "title": "Drill: Pasado Simple Regular",
+          "difficulty_level": "A1+",
+          "duration_min": 30,
+          "content": {
+            "instructions": "Página 38, Ejercicios 1-4.",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 5,
+              "page": 38,
+              "exercise": "1-4"
+            }
+          },
+          "gate": {
+            "type": "compound",
+            "rules": [
+              {
+                "type": "self_score",
+                "min_value": 80
+              },
+              {
+                "type": "min_words",
+                "value": 15
+              }
+            ]
+          },
+          "success_criteria": "80% correcto",
+          "evidence_required": "log"
         }
+      ],
+      "retention_loop": [
+        "W02_present_continuous"
+      ],
+      "assessment_event": false
+    },
+    "Tue": {
+      "day_id": "W03_D02",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W03_D02_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 3,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Wed": {
+      "day_id": "W03_D03",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W03_D03_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 3,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Thu": {
+      "day_id": "W03_D04",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W03_D04_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 3,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Fri": {
+      "day_id": "W03_D05",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W03_D05_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 3,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Sat": {
+      "day_id": "W03_D06",
+      "goal": "Consolidacion guiada del objetivo semanal",
+      "session_script": [
+        {
+          "step_id": "W03_D06_S01",
+          "type": "textbook_drill",
+          "title": "Consolidacion guiada del objetivo semanal",
+          "difficulty_level": "A1",
+          "duration_min": 120,
+          "content": {
+            "instructions": "Consolidacion guiada del objetivo semanal",
+            "url": "http://example.com",
+            "resource_locator": {
+              "book": "American English File 1",
+              "unit": 3,
+              "page": "TBD",
+              "exercise": "Core consolidation task (set exact page before session)"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 120
+          },
+          "success_criteria": "Consolidacion guiada del objetivo semanal",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
+    },
+    "Sun": {
+      "day_id": "W03_D07",
+      "goal": "Weekly Assessment",
+      "session_script": [
+        {
+          "step_id": "W03_D07_S01",
+          "type": "quiz",
+          "title": "Weekly Quiz Week 3",
+          "difficulty_level": "A1",
+          "duration_min": 300,
+          "content": {
+            "instructions": "Complete quiz",
+            "url": "http://example.com"
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 300
+          },
+          "success_criteria": "Pass",
+          "evidence_required": "timer"
+        }
+      ],
+      "retention_loop": [],
+      "assessment_event": false
     }
+  }
 }
