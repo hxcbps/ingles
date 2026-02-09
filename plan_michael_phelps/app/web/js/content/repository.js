@@ -6,7 +6,7 @@ export const FALLBACK_CONFIG = {
   program_weeks: 20,
   daily_minutes: 120,
   sunday_minutes: 300,
-  content_version: "v3",
+  content_version: "v4", // FORCE V4 DEFAULT
   target_cefr: "B2",
   pace_mode: "accelerated_sustainable",
   conversation_scope: "general_tech_balanced",

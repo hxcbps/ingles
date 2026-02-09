@@ -17,11 +17,17 @@ function setStatus(documentRef, text) {
 }
 
 function renderFatal(container, message) {
+  if (!container) {
+    console.error("Fatal error (and no container):", message);
+    return;
+  }
   container.innerHTML = `
-    <section class="v4-error" role="alert">
-      <h2>No se pudo iniciar la sesion V4</h2>
-      <p>${message}</p>
-      <p>Tip: valida contenido y recarga la pagina.</p>
+    <section class="session-shell" style="display: flex; align-items: center; justify-content: center; height: 80vh;">
+      <div class="card" style="border-color: #ef4444; box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);">
+        <h2 style="color: #ef4444;">System Failure</h2>
+        <p style="color: #fff; margin: 1rem 0;">${message}</p>
+        <button class="btn-secondary" onclick="location.reload()">Reintentar</button>
+      </div>
     </section>
   `;
 }
@@ -47,22 +53,15 @@ export async function bootstrapV4({
   windowRef = window,
   fetcher = fetch
 } = {}) {
-  const appContainer = resolveAppContainer(documentRef);
-  if (!appContainer) {
+  // Always target the main root for the cinematic experience
+  const rootContainer = documentRef.getElementById("v4-root");
+
+  if (!rootContainer) {
+    console.error("Critical: #v4-root not found in DOM");
     return { dispose() { } };
   }
 
   documentRef.body.classList.add(MODE_CLASS);
-  documentRef.body.classList.add(MODE_CLASS);
-
-  // ensureV4Shell(appContainer); // Skip overwriting, use existing
-
-  // Clean loader if present
-  const existingShell = documentRef.getElementById("v4-root");
-  if (existingShell) {
-    // Keep shell, but maybe clear inner content if retrying? 
-    // For now, let's assume index.html has the "Loading" card, and we replace it.
-  }
 
   let wizard = null;
   let unloadHandler = null;
@@ -72,14 +71,15 @@ export async function bootstrapV4({
     const program = getProgramContext(config);
     const weekLabel = String(program.weekNumber).padStart(2, "0");
     const weekFile = await loadWeekContentV4(weekLabel, fetcher);
-    const dayContent = weekFile?.data?.days?.[program.dayLabel];
+    // Safe access
+    const days = weekFile?.data?.days || {};
+    const dayContent = days[program.dayLabel];
 
     if (!dayContent || !Array.isArray(dayContent.session_script) || dayContent.session_script.length === 0) {
-      setStatus(documentRef, `Sin contenido para ${program.dayLabel} (semana ${weekLabel}).`);
-      renderFatal(
-        documentRef.getElementById("wizard-container"),
-        `No hay session_script valido para ${program.dayLabel}.`
-      );
+      // Content missing error
+      const msg = `Sin contenido para ${program.dayLabel} (Semana ${weekLabel})`;
+      console.warn(msg);
+      renderFatal(rootContainer, msg);
       return { dispose() { } };
     }
 
@@ -89,9 +89,7 @@ export async function bootstrapV4({
       }
     });
 
-    // The wizard will render into 'v4-root' or a specific container
-    // Our index.html has <div id="v4-root" class="session-shell">
-    // SessionWizard expects a container ID.
+    // Mount wizard directly to root
     wizard = new SessionWizard("v4-root", { orchestrator });
     wizard.render();
 
@@ -101,8 +99,7 @@ export async function bootstrapV4({
     windowRef.addEventListener("beforeunload", unloadHandler);
   } catch (error) {
     console.error("[V4] Bootstrap error", error);
-    setStatus(documentRef, "Fallo de inicializacion.");
-    renderFatal(documentRef.getElementById("wizard-container"), error.message);
+    renderFatal(rootContainer, `Error de inicializacion: ${error.message}`);
   }
 
   return {

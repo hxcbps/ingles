@@ -1,30 +1,72 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>English Sprint | Cinematic Execution</title>
-    <!-- Premium Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <!-- 
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Sprint | Cinematic Execution</title>
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <!-- 
       HIGH IMPACT SHELL 
       The content is injected dynamically by the Cinematic Wizard (session_wizard.js).
       No generic dashboard HTML exists here anymore.
     -->
-    <main id="app" class="app">
-      <div id="v4-root" class="session-shell" style="height: 80vh; display: flex; align-items: center; justify-content: center;">
-        <div class="card" style="text-align: center; max-width: 500px;">
-           <h1 class="animate-pulse">Loading...</h1>
-           <p style="color: #94a3b8; font-family: 'Space Grotesk', monospace;">INITIALIZING CINEMATIC ENGINE</p>
+  <main id="app" class="app">
+    <div id="v4-root" class="session-shell"
+      style="height: 80vh; display: flex; align-items: center; justify-content: center;">
+      <div class="card" style="text-align: center; max-width: 500px;">
+        <h1 class="animate-pulse">Loading...</h1>
+        <p id="loading-status" style="color: #94a3b8; font-family: 'Space Grotesk', monospace;">INITIALIZING CINEMATIC
+          ENGINE</p>
+        <div id="debug-log"
+          style="display:none; text-align: left; margin-top: 2rem; background: #000; padding: 1rem; border-radius: 8px; font-family: monospace; color: #ff5555; font-size: 0.8rem; overflow-x: auto;">
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 
-    <script type="module" src="./js/main.js"></script>
-  </body>
+  <script>
+    // EMERGENCY DEBUG LOGGER
+    const logBox = document.getElementById('debug-log');
+    const statusText = document.getElementById('loading-status');
+
+    function showDebug(msg, type = 'info') {
+      console.log(`[${type}] ${msg}`);
+      if (type === 'error') {
+        logBox.style.display = 'block';
+        logBox.innerHTML += `<div>[${type}] ${msg}</div>`;
+        statusText.textContent = "SYSTEM FAILURE - CHECK LOGS";
+        statusText.style.color = "#ff5555";
+      } else {
+        statusText.textContent = msg.toUpperCase();
+      }
+    }
+
+    window.onerror = function (msg, url, line) {
+      showDebug(`${msg} @ ${url}:${line}`, 'error');
+      return false;
+    };
+
+    window.addEventListener('unhandledrejection', function (event) {
+      showDebug(`Unhandled Rejection: ${event.reason}`, 'error');
+    });
+
+    // Timeout watchdog
+    setTimeout(() => {
+      if (document.querySelector('h1').textContent === 'Loading...') {
+        showDebug("TIMEOUT: Engine took too long to load. Check network/console.", 'error');
+      }
+    }, 5000);
+  </script>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+
 </html>
