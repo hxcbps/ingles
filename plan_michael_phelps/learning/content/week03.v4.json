@@ -15,11 +15,11 @@
                 {
                     "step_id": "W03_D01_S01",
                     "type": "input_video",
-                    "title": "Input: Regular Verbs -ed",
+                    "title": "Input: Verbos Regulares -ed",
                     "difficulty_level": "A1+",
                     "duration_min": 15,
                     "content": {
-                        "instructions": "Watch video on ED pronunciation /t/ /d/ /id/.",
+                        "instructions": "Mira el video sobre la pronunciación de -ED /t/ /d/ /id/.",
                         "url": "https://www.youtube.com/watch?v=...",
                         "offline_ref": "Video_PastED_A1.mp4"
                     },
@@ -27,17 +27,17 @@
                         "type": "timer_complete",
                         "value": 15
                     },
-                    "success_criteria": "Identify 3 sounds of ED",
+                    "success_criteria": "Identificar 3 sonidos de ED",
                     "evidence_required": "timer"
                 },
                 {
                     "step_id": "W03_D01_S02",
                     "type": "textbook_drill",
-                    "title": "Drill: Past Simple Regular",
+                    "title": "Drill: Pasado Simple Regular",
                     "difficulty_level": "A1+",
                     "duration_min": 30,
                     "content": {
-                        "instructions": "Page 38, Exercises 1-4.",
+                        "instructions": "Página 38, Ejercicios 1-4.",
                         "resource_locator": {
                             "book": "American English File 1",
                             "unit": 5,
@@ -58,7 +58,7 @@
                             }
                         ]
                     },
-                    "success_criteria": "80% correct",
+                    "success_criteria": "80% correcto",
                     "evidence_required": "log"
                 }
             ],
