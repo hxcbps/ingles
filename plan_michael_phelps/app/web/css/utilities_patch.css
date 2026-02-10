@@ -1,0 +1,325 @@
+/*
+  UTILITIES PATCH LAYER
+  Completes utility coverage used by the premium shell templates.
+*/
+
+.app-shell {
+  width: 100%;
+}
+
+.shell-main {
+  position: relative;
+}
+
+.workspace-area {
+  display: block;
+}
+
+.nav-group {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.5rem;
+}
+
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem;
+}
+
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 2.5rem;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.tracking-tighter {
+  letter-spacing: -0.03em;
+}
+
+.leading-\[1\.1\] {
+  line-height: 1.1;
+}
+
+.transition-shadow {
+  transition: box-shadow 300ms ease;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}
+
+.opacity-80 {
+  opacity: 0.8;
+}
+
+.hover\:opacity-100:hover {
+  opacity: 1;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
+
+.outline-none {
+  outline: none;
+}
+
+.grayscale {
+  filter: grayscale(1);
+}
+
+.hover\:grayscale-0:hover {
+  filter: grayscale(0);
+}
+
+.blur-2xl {
+  filter: blur(40px);
+}
+
+.blur-3xl {
+  filter: blur(64px);
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.-z-0 {
+  z-index: 0;
+}
+
+.border-t {
+  border-top-width: 1px;
+  border-style: solid;
+}
+
+.border-brand-500 {
+  border-color: var(--palette-indigo-500);
+}
+
+.hover\:border-brand-500:hover {
+  border-color: var(--palette-indigo-500);
+}
+
+.bg-white\/90 {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.hover\:bg-white\/20:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.hover\:bg-rose-50:hover {
+  background-color: var(--palette-rose-50);
+}
+
+.focus\:bg-white:focus {
+  background-color: var(--palette-white);
+}
+
+.focus\:ring-2:focus,
+.focus\:ring-brand-500\/20:focus {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.placeholder\:text-slate-400::placeholder {
+  color: var(--palette-slate-400);
+}
+
+.group:focus-within .group-focus-within\:text-brand-500 {
+  color: var(--palette-indigo-500);
+}
+
+.hover\:shadow-brand-100\/50:hover {
+  --tw-shadow-color: rgba(224, 231, 255, 0.5);
+  box-shadow: 0 10px 15px -3px var(--tw-shadow-color);
+}
+
+.w-\[1px\] {
+  width: 1px;
+}
+
+.w-1 {
+  width: 0.25rem;
+}
+
+.h-1 {
+  height: 0.25rem;
+}
+
+.w-1\.5 {
+  width: 0.375rem;
+}
+
+.h-1\.5 {
+  height: 0.375rem;
+}
+
+.w-2 {
+  width: 0.5rem;
+}
+
+.h-2 {
+  height: 0.5rem;
+}
+
+.w-2\.5 {
+  width: 0.625rem;
+}
+
+.h-2\.5 {
+  height: 0.625rem;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.left-3 {
+  left: 0.75rem;
+}
+
+.right-3 {
+  right: 0.75rem;
+}
+
+.right-1\.5 {
+  right: 0.375rem;
+}
+
+.top-1 {
+  top: 0.25rem;
+}
+
+.top-1\/2 {
+  top: 50%;
+}
+
+.-top-4 {
+  top: -1rem;
+}
+
+.-right-4 {
+  right: -1rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.pl-10 {
+  padding-left: 2.5rem;
+}
+
+.pr-4 {
+  padding-right: 1rem;
+}
+
+.pt-4 {
+  padding-top: 1rem;
+}
+
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.selection\:bg-indigo-100::selection {
+  background-color: var(--palette-indigo-100);
+}
+
+.selection\:text-indigo-700::selection {
+  color: var(--palette-indigo-700);
+}
+
+@media (min-width: 768px) {
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
+  }
+
+  .md\:h-64 {
+    height: 16rem;
+  }
+
+  .md\:w-64 {
+    width: 16rem;
+  }
+
+  .md\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .md\:p-12 {
+    padding: 3rem;
+  }
+
+  .md\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:hidden {
+    display: none;
+  }
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.-space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: -0.5rem;
+}

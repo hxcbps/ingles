@@ -1,4 +1,3 @@
-import { ROUTES } from "../core/router.js";
 import { VIEW_META, VIEW_IDS, NAV_GROUPS } from "./views.js";
 import { ICONS } from "./icons.js";
 
@@ -54,6 +53,7 @@ export class LearningShell {
     // Callbacks
     this.onViewChange = context.onViewChange || (() => { });
     this.getSessionSnapshot = context.getSessionSnapshot || (() => ({}));
+    this.handleClick = null;
   }
 
   setSessionHostId(id) {
@@ -70,8 +70,15 @@ export class LearningShell {
   }
 
   dispose() {
-    // Cleanup if needed
-    this.container.innerHTML = "";
+    if (this.container && this.handleClick) {
+      this.container.removeEventListener("click", this.handleClick);
+    }
+
+    this.handleClick = null;
+
+    if (this.container) {
+      this.container.innerHTML = "";
+    }
   }
 
   render(state = {}) {
@@ -116,13 +123,28 @@ export class LearningShell {
   }
 
   updateStats() {
-    // Helper to update specific DOM elements without full re-render
     const snapshot = this.getSessionSnapshot();
-    // Update progress bars or status text if elements exist
-    const sessionProgress = document.getElementById("session-progress-fill");
-    if (sessionProgress && snapshot.progressPct) {
-      sessionProgress.style.width = `${snapshot.progressPct}%`;
+    const sessionProgress = this.container?.querySelector("#session-progress-fill");
+
+    if (sessionProgress) {
+      const progress = Number(snapshot.progressPct) || 0;
+      const boundedProgress = Math.max(0, Math.min(100, progress));
+      sessionProgress.style.width = `${boundedProgress}%`;
     }
+  }
+
+  updateActiveState(viewId) {
+    const safeViewId = VIEW_META[viewId] ? viewId : "hoy";
+
+    const panels = this.container?.querySelectorAll("[data-view-panel]") || [];
+    panels.forEach((panel) => {
+      panel.hidden = panel.dataset.viewPanel !== safeViewId;
+    });
+
+    this.onViewChange({ viewId: safeViewId });
+
+    const event = new CustomEvent("shell:view-changed", { detail: { view: safeViewId } });
+    document.dispatchEvent(event);
   }
 
   renderLayout(state) {
@@ -511,28 +533,44 @@ export class LearningShell {
   }
 
   bindEvents() {
-    this.container.addEventListener("click", (e) => {
+    if (!this.container) return;
+
+    if (this.handleClick) {
+      this.container.removeEventListener("click", this.handleClick);
+    }
+
+    this.handleClick = (e) => {
       const navBtn = e.target.closest("[data-view-nav]");
       if (navBtn) {
         const viewId = navBtn.dataset.viewNav;
+        if (!VIEW_META[viewId]) {
+          return;
+        }
+
         this.activeView = viewId;
         this.render({ view: viewId });
         return;
       }
 
       const actionBtn = e.target.closest("[data-shell-action]");
-      if (actionBtn) {
-        const action = actionBtn.dataset.shellAction;
-        if (action === "open-session") {
-          this.activeView = "sesion";
-          this.render({ view: "sesion" });
-          window.location.hash = "/modulo/sesion";
-        }
+      if (!actionBtn) {
+        return;
       }
-    });
 
-    // Notify session wizard if it exists
-    const event = new CustomEvent("shell:view-changed", { detail: { view: this.activeView } });
-    document.dispatchEvent(event);
+      const action = actionBtn.dataset.shellAction;
+      if (action === "open-session") {
+        this.activeView = "sesion";
+        this.render({ view: "sesion" });
+        window.location.hash = "/modulo/sesion";
+        return;
+      }
+
+      if (action === "open-roadmap") {
+        this.activeView = "modulos";
+        this.render({ view: "modulos" });
+      }
+    };
+
+    this.container.addEventListener("click", this.handleClick);
   }
 }

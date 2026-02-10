@@ -11,11 +11,13 @@ body {
 body {
   font-family: var(--font-body);
   color: var(--ink-900);
-  line-height: 1.6;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--surface-base);
   background:
-    radial-gradient(circle at 10% -12%, rgba(182, 127, 97, 0.28), transparent 36%),
-    radial-gradient(circle at 92% 0%, rgba(90, 132, 178, 0.24), transparent 40%),
-    linear-gradient(155deg, var(--canvas-100) 0%, #d0d6d8 52%, var(--canvas-200) 100%);
+    radial-gradient(circle at 10% -12%, rgba(79, 70, 229, 0.2), transparent 36%),
+    radial-gradient(circle at 92% 0%, rgba(2, 132, 199, 0.16), transparent 40%),
+    linear-gradient(155deg, var(--canvas-100) 0%, #edf2f7 52%, var(--canvas-200) 100%);
   overflow-x: hidden;
   position: relative;
 }
@@ -26,8 +28,8 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(to right, rgba(19, 31, 48, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(19, 31, 48, 0.025) 1px, transparent 1px);
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
   background-size: 52px 52px;
   mask-image: radial-gradient(circle at center, black 26%, transparent 90%);
   z-index: 0;
@@ -42,15 +44,50 @@ body::before {
   z-index: 1;
 }
 
-a {
-  color: inherit;
+.app-shell-root {
+  min-height: 100vh;
 }
 
-background-color: var(--surface-base);
-color: var(--text-primary);
-line-height: 1.5;
--webkit-font-smoothing: antialiased;
-min-height: 100vh;
+.loading-shell,
+.fatal-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+.loading-card,
+.fatal-card {
+  width: min(640px, 100%);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-default);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+}
+
+.loading-card h1,
+.fatal-card h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.loading-card p,
+.fatal-card p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.loading-card p + p,
+.fatal-card p + p {
+  margin-top: 0.75rem;
 }
 
 h1,
@@ -80,10 +117,9 @@ a {
 
 a:hover {
   text-decoration: underline;
-  color: var(--palette-brand-600);
+  color: var(--palette-indigo-700);
 }
 
-/* Utilities likely to be used in Markdown/Content */
 ul,
 ol {
   list-style-position: inside;
@@ -111,7 +147,6 @@ textarea {
   font-size: inherit;
 }
 
-/* Scrollbar refinement */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

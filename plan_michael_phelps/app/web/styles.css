@@ -4,4 +4,6 @@
 @import "./css/components.css";
 @import "./css/wizard.css";
 @import "./css/wizard_polish.css";
+@import "./css/utilities.css";
+@import "./css/utilities_patch.css";
 @import "./css/responsive.css";

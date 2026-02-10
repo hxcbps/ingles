@@ -5,106 +5,144 @@
 */
 
 :root {
-  /* --- PRIMITIVES (The Palette) --- */
+  /* --- PRIMITIVES (PALETTE) --- */
+  --palette-white: #ffffff;
+  --palette-black: #020617;
 
-  /* Brand - Deep, Professional Navy */
-  --palette-brand-950: #0f172a;
-  --palette-brand-900: #1e293b;
-  --palette-brand-800: #334155;
-  --palette-brand-700: #475569;
-  --palette-brand-600: #64748b;
-  /* Slate-ish for neutrality */
-  --palette-brand-500: #3b82f6;
-  /* Impact Blue */
-  --palette-brand-400: #60a5fa;
-  --palette-brand-100: #dbeafe;
-  --palette-brand-50: #eff6ff;
+  --palette-slate-50: #f8fafc;
+  --palette-slate-100: #f1f5f9;
+  --palette-slate-200: #e2e8f0;
+  --palette-slate-300: #cbd5e1;
+  --palette-slate-400: #94a3b8;
+  --palette-slate-500: #64748b;
+  --palette-slate-600: #475569;
+  --palette-slate-700: #334155;
+  --palette-slate-800: #1e293b;
+  --palette-slate-900: #0f172a;
 
-  /* Accent - Warm/Human (replacing the old brown/orange) */
+  --palette-indigo-50: #eef2ff;
+  --palette-indigo-100: #e0e7ff;
+  --palette-indigo-200: #c7d2fe;
+  --palette-indigo-300: #a5b4fc;
+  --palette-indigo-400: #818cf8;
+  --palette-indigo-500: #6366f1;
+  --palette-indigo-600: #4f46e5;
+  --palette-indigo-700: #4338ca;
+  --palette-indigo-800: #3730a3;
+  --palette-indigo-900: #312e81;
+
+  --palette-emerald-50: #ecfdf5;
+  --palette-emerald-400: #34d399;
+  --palette-emerald-600: #059669;
+
+  --palette-amber-50: #fffbeb;
+  --palette-amber-400: #facc15;
+  --palette-amber-500: #f59e0b;
+
+  --palette-rose-50: #fff1f2;
+  --palette-rose-500: #f43f5e;
+
+  --palette-success-100: #dcfce7;
+  --palette-success-700: #15803d;
+  --palette-warning-100: #fef9c3;
+  --palette-warning-700: #a16207;
+  --palette-danger-100: #fee2e2;
+  --palette-danger-700: #b91c1c;
+
+  /* Legacy aliases */
+  --palette-brand-950: var(--palette-slate-900);
+  --palette-brand-900: var(--palette-slate-800);
+  --palette-brand-800: var(--palette-slate-700);
+  --palette-brand-700: var(--palette-indigo-700);
+  --palette-brand-600: var(--palette-indigo-600);
+  --palette-brand-500: var(--palette-indigo-500);
+  --palette-brand-400: var(--palette-indigo-400);
+  --palette-brand-100: var(--palette-indigo-100);
+  --palette-brand-50: var(--palette-indigo-50);
+
   --palette-accent-600: #be185d;
-  /* Pink/Rose for high impact */
   --palette-accent-500: #ec4899;
   --palette-accent-100: #fce7f3;
 
-  /* Neutrals (Ink & Surface) */
   --palette-ink-950: #020617;
-  --palette-ink-900: #0f172a;
-  --palette-ink-700: #334155;
-  --palette-ink-500: #64748b;
-  --palette-ink-300: #cbd5e1;
-  --palette-ink-200: #e2e8f0;
-  --border-subtle: var(--palette-ink-100);
-  --border-default: var(--palette-ink-200);
-  /* Standard card borders */
-  --border-strong: var(--palette-ink-300);
-  /* Inputs, focused areas */
-  --border-brand: var(--palette-brand-500);
+  --palette-ink-900: var(--palette-slate-900);
+  --palette-ink-700: var(--palette-slate-700);
+  --palette-ink-500: var(--palette-slate-500);
+  --palette-ink-300: var(--palette-slate-300);
+  --palette-ink-200: var(--palette-slate-200);
+  --palette-ink-100: var(--palette-slate-100);
+  --palette-ink-050: var(--palette-slate-50);
 
-  /* Actions (Buttons, Links) */
-  --action-primary-bg: var(--palette-brand-900);
+  /* App aliases referenced by legacy CSS */
+  --canvas-100: var(--palette-slate-50);
+  --canvas-200: var(--palette-slate-200);
+  --ink-900: var(--palette-slate-900);
+  --ink-500: var(--palette-slate-500);
+  --brand-700: var(--palette-indigo-700);
+  --brand-600: var(--palette-indigo-600);
+  --accent-500: var(--palette-accent-500);
+  --success-700: var(--palette-emerald-600);
+
+  /* Typography */
+  --font-display: "Space Grotesk", "DM Sans", sans-serif;
+  --font-body: "DM Sans", "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", monospace;
+
+  /* Surfaces */
+  --surface-base: var(--palette-slate-50);
+  --surface-card: var(--palette-white);
+  --surface-sunken: var(--palette-slate-100);
+  --surface-overlay: rgba(15, 23, 42, 0.6);
+
+  /* Text */
+  --text-primary: var(--palette-slate-900);
+  --text-secondary: var(--palette-slate-500);
+  --text-tertiary: var(--palette-slate-400);
+  --text-inverse: var(--palette-white);
+  --text-brand: var(--palette-indigo-600);
+
+  /* Borders */
+  --border-subtle: var(--palette-slate-100);
+  --border-default: var(--palette-slate-200);
+  --border-strong: var(--palette-slate-300);
+  --border-brand: var(--palette-indigo-500);
+
+  /* Actions */
+  --action-primary-bg: var(--palette-indigo-600);
   --action-primary-fg: var(--palette-white);
-  --action-primary-hover: var(--palette-brand-800);
+  --action-primary-hover: var(--palette-indigo-700);
 
   --action-secondary-bg: var(--palette-white);
-  --action-secondary-fg: var(--palette-ink-700);
-  --action-secondary-border: var(--palette-ink-200);
-  --action-secondary-hover: var(--palette-ink-050);
+  --action-secondary-fg: var(--palette-slate-700);
+  --action-secondary-border: var(--palette-slate-200);
+  --action-secondary-hover: var(--palette-slate-50);
 
-  /* Status Indicators */
-  --status-success-bg: var(--palette-success-100);
-  --status-success-txt: var(--palette-success-700);
-
-  --status-warning-bg: var(--palette-warning-100);
-  --status-warning-txt: var(--palette-warning-700);
-
+  /* Status */
+  --status-success-bg: var(--palette-emerald-50);
+  --status-success-txt: var(--palette-emerald-600);
+  --status-warning-bg: var(--palette-amber-50);
+  --status-warning-txt: var(--palette-amber-500);
   --status-danger-bg: var(--palette-danger-100);
   --status-danger-txt: var(--palette-danger-700);
 
-  /* Radii & Spacing */
+  /* Radius */
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 32px;
   --radius-pill: 9999px;
 
-  /* Shadows (Elevations) */
+  /* Elevation */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-soft: 0 14px 34px -20px rgba(15, 23, 42, 0.4);
 
   /* Motion */
+  --motion-fast: 160ms;
+  --motion-standard: 280ms;
   --motion-ease-out: cubic-bezier(0, 0, 0.2, 1);
   --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
-
-  /* Animation */
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-  /* --- COMPATIBILITY ALIASES --- */
-  /* Mapping new Slate/Indigo system to legacy semantic names */
-
-  --surface-base: var(--palette-slate-50);
-  --surface-sunken: var(--palette-slate-100);
-
-  --border-default: var(--palette-slate-200);
-  --border-strong: var(--palette-slate-300);
-
-  --text-primary: var(--palette-slate-900);
-  --text-secondary: var(--palette-slate-500);
-  --text-brand: var(--palette-indigo-600);
-
-  --action-primary-bg: var(--palette-indigo-600);
-  --action-primary-fg: #ffffff;
-  --action-primary-hover: var(--palette-indigo-700);
-
-  --action-secondary-bg: #ffffff;
-  --action-secondary-fg: var(--palette-slate-700);
-  --action-secondary-border: var(--palette-slate-200);
-  --action-secondary-hover: var(--palette-slate-50);
-
-  --status-warning-bg: var(--palette-amber-50);
-  --status-warning-txt: var(--palette-amber-500);
-
-  --status-success-bg: var(--palette-emerald-50);
-  --status-success-txt: var(--palette-emerald-600);
 }
