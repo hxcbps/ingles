@@ -13,28 +13,28 @@ function baseChecklist() {
   };
 }
 
-test("soft guard warns on close when execution blocks are incomplete", () => {
+test("soft guard warns on cierre when execution blocks are incomplete", () => {
   const checklist = baseChecklist();
   checklist.listening = true;
 
-  const guard = evaluateSoftGuard({ routeId: "close", checklist });
+  const guard = evaluateSoftGuard({ routeId: "cierre", checklist });
 
   assert.equal(guard.level, "warning");
-  assert.equal(guard.recommendedRouteId, "session");
+  assert.equal(guard.recommendedRouteId, "sesion");
   assert.match(guard.message, /Faltan bloques de ejecucion/);
 });
 
-test("soft guard warns on evaluate when evidence is missing", () => {
+test("soft guard warns on evaluacion when evidence is missing", () => {
   const checklist = baseChecklist();
   checklist.listening = true;
   checklist.speaking = true;
   checklist.reading = true;
   checklist.writing = true;
 
-  const guard = evaluateSoftGuard({ routeId: "evaluate", checklist });
+  const guard = evaluateSoftGuard({ routeId: "evaluacion", checklist });
 
   assert.equal(guard.level, "warning");
-  assert.equal(guard.recommendedRouteId, "close");
+  assert.equal(guard.recommendedRouteId, "cierre");
   assert.match(guard.message, /Completa evidencia/);
 });
 
@@ -46,9 +46,9 @@ test("soft guard returns none when route is valid for current progress", () => {
   checklist.writing = true;
   checklist.evidence = true;
 
-  const guard = evaluateSoftGuard({ routeId: "evaluate", checklist });
+  const guard = evaluateSoftGuard({ routeId: "evaluacion", checklist });
 
   assert.equal(guard.level, "none");
   assert.equal(guard.message, "");
-  assert.equal(guard.recommendedRouteId, "evaluate");
+  assert.equal(guard.recommendedRouteId, "evaluacion");
 });

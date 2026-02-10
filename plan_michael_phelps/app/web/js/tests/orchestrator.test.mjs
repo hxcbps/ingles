@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
+import { EVENT_NAMES, REQUIRED_ENVELOPE_KEYS } from "../core/events_schema_v1.js";
 import { Orchestrator, STEP_STATUS } from "../core/orchestrator.js";
 
 function createMemoryStorage() {
@@ -93,4 +94,38 @@ test("orchestrator completes session and returns 100% progress on primary path",
   assert.equal(orchestrator.getProgress(), 100);
   assert.equal(Boolean(orchestrator.state.completedAt), true);
   assert.equal(orchestrator.getCurrentStep().definition, null);
+});
+
+test("orchestrator emits schema v1 runtime envelopes", () => {
+  const emittedEvents = [];
+  const orchestrator = new Orchestrator({
+    storageAdapter: createMemoryStorage(),
+    onEvent: (event) => emittedEvents.push(event)
+  });
+
+  orchestrator.init(buildDayContent());
+  orchestrator.submitStep("S1", { timeElapsedMin: 1 });
+  orchestrator.abandon("test_exit");
+
+  assert.ok(emittedEvents.length >= 4);
+
+  const eventNames = emittedEvents.map((event) => event.event);
+  assert.equal(eventNames.includes(EVENT_NAMES.SESSION_STARTED), true);
+  assert.equal(eventNames.includes(EVENT_NAMES.STEP_STARTED), true);
+  assert.equal(eventNames.includes(EVENT_NAMES.GATE_FAILED), true);
+  assert.equal(eventNames.includes(EVENT_NAMES.SESSION_ABANDONED), true);
+
+  for (const payload of emittedEvents) {
+    for (const key of REQUIRED_ENVELOPE_KEYS) {
+      assert.equal(Object.prototype.hasOwnProperty.call(payload, key), true);
+    }
+
+    assert.equal(typeof payload.session_id, "string");
+    assert.equal(payload.day_id, "W99_D01");
+    assert.equal(Number.isNaN(Date.parse(payload.at)), false);
+  }
+
+  const gateFailed = emittedEvents.find((event) => event.event === EVENT_NAMES.GATE_FAILED);
+  assert.equal(gateFailed.metadata.gate_type, "timer_complete");
+  assert.equal(gateFailed.metadata.attempt, 1);
 });

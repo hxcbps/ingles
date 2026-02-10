@@ -34,6 +34,7 @@ export class LearningShell {
     this.program = context.program || {};
     this.config = context.config || {};
     this.weekSummaries = context.weekSummaries || [];
+    this.moduleBlueprint = context.moduleBlueprint || null;
 
     // Profile extraction (assuming config contains user profile or using defaults)
     this.profile = this.config.user || {
@@ -52,6 +53,7 @@ export class LearningShell {
 
     // Callbacks
     this.onViewChange = context.onViewChange || (() => { });
+    this.onNavigateRoute = context.onNavigateRoute || (() => { });
     this.getSessionSnapshot = context.getSessionSnapshot || (() => ({}));
     this.handleClick = null;
   }
@@ -62,6 +64,28 @@ export class LearningShell {
 
   getSessionHostId() {
     return this.sessionHostId || "session-host";
+  }
+
+  setRoute(viewId) {
+    if (!VIEW_META[viewId]) return;
+
+    const shouldRender = this.activeView !== viewId;
+    this.activeView = viewId;
+
+    if (shouldRender) {
+      this.render({ view: viewId });
+      return;
+    }
+
+    this.updateActiveState(viewId);
+  }
+
+  navigateTo(viewId, source = "shell") {
+    if (!VIEW_META[viewId]) return;
+
+    this.activeView = viewId;
+    this.render({ view: viewId });
+    this.onNavigateRoute({ routeId: viewId, source });
   }
 
   refresh() {
@@ -286,7 +310,6 @@ export class LearningShell {
 
                   <!-- The Views will be injected here (Hoy, Session, Modules) -->
                   <!-- We wrap them in specific containers to match the new styling -->
-                  
                   <div class="view-container" data-view-panel="hoy" ${this.activeView !== "hoy" ? "hidden" : ""}>
                      ${this.renderTodayView()}
                   </div>
@@ -295,11 +318,20 @@ export class LearningShell {
                     <div id="${this.getSessionHostId()}"></div>
                   </div>
 
+                  <div class="view-container" data-view-panel="cierre" ${this.activeView !== "cierre" ? "hidden" : ""}>
+                    ${this.renderClosureView()}
+                  </div>
+
+                  <div class="view-container" data-view-panel="evaluacion" ${this.activeView !== "evaluacion" ? "hidden" : ""}>
+                    ${this.renderEvaluationView()}
+                  </div>
+
                   <div class="view-container" data-view-panel="modulos" ${this.activeView !== "modulos" ? "hidden" : ""}>
-                     <!-- Modules View placeholder -->
-                     <article class="bg-white p-8 rounded-[2rem] text-center border border-slate-200">
-                        <p class="text-slate-500">Vista de Módulos (En desarrollo)</p>
-                     </article>
+                     ${this.renderModulesView()}
+                  </div>
+
+                  <div class="view-container" data-view-panel="progreso" ${this.activeView !== "progreso" ? "hidden" : ""}>
+                    ${this.renderProgressView()}
                   </div>
 
                 </section>
@@ -532,6 +564,237 @@ export class LearningShell {
     `;
   }
 
+  renderClosureView() {
+    return `
+      <article class="modules-intro-card">
+        <p class="section-kicker">Cierre diario</p>
+        <h4>Consolidacion y checklist</h4>
+        <p class="muted-text">Revisa los bloques ejecutados, documenta evidencia y confirma el plan de cierre antes de evaluar.</p>
+      </article>
+    `;
+  }
+
+  renderEvaluationView() {
+    const snapshot = this.getSessionSnapshot();
+    const progress = Number(snapshot.progressPct) || 0;
+
+    return `
+      <article class="modules-intro-card">
+        <p class="section-kicker">Evaluacion</p>
+        <h4>Control de calidad de la sesion</h4>
+        <p class="muted-text">Estado actual: ${escapeHTML(snapshot.status || "locked")} | Avance: ${Math.max(0, Math.min(100, progress))}%</p>
+      </article>
+    `;
+  }
+
+  renderProgressView() {
+    const activeWeek = this.getActiveWeekNumber();
+    const totalWeeks = Number(this.program?.programWeeks) || 20;
+    const pct = Math.max(0, Math.min(100, Math.round((activeWeek / totalWeeks) * 100)));
+
+    return `
+      <article class="modules-intro-card">
+        <p class="section-kicker">Progreso</p>
+        <h4>Ruta semanal 0 -> B2</h4>
+        <p class="muted-text">Semana activa: ${escapeHTML(formatWeekLabel(String(activeWeek)))} de ${totalWeeks}. Progreso estimado: ${pct}%.</p>
+      </article>
+    `;
+  }
+  getActiveWeekNumber() {
+    const fromLabel = Number.parseInt(String(this.activeWeek || "").replace(/[^\d]/g, ""), 10);
+    if (Number.isFinite(fromLabel) && fromLabel > 0) {
+      return fromLabel;
+    }
+
+    const fromProgram = Number(this.program?.weekNumber);
+    return Number.isFinite(fromProgram) && fromProgram > 0 ? fromProgram : 1;
+  }
+
+  formatWeekRange(startWeek, endWeek) {
+    const start = formatWeekLabel(String(startWeek));
+    const end = formatWeekLabel(String(endWeek));
+    return startWeek === endWeek ? start : `${start} -> ${end}`;
+  }
+
+  buildModulePlan() {
+    const rawModules = Array.isArray(this.moduleBlueprint?.modules) ? this.moduleBlueprint.modules : [];
+    if (rawModules.length === 0) {
+      return [];
+    }
+
+    const activeWeek = this.getActiveWeekNumber();
+
+    return rawModules.map((module, index) => {
+      const startWeek = Number(module.week_start) || index + 1;
+      const endWeek = Math.max(startWeek, Number(module.week_end) || startWeek);
+      const spanWeeks = Math.max(1, endWeek - startWeek + 1);
+
+      let state = "upcoming";
+      if (activeWeek > endWeek) {
+        state = "completed";
+      } else if (activeWeek >= startWeek) {
+        state = "active";
+      }
+
+      const completedWeeks =
+        state === "completed" ? spanWeeks : state === "active" ? Math.min(spanWeeks, activeWeek - startWeek + 1) : 0;
+
+      const completionPct = Math.round((completedWeeks / spanWeeks) * 100);
+
+      const attachedWeeks = this.weekSummaries
+        .filter((week) => Number(week.week) >= startWeek && Number(week.week) <= endWeek)
+        .map((week) => ({
+          week: Number(week.week),
+          title: week.title || `Week ${formatWeekLabel(String(week.week))}`,
+          cefr: week?.week_profile?.cefr_target || ""
+        }));
+
+      return {
+        ...module,
+        startWeek,
+        endWeek,
+        spanWeeks,
+        state,
+        completionPct,
+        attachedWeeks
+      };
+    });
+  }
+
+  renderModulesView() {
+    const modulePlan = this.buildModulePlan();
+
+    if (modulePlan.length === 0) {
+      return `
+        <article class="modules-intro-card">
+          <p class="section-kicker">Ruta 0 -> B2</p>
+          <h4>Blueprint no disponible</h4>
+          <p class="muted-text">No se encontro la definicion curricular. Verifica learning/syllabus/modules_0_b2.v1.json.</p>
+        </article>
+      `;
+    }
+
+    const pillars = Array.isArray(this.moduleBlueprint?.methodology_pillars)
+      ? this.moduleBlueprint.methodology_pillars
+      : [];
+
+    const rhythm = Array.isArray(this.moduleBlueprint?.weekly_rhythm)
+      ? this.moduleBlueprint.weekly_rhythm
+      : [];
+
+    const pillarsMarkup = pillars
+      .map((pillar) => `<span class="module-pillar-chip">${escapeHTML(pillar)}</span>`)
+      .join("");
+
+    const rhythmMarkup = rhythm
+      .map((line) => `<li>${escapeHTML(line)}</li>`)
+      .join("");
+
+    const cardsMarkup = modulePlan
+      .map((module) => this.renderModuleCard(module))
+      .join("");
+
+    return `
+      <section class="modules-hub">
+        <article class="modules-intro-card">
+          <p class="section-kicker">Arquitectura Curricular</p>
+          <h4>Ruta 0 -> B2 con TBLT + IA Conversacional</h4>
+          <p class="muted-text">Plan granular con input comprensible, tareas comunicativas, practica de voz y checkpoints de desempeno.</p>
+
+          <div class="modules-pillars">${pillarsMarkup}</div>
+
+          <div class="modules-rhythm">
+            <h5>Cadencia semanal de ejecucion</h5>
+            <ul>${rhythmMarkup}</ul>
+          </div>
+        </article>
+
+        <div class="modules-grid">${cardsMarkup}</div>
+      </section>
+    `;
+  }
+
+  renderModuleCard(module) {
+    const stateLabel =
+      module.state === "completed"
+        ? "Completado"
+        : module.state === "active"
+          ? "Activo"
+          : "Proximo";
+
+    const focusPoints = Array.isArray(module.focus_points) ? module.focus_points.slice(0, 4) : [];
+    const checkpoints = Array.isArray(module.checkpoints) ? module.checkpoints.slice(0, 2) : [];
+    const kpis = module.kpis || {};
+
+    const focusMarkup = focusPoints
+      .map((point) => `<li>${escapeHTML(point)}</li>`)
+      .join("");
+
+    const checkpointsMarkup = checkpoints
+      .map((checkpoint) => `<li>${escapeHTML(checkpoint)}</li>`)
+      .join("");
+
+    const attachedWeekMarkup = (module.attachedWeeks || [])
+      .slice(0, 4)
+      .map((week) => `<span class="module-week-pill">${escapeHTML(formatWeekLabel(String(week.week)))} ${escapeHTML(week.cefr || "")}</span>`)
+      .join("");
+
+    return `
+      <article class="module-card-pro" data-state="${escapeHTML(module.state)}">
+        <div class="module-card-head">
+          <span class="module-level-badge">${escapeHTML(module.cefr_band || "A1")}</span>
+          <span class="module-state-badge">${escapeHTML(stateLabel)}</span>
+        </div>
+
+        <h4>${escapeHTML(module.title || "Modulo")}</h4>
+        <p class="module-goal">${escapeHTML(module.objective || "Sin objetivo definido.")}</p>
+
+        <div class="module-range-row">
+          <span>${escapeHTML(this.formatWeekRange(module.startWeek, module.endWeek))}</span>
+          <span>${module.spanWeeks} semanas</span>
+        </div>
+
+        <div class="module-progress-track" aria-hidden="true">
+          <div class="module-progress-fill" style="width: ${module.completionPct}%"></div>
+        </div>
+
+        <div class="module-kpi-grid">
+          <article>
+            <strong>${Number(kpis.speaking_min_minutes) || 0}m</strong>
+            <span>Speaking</span>
+          </article>
+          <article>
+            <strong>${Number(kpis.ai_voice_min_minutes) || 0}m</strong>
+            <span>IA Voice</span>
+          </article>
+          <article>
+            <strong>${Number(kpis.task_cycles) || 0}</strong>
+            <span>Task Cycles</span>
+          </article>
+        </div>
+
+        <div class="module-method-box">
+          <p><strong>Metodo:</strong> ${escapeHTML(module.primary_method || "N/A")}</p>
+          <p><strong>IA:</strong> ${escapeHTML(module.ai_usecase || "N/A")}</p>
+          <p><strong>Output:</strong> ${escapeHTML(module.weekly_output || "N/A")}</p>
+          <p><strong>Afectivo:</strong> ${escapeHTML(module.anxiety_protocol || "N/A")}</p>
+        </div>
+
+        <div class="module-list-block">
+          <h5>Focus operativo</h5>
+          <ul>${focusMarkup}</ul>
+        </div>
+
+        <div class="module-list-block">
+          <h5>Checkpoints</h5>
+          <ul>${checkpointsMarkup}</ul>
+        </div>
+
+        <div class="module-week-strip">${attachedWeekMarkup}</div>
+      </article>
+    `;
+  }
+
   bindEvents() {
     if (!this.container) return;
 
@@ -547,8 +810,7 @@ export class LearningShell {
           return;
         }
 
-        this.activeView = viewId;
-        this.render({ view: viewId });
+        this.navigateTo(viewId, "shell_nav");
         return;
       }
 
@@ -559,15 +821,12 @@ export class LearningShell {
 
       const action = actionBtn.dataset.shellAction;
       if (action === "open-session") {
-        this.activeView = "sesion";
-        this.render({ view: "sesion" });
-        window.location.hash = "/modulo/sesion";
+        this.navigateTo("sesion", "hero_cta");
         return;
       }
 
       if (action === "open-roadmap") {
-        this.activeView = "modulos";
-        this.render({ view: "modulos" });
+        this.navigateTo("modulos", "hero_cta");
       }
     };
 

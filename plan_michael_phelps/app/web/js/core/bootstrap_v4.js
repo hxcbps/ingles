@@ -1,5 +1,6 @@
-import { loadConfig, loadWeekContentV4, loadWeekSummariesV4 } from "../content/repository.js";
+import { loadConfig, loadModuleBlueprint, loadWeekContentV4, loadWeekSummariesV4 } from "../content/repository.js";
 import { getProgramContext } from "../content/day_model.js";
+import { createHashRouter } from "../routing/hash_router.js";
 import { orchestrator } from "./orchestrator.js";
 import { SessionWizard } from "../ui/session_wizard.js";
 import { LearningShell } from "../ui/learning_shell.js";
@@ -101,8 +102,11 @@ export async function bootstrapV4({
 
   let shell = null;
   let wizard = null;
+  let hashRouter = null;
   let unloadHandler = null;
   let refreshInterval = null;
+  let currentRouteId = null;
+  let routeSource = "startup";
 
   try {
     const config = await loadConfig(fetcher);
@@ -111,13 +115,14 @@ export async function bootstrapV4({
     const contentWeekNumber = Math.min(program.weekNumber, program.programWeeks);
     const weekLabel = String(contentWeekNumber).padStart(2, "0");
 
-    const [weekFile, weekSummaries] = await Promise.all([
+    const [weekFile, weekSummaries, moduleBlueprintFile] = await Promise.all([
       loadWeekContentV4(weekLabel, fetcher),
       loadWeekSummariesV4({
         fromWeek: 1,
         toWeek: program.programWeeks,
         fetcher
-      })
+      }),
+      loadModuleBlueprint(fetcher)
     ]);
 
     const days = weekFile?.data?.days || {};
@@ -138,15 +143,33 @@ export async function bootstrapV4({
       }
     });
 
+    if (resolvedDay.fallbackNotice) {
+      orchestrator.emit("content_fallback_used", {
+        stepId: null,
+        metadata: {
+          requested_day: program.dayLabel,
+          fallback_day: resolvedDay.dayLabel,
+          week: `W${weekLabel}`
+        }
+      });
+    }
+
     shell = new LearningShell("v4-root", {
       program,
       config,
       weekSummaries,
+      moduleBlueprint: moduleBlueprintFile?.data || null,
       activeWeekLabel: weekLabel,
       activeDayLabel: resolvedDay.dayLabel,
       activeDayContent: resolvedDay.dayContent,
       fallbackNotice: resolvedDay.fallbackNotice,
       getSessionSnapshot: () => buildSessionSnapshot(orchestrator),
+      onNavigateRoute: ({ routeId, source }) => {
+        routeSource = source || "shell_nav";
+        if (hashRouter) {
+          hashRouter.navigate(routeId);
+        }
+      },
       onViewChange: ({ viewId }) => {
         if (viewId === "sesion" && wizard) {
           wizard.render();
@@ -158,6 +181,31 @@ export async function bootstrapV4({
 
     wizard = new SessionWizard(shell.getSessionHostId(), { orchestrator });
     wizard.render();
+
+    hashRouter = createHashRouter({
+      windowRef,
+      onRouteChange: (routeState) => {
+        const fromRoute = currentRouteId;
+        currentRouteId = routeState.routeId;
+        shell?.setRoute(routeState.routeId);
+
+        orchestrator.emit("route_changed", {
+          routeId: routeState.routeId,
+          metadata: {
+            from_route: fromRoute,
+            to_route: routeState.routeId,
+            source: routeState.redirectedFromLegacy ? "legacy_redirect" : routeSource
+          }
+        });
+
+        routeSource = "hashchange";
+      },
+      onInvalidRoute: ({ rawHash, canonicalHash }) => {
+        console.warn("[V4 route] invalid hash redirected", { rawHash, canonicalHash });
+      }
+    });
+
+    hashRouter.start();
 
     refreshInterval = windowRef.setInterval(() => {
       if (shell) {
@@ -178,6 +226,9 @@ export async function bootstrapV4({
     dispose() {
       if (refreshInterval) {
         clearInterval(refreshInterval);
+      }
+      if (hashRouter && typeof hashRouter.dispose === "function") {
+        hashRouter.dispose();
       }
       if (wizard && typeof wizard.dispose === "function") {
         wizard.dispose();

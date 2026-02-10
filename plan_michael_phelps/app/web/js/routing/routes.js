@@ -1,29 +1,34 @@
-const ROUTE_ORDER = ["action", "session", "close", "evaluate"];
+import { CANONICAL_ROUTE_ORDER, CANONICAL_ROUTES, LEGACY_TO_CANONICAL_HASH } from "./canonical_routes_s0.js";
 
-export const DEFAULT_ROUTE_ID = "action";
+const ROUTE_ORDER = [...CANONICAL_ROUTE_ORDER];
 
-export const ROUTES = Object.freeze({
-  action: Object.freeze({ id: "action", path: "/today/action", hash: "#/today/action", label: "Accion inmediata" }),
-  session: Object.freeze({ id: "session", path: "/today/session", hash: "#/today/session", label: "Sesion" }),
-  close: Object.freeze({ id: "close", path: "/today/close", hash: "#/today/close", label: "Cierre" }),
-  evaluate: Object.freeze({ id: "evaluate", path: "/today/evaluate", hash: "#/today/evaluate", label: "Evaluacion" })
-});
+export const DEFAULT_ROUTE_ID = "hoy";
+
+export const ROUTES = Object.freeze(
+  Object.fromEntries(
+    ROUTE_ORDER.map((routeId) => {
+      const route = CANONICAL_ROUTES[routeId];
+      return [routeId, Object.freeze({ ...route, path: route.hash.slice(1) })];
+    })
+  )
+);
 
 const CANONICAL_HASH_TO_ROUTE_ID = Object.freeze(
   Object.fromEntries(ROUTE_ORDER.map((routeId) => [ROUTES[routeId].hash, routeId]))
 );
 
 const ALIAS_HASH_TO_ROUTE_ID = Object.freeze({
-  "#/today": "action"
+  "#/today": "hoy"
 });
 
-const LEGACY_HASH_TO_ROUTE_ID = Object.freeze({
-  "#step-action": "action",
-  "#step-prompt": "session",
-  "#step-timer": "session",
-  "#step-checklist": "close",
-  "#step-evidence": "close"
-});
+const LEGACY_HASH_TO_ROUTE_ID = Object.freeze(
+  Object.fromEntries(
+    Object.entries(LEGACY_TO_CANONICAL_HASH).flatMap(([legacyHash, canonicalHash]) => {
+      const routeId = CANONICAL_HASH_TO_ROUTE_ID[canonicalHash];
+      return routeId ? [[legacyHash, routeId]] : [];
+    })
+  )
+);
 
 function normalizeHash(hash) {
   if (typeof hash !== "string") return "";

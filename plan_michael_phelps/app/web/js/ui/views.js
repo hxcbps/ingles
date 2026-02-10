@@ -1,5 +1,6 @@
 export const NAV_GROUPS = Object.freeze([
-  Object.freeze({ id: "main", label: "Principal" })
+  Object.freeze({ id: "main", label: "Principal" }),
+  Object.freeze({ id: "journey", label: "Seguimiento" })
 ]);
 
 export const VIEW_META = Object.freeze({
@@ -15,11 +16,29 @@ export const VIEW_META = Object.freeze({
     icon: "timer",
     group: "main"
   }),
+  cierre: Object.freeze({
+    id: "cierre",
+    label: "Cierre",
+    icon: "check",
+    group: "main"
+  }),
+  evaluacion: Object.freeze({
+    id: "evaluacion",
+    label: "Evaluacion",
+    icon: "trophy",
+    group: "main"
+  }),
   modulos: Object.freeze({
     id: "modulos",
     label: "Modulos",
     icon: "resource",
-    group: "main"
+    group: "journey"
+  }),
+  progreso: Object.freeze({
+    id: "progreso",
+    label: "Progreso",
+    icon: "trendingUp",
+    group: "journey"
   })
 });
 

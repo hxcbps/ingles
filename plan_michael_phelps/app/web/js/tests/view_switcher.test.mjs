@@ -39,28 +39,28 @@ function createFakeElement(attributes = {}) {
 
 function createFakeDocument() {
   const alwaysNode = createFakeElement({ "data-route-group": "always" });
-  const actionNode = createFakeElement({ "data-route-group": "action" });
-  const sessionNode = createFakeElement({ "data-route-group": "session" });
+  const hoyNode = createFakeElement({ "data-route-group": "hoy" });
+  const sesionNode = createFakeElement({ "data-route-group": "sesion" });
 
-  const actionLink = createFakeElement({ "data-route-link": "action" });
-  const sessionLink = createFakeElement({ "data-route-link": "session" });
+  const hoyLink = createFakeElement({ "data-route-link": "hoy" });
+  const sesionLink = createFakeElement({ "data-route-link": "sesion" });
 
-  const actionFocus = createFakeElement({ "data-route-focus": "action" });
+  const hoyFocus = createFakeElement({ "data-route-focus": "hoy" });
   const fallbackFocus = createFakeElement({ "data-route-focus": "always" });
 
   const queryLookup = {
-    '[data-route-focus="action"]': actionFocus,
+    '[data-route-focus="hoy"]': hoyFocus,
     '[data-route-focus="always"]': fallbackFocus
   };
 
   return {
-    nodes: { alwaysNode, actionNode, sessionNode, actionLink, sessionLink, actionFocus, fallbackFocus },
+    nodes: { alwaysNode, hoyNode, sesionNode, hoyLink, sesionLink, hoyFocus, fallbackFocus },
     querySelectorAll(selector) {
       if (selector === "[data-route-group]") {
-        return [alwaysNode, actionNode, sessionNode];
+        return [alwaysNode, hoyNode, sesionNode];
       }
       if (selector === "[data-route-link]") {
-        return [actionLink, sessionLink];
+        return [hoyLink, sesionLink];
       }
       return [];
     },
@@ -72,29 +72,28 @@ function createFakeDocument() {
 
 test("view switcher toggles visibility and active link state by route", () => {
   const fakeDocument = createFakeDocument();
-  const { alwaysNode, actionNode, sessionNode, actionLink, sessionLink, actionFocus } =
-    fakeDocument.nodes;
+  const { alwaysNode, hoyNode, sesionNode, hoyLink, sesionLink, hoyFocus } = fakeDocument.nodes;
 
-  const route = applyRouteVisibility({ documentRef: fakeDocument, routeId: "action" });
+  const route = applyRouteVisibility({ documentRef: fakeDocument, routeId: "hoy" });
 
-  assert.equal(route, "action");
+  assert.equal(route, "hoy");
   assert.equal(alwaysNode.hidden, false);
-  assert.equal(actionNode.hidden, false);
-  assert.equal(sessionNode.hidden, true);
-  assert.equal(actionLink.getAttribute("aria-current"), "page");
-  assert.equal(sessionLink.getAttribute("aria-current"), null);
-  assert.equal(actionLink.classList.contains("is-active"), true);
-  assert.equal(sessionLink.classList.contains("is-active"), false);
-  assert.equal(actionFocus.focusCalls, 1);
+  assert.equal(hoyNode.hidden, false);
+  assert.equal(sesionNode.hidden, true);
+  assert.equal(hoyLink.getAttribute("aria-current"), "page");
+  assert.equal(sesionLink.getAttribute("aria-current"), null);
+  assert.equal(hoyLink.classList.contains("is-active"), true);
+  assert.equal(sesionLink.classList.contains("is-active"), false);
+  assert.equal(hoyFocus.focusCalls, 1);
 });
 
 test("view switcher falls back to default route for unknown route id", () => {
   const fakeDocument = createFakeDocument();
-  const { actionNode, sessionNode } = fakeDocument.nodes;
+  const { hoyNode, sesionNode } = fakeDocument.nodes;
 
   const route = applyRouteVisibility({ documentRef: fakeDocument, routeId: "unknown" });
 
-  assert.equal(route, "action");
-  assert.equal(actionNode.hidden, false);
-  assert.equal(sessionNode.hidden, true);
+  assert.equal(route, "hoy");
+  assert.equal(hoyNode.hidden, false);
+  assert.equal(sesionNode.hidden, true);
 });

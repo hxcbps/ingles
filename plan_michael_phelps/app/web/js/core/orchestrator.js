@@ -1,7 +1,18 @@
 import { checkGate } from "../routing/hard_guards.js";
 import { metricsEngine } from "./metrics_engine.js";
+import { buildRuntimeEvent, createSessionId } from "./events_schema_v1.js";
 
 const STORAGE_KEY = "english-sprint:v4:session";
+
+const METADATA_RESERVED_KEYS = new Set([
+  "metadata",
+  "dayId",
+  "day_id",
+  "stepId",
+  "step_id",
+  "routeId",
+  "route_id"
+]);
 
 export const STEP_STATUS = {
   LOCKED: "locked",
@@ -47,6 +58,31 @@ function resolveMaxRetries(policy) {
   return 0;
 }
 
+function toIsoNow() {
+  return new Date().toISOString();
+}
+
+function safeEventMetadata(payload = {}) {
+  const baseMetadata =
+    payload.metadata && typeof payload.metadata === "object" && !Array.isArray(payload.metadata)
+      ? { ...payload.metadata }
+      : {};
+
+  Object.entries(payload).forEach(([key, value]) => {
+    if (METADATA_RESERVED_KEYS.has(key)) return;
+    baseMetadata[key] = value;
+  });
+
+  return baseMetadata;
+}
+
+function resolveEventField(value, fallback = null) {
+  if (typeof value === "string" && value.trim()) {
+    return value;
+  }
+  return fallback;
+}
+
 export class Orchestrator {
   constructor({ storageKey = STORAGE_KEY, storageAdapter, onEvent } = {}) {
     this.storageKey = storageKey;
@@ -58,6 +94,7 @@ export class Orchestrator {
 
   buildEmptyState() {
     return {
+      sessionId: null,
       dayId: null,
       currentStepId: null,
       stepStates: {},
@@ -78,14 +115,39 @@ export class Orchestrator {
   }
 
   emit(event, payload = {}) {
-    if (typeof this.onEvent !== "function") return;
-    this.onEvent({
+    if (typeof this.onEvent !== "function") return null;
+
+    if (!this.state.sessionId) {
+      this.state.sessionId = createSessionId();
+    }
+
+    const dayId =
+      resolveEventField(payload.day_id, null) ||
+      resolveEventField(payload.dayId, null) ||
+      resolveEventField(this.state.dayId, "unknown_day");
+
+    const stepId =
+      resolveEventField(payload.step_id, null) ||
+      resolveEventField(payload.stepId, null) ||
+      resolveEventField(this.state.currentStepId, null);
+
+    const routeId =
+      resolveEventField(payload.route_id, null) ||
+      resolveEventField(payload.routeId, null) ||
+      null;
+
+    const runtimeEvent = buildRuntimeEvent({
       event,
-      at: new Date().toISOString(),
-      dayId: this.state.dayId,
-      currentStepId: this.state.currentStepId,
-      ...payload
+      at: toIsoNow(),
+      session_id: this.state.sessionId,
+      day_id: dayId,
+      step_id: stepId,
+      route_id: routeId,
+      metadata: safeEventMetadata(payload)
     });
+
+    this.onEvent(runtimeEvent);
+    return runtimeEvent;
   }
 
   requireSchema() {
@@ -147,6 +209,7 @@ export class Orchestrator {
     const firstStepId = this.getFirstPrimaryStepId();
 
     this.state = {
+      sessionId: createSessionId(),
       dayId,
       currentStepId: firstStepId,
       stepStates: {},
@@ -155,7 +218,7 @@ export class Orchestrator {
       metrics: {},
       adaptation: null,
       recovery: null,
-      startedAt: new Date().toISOString(),
+      startedAt: toIsoNow(),
       completedAt: null
     };
 
@@ -180,6 +243,10 @@ export class Orchestrator {
       retries: safeState.retries && typeof safeState.retries === "object" ? safeState.retries : {},
       metrics: safeState.metrics && typeof safeState.metrics === "object" ? safeState.metrics : {}
     };
+
+    if (!resolveEventField(this.state.sessionId, null)) {
+      this.state.sessionId = createSessionId();
+    }
 
     this.schema.session_script.forEach((step) => {
       if (!this.state.stepStates[step.step_id]) {
@@ -246,8 +313,11 @@ export class Orchestrator {
     if (isNewSession) {
       this.resetState(dayContent.day_id);
       this.emit("session_started", {
-        dayGoal: dayContent.goal || "",
-        totalSteps: this.getPrimaryStepIds().length
+        stepId: null,
+        metadata: {
+          day_goal: dayContent.goal || "",
+          total_steps: this.getPrimaryStepIds().length
+        }
       });
     } else {
       this.normalizeState();
@@ -261,11 +331,19 @@ export class Orchestrator {
   emitStepStarted(stepId, extra = {}) {
     const step = this.getStepById(stepId);
     if (!step) return;
+
+    const primarySteps = this.getPrimaryStepIds();
+    const stepIndex = primarySteps.indexOf(stepId);
+
     this.emit("step_started", {
-      ...extra,
       stepId,
-      stepType: step.type,
-      gateType: step.gate?.type || "none"
+      metadata: {
+        resumed: Boolean(extra.resumed),
+        step_type: step.type,
+        gate_type: step.gate?.type || "none",
+        step_index: stepIndex >= 0 ? stepIndex + 1 : 1,
+        total_steps: primarySteps.length
+      }
     });
   }
 
@@ -328,9 +406,20 @@ export class Orchestrator {
     }
 
     this.state.currentStepId = null;
-    this.state.completedAt = new Date().toISOString();
+    this.state.completedAt = toIsoNow();
+
+    const startedAtMs = Date.parse(this.state.startedAt || "");
+    const completedAtMs = Date.parse(this.state.completedAt || "");
+    const durationSec = Number.isFinite(startedAtMs) && Number.isFinite(completedAtMs)
+      ? Math.max(0, Math.round((completedAtMs - startedAtMs) / 1000))
+      : 0;
+
     this.emit("session_completed", {
-      progress: this.getProgress()
+      stepId: null,
+      metadata: {
+        progress_pct: this.getProgress(),
+        duration_sec: durationSec
+      }
     });
   }
 
@@ -354,10 +443,12 @@ export class Orchestrator {
       state: this.state
     });
 
+    const attempt = (this.state.retries[stepId] || 0) + 1;
+
     this.state.stepData[stepId] = {
       ...(this.state.stepData[stepId] || {}),
       ...input,
-      submittedAt: new Date().toISOString()
+      submittedAt: toIsoNow()
     };
 
     this.state.metrics = metricsEngine.update(
@@ -375,7 +466,10 @@ export class Orchestrator {
       this.state.stepStates[stepId] = STEP_STATUS.DONE;
       this.emit("gate_passed", {
         stepId,
-        gateType: step.gate?.type || "none"
+        metadata: {
+          gate_type: step.gate?.type || "none",
+          attempt
+        }
       });
       this.advanceStep(stepId);
       this.saveState();
@@ -383,15 +477,18 @@ export class Orchestrator {
     }
 
     this.state.stepStates[stepId] = STEP_STATUS.FAILED;
+    this.state.retries[stepId] = attempt;
+
     this.emit("gate_failed", {
       stepId,
-      gateType: step.gate?.type || "none",
-      reason: gateResult.message
+      metadata: {
+        gate_type: step.gate?.type || "none",
+        attempt,
+        reason: gateResult.message
+      }
     });
 
     const maxRetries = resolveMaxRetries(step.retry_policy);
-    const attempt = (this.state.retries[stepId] || 0) + 1;
-    this.state.retries[stepId] = attempt;
 
     if (attempt <= maxRetries) {
       this.state.stepStates[stepId] = STEP_STATUS.RECOVERED;
@@ -412,12 +509,15 @@ export class Orchestrator {
         fromStepId: stepId,
         fallbackStepId: step.fallback_step_id,
         resumeStepId,
-        startedAt: new Date().toISOString()
+        startedAt: toIsoNow()
       };
       this.activateStep(step.fallback_step_id);
       this.emit("recovery_started", {
-        fromStepId: stepId,
-        fallbackStepId: step.fallback_step_id
+        stepId: step.fallback_step_id,
+        metadata: {
+          from_step_id: stepId,
+          fallback_step_id: step.fallback_step_id
+        }
       });
       this.saveState();
       return {
@@ -441,7 +541,10 @@ export class Orchestrator {
   abandon(reason = "manual_exit") {
     if (this.state.completedAt) return;
     this.emit("session_abandoned", {
-      reason
+      stepId: null,
+      metadata: {
+        reason
+      }
     });
     this.saveState();
   }

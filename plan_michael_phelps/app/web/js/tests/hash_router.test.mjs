@@ -50,9 +50,9 @@ test("hash router starts with canonical default route", () => {
 
   router.start();
 
-  assert.equal(fakeWindow.location.hash, "#/today/action");
+  assert.equal(fakeWindow.location.hash, "#/modulo/hoy");
   assert.equal(routeChanges.length, 1);
-  assert.equal(routeChanges[0].routeId, "action");
+  assert.equal(routeChanges[0].routeId, "hoy");
   assert.equal(routeChanges[0].isInvalid, false);
 });
 
@@ -67,9 +67,9 @@ test("hash router canonicalizes legacy hash route", () => {
 
   router.start();
 
-  assert.equal(fakeWindow.location.hash, "#/today/close");
+  assert.equal(fakeWindow.location.hash, "#/modulo/cierre");
   assert.equal(routeChanges.length, 1);
-  assert.equal(routeChanges[0].routeId, "close");
+  assert.equal(routeChanges[0].routeId, "cierre");
   assert.equal(routeChanges[0].redirectedFromLegacy, true);
 });
 
@@ -86,15 +86,15 @@ test("hash router reports invalid hashes and redirects", () => {
 
   router.start();
 
-  assert.equal(fakeWindow.location.hash, "#/today/action");
+  assert.equal(fakeWindow.location.hash, "#/modulo/hoy");
   assert.equal(invalidRoutes.length, 1);
   assert.equal(invalidRoutes[0].rawHash, "#/bad/path");
-  assert.equal(invalidRoutes[0].canonicalHash, "#/today/action");
+  assert.equal(invalidRoutes[0].canonicalHash, "#/modulo/hoy");
   assert.equal(routeChanges[0].isInvalid, true);
 });
 
 test("hash router navigate updates state and dispose stops listener", () => {
-  const fakeWindow = createFakeWindow("#/today/action");
+  const fakeWindow = createFakeWindow("#/modulo/hoy");
   const routeChanges = [];
 
   const router = createHashRouter({
@@ -105,15 +105,15 @@ test("hash router navigate updates state and dispose stops listener", () => {
   router.start();
   routeChanges.length = 0;
 
-  router.navigate("evaluate");
-  assert.equal(fakeWindow.location.hash, "#/today/evaluate");
-  assert.equal(routeChanges.at(-1).routeId, "evaluate");
-  assert.equal(router.current().routeId, "evaluate");
+  router.navigate("evaluacion");
+  assert.equal(fakeWindow.location.hash, "#/modulo/evaluacion");
+  assert.equal(routeChanges.at(-1).routeId, "evaluacion");
+  assert.equal(router.current().routeId, "evaluacion");
 
   router.dispose();
 
-  fakeWindow.location.hash = "#/today/session";
+  fakeWindow.location.hash = "#/modulo/sesion";
   fakeWindow.dispatchHashChange();
 
-  assert.equal(routeChanges.at(-1).routeId, "evaluate");
+  assert.equal(routeChanges.at(-1).routeId, "evaluacion");
 });

@@ -246,6 +246,22 @@ Capacidad estimada S0: 34-40 story points.
 - Validacion:
   - tests unitarios de payload de eventos.
 
+## 7.1) Estado de ejecucion Sprint 0 (actualizado)
+
+| Story | Estado | Evidencia | Validacion |
+|---|---|---|---|
+| `S0-B01` | `DONE` | `docs/adr/ADR-001-routing-canonical.md` | ADR publicado y usado como contrato canonico |
+| `S0-B02` | `DONE` | `app/web/js/routing/routes.js`, `app/web/js/core/bootstrap_v4.js`, `app/web/js/ui/learning_shell.js` | `node --test app/web/js/tests/routes.test.mjs app/web/js/tests/hash_router.test.mjs app/web/js/tests/view_switcher.test.mjs` |
+| `S0-B03` | `DONE` | `learning/content/schema.v4.1.json`, `guides/contracts/CONTENT_CONTRACT_V4_1.md` | Contrato `v4.1` congelado y trazable |
+| `S0-B04` | `DONE` | `scripts/validate_curriculum_integrity.py` | `python3 scripts/validate_curriculum_integrity.py --repo-root . --fail-on-p0` retorna code `1` cuando hay P0 |
+| `S0-B05` | `DONE` | `.github/workflows/quality-gates.yml`, `plan_michael_phelps/.github/workflows/quality-gates.yml` | Quality gate bloqueante en workflow de repositorio y proyecto |
+| `S0-B06` | `DONE` | `docs/adr/ADR-002-css-entrypoint.md` | ADR publicado |
+| `S0-B07` | `DONE` | `app/web/index.html`, `app/web/css/index.css`, `app/web/styles.css` | Entry point unico activo en shell |
+| `S0-B08` | `DONE` | `guides/backlog/P0_CONTENT_REMEDIATION_QUEUE.md` | Trazabilidad `finding -> task` completa (63/63) |
+| `S0-B09` | `DONE` | `app/web/js/core/events_schema_v1.js`, `app/web/js/core/orchestrator.js`, `guides/contracts/EVENTS_SCHEMA_V1.md` | `node --test app/web/js/tests/events_schema_v1.test.mjs app/web/js/tests/orchestrator.test.mjs` |
+
+Resultado Sprint 0: base arquitectonica cerrada. El quality gate de contenido sigue fallando por deuda curricular existente (P0 abiertos), lo cual es esperado hasta ejecutar S1-S2.
+
 ## 8) Sprint 0 Definition of Done (global)
 
 - Todas las historias `P0` de S0 completadas y aceptadas.

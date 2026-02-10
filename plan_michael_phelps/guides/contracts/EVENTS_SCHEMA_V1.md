@@ -1,7 +1,8 @@
 # Runtime Events Schema V1
 
-- Status: Draft (kickoff)
-- Owner: Agent-S0-09 (`S0-B09`)
+- Status: Active
+- Owner: Frontend Core
+- Contract module: `app/web/js/core/events_schema_v1.js`
 
 ## Goal
 
@@ -24,7 +25,7 @@ Define stable event payloads for session/runtime observability.
 ## Event Catalog
 
 1. `route_changed`
-- Trigger: navigation transition
+- Trigger: hash route transition (`bootstrap_v4` + `hash_router`)
 - Required metadata: `from_route`, `to_route`, `source`
 
 2. `session_started`
@@ -61,15 +62,16 @@ Define stable event payloads for session/runtime observability.
 
 ## Validation Rules
 
-- All events must include full envelope keys.
-- Unknown event names are rejected by test suite.
-- `at` must be parseable ISO timestamp.
-- `session_id` must be stable during one session lifecycle.
+- All events include the full envelope keys.
+- Unknown event names are rejected by `events_schema_v1.js`.
+- `at` is parseable ISO timestamp.
+- `session_id` is stable during one session lifecycle.
 
 ## Adoption in Code
 
-Initial touch points:
-
+- `app/web/js/core/events_schema_v1.js`
 - `app/web/js/core/orchestrator.js`
 - `app/web/js/core/bootstrap_v4.js`
-
+- tests:
+  - `app/web/js/tests/events_schema_v1.test.mjs`
+  - `app/web/js/tests/orchestrator.test.mjs`

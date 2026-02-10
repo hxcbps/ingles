@@ -10,25 +10,25 @@ export function evaluateSoftGuard({ routeId, checklist = {} } = {}) {
   const missingCore = CORE_EXECUTION_ITEMS.filter((itemId) => !isChecked(checklist, itemId));
   const evidenceReady = isChecked(checklist, "evidence");
 
-  if (routeId === "close" && missingCore.length > 0) {
+  if (routeId === "cierre" && missingCore.length > 0) {
     return {
       level: "warning",
       message: `Faltan bloques de ejecucion (${missingCore.length}/4) antes del cierre final.`,
-      recommendedRouteId: "session"
+      recommendedRouteId: "sesion"
     };
   }
 
-  if (routeId === "evaluate" && !evidenceReady) {
+  if (routeId === "evaluacion" && !evidenceReady) {
     return {
       level: "warning",
       message: "Completa evidencia antes de evaluar para que el dia cuente.",
-      recommendedRouteId: "close"
+      recommendedRouteId: "cierre"
     };
   }
 
   return {
     level: "none",
     message: "",
-    recommendedRouteId: routeId || "action"
+    recommendedRouteId: routeId || "hoy"
   };
 }
