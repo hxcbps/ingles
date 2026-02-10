@@ -12,7 +12,7 @@ for WT in "$WORKTREE_BASE"/*; do
   STORY="$(basename "$WT" | tr '[:lower:]' '[:upper:]')"
   BRANCH="$(git -C "$WT" branch --show-current)"
   AHEAD="$(git -C "$WT" rev-list --count "main..$BRANCH" 2>/dev/null || echo 0)"
-  DIRTY="$(git -C "$WT" status --porcelain | wc -l | tr -d ' ')"
+  DIRTY="$(git -C "$WT" status --porcelain --untracked-files=no | wc -l | tr -d ' ')"
   STATUS="CLEAN"
   if [ "$DIRTY" != "0" ]; then
     STATUS="DIRTY"
