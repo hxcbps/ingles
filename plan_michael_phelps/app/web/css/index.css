@@ -1,3 +1,4 @@
+/* Canonical stylesheet entrypoint for the web shell. */
 @layer reset, tokens, base, components, utilities, overrides;
 
 @import "tokens.css" layer(tokens);
@@ -12,5 +13,7 @@
 
 @import "utilities.css" layer(utilities);
 /* Atomic Utility Classes */
+@import "utilities_patch.css" layer(utilities);
+/* Backward-compatible utility fixes */
 @import "responsive.css" layer(utilities);
 /* Media Query Overrides */
