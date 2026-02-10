@@ -1,0 +1,299 @@
+# English Sprint - Backlog y Alcance de Ejecucion (V1)
+
+Fecha de baseline: 2026-02-10
+Documento base: `guides/SYSTEM_DESIGN_0_B2_V1.md`
+Baseline de calidad: auditoria `P0=63`, `P1=46`, `P2=6`
+
+## 1) Objetivo del backlog
+
+Traducir el system design a un plan ejecutable por sprint, con items priorizados por riesgo/impacto y tareas listas para implementacion inmediata.
+
+## 2) Alcance del programa (macro)
+
+### In scope
+
+- Arquitectura modular frontend alineada a bounded contexts.
+- Contrato curricular y de runtime versionado (`v4.1` inicial).
+- Integridad de prompts, resources y progression CEFR.
+- Navegacion canonica de producto.
+- Design system gobernado con un unico entrypoint CSS.
+- Runtime de sesion resiliente con trazabilidad de eventos.
+- Pipeline de calidad con bloqueo por P0.
+
+### Out of scope (en esta fase)
+
+- Backend productivo multi-tenant.
+- Apps nativas (iOS/Android).
+- Sincronizacion en tiempo real multi-dispositivo.
+- Motor de IA propietario en servidor.
+
+## 3) Criterio de priorizacion
+
+Formula operativa: `Prioridad = (Impacto usuario + Riesgo tecnico + Riesgo pedagogico) - Esfuerzo`.
+
+Niveles:
+- `P0-Blocker`: rompe validez del aprendizaje o integridad del producto.
+- `P1-High`: afecta calidad de progresion o mantenibilidad.
+- `P2-Medium`: afecta consistencia UX o percepcion.
+
+## 4) Product backlog por epica (programa completo)
+
+| Rank | Epic ID | Modulo | Objetivo | Severidad | Dependencias | Sprint objetivo |
+|---|---|---|---|---|---|---|
+| 1 | EP-01 | Curriculum/Data | Eliminar todos los P0 de contenido (CEFR, placeholders, session vacia) | P0 | EP-00 | S1-S2 |
+| 2 | EP-02 | Prompt/Resources | Resolver 100% `prompt_ref` y `resource_locator` | P0 | EP-00 | S1-S2 |
+| 3 | EP-00 | Governance/Contracts | Congelar contratos `v4.1` y quality gates en CI | P0 | None | S0 |
+| 4 | EP-03 | Navigation Shell | Unificar rutas canonicas shell/router | P1 | EP-00 | S0-S1 |
+| 5 | EP-04 | Design System | Unico entrypoint CSS y limpieza de estilos stale | P1 | EP-00 | S0-S3 |
+| 6 | EP-05 | Frontend Data Wiring | Reemplazar hardcoded KPIs/gamification por estado real | P1 | EP-00, EP-03 | S3-S4 |
+| 7 | EP-06 | Session Runtime | Hardening de rehidratacion, recovery y eventos | P1 | EP-00 | S4-S5 |
+| 8 | EP-07 | Observabilidad/QA | E2E critical path + telemetria estructurada | P1 | EP-03, EP-06 | S5-S6 |
+| 9 | EP-08 | Polish/Release | Accesibilidad AA, performance budgets y go-live checklist | P2 | EP-01..EP-07 | S6 |
+
+## 5) Sprint map recomendado
+
+| Sprint | Objetivo | Resultado esperado |
+|---|---|---|
+| S0 | Baseline arquitectonico | Contratos y rutas canonicas definidos, CI de quality gates activo |
+| S1 | P0 Content Wave 1 | CEFR drift y session integrity corregidos para semanas criticas |
+| S2 | P0 Content Wave 2 | Prompt/resource integrity 100% y placeholders eliminados |
+| S3 | Frontend integration Wave 1 | Shell data-driven parcial, CSS entrypoint unificado |
+| S4 | Frontend integration Wave 2 | Hardcoded removidos, progreso real visible |
+| S5 | Runtime hardening | Resume robusto + eventos observables + e2e camino critico |
+| S6 | Release readiness | AA + performance + P0/P1 en verde |
+
+## 6) Alcance Sprint 0 (commit)
+
+Objetivo de sprint: establecer la base tecnica para ejecutar el programa sin retrabajo estructural.
+
+### In scope S0
+
+- Contrato de rutas canonicas firmado y aplicado en codigo.
+- Contrato de datos `v4.1` congelado con reglas de integridad.
+- Quality gate de auditoria P0 bloqueante en pipeline.
+- Decision de entrypoint CSS unico y plan de migracion aplicado.
+- Backlog de P0 desglosado en lotes ejecutables para S1-S2.
+
+### Out of scope S0
+
+- Reescritura completa de `week01..week20.v4.json`.
+- Refactor visual total del shell.
+- Integracion backend remota.
+
+Capacidad estimada S0: 34-40 story points.
+
+## 7) Sprint 0 backlog detallado (ready for execution)
+
+## S0-B01 - ADR de rutas canonicas
+
+- Tipo: Architecture Task
+- Owner: Frontend Architect
+- Estimacion: 3 SP
+- Prioridad: P0
+- Dependencias: ninguna
+- Entregables:
+  - `docs/adr/ADR-001-routing-canonical.md`
+  - Matriz legacy->canonico
+- Aceptacion:
+  - Se define una sola tabla de rutas canonicas.
+  - Se documentan aliases legacy y fecha de deprecacion.
+  - Producto + frontend aprueban el ADR.
+- Validacion:
+  - Revisión ADR firmada en PR.
+
+## S0-B02 - Unificacion de routing (shell + router)
+
+- Tipo: Engineering Story
+- Owner: Frontend Core
+- Estimacion: 8 SP
+- Prioridad: P0
+- Dependencias: S0-B01
+- Archivos objetivo:
+  - `app/web/js/routing/routes.js`
+  - `app/web/js/routing/hash_router.js`
+  - `app/web/js/ui/views.js`
+  - `app/web/js/ui/learning_shell.js`
+- Aceptacion:
+  - `LearningShell` y router comparten el mismo contrato de rutas.
+  - Navegacion canonica soporta: `hoy/sesion/cierre/evaluacion/modulos/progreso`.
+  - Legacy hashes redirigen sin romper flujo.
+- Validacion:
+  - `node --test app/web/js/tests/routes.test.mjs`
+  - `node --test app/web/js/tests/hash_router.test.mjs`
+  - `node --test app/web/js/tests/view_switcher.test.mjs`
+
+## S0-B03 - Contrato `v4.1` de contenido y runtime
+
+- Tipo: Data Contract Story
+- Owner: Learning Architect + Frontend Architect
+- Estimacion: 5 SP
+- Prioridad: P0
+- Dependencias: S0-B01
+- Entregables:
+  - `learning/content/schema.v4.1.json`
+  - `guides/contracts/CONTENT_CONTRACT_V4_1.md`
+  - matriz de compatibilidad `v4 -> v4.1`
+- Aceptacion:
+  - Enum de `step.type` y `gate.type` versionado y congelado.
+  - Reglas fuertes explicitadas (`prompt_ref`, `resource_locator.page`, `assessment_event`).
+  - Estrategia de migracion sin romper runtime.
+- Validacion:
+  - Validador schema ejecuta sobre `week*.v4.json`.
+
+## S0-B04 - Validador de integridad curricular
+
+- Tipo: DevEx Story
+- Owner: DevEx
+- Estimacion: 5 SP
+- Prioridad: P0
+- Dependencias: S0-B03
+- Entregables:
+  - `scripts/validate_curriculum_integrity.py`
+  - salida JSON con errores por severidad
+- Reglas minimas implementadas:
+  - `cefr_target` vs `difficulty_level`
+  - `prompt_ref` resoluble
+  - `resource_locator.page` presente
+  - `session_script` no vacio
+- Aceptacion:
+  - Script falla con code != 0 cuando hay P0.
+  - Reporte con path y evidencia por semana/dia/step.
+- Validacion:
+  - `python3 scripts/validate_curriculum_integrity.py --repo-root .`
+
+## S0-B05 - Quality gate en CI (block on P0)
+
+- Tipo: Pipeline Story
+- Owner: DevEx
+- Estimacion: 3 SP
+- Prioridad: P0
+- Dependencias: S0-B04
+- Entregables:
+  - workflow CI (`.github/workflows/quality-gates.yml` o equivalente)
+  - job `content-audit`
+- Aceptacion:
+  - CI ejecuta audit oficial con `--fail-on-p0`.
+  - Pull Request no mergea si P0 > 0.
+- Validacion:
+  - Corrida CI de prueba en branch.
+
+## S0-B06 - ADR de CSS entrypoint unico
+
+- Tipo: Architecture Task
+- Owner: UI Platform
+- Estimacion: 2 SP
+- Prioridad: P1
+- Dependencias: ninguna
+- Entregables:
+  - `docs/adr/ADR-002-css-entrypoint.md`
+  - decision entre `app/web/styles.css` y `app/web/css/index.css`
+- Aceptacion:
+  - Se define entrypoint oficial.
+  - Plan de deprecacion del entrypoint secundario.
+- Validacion:
+  - ADR aprobado en PR.
+
+## S0-B07 - Implementacion de entrypoint CSS unico
+
+- Tipo: Engineering Story
+- Owner: UI Platform
+- Estimacion: 5 SP
+- Prioridad: P1
+- Dependencias: S0-B06
+- Archivos objetivo:
+  - `app/web/index.html`
+  - `app/web/css/index.css`
+  - `app/web/styles.css`
+- Aceptacion:
+  - La app carga solo un entrypoint final.
+  - No hay regresion visual critica desktop/mobile.
+  - Documentada lista de clases stale para limpieza S3.
+- Validacion:
+  - smoke manual desktop/mobile
+  - snapshot visual baseline (si aplica)
+
+## S0-B08 - Catalogo de deuda P0 para S1-S2
+
+- Tipo: Planning Story
+- Owner: Learning Architect
+- Estimacion: 3 SP
+- Prioridad: P0
+- Dependencias: S0-B04
+- Entregables:
+  - `guides/backlog/P0_CONTENT_REMEDIATION_QUEUE.md`
+  - lotes por semana y tipo de falla
+- Aceptacion:
+  - Todas las 63 fallas P0 quedan mapeadas a tareas S1/S2.
+  - Cada tarea incluye archivo, criterio de salida y responsable.
+- Validacion:
+  - Matriz trazable `finding -> task` completa.
+
+## S0-B09 - Baseline de observabilidad de eventos
+
+- Tipo: Runtime Story
+- Owner: Frontend Core
+- Estimacion: 5 SP
+- Prioridad: P1
+- Dependencias: S0-B01
+- Archivos objetivo:
+  - `app/web/js/core/orchestrator.js`
+  - `app/web/js/core/bootstrap_v4.js`
+  - `guides/contracts/EVENTS_SCHEMA_V1.md`
+- Aceptacion:
+  - Se define schema de eventos minimo del system design.
+  - Cada evento incluye `session_id`, `day_id`, `step_id`, timestamp.
+  - Eventos son consumibles para tracking local.
+- Validacion:
+  - tests unitarios de payload de eventos.
+
+## 8) Sprint 0 Definition of Done (global)
+
+- Todas las historias `P0` de S0 completadas y aceptadas.
+- CI con quality gate activo y visible.
+- Contrato de rutas y contrato `v4.1` publicados.
+- Sin regressions criticas en tests de routing/runtime.
+- Backlog S1-S2 listo con tareas estimadas.
+
+## 9) Backlog S1-S2 listo para refinamiento (preview)
+
+### S1 candidate focus
+
+- Corregir CEFR drift W16-W20.
+- Eliminar `session_script: []` en W10.
+- Eliminar placeholder URLs en semanas de mayor impacto (W01-W05).
+
+### S2 candidate focus
+
+- Resolver `prompt_ref` faltantes en todo el rango W01-W20.
+- Completar `resource_locator.page` y recursos reales.
+- Reducir duplicacion semanal y activar `retention_loop` minimo.
+
+## 10) Riesgos y mitigaciones
+
+| Riesgo | Probabilidad | Impacto | Mitigacion |
+|---|---|---|---|
+| Cambios de contrato rompen UI actual | Media | Alta | versionado `v4.1`, compat layer y tests de regresion |
+| Carga de correccion de contenido subestimada | Alta | Alta | dividir por waves S1/S2 con lotes pequenos |
+| Deriva entre shell y router reaparece | Media | Alta | fuente unica de rutas + test suite obligatoria |
+| Deuda CSS frena velocity | Media | Media | ADR + entrada unica + limpieza por etapas |
+
+## 11) KPIs de ejecucion del programa
+
+- `P0 open findings`: 63 -> 0.
+- `Prompt resolution rate`: <100% -> 100%.
+- `Canonical route conformance`: 100%.
+- `Hardcoded dashboard tokens`: >0 -> 0.
+- `Critical flow e2e pass rate`: >= 95%.
+
+## 12) Orden recomendado de inicio (dia 1 de sprint)
+
+1. S0-B01 ADR rutas.
+2. S0-B06 ADR CSS.
+3. S0-B03 contrato `v4.1`.
+4. S0-B02 routing unificado.
+5. S0-B04 validador integridad.
+6. S0-B05 CI gate.
+7. S0-B07 entrypoint CSS unico.
+8. S0-B08 queue P0 para S1-S2.
+9. S0-B09 esquema de eventos.
+

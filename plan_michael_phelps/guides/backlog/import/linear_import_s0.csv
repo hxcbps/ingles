@@ -1,0 +1,173 @@
+id,type,title,description,priority,estimate,state,labels,project,cycle,assignee,parent_id,depends_on_ids,epic_id,sprint
+EP-00,epic,Governance and Contracts,"Freeze architecture contracts and enforce quality gates in CI.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",1,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-01,epic,Curriculum Data P0 Remediation,"Remove all P0 curriculum defects across CEFR progression and session integrity.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",1,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-02,epic,Prompt and Resource Integrity,"Resolve prompt_ref and resource locator integrity across all weeks.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",1,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-03,epic,Navigation Shell Canonical,"Unify shell and router around one canonical route contract.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",2,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-04,epic,Design System and CSS Governance,"Adopt one CSS entrypoint and govern style architecture.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",2,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-05,epic,Frontend Data Wiring,"Replace hardcoded dashboard and progress UI values with runtime state.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",2,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-06,epic,Session Runtime Hardening,"Harden rehydration, fallback, retries, and resilience in session runtime.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",2,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-07,epic,Observability and QA,"Implement event schema and critical-path e2e validation.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",2,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+EP-08,epic,Polish and Release Readiness,"Deliver AA accessibility, performance budgets, and release checklists.
+
+Acceptance: Epic scope and outcomes approved.
+Validation: ",3,,Backlog,"english-sprint,architecture,program",English Sprint 0-B2,,Program Lead,,,,
+S0-B01,story,ADR for canonical routing,"Define one canonical route table, alias policy, and deprecation timeline.
+
+Acceptance: Single canonical route table documented; legacy aliases and deprecation date approved.
+Validation: PR review checklist",1,3,Backlog,"english-sprint,sprint-0,navigation-shell",English Sprint 0-B2,S0,Frontend Architect,,,EP-03,S0
+S0-B02,story,Unify shell and router contracts,"Make LearningShell and hash router consume the same canonical route definitions.
+
+Acceptance: Canonical routes implemented: hoy,sesion,cierre,evaluacion,modulos,progreso; legacy redirects preserved.
+Validation: node --test app/web/js/tests/routes.test.mjs; node --test app/web/js/tests/hash_router.test.mjs; node --test app/web/js/tests/view_switcher.test.mjs",1,8,Backlog,"english-sprint,sprint-0,navigation-shell",English Sprint 0-B2,S0,Frontend Core A,,S0-B01,EP-03,S0
+S0-B03,story,Freeze content/runtime contract v4.1,"Create schema v4.1 and compatibility notes for v4 to v4.1 migration.
+
+Acceptance: schema.v4.1 and contract guide published; enum and integrity rules frozen.
+Validation: Schema validation on week*.v4.json",1,5,Backlog,"english-sprint,sprint-0,governance",English Sprint 0-B2,S0,Learning Architect,,S0-B01,EP-00,S0
+S0-B04,story,Build curriculum integrity validator,"Implement script that checks CEFR drift, prompt resolution, resource locator completeness, and empty sessions.
+
+Acceptance: Validator returns non-zero exit on P0 and outputs machine-readable report.
+Validation: python3 scripts/validate_curriculum_integrity.py --repo-root .",1,5,Backlog,"english-sprint,sprint-0,quality-pipeline",English Sprint 0-B2,S0,DevEx Engineer,,S0-B03,EP-00,S0
+S0-B05,story,Enable CI blocker for P0 findings,"Wire audit command with fail-on-p0 into CI and block merge when P0 > 0.
+
+Acceptance: CI job fails when audit detects P0 issues and status is required for merge.
+Validation: CI run with python3 /Users/dfernandez/.codex/skills/english-sprint-architect/scripts/audit_english_sprint.py --repo-root . --fail-on-p0",1,3,Backlog,"english-sprint,sprint-0,quality-pipeline",English Sprint 0-B2,S0,DevEx Engineer,,S0-B04,EP-00,S0
+S0-B06,story,ADR for single CSS entrypoint,"Decide official CSS entrypoint and deprecation strategy for secondary entrypoint.
+
+Acceptance: CSS entrypoint decision approved with migration plan.
+Validation: PR review checklist",2,2,Backlog,"english-sprint,sprint-0,design-system",English Sprint 0-B2,S0,UI Architect,,,EP-04,S0
+S0-B07,story,Implement single CSS entrypoint,"Apply selected entrypoint in app/web/index.html and align stylesheet chain.
+
+Acceptance: App loads through one entrypoint; no critical regression on desktop/mobile.
+Validation: Manual smoke desktop/mobile",2,5,Backlog,"english-sprint,sprint-0,design-system",English Sprint 0-B2,S0,UI Platform Engineer,,S0-B06,EP-04,S0
+S0-B08,story,Create P0 remediation queue for S1-S2,"Map all P0 findings to concrete S1/S2 tasks with file-level ownership.
+
+Acceptance: All current P0 findings mapped to actionable tasks with acceptance criteria.
+Validation: Traceability matrix review",1,3,Backlog,"english-sprint,sprint-0,curriculum-data",English Sprint 0-B2,S0,Learning Architect,,S0-B04,EP-01,S0
+S0-B09,story,Define events schema baseline,"Define and emit required runtime events with stable payload schema.
+
+Acceptance: Events include session_id, day_id, step_id, timestamp and pass unit tests.
+Validation: Unit tests for event payloads",2,5,Backlog,"english-sprint,sprint-0,observability",English Sprint 0-B2,S0,Frontend Core B,,S0-B01,EP-07,S0
+S0-B01-ST1,subtask,Document canonical routes and states,"Create canonical route/state table for all shell views.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,navigation-shell",English Sprint 0-B2,S0,Frontend Architect,S0-B01,S0-B01,EP-03,S0
+S0-B01-ST2,subtask,Define legacy alias map,"List old hashes and deterministic redirect targets.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,navigation-shell",English Sprint 0-B2,S0,Frontend Architect,S0-B01,S0-B01,EP-03,S0
+S0-B02-ST1,subtask,Refactor routes registry,"Unify route constants and labels in routing module.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,3,Backlog,"english-sprint,sprint-0,subtask,navigation-shell",English Sprint 0-B2,S0,Frontend Core A,S0-B02,S0-B02,EP-03,S0
+S0-B02-ST2,subtask,Wire shell view metadata,"Align view metadata with canonical route IDs.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,3,Backlog,"english-sprint,sprint-0,subtask,navigation-shell",English Sprint 0-B2,S0,Frontend Core A,S0-B02,S0-B02,EP-03,S0
+S0-B02-ST3,subtask,Update routing tests,"Adjust route/hash/view switcher tests to canonical flow.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,navigation-shell",English Sprint 0-B2,S0,Frontend Core A,S0-B02,S0-B02,EP-03,S0
+S0-B03-ST1,subtask,Draft schema v4.1,"Add schema.v4.1 with frozen enums and integrity constraints.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,governance",English Sprint 0-B2,S0,Learning Architect,S0-B03,S0-B03,EP-00,S0
+S0-B03-ST2,subtask,Publish contract guide,"Document data contract and compatibility strategy.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,governance",English Sprint 0-B2,S0,Learning Architect,S0-B03,S0-B03,EP-00,S0
+S0-B03-ST3,subtask,Run compatibility check,"Validate existing week content against v4.1 expectations.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,governance",English Sprint 0-B2,S0,Frontend Architect,S0-B03,S0-B03,EP-00,S0
+S0-B04-ST1,subtask,Implement CEFR integrity checks,"Detect week target vs step difficulty mismatches.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,quality-pipeline",English Sprint 0-B2,S0,DevEx Engineer,S0-B04,S0-B04,EP-00,S0
+S0-B04-ST2,subtask,Implement prompt/resource checks,"Detect unresolved prompt_ref and missing locator page.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,quality-pipeline",English Sprint 0-B2,S0,DevEx Engineer,S0-B04,S0-B04,EP-00,S0
+S0-B04-ST3,subtask,Emit JSON report,"Output machine-readable finding report with severity and path.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,quality-pipeline",English Sprint 0-B2,S0,DevEx Engineer,S0-B04,S0-B04,EP-00,S0
+S0-B05-ST1,subtask,Add CI workflow job,"Create quality gate job in CI pipeline.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,quality-pipeline",English Sprint 0-B2,S0,DevEx Engineer,S0-B05,S0-B05,EP-00,S0
+S0-B05-ST2,subtask,Enforce fail-on-p0,"Run audit with fail-on-p0 and block merge.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,quality-pipeline",English Sprint 0-B2,S0,DevEx Engineer,S0-B05,S0-B05,EP-00,S0
+S0-B05-ST3,subtask,Validate branch protection,"Ensure quality job is required status check.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,quality-pipeline",English Sprint 0-B2,S0,Program Lead,S0-B05,S0-B05,EP-00,S0
+S0-B06-ST1,subtask,Assess current CSS entrypoints,"Compare styles.css vs css/index.css load chain.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,design-system",English Sprint 0-B2,S0,UI Architect,S0-B06,S0-B06,EP-04,S0
+S0-B06-ST2,subtask,Publish ADR decision,"Record final entrypoint decision and deprecation plan.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,design-system",English Sprint 0-B2,S0,UI Architect,S0-B06,S0-B06,EP-04,S0
+S0-B07-ST1,subtask,Update HTML stylesheet link,"Point app shell to official CSS entrypoint.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,design-system",English Sprint 0-B2,S0,UI Platform Engineer,S0-B07,S0-B07,EP-04,S0
+S0-B07-ST2,subtask,Align import chain,"Remove duplicate style loading and align CSS layer order.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,design-system",English Sprint 0-B2,S0,UI Platform Engineer,S0-B07,S0-B07,EP-04,S0
+S0-B07-ST3,subtask,Run visual smoke,"Check desktop and mobile baseline views for regressions.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,design-system",English Sprint 0-B2,S0,UI Platform Engineer,S0-B07,S0-B07,EP-04,S0
+S0-B08-ST1,subtask,Export P0 findings list,"Extract all P0 findings with file-level evidence.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,curriculum-data",English Sprint 0-B2,S0,Learning Architect,S0-B08,S0-B08,EP-01,S0
+S0-B08-ST2,subtask,Create S1-S2 batches,"Group findings into implementation waves and assign owners.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,curriculum-data",English Sprint 0-B2,S0,Learning Architect,S0-B08,S0-B08,EP-01,S0
+S0-B08-ST3,subtask,Validate traceability,"Ensure every finding maps to one backlog task.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,curriculum-data",English Sprint 0-B2,S0,Program Lead,S0-B08,S0-B08,EP-01,S0
+S0-B09-ST1,subtask,Draft event schema,"Define required runtime events and payload fields.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,observability",English Sprint 0-B2,S0,Frontend Core B,S0-B09,S0-B09,EP-07,S0
+S0-B09-ST2,subtask,Emit events from orchestrator,"Instrument orchestrator/bootstrap with schema-compliant events.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,2,Backlog,"english-sprint,sprint-0,subtask,observability",English Sprint 0-B2,S0,Frontend Core B,S0-B09,S0-B09,EP-07,S0
+S0-B09-ST3,subtask,Add payload tests,"Create unit tests validating event schema.
+
+Acceptance: Subtask deliverable completed and merged.
+Validation: Defined in parent story",2,1,Backlog,"english-sprint,sprint-0,subtask,observability",English Sprint 0-B2,S0,Frontend Core B,S0-B09,S0-B09,EP-07,S0

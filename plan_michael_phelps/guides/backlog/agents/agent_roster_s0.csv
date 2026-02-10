@@ -1,0 +1,10 @@
+agent_id,story_id,module,priority,depends_on,status,workpack
+Agent-S0-01,S0-B01,Navigation Shell,Highest,,STARTED,guides/backlog/agents/workpacks/S0-B01.md
+Agent-S0-02,S0-B02,Navigation Shell,Highest,S0-B01,STARTED,guides/backlog/agents/workpacks/S0-B02.md
+Agent-S0-03,S0-B03,Governance,Highest,S0-B01,STARTED,guides/backlog/agents/workpacks/S0-B03.md
+Agent-S0-04,S0-B04,Quality Pipeline,Highest,S0-B03,STARTED,guides/backlog/agents/workpacks/S0-B04.md
+Agent-S0-05,S0-B05,Quality Pipeline,Highest,S0-B04,STARTED,guides/backlog/agents/workpacks/S0-B05.md
+Agent-S0-06,S0-B06,Design System,High,,STARTED,guides/backlog/agents/workpacks/S0-B06.md
+Agent-S0-07,S0-B07,Design System,High,S0-B06,STARTED,guides/backlog/agents/workpacks/S0-B07.md
+Agent-S0-08,S0-B08,Curriculum Data,Highest,S0-B04,STARTED,guides/backlog/agents/workpacks/S0-B08.md
+Agent-S0-09,S0-B09,Observability,High,S0-B01,STARTED,guides/backlog/agents/workpacks/S0-B09.md
