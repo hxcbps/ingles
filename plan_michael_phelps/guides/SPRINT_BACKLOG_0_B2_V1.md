@@ -172,8 +172,9 @@ Capacidad estimada S0: 34-40 story points.
   - workflow CI (`.github/workflows/quality-gates.yml` o equivalente)
   - job `content-audit`
 - Aceptacion:
-  - CI ejecuta audit oficial con `--fail-on-p0`.
-  - Pull Request no mergea si P0 > 0.
+  - CI ejecuta audit canónico versionado en repo y publica artefactos de calidad.
+  - En S0-S2 aplica gate de no-regresion (`P0 <= baseline`).
+  - En modo release (workflow dispatch estricto) exige `P0 = 0`.
 - Validacion:
   - Corrida CI de prueba en branch.
 

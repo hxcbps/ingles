@@ -24,6 +24,8 @@ Execution mode: wave-based parallel orchestration via `scripts/run_parallel_wave
   - `app/web/js/core/orchestrator.js`
   - `app/web/js/core/events_schema_v1.js`
   - `.github/workflows/quality-gates.yml`
+  - `plan_michael_phelps/scripts/audit_english_sprint.py`
+  - `guides/backlog/agents/PIPELINE_RCA_AND_RECALIBRATION_S0_TO_S1.md`
 
 ## Next Coordination Step
 
