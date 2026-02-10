@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://english-sprint.local/schema.v4.1.json",
+  "title": "English Sprint Week Content V4.1 (Contract Freeze)",
+  "type": "object",
+  "required": [
+    "version",
+    "week",
+    "title",
+    "week_profile",
+    "days"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "v4"
+    },
+    "week": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "title": {
+      "type": "string"
+    },
+    "week_profile": {
+      "type": "object",
+      "required": [
+        "phase",
+        "cefr_target",
+        "focus_theme"
+      ],
+      "properties": {
+        "phase": {
+          "type": "string"
+        },
+        "cefr_target": {
+          "type": "string"
+        },
+        "focus_theme": {
+          "type": "string"
+        }
+      }
+    },
+    "days": {
+      "type": "object",
+      "required": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$": {
+          "$ref": "#/$defs/day"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "day": {
+      "type": "object",
+      "required": [
+        "day_id",
+        "goal",
+        "session_script"
+      ],
+      "properties": {
+        "day_id": {
+          "type": "string"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "session_script": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        },
+        "retention_loop": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assessment_event": {
+          "type": "boolean"
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": [
+        "step_id",
+        "type",
+        "title",
+        "difficulty_level",
+        "duration_min",
+        "content",
+        "gate"
+      ],
+      "properties": {
+        "step_id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "input_video",
+            "textbook_drill",
+            "ai_roleplay",
+            "recording_task",
+            "quiz",
+            "reading_task",
+            "writing_transfer",
+            "repair_drill",
+            "pronunciation_lab"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "difficulty_level": {
+          "type": "string"
+        },
+        "duration_min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content": {
+          "type": "object",
+          "required": [
+            "instructions"
+          ],
+          "properties": {
+            "instructions": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "offline_ref": {
+              "type": "string"
+            },
+            "resource_locator": {
+              "$ref": "#/$defs/resource_locator"
+            }
+          }
+        },
+        "gate": {
+          "$ref": "#/$defs/gate"
+        },
+        "success_criteria": {
+          "type": "string"
+        },
+        "evidence_required": {
+          "type": "string"
+        },
+        "fallback_step_id": {
+          "type": "string"
+        },
+        "retry_policy": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "max_attempts": {
+                  "type": "integer"
+                },
+                "action_on_fail": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "prompt_ref": {
+          "type": "string"
+        },
+        "prompt_version": {
+          "type": "string"
+        }
+      }
+    },
+    "resource_locator": {
+      "type": "object",
+      "required": [
+        "book",
+        "page"
+      ],
+      "properties": {
+        "book": {
+          "type": "string"
+        },
+        "unit": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "chapter": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "exercise": {
+          "type": "string"
+        },
+        "fallback_url": {
+          "type": "string"
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "timer_complete",
+            "self_score",
+            "min_words",
+            "evidence_upload",
+            "compound",
+            "manual_check",
+            "artifact_uploaded",
+            "evidence_log_min_words",
+            "min_turns",
+            "rubric_min",
+            "metrics_threshold"
+          ]
+        },
+        "value": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "min_value": {
+          "type": "integer"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gate"
+          }
+        }
+      }
+    }
+  },
+  "$comment": "V4.1 freeze: canonical enums retained; integrity validated by validate_curriculum_integrity.py and CI quality gates."
+}
