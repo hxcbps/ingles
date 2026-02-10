@@ -8,6 +8,7 @@ import {
   loadAdaptiveHistory,
   loadBookModulesRegistry,
   loadConfig,
+  loadModuleBlueprint,
   loadResourcesCatalog,
   loadWeekContent,
   loadWeekContentV4,
@@ -136,6 +137,30 @@ test("repository loads resources and book registries", async () => {
   assert.equal(resources.data.path, "../../learning/resources/resources_catalog.v1.json");
   assert.equal(books.path, "../../learning/books/book_modules.v1.json");
   assert.equal(books.data.path, "../../learning/books/book_modules.v1.json");
+});
+
+test("repository loads module blueprint and falls back when missing", async () => {
+  const fakeOkFetch = async (path) => ({
+    ok: true,
+    async json() {
+      return {
+        path,
+        modules: [{ id: "M00" }]
+      };
+    }
+  });
+
+  const fakeFailFetch = async () => ({ ok: false });
+
+  const loaded = await loadModuleBlueprint(fakeOkFetch);
+  assert.equal(loaded.path, "../../learning/syllabus/modules_0_b2.v1.json");
+  assert.equal(Array.isArray(loaded.data.modules), true);
+  assert.equal(loaded.data.modules[0].id, "M00");
+
+  const fallback = await loadModuleBlueprint(fakeFailFetch);
+  assert.equal(fallback.path, "../../learning/syllabus/modules_0_b2.v1.json");
+  assert.equal(Array.isArray(fallback.data.modules), true);
+  assert.equal(fallback.data.target_cefr, "B2");
 });
 
 test("repository loads adaptive history and falls back when missing", async () => {

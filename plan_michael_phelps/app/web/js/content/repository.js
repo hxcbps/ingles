@@ -116,6 +116,28 @@ export async function loadBookModulesRegistry(fetcher = fetch) {
   return { path, data };
 }
 
+export async function loadModuleBlueprint(fetcher = fetch) {
+  const path = fromWebRoot("learning/syllabus/modules_0_b2.v1.json");
+
+  try {
+    const data = await fetchJSON(path, fetcher);
+    return { path, data };
+  } catch {
+    return {
+      path,
+      data: {
+        version: "v1",
+        title: "Ruta 0 a B2",
+        target_cefr: "B2",
+        total_weeks: 20,
+        methodology_pillars: [],
+        weekly_rhythm: [],
+        modules: []
+      }
+    };
+  }
+}
+
 export async function loadAdaptiveHistory(fetcher = fetch) {
   const path = fromWebRoot("tracking/state/adaptive_history.v1.json");
   try {
