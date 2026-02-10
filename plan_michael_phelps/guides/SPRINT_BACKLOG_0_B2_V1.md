@@ -314,3 +314,38 @@ Resultado Sprint 0: base arquitectonica cerrada. El quality gate de contenido si
 8. S0-B08 queue P0 para S1-S2.
 9. S0-B09 esquema de eventos.
 
+
+## 13) Post-S0 stabilization addendum
+
+### S0-H10 - Bootstrap fail-safe (runtime resilience)
+
+- Tipo: Runtime Hardening
+- Owner: Frontend Core
+- Prioridad: P0
+- Objetivo:
+  - Evitar estado infinito de "Inicializando arquitectura modular" cuando falle un import de modulo en boot.
+- Implementacion:
+  - `app/web/js/main.js` cambia de import estatico a carga dinamica con manejo de error fatal.
+  - Se publica `renderBootFailure` para fallback uniforme.
+- Validacion:
+  - `node --test app/web/js/tests/main_bootstrap.test.mjs`
+
+### S0-H11 - Workspace hygiene and cleanup agent
+
+- Tipo: DevEx Hardening
+- Owner: Program Lead / DevEx
+- Prioridad: P1
+- Objetivo:
+  - Eliminar artefactos efimeros de paralelizacion que no pertenecen al producto.
+- Implementacion:
+  - Script `scripts/cleanup_parallel_workspace.sh`
+  - Ignore policy en `.gitignore` para `.codex-worktrees/` y `guides/backlog/agents/runs/`.
+- Validacion:
+  - `bash plan_michael_phelps/scripts/cleanup_parallel_workspace.sh`
+  - `git status --short`
+
+### S1 Wave-1 recalibration artifacts
+
+- `guides/backlog/agents/S1_AGENT_ASSIGNMENT_WAVE1.md`
+- `scripts/bootstrap_parallel_agents_s1_wave1.sh`
+- `scripts/parallel_status_s1_wave1.sh`

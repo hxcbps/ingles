@@ -1,0 +1,187 @@
+{
+  "version": "v1",
+  "title": "Ruta 0 a B2 - Metodo Hibrido",
+  "target_cefr": "B2",
+  "total_weeks": 20,
+  "methodology_pillars": [
+    "Input comprensible (i+1) diario y gradual",
+    "TBLT con tareas autenticas de comunicacion",
+    "Output guiado para notar brechas y reparar",
+    "Practica de voz con IA en ciclos de baja ansiedad",
+    "Scaffolding humano para transferencia real",
+    "Checkpoints y adaptacion basada en evidencias"
+  ],
+  "weekly_rhythm": [
+    "Lun: input + fluency foundation",
+    "Mar: listening + retell funcional",
+    "Mie: accuracy lab y reparacion",
+    "Jue: debate/opinion task",
+    "Vie: repair clinic y consolidacion",
+    "Sab: escenario integrado",
+    "Dom: deep work + weekly gate"
+  ],
+  "modules": [
+    {
+      "id": "M00",
+      "title": "Arranque Neuroseguro",
+      "cefr_band": "A0 -> A1",
+      "week_start": 1,
+      "week_end": 2,
+      "objective": "Construir base de supervivencia oral y bajar ansiedad inicial.",
+      "primary_method": "Input comprensible y chunks de alta frecuencia.",
+      "ai_usecase": "Roleplay de saludos, presentacion y small talk corto.",
+      "weekly_output": "Dialogos de 6-8 turnos con evidencia escrita.",
+      "anxiety_protocol": "Baja correccion en vivo y foco en mensaje.",
+      "focus_points": [
+        "Greeting loops y presentaciones",
+        "Pronunciacion base con shadowing lento",
+        "Verbo be y preguntas cortas",
+        "Escucha guiada con apoyo visual"
+      ],
+      "kpis": {
+        "speaking_min_minutes": 180,
+        "ai_voice_min_minutes": 90,
+        "task_cycles": 4
+      },
+      "checkpoints": [
+        "Auto presentacion de 45s",
+        "Interaccion guiada de 2 minutos"
+      ]
+    },
+    {
+      "id": "M01",
+      "title": "A1 Operativo",
+      "cefr_band": "A1 -> A2",
+      "week_start": 3,
+      "week_end": 5,
+      "objective": "Pasar de frases aisladas a intercambios funcionales cotidianos.",
+      "primary_method": "TBLT basico con tareas de vida real.",
+      "ai_usecase": "Simulaciones de compra, agenda, direcciones y soporte.",
+      "weekly_output": "Mini tareas funcionales con cierre de objetivo.",
+      "anxiety_protocol": "Feedback diferido y guiones semiestructurados.",
+      "focus_points": [
+        "Past simple inicial y futuro inmediato",
+        "Comprension de instrucciones frecuentes",
+        "Turn-taking basico",
+        "Control de errores de alta frecuencia"
+      ],
+      "kpis": {
+        "speaking_min_minutes": 260,
+        "ai_voice_min_minutes": 120,
+        "task_cycles": 5
+      },
+      "checkpoints": [
+        "Mock A2 de 10-12 minutos",
+        "Checklist semanal >= 85%"
+      ]
+    },
+    {
+      "id": "M02",
+      "title": "B1 Interaction Engine",
+      "cefr_band": "A2+ -> B1",
+      "week_start": 6,
+      "week_end": 10,
+      "objective": "Desarrollar fluidez sostenible para conversaciones extendidas.",
+      "primary_method": "TBLT intensivo y negociacion de significado.",
+      "ai_usecase": "Debates guiados, decisiones y resolucion de problemas.",
+      "weekly_output": "Conversaciones de 12-15 minutos con reparacion activa.",
+      "anxiety_protocol": "Exposicion gradual con complejidad creciente.",
+      "focus_points": [
+        "Present perfect vs past en contexto",
+        "Parafraseo y clarificacion",
+        "Escucha con intencion y retell",
+        "Aumento de longitud de turno"
+      ],
+      "kpis": {
+        "speaking_min_minutes": 380,
+        "ai_voice_min_minutes": 180,
+        "task_cycles": 6
+      },
+      "checkpoints": [
+        "Mock B1 de 15-20 minutos",
+        "Repair success >= 70%"
+      ]
+    },
+    {
+      "id": "M03",
+      "title": "B1+ Precision Engine",
+      "cefr_band": "B1 -> B1+",
+      "week_start": 11,
+      "week_end": 15,
+      "objective": "Mejorar precision gramatical sin perder naturalidad conversacional.",
+      "primary_method": "Output comprimido + accuracy lab semanal.",
+      "ai_usecase": "Drills de reformulacion y feedback inmediato de errores.",
+      "weekly_output": "Opinion talks de 15-20 minutos con evidencia.",
+      "anxiety_protocol": "Correccion priorizada por impacto comunicativo.",
+      "focus_points": [
+        "Condicionales y modales funcionales",
+        "Registro formal vs informal",
+        "Coherencia discursiva",
+        "Pronunciacion para inteligibilidad"
+      ],
+      "kpis": {
+        "speaking_min_minutes": 420,
+        "ai_voice_min_minutes": 210,
+        "task_cycles": 6
+      },
+      "checkpoints": [
+        "Mock B1+ bajo presion",
+        "Error density en tendencia descendente"
+      ]
+    },
+    {
+      "id": "M04",
+      "title": "B2 Accuracy and Complexity",
+      "cefr_band": "B1+ -> B2",
+      "week_start": 16,
+      "week_end": 18,
+      "objective": "Consolidar estructuras complejas para discurso matizado.",
+      "primary_method": "Integracion input autentico + tareas de argumentacion.",
+      "ai_usecase": "Analisis de ideas, contraargumentos y roleplay profesional.",
+      "weekly_output": "Debates complejos y resumenes orales.",
+      "anxiety_protocol": "Exposicion controlada a temas abstractos.",
+      "focus_points": [
+        "Passive, reported speech y relative clauses",
+        "Argumentacion con evidencia",
+        "Cohesion y conectores avanzados",
+        "Control de tono y claridad"
+      ],
+      "kpis": {
+        "speaking_min_minutes": 460,
+        "ai_voice_min_minutes": 240,
+        "task_cycles": 7
+      },
+      "checkpoints": [
+        "Mock B2 parcial",
+        "Comprehension split >= objetivo"
+      ]
+    },
+    {
+      "id": "M05",
+      "title": "B2 Performance and Certification",
+      "cefr_band": "B2",
+      "week_start": 19,
+      "week_end": 20,
+      "objective": "Demostrar desempeno B2 estable en contexto general y tecnico.",
+      "primary_method": "Simulaciones integrales y transferencia a vida real.",
+      "ai_usecase": "Entrevistas, reuniones y escenarios de alta carga cognitiva.",
+      "weekly_output": "Mock final 25-30 minutos con rubrica completa.",
+      "anxiety_protocol": "Practica de presion temporal con soporte debrief.",
+      "focus_points": [
+        "Third conditional y matiz hipotetico",
+        "Respuestas extensas con estructura",
+        "Escucha avanzada con follow-up",
+        "Autocorreccion en tiempo real"
+      ],
+      "kpis": {
+        "speaking_min_minutes": 500,
+        "ai_voice_min_minutes": 260,
+        "task_cycles": 8
+      },
+      "checkpoints": [
+        "Final gate B2 aprobado",
+        "Fluency y precision en rango objetivo"
+      ]
+    }
+  ]
+}

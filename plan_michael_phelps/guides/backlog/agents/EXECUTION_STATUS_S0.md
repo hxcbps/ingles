@@ -32,3 +32,16 @@ Execution mode: wave-based parallel orchestration via `scripts/run_parallel_wave
 1. Iniciar Sprint 1 (Wave-1 de cola P0): CEFR drift W16-W20 + `session_script` vacio W10 + placeholders/resources W01-W05.
 2. Mantener CI bloqueante con `--fail-on-p0` hasta llegar a `P0=0`.
 3. Abrir ola paralela S1 por lotes de contenido (`P0-001..P0-010`) para no pisar archivos.
+
+## Post-S0 stabilization (2026-02-10)
+
+| Task | Scope | Status | Evidence |
+|---|---|---|---|
+| `S0-H10` | Runtime boot fail-safe | `DONE` | `app/web/js/main.js`, `app/web/js/tests/main_bootstrap.test.mjs` |
+| `S0-H11` | Workspace cleanup/orchestration hygiene | `DONE` | `scripts/cleanup_parallel_workspace.sh`, `.gitignore` |
+| `S1-W1` | Recalibrated parallel assignment package | `READY` | `guides/backlog/agents/S1_AGENT_ASSIGNMENT_WAVE1.md`, `scripts/bootstrap_parallel_agents_s1_wave1.sh`, `scripts/parallel_status_s1_wave1.sh` |
+
+Validation evidence:
+- `node --test app/web/js/tests/main_bootstrap.test.mjs`
+- `python3 scripts/audit_english_sprint.py --repo-root /Users/dfernandez/code/ingles/plan_michael_phelps`
+- Playwright smoke screenshot after boot (`app-shell` visible).
