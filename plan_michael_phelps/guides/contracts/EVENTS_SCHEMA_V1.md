@@ -30,33 +30,37 @@ Define stable event payloads for session/runtime observability.
 
 2. `session_started`
 - Trigger: orchestrator init with executable day
-- Required metadata: `day_goal`, `total_steps`
+- Required metadata: `day_goal`, `total_steps`, `start_reason`
 
-3. `step_started`
+3. `session_resumed`
+- Trigger: orchestrator rehydrate with compatible state/schema
+- Required metadata: `resume_count`, `progress_pct`, `current_step_id`, `schema_signature`
+
+4. `step_started`
 - Trigger: current step becomes active
 - Required metadata: `step_type`, `gate_type`, `step_index`, `total_steps`
 
-4. `gate_passed`
+5. `gate_passed`
 - Trigger: gate validation success
 - Required metadata: `gate_type`, `attempt`
 
-5. `gate_failed`
+6. `gate_failed`
 - Trigger: gate validation fail
 - Required metadata: `gate_type`, `attempt`, `reason`
 
-6. `recovery_started`
+7. `recovery_started`
 - Trigger: fallback step activation
 - Required metadata: `from_step_id`, `fallback_step_id`
 
-7. `session_completed`
+8. `session_completed`
 - Trigger: last primary step completed
 - Required metadata: `progress_pct`, `duration_sec`
 
-8. `session_abandoned`
+9. `session_abandoned`
 - Trigger: unload/exit before completion
 - Required metadata: `reason`
 
-9. `content_fallback_used`
+10. `content_fallback_used`
 - Trigger: preferred day unavailable and fallback day loaded
 - Required metadata: `requested_day`, `fallback_day`, `week`
 
@@ -72,6 +76,9 @@ Define stable event payloads for session/runtime observability.
 - `app/web/js/core/events_schema_v1.js`
 - `app/web/js/core/orchestrator.js`
 - `app/web/js/core/bootstrap_v4.js`
+- `app/web/js/core/telemetry_sink.js`
 - tests:
   - `app/web/js/tests/events_schema_v1.test.mjs`
   - `app/web/js/tests/orchestrator.test.mjs`
+  - `app/web/js/tests/telemetry_sink.test.mjs`
+  - `app/web/js/tests/runtime_critical_path_e2e.test.mjs`

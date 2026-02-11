@@ -3,6 +3,7 @@ const SESSION_ID_PREFIX = "sess_";
 export const EVENT_NAMES = Object.freeze({
   ROUTE_CHANGED: "route_changed",
   SESSION_STARTED: "session_started",
+  SESSION_RESUMED: "session_resumed",
   STEP_STARTED: "step_started",
   GATE_PASSED: "gate_passed",
   GATE_FAILED: "gate_failed",

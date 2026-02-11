@@ -2,6 +2,7 @@ import { loadConfig, loadModuleBlueprint, loadWeekContentV4, loadWeekSummariesV4
 import { getProgramContext } from "../content/day_model.js";
 import { createHashRouter } from "../routing/hash_router.js";
 import { orchestrator } from "./orchestrator.js";
+import { createTelemetrySink } from "./telemetry_sink.js";
 import { SessionWizard } from "../ui/session_wizard.js";
 import { LearningShell } from "../ui/learning_shell.js";
 
@@ -87,6 +88,18 @@ function renderFatal(container, title, message) {
   }
 }
 
+function emitTelemetryDocumentEvent(documentRef, event) {
+  if (!documentRef || typeof documentRef.dispatchEvent !== "function") {
+    return;
+  }
+
+  if (typeof CustomEvent === "undefined") {
+    return;
+  }
+
+  documentRef.dispatchEvent(new CustomEvent("runtime:telemetry", { detail: event }));
+}
+
 export async function bootstrapV4({
   documentRef = document,
   windowRef = window,
@@ -109,6 +122,14 @@ export async function bootstrapV4({
   let routeSource = "startup";
   let scrollHandler = null;
 
+  const telemetrySink = createTelemetrySink();
+  const publishTelemetry = (event) => {
+    const payload = telemetrySink.write(event);
+    console.info("[V4 telemetry]", payload);
+    emitTelemetryDocumentEvent(documentRef, payload);
+    return payload;
+  };
+
   try {
     const config = await loadConfig(fetcher);
     const program = getProgramContext(config);
@@ -130,6 +151,15 @@ export async function bootstrapV4({
     const resolvedDay = resolvePlayableDay(days, program.dayLabel);
 
     if (!resolvedDay) {
+      publishTelemetry({
+        event: "runtime_boot_error",
+        metadata: {
+          code: "missing_executable_day",
+          week: weekLabel,
+          requested_day: program.dayLabel
+        }
+      });
+
       renderFatal(
         rootContainer,
         "Contenido incompleto",
@@ -140,7 +170,7 @@ export async function bootstrapV4({
 
     orchestrator.init(resolvedDay.dayContent, {
       onEvent: (event) => {
-        console.info("[V4 telemetry]", event);
+        publishTelemetry(event);
       }
     });
 
@@ -203,6 +233,13 @@ export async function bootstrapV4({
       },
       onInvalidRoute: ({ rawHash, canonicalHash }) => {
         console.warn("[V4 route] invalid hash redirected", { rawHash, canonicalHash });
+        publishTelemetry({
+          event: "runtime_route_invalid",
+          metadata: {
+            raw_hash: rawHash,
+            canonical_hash: canonicalHash
+          }
+        });
       }
     });
 
@@ -228,11 +265,27 @@ export async function bootstrapV4({
     };
     windowRef.addEventListener("beforeunload", unloadHandler);
   } catch (error) {
+    publishTelemetry({
+      event: "runtime_boot_error",
+      metadata: {
+        code: "exception",
+        message: error?.message || "unknown_error"
+      }
+    });
+
     console.error("[V4] Bootstrap error", error);
     renderFatal(rootContainer, "Fallo del sistema", `No se pudo iniciar la app: ${error.message}`);
   }
 
   return {
+    getTelemetrySnapshot() {
+      return telemetrySink.list();
+    },
+
+    clearTelemetry() {
+      telemetrySink.clear();
+    },
+
     dispose() {
       if (refreshInterval) {
         clearInterval(refreshInterval);

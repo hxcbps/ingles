@@ -1,8 +1,9 @@
 import { checkGate } from "../routing/hard_guards.js";
 import { metricsEngine } from "./metrics_engine.js";
-import { buildRuntimeEvent, createSessionId } from "./events_schema_v1.js";
+import { EVENT_NAMES, buildRuntimeEvent, createSessionId } from "./events_schema_v1.js";
 
 const STORAGE_KEY = "english-sprint:v4:session";
+const STATE_SCHEMA_VERSION = 2;
 
 const METADATA_RESERVED_KEYS = new Set([
   "metadata",
@@ -62,6 +63,52 @@ function toIsoNow() {
   return new Date().toISOString();
 }
 
+function stableSerialize(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => stableSerialize(item)).join(",")}]`;
+  }
+
+  if (value && typeof value === "object") {
+    const keys = Object.keys(value).sort();
+    const entries = keys.map((key) => `${JSON.stringify(key)}:${stableSerialize(value[key])}`);
+    return `{${entries.join(",")}}`;
+  }
+
+  return JSON.stringify(value);
+}
+
+function buildSchemaSignature(dayContent) {
+  const steps = Array.isArray(dayContent?.session_script) ? dayContent.session_script : [];
+  const contract = {
+    day_id: typeof dayContent?.day_id === "string" ? dayContent.day_id : "unknown_day",
+    goal: typeof dayContent?.goal === "string" ? dayContent.goal : "",
+    steps: steps.map((step, index) => ({
+      index,
+      step_id: typeof step?.step_id === "string" && step.step_id.trim() ? step.step_id.trim() : `index_${index}`,
+      type: typeof step?.type === "string" && step.type.trim() ? step.type.trim() : "unknown",
+      difficulty_level:
+        typeof step?.difficulty_level === "string" && step.difficulty_level.trim()
+          ? step.difficulty_level.trim()
+          : "",
+      duration_min: Number.isFinite(step?.duration_min) ? Number(step.duration_min) : null,
+      gate: step?.gate ?? null,
+      retry_policy: step?.retry_policy ?? null,
+      fallback_step_id:
+        typeof step?.fallback_step_id === "string" && step.fallback_step_id.trim()
+          ? step.fallback_step_id.trim()
+          : "",
+      success_criteria: step?.success_criteria ?? null,
+      content: step?.content ?? null
+    }))
+  };
+
+  return stableSerialize(contract);
+}
+
+function asObjectOrEmpty(value) {
+  return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+}
+
 function safeEventMetadata(payload = {}) {
   const baseMetadata =
     payload.metadata && typeof payload.metadata === "object" && !Array.isArray(payload.metadata)
@@ -92,21 +139,25 @@ export class Orchestrator {
     this.state = this.buildEmptyState();
   }
 
-  buildEmptyState() {
-    return {
-      sessionId: null,
-      dayId: null,
-      currentStepId: null,
-      stepStates: {},
-      stepData: {},
-      retries: {},
-      metrics: {},
-      adaptation: null,
-      recovery: null,
-      startedAt: null,
-      completedAt: null
-    };
-  }
+buildEmptyState() {
+  return {
+    schemaVersion: STATE_SCHEMA_VERSION,
+    schemaSignature: "",
+    sessionId: null,
+    dayId: null,
+    currentStepId: null,
+    stepStates: {},
+    stepData: {},
+    retries: {},
+    metrics: {},
+    adaptation: null,
+    recovery: null,
+    startedAt: null,
+    completedAt: null,
+    resumeCount: 0,
+    lastPersistedAt: null
+  };
+}
 
   setOptions(options = {}) {
     if (typeof options.onEvent === "function") {
@@ -204,129 +255,231 @@ export class Orchestrator {
     return null;
   }
 
-  resetState(dayId) {
-    this.requireSchema();
-    const firstStepId = this.getFirstPrimaryStepId();
+resetState(dayId, schemaSignature, startReason = "new_session") {
+  this.requireSchema();
+  const firstStepId = this.getFirstPrimaryStepId();
 
-    this.state = {
-      sessionId: createSessionId(),
-      dayId,
-      currentStepId: firstStepId,
-      stepStates: {},
-      stepData: {},
-      retries: {},
-      metrics: {},
-      adaptation: null,
-      recovery: null,
-      startedAt: toIsoNow(),
-      completedAt: null
-    };
+  this.state = {
+    ...this.buildEmptyState(),
+    schemaVersion: STATE_SCHEMA_VERSION,
+    schemaSignature,
+    sessionId: createSessionId(),
+    dayId,
+    currentStepId: firstStepId,
+    startedAt: toIsoNow(),
+    completedAt: null,
+    resumeCount: 0,
+    lastPersistedAt: null
+  };
 
-    this.schema.session_script.forEach((step) => {
+  this.schema.session_script.forEach((step) => {
+    this.state.stepStates[step.step_id] = STEP_STATUS.LOCKED;
+  });
+
+  if (firstStepId) {
+    this.state.stepStates[firstStepId] = STEP_STATUS.ACTIVE;
+  }
+
+  return startReason;
+}
+
+normalizeState(schemaSignature) {
+  this.requireSchema();
+
+  const safeState = asObjectOrEmpty(this.state);
+  this.state = {
+    ...this.buildEmptyState(),
+    ...safeState,
+    schemaVersion: STATE_SCHEMA_VERSION,
+    schemaSignature,
+    stepStates: asObjectOrEmpty(safeState.stepStates),
+    stepData: asObjectOrEmpty(safeState.stepData),
+    retries: asObjectOrEmpty(safeState.retries),
+    metrics: asObjectOrEmpty(safeState.metrics)
+  };
+
+  if (!resolveEventField(this.state.sessionId, null)) {
+    this.state.sessionId = createSessionId();
+  }
+
+  if (!resolveEventField(this.state.dayId, null)) {
+    this.state.dayId = this.schema?.day_id || "unknown_day";
+  }
+
+  if (!resolveEventField(this.state.startedAt, null) || Number.isNaN(Date.parse(this.state.startedAt))) {
+    this.state.startedAt = toIsoNow();
+  }
+
+  if (this.state.completedAt && Number.isNaN(Date.parse(this.state.completedAt))) {
+    this.state.completedAt = null;
+  }
+
+  if (!Number.isInteger(this.state.resumeCount) || this.state.resumeCount < 0) {
+    this.state.resumeCount = 0;
+  }
+
+  const validStepIds = new Set(this.schema.session_script.map((step) => step.step_id));
+
+  this.schema.session_script.forEach((step) => {
+    if (!this.state.stepStates[step.step_id]) {
       this.state.stepStates[step.step_id] = STEP_STATUS.LOCKED;
-    });
+    }
+    if (!Number.isInteger(this.state.retries[step.step_id])) {
+      this.state.retries[step.step_id] = 0;
+    }
+  });
 
-    if (firstStepId) {
-      this.state.stepStates[firstStepId] = STEP_STATUS.ACTIVE;
+  Object.keys(this.state.stepStates).forEach((stepId) => {
+    if (!validStepIds.has(stepId)) {
+      delete this.state.stepStates[stepId];
+    }
+  });
+
+  Object.keys(this.state.stepData).forEach((stepId) => {
+    if (!validStepIds.has(stepId)) {
+      delete this.state.stepData[stepId];
+    }
+  });
+
+  Object.keys(this.state.retries).forEach((stepId) => {
+    if (!validStepIds.has(stepId)) {
+      delete this.state.retries[stepId];
+    }
+  });
+
+  const isCompletedSession = Boolean(this.state.completedAt) && this.getProgress() >= 100;
+  if (isCompletedSession) {
+    this.state.currentStepId = null;
+  } else if (!this.state.currentStepId || !this.stepExists(this.state.currentStepId)) {
+    this.state.currentStepId = this.getFirstPrimaryStepId();
+  }
+
+  if (!this.state.completedAt && this.state.currentStepId) {
+    const status = this.state.stepStates[this.state.currentStepId];
+    if (status === STEP_STATUS.LOCKED || status === STEP_STATUS.FAILED) {
+      this.state.stepStates[this.state.currentStepId] = STEP_STATUS.ACTIVE;
     }
   }
 
-  normalizeState() {
-    this.requireSchema();
-
-    const safeState = this.state && typeof this.state === "object" ? this.state : {};
-    this.state = {
-      ...this.buildEmptyState(),
-      ...safeState,
-      stepStates: safeState.stepStates && typeof safeState.stepStates === "object" ? safeState.stepStates : {},
-      stepData: safeState.stepData && typeof safeState.stepData === "object" ? safeState.stepData : {},
-      retries: safeState.retries && typeof safeState.retries === "object" ? safeState.retries : {},
-      metrics: safeState.metrics && typeof safeState.metrics === "object" ? safeState.metrics : {}
-    };
-
-    if (!resolveEventField(this.state.sessionId, null)) {
-      this.state.sessionId = createSessionId();
+  Object.keys(this.state.stepStates).forEach((stepId) => {
+    if (
+      stepId !== this.state.currentStepId &&
+      this.state.stepStates[stepId] === STEP_STATUS.ACTIVE
+    ) {
+      this.state.stepStates[stepId] = STEP_STATUS.LOCKED;
     }
+  });
+}
 
-    this.schema.session_script.forEach((step) => {
-      if (!this.state.stepStates[step.step_id]) {
-        this.state.stepStates[step.step_id] = STEP_STATUS.LOCKED;
-      }
-      if (!Number.isInteger(this.state.retries[step.step_id])) {
-        this.state.retries[step.step_id] = 0;
-      }
-    });
+loadState() {
+  let raw = null;
 
-    if (!this.state.currentStepId || !this.stepExists(this.state.currentStepId)) {
-      this.state.currentStepId = this.getFirstPrimaryStepId();
-    }
-
-    if (!this.state.completedAt && this.state.currentStepId) {
-      const status = this.state.stepStates[this.state.currentStepId];
-      if (status === STEP_STATUS.LOCKED || status === STEP_STATUS.FAILED) {
-        this.state.stepStates[this.state.currentStepId] = STEP_STATUS.ACTIVE;
-      }
-    }
-
-    Object.keys(this.state.stepStates).forEach((stepId) => {
-      if (
-        stepId !== this.state.currentStepId &&
-        this.state.stepStates[stepId] === STEP_STATUS.ACTIVE
-      ) {
-        this.state.stepStates[stepId] = STEP_STATUS.LOCKED;
-      }
-    });
+  try {
+    raw = this.storage.getItem(this.storageKey);
+  } catch {
+    this.state = this.buildEmptyState();
+    return;
   }
 
-  loadState() {
-    const raw = this.storage.getItem(this.storageKey);
-    if (!raw) {
-      this.state = this.buildEmptyState();
-      return;
-    }
-
-    try {
-      this.state = JSON.parse(raw);
-    } catch {
-      this.state = this.buildEmptyState();
-    }
+  if (!raw) {
+    this.state = this.buildEmptyState();
+    return;
   }
 
-  saveState() {
+  try {
+    const parsed = JSON.parse(raw);
+    this.state = asObjectOrEmpty(parsed);
+  } catch {
+    this.state = this.buildEmptyState();
+  }
+}
+
+saveState() {
+  this.state.lastPersistedAt = toIsoNow();
+
+  try {
     this.storage.setItem(this.storageKey, JSON.stringify(this.state));
+  } catch {
+    // Best-effort persistence: runtime should continue even if storage is unavailable.
+  }
+}
+
+resolveSessionStartReason(dayContent, schemaSignature) {
+  if (!resolveEventField(this.state.dayId, null)) {
+    return "empty_state";
   }
 
-  init(dayContent, options = {}) {
-    if (!dayContent || !Array.isArray(dayContent.session_script) || dayContent.session_script.length === 0) {
-      throw new Error("Contenido V4 invalido: session_script vacio.");
-    }
+  if (this.state.dayId !== dayContent.day_id) {
+    return "day_changed";
+  }
 
-    this.setOptions(options);
-    this.schema = dayContent;
-    this.loadState();
+  if (!resolveEventField(this.state.schemaSignature, null)) {
+    return "schema_signature_missing";
+  }
 
-    const isNewSession =
-      !this.state.dayId ||
-      this.state.dayId !== dayContent.day_id ||
-      !this.stepExists(this.state.currentStepId);
+  if (this.state.schemaSignature !== schemaSignature) {
+    return "schema_changed";
+  }
 
-    if (isNewSession) {
-      this.resetState(dayContent.day_id);
-      this.emit("session_started", {
-        stepId: null,
-        metadata: {
-          day_goal: dayContent.goal || "",
-          total_steps: this.getPrimaryStepIds().length
-        }
-      });
-    } else {
-      this.normalizeState();
-    }
+  if (!resolveEventField(this.state.currentStepId, null)) {
+    return this.state.completedAt ? "completed_session" : "missing_current_step";
+  }
 
-    this.saveState();
+  if (!this.stepExists(this.state.currentStepId)) {
+    return "missing_current_step";
+  }
+
+  return null;
+}
+
+init(dayContent, options = {}) {
+  if (!dayContent || !Array.isArray(dayContent.session_script) || dayContent.session_script.length === 0) {
+    throw new Error("Contenido V4 invalido: session_script vacio.");
+  }
+
+  this.setOptions(options);
+  this.schema = dayContent;
+
+  const schemaSignature = buildSchemaSignature(dayContent);
+  this.loadState();
+
+  const startReason = this.resolveSessionStartReason(dayContent, schemaSignature);
+  const isNewSession = Boolean(startReason);
+
+  if (isNewSession) {
+    this.resetState(dayContent.day_id, schemaSignature, startReason);
+    this.emit(EVENT_NAMES.SESSION_STARTED, {
+      stepId: null,
+      metadata: {
+        day_goal: dayContent.goal || "",
+        total_steps: this.getPrimaryStepIds().length,
+        start_reason: startReason,
+        schema_signature: schemaSignature
+      }
+    });
+  } else {
+    this.normalizeState(schemaSignature);
+    this.state.resumeCount += 1;
+
+    this.emit(EVENT_NAMES.SESSION_RESUMED, {
+      stepId: this.state.currentStepId,
+      metadata: {
+        resume_count: this.state.resumeCount,
+        progress_pct: this.getProgress(),
+        current_step_id: this.state.currentStepId,
+        schema_signature: schemaSignature
+      }
+    });
+  }
+
+  this.saveState();
+
+  if (this.state.currentStepId) {
     this.emitStepStarted(this.state.currentStepId, { resumed: !isNewSession });
-    return this.getCurrentStep();
   }
+
+  return this.getCurrentStep();
+}
 
   emitStepStarted(stepId, extra = {}) {
     const step = this.getStepById(stepId);

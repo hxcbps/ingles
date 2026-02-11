@@ -129,3 +129,101 @@ test("orchestrator emits schema v1 runtime envelopes", () => {
   assert.equal(gateFailed.metadata.gate_type, "timer_complete");
   assert.equal(gateFailed.metadata.attempt, 1);
 });
+
+function buildChangedDayContent() {
+  return {
+    day_id: "W99_D01",
+    goal: "Test day (changed)",
+    session_script: [
+      {
+        step_id: "S1",
+        type: "input_video",
+        title: "Paso principal",
+        difficulty_level: "A1",
+        duration_min: 12,
+        content: { instructions: "Completa timer actualizado." },
+        gate: { type: "timer_complete", value: 12 },
+        retry_policy: { max_attempts: 1 },
+        fallback_step_id: "S1_FB"
+      },
+      {
+        step_id: "S2",
+        type: "quiz",
+        title: "Paso final",
+        difficulty_level: "A1",
+        duration_min: 6,
+        content: { instructions: "Marca check." },
+        gate: { type: "manual_check" }
+      },
+      {
+        step_id: "S1_FB",
+        type: "repair_drill",
+        title: "Recovery",
+        difficulty_level: "A1",
+        duration_min: 5,
+        content: { instructions: "Recovery step." },
+        gate: { type: "manual_check" }
+      }
+    ]
+  };
+}
+
+test("orchestrator resumes compatible persisted session and emits session_resumed", () => {
+  const storage = createMemoryStorage();
+  const firstRunEvents = [];
+
+  const firstRun = new Orchestrator({
+    storageAdapter: storage,
+    onEvent: (event) => firstRunEvents.push(event)
+  });
+
+  firstRun.init(buildDayContent());
+  firstRun.submitStep("S1", { timeElapsedMin: 10 });
+
+  const persistedSessionId = firstRun.state.sessionId;
+  const secondRunEvents = [];
+
+  const secondRun = new Orchestrator({
+    storageAdapter: storage,
+    onEvent: (event) => secondRunEvents.push(event)
+  });
+
+  secondRun.init(buildDayContent());
+
+  assert.equal(secondRun.state.sessionId, persistedSessionId);
+  assert.equal(secondRun.getCurrentStep().definition.step_id, "S2");
+
+  const resumed = secondRunEvents.find((event) => event.event === EVENT_NAMES.SESSION_RESUMED);
+  assert.equal(Boolean(resumed), true);
+  assert.equal(resumed.metadata.current_step_id, "S2");
+  assert.equal(resumed.metadata.resume_count, 1);
+
+  const resumedStepStarted = secondRunEvents.find(
+    (event) => event.event === EVENT_NAMES.STEP_STARTED && event.metadata?.resumed === true
+  );
+  assert.equal(Boolean(resumedStepStarted), true);
+});
+
+test("orchestrator starts fresh session when schema signature changes", () => {
+  const storage = createMemoryStorage();
+
+  const firstRun = new Orchestrator({ storageAdapter: storage });
+  firstRun.init(buildDayContent());
+  const initialSessionId = firstRun.state.sessionId;
+
+  const events = [];
+  const changedRun = new Orchestrator({
+    storageAdapter: storage,
+    onEvent: (event) => events.push(event)
+  });
+
+  changedRun.init(buildChangedDayContent());
+
+  assert.notEqual(changedRun.state.sessionId, initialSessionId);
+  assert.equal(changedRun.state.resumeCount, 0);
+  assert.equal(changedRun.getCurrentStep().definition.step_id, "S1");
+
+  const started = events.find((event) => event.event === EVENT_NAMES.SESSION_STARTED);
+  assert.equal(Boolean(started), true);
+  assert.equal(started.metadata.start_reason, "schema_changed");
+});
