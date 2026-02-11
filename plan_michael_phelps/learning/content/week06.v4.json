@@ -22,7 +22,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Used to / Would",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-06?day=mon&step=w06_d01_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -41,7 +41,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 6
+              "unit": 6,
+              "page": 26
             }
           },
           "gate": {
@@ -93,7 +94,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Used to / Would",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-06?day=tue&step=w06_d02_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -112,7 +113,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 6
+              "unit": 6,
+              "page": 27
             }
           },
           "gate": {
@@ -164,7 +166,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Used to / Would",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-06?day=wed&step=w06_d03_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -183,7 +185,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 6
+              "unit": 6,
+              "page": 28
             }
           },
           "gate": {
@@ -235,7 +238,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Used to / Would",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-06?day=thu&step=w06_d04_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -254,7 +257,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 6
+              "unit": 6,
+              "page": 29
             }
           },
           "gate": {
@@ -306,7 +310,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Used to / Would",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-06?day=fri&step=w06_d05_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -325,7 +329,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 6
+              "unit": 6,
+              "page": 30
             }
           },
           "gate": {
@@ -377,7 +382,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Used to / Would",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-06?day=sat&step=w06_d06_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -396,7 +401,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 6
+              "unit": 6,
+              "page": 31
             }
           },
           "gate": {
@@ -448,7 +454,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Used to / Would",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-06?day=sun&step=w06_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -467,7 +473,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 6
+              "unit": 6,
+              "page": 32
             }
           },
           "gate": {
