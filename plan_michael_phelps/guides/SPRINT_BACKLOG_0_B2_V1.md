@@ -375,3 +375,16 @@ Development phases now unlocked:
 1. S2 pedagogical quality pass (`P1 content` reduction).
 2. S3 frontend integration debt burn-down (`mock-data`, stale CSS selectors, utility framework alignment).
 3. S4 runtime/UX polish for release quality.
+
+## 16) Progress checkpoint after S2 Wave-1
+
+Date: 2026-02-11
+
+- Parallel execution completed for `S2-W1-01..S2-W1-07`.
+- Post-wave closure commit added method coverage support (`reading_task`, `recording_task`, `repair_drill`).
+- Canonical quality status reached zero findings: `P0=0`, `P1=0`, `P2=0`.
+
+Backlog phase status:
+1. Content/data contract integrity: completed against current quality gates.
+2. Frontend integration debt (mock-data/scroll/responsive/entrypoint): completed for audited findings.
+3. Next work should be feature evolution and regression protection, not debt carryover.
