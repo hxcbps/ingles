@@ -88,22 +88,91 @@
     },
     "Thu": {
       "day_id": "W10_D04",
-      "goal": "Break",
-      "session_script": [],
+      "goal": "Checkpoint reinforcement and readiness",
+      "session_script": [
+        {
+          "step_id": "W10_D04_S01",
+          "type": "textbook_drill",
+          "title": "Checkpoint Reinforcement Drill",
+          "difficulty_level": "B1",
+          "duration_min": 45,
+          "content": {
+            "instructions": "Complete reinforcement exercises and log key corrections.",
+            "resource_locator": {
+              "book": "American English File 2",
+              "unit": 10,
+              "page": 33,
+              "exercise": "Checkpoint reinforcement"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 45
+          },
+          "success_criteria": "Reinforcement completed with notes.",
+          "evidence_required": "timer"
+        }
+      ],
       "retention_loop": [],
       "assessment_event": false
     },
     "Fri": {
       "day_id": "W10_D05",
-      "goal": "Break",
-      "session_script": [],
+      "goal": "Checkpoint reinforcement and readiness",
+      "session_script": [
+        {
+          "step_id": "W10_D05_S01",
+          "type": "textbook_drill",
+          "title": "Checkpoint Reinforcement Drill",
+          "difficulty_level": "B1",
+          "duration_min": 45,
+          "content": {
+            "instructions": "Complete reinforcement exercises and log key corrections.",
+            "resource_locator": {
+              "book": "American English File 2",
+              "unit": 10,
+              "page": 34,
+              "exercise": "Checkpoint reinforcement"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 45
+          },
+          "success_criteria": "Reinforcement completed with notes.",
+          "evidence_required": "timer"
+        }
+      ],
       "retention_loop": [],
       "assessment_event": false
     },
     "Sat": {
       "day_id": "W10_D06",
-      "goal": "Prep",
-      "session_script": [],
+      "goal": "Checkpoint reinforcement and readiness",
+      "session_script": [
+        {
+          "step_id": "W10_D06_S01",
+          "type": "textbook_drill",
+          "title": "Checkpoint Reinforcement Drill",
+          "difficulty_level": "B1",
+          "duration_min": 45,
+          "content": {
+            "instructions": "Complete reinforcement exercises and log key corrections.",
+            "resource_locator": {
+              "book": "American English File 2",
+              "unit": 10,
+              "page": 35,
+              "exercise": "Checkpoint reinforcement"
+            }
+          },
+          "gate": {
+            "type": "timer_complete",
+            "value": 45
+          },
+          "success_criteria": "Reinforcement completed with notes.",
+          "evidence_required": "timer"
+        }
+      ],
       "retention_loop": [],
       "assessment_event": false
     },
@@ -119,7 +188,7 @@
           "duration_min": 300,
           "content": {
             "instructions": "Complete Full Exam (Reading, Listening, Use of English).",
-            "url": "https://..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-10?day=sun&step=w10_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
