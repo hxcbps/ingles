@@ -22,7 +22,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about If + Present + Will",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-13?day=mon&step=w13_d01_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -41,7 +41,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 3",
-              "unit": 13
+              "unit": 13,
+              "page": 33
             }
           },
           "gate": {
@@ -93,7 +94,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about If + Present + Will",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-13?day=tue&step=w13_d02_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -112,7 +113,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 3",
-              "unit": 13
+              "unit": 13,
+              "page": 34
             }
           },
           "gate": {
@@ -164,7 +166,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about If + Present + Will",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-13?day=wed&step=w13_d03_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -183,7 +185,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 3",
-              "unit": 13
+              "unit": 13,
+              "page": 35
             }
           },
           "gate": {
@@ -235,7 +238,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about If + Present + Will",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-13?day=thu&step=w13_d04_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -254,7 +257,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 3",
-              "unit": 13
+              "unit": 13,
+              "page": 36
             }
           },
           "gate": {
@@ -306,7 +310,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about If + Present + Will",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-13?day=fri&step=w13_d05_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -325,7 +329,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 3",
-              "unit": 13
+              "unit": 13,
+              "page": 37
             }
           },
           "gate": {
@@ -377,7 +382,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about If + Present + Will",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-13?day=sat&step=w13_d06_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -396,7 +401,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 3",
-              "unit": 13
+              "unit": 13,
+              "page": 38
             }
           },
           "gate": {
@@ -448,7 +454,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about If + Present + Will",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-13?day=sun&step=w13_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -467,7 +473,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 3",
-              "unit": 13
+              "unit": 13,
+              "page": 39
             }
           },
           "gate": {
