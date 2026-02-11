@@ -19,7 +19,7 @@
           "difficulty_level": "A2",
           "duration_min": 45,
           "content": {
-            "instructions": "Complete Review tests on page 130.",
+            "instructions": "Complete Review tests on page 130. Day focus: Mon.",
             "resource_locator": {
               "book": "American English File 1",
               "page": 130,
@@ -47,11 +47,11 @@
         {
           "step_id": "W05_D02_S01",
           "type": "textbook_drill",
-          "title": "Consolidacion guiada del objetivo semanal",
-          "difficulty_level": "A1",
+          "title": "Practica estructurada del objetivo semanal",
+          "difficulty_level": "A2",
           "duration_min": 120,
           "content": {
-            "instructions": "Consolidacion guiada del objetivo semanal",
+            "instructions": "Practica estructurada del objetivo semanal Day focus: Tue.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=tue&step=w05_d02_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
@@ -68,7 +68,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Tue: recycle 5 key chunks from previous session.",
+        "Tue: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Wed": {
@@ -78,11 +81,11 @@
         {
           "step_id": "W05_D03_S01",
           "type": "textbook_drill",
-          "title": "Consolidacion guiada del objetivo semanal",
-          "difficulty_level": "A1",
+          "title": "Practica estructurada del objetivo semanal",
+          "difficulty_level": "A2",
           "duration_min": 120,
           "content": {
-            "instructions": "Consolidacion guiada del objetivo semanal",
+            "instructions": "Practica estructurada del objetivo semanal Day focus: Wed.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=wed&step=w05_d03_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
@@ -99,7 +102,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Wed: recycle 5 key chunks from previous session.",
+        "Wed: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Thu": {
@@ -109,11 +115,11 @@
         {
           "step_id": "W05_D04_S01",
           "type": "textbook_drill",
-          "title": "Consolidacion guiada del objetivo semanal",
-          "difficulty_level": "A1",
+          "title": "Practica estructurada del objetivo semanal",
+          "difficulty_level": "A2",
           "duration_min": 120,
           "content": {
-            "instructions": "Consolidacion guiada del objetivo semanal",
+            "instructions": "Practica estructurada del objetivo semanal Day focus: Thu.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=thu&step=w05_d04_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
@@ -130,7 +136,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Thu: recycle 5 key chunks from previous session.",
+        "Thu: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Fri": {
@@ -140,11 +149,11 @@
         {
           "step_id": "W05_D05_S01",
           "type": "textbook_drill",
-          "title": "Consolidacion guiada del objetivo semanal",
-          "difficulty_level": "A1",
+          "title": "Practica estructurada del objetivo semanal",
+          "difficulty_level": "A2",
           "duration_min": 120,
           "content": {
-            "instructions": "Consolidacion guiada del objetivo semanal",
+            "instructions": "Practica estructurada del objetivo semanal Day focus: Fri.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=fri&step=w05_d05_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
@@ -161,7 +170,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Fri: recycle 5 key chunks from previous session.",
+        "Fri: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Sat": {
@@ -171,11 +183,11 @@
         {
           "step_id": "W05_D06_S01",
           "type": "textbook_drill",
-          "title": "Consolidacion guiada del objetivo semanal",
-          "difficulty_level": "A1",
+          "title": "Practica estructurada del objetivo semanal",
+          "difficulty_level": "A2",
           "duration_min": 120,
           "content": {
-            "instructions": "Consolidacion guiada del objetivo semanal",
+            "instructions": "Practica estructurada del objetivo semanal Day focus: Sat.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=sat&step=w05_d06_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
@@ -192,7 +204,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Sat: recycle 5 key chunks from previous session.",
+        "Sat: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Sun": {
@@ -206,7 +221,7 @@
           "difficulty_level": "A2",
           "duration_min": 300,
           "content": {
-            "instructions": "Complete full Level 1 Exam.",
+            "instructions": "Complete full Level 1 Exam. Day focus: Sun.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=sun&step=w05_d07_s01&field=url"
           },
           "gate": {
@@ -217,7 +232,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Sun: recycle 5 key chunks from previous session.",
+        "Sun: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     }
   }
