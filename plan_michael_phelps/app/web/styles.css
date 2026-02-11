@@ -1,2 +1,0 @@
-/* Compatibility bridge: legacy references to styles.css resolve to the canonical entrypoint. */
-@import "./css/index.css";
