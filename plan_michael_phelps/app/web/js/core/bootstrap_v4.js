@@ -107,6 +107,7 @@ export async function bootstrapV4({
   let refreshInterval = null;
   let currentRouteId = null;
   let routeSource = "startup";
+  let scrollHandler = null;
 
   try {
     const config = await loadConfig(fetcher);
@@ -207,6 +208,15 @@ export async function bootstrapV4({
 
     hashRouter.start();
 
+    scrollHandler = () => {
+      const header = documentRef.querySelector(".glass-header");
+      if (!header) return;
+      const scrollTop = Number(windowRef?.scrollY) || 0;
+      header.classList.toggle("is-scrolled", scrollTop > 8);
+    };
+    scrollHandler();
+    windowRef.addEventListener("scroll", scrollHandler, { passive: true });
+
     refreshInterval = windowRef.setInterval(() => {
       if (shell) {
         shell.refresh();
@@ -238,6 +248,9 @@ export async function bootstrapV4({
       }
       if (unloadHandler) {
         windowRef.removeEventListener("beforeunload", unloadHandler);
+      }
+      if (scrollHandler) {
+        windowRef.removeEventListener("scroll", scrollHandler);
       }
     }
   };
