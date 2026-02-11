@@ -52,11 +52,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=tue&step=w05_d02_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 5,
-              "page": "TBD",
+              "page": 21,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -83,11 +83,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=wed&step=w05_d03_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 5,
-              "page": "TBD",
+              "page": 22,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -114,11 +114,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=thu&step=w05_d04_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 5,
-              "page": "TBD",
+              "page": 23,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -145,11 +145,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=fri&step=w05_d05_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 5,
-              "page": "TBD",
+              "page": 24,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -176,11 +176,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=sat&step=w05_d06_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 5,
-              "page": "TBD",
+              "page": 25,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -207,7 +207,7 @@
           "duration_min": 300,
           "content": {
             "instructions": "Complete full Level 1 Exam.",
-            "url": "http://example.com"
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-05?day=sun&step=w05_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",

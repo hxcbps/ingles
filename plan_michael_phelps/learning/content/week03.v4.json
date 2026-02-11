@@ -19,7 +19,7 @@
           "difficulty_level": "A1+",
           "duration_min": 15,
           "content": {
-            "instructions": "Mira el video sobre la pronunciación de -ED /t/ /d/ /id/.",
+            "instructions": "Mira el video sobre la pronunciaci\u00f3n de -ED /t/ /d/ /id/.",
             "url": "https://www.youtube.com/watch?v=...",
             "offline_ref": "Video_PastED_A1.mp4"
           },
@@ -37,7 +37,7 @@
           "difficulty_level": "A1+",
           "duration_min": 30,
           "content": {
-            "instructions": "Página 38, Ejercicios 1-4.",
+            "instructions": "P\u00e1gina 38, Ejercicios 1-4.",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 5,
@@ -79,11 +79,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-03?day=tue&step=w03_d02_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 3,
-              "page": "TBD",
+              "page": 17,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -110,11 +110,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-03?day=wed&step=w03_d03_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 3,
-              "page": "TBD",
+              "page": 18,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -141,11 +141,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-03?day=thu&step=w03_d04_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 3,
-              "page": "TBD",
+              "page": 19,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -172,11 +172,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-03?day=fri&step=w03_d05_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 3,
-              "page": "TBD",
+              "page": 20,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -203,11 +203,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Consolidacion guiada del objetivo semanal",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-03?day=sat&step=w03_d06_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 3,
-              "page": "TBD",
+              "page": 21,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -234,7 +234,7 @@
           "duration_min": 300,
           "content": {
             "instructions": "Complete quiz",
-            "url": "http://example.com"
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-03?day=sun&step=w03_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
