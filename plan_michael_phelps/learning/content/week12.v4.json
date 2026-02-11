@@ -12,16 +12,19 @@
       "day_id": "W12_D01",
       "goal": "Master Must / Have to / Should",
       "assessment_event": false,
-      "retention_loop": [],
+      "retention_loop": [
+        "Mon: recycle 5 key chunks from previous session.",
+        "Mon: run 3 self-corrections before closing."
+      ],
       "session_script": [
         {
           "step_id": "W12_D01_S01",
           "type": "input_video",
-          "title": "Concept Input",
+          "title": "Input dirigido Mon",
           "difficulty_level": "B1",
           "duration_min": 20,
           "content": {
-            "instructions": "Watch video about Must / Have to / Should",
+            "instructions": "Study guided input on Must / Have to / Should Day focus: Mon.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-12?day=mon&step=w12_d01_s01&field=url"
           },
           "gate": {
@@ -34,11 +37,11 @@
         {
           "step_id": "W12_D01_S02",
           "type": "textbook_drill",
-          "title": "Core Practice",
+          "title": "Practica aplicada Mon",
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Complete Exercises in Unit.",
+            "instructions": "Complete the guided unit exercises and document key corrections. Day focus: Mon.",
             "resource_locator": {
               "book": "American English File 3",
               "unit": 12,
@@ -64,11 +67,11 @@
         {
           "step_id": "W12_D01_S03",
           "type": "ai_roleplay",
-          "title": "Activation",
+          "title": "Activacion conversacional Mon",
           "difficulty_level": "B1",
           "duration_min": 40,
           "content": {
-            "instructions": "Discuss Must / Have to / Should with Coach.",
+            "instructions": "Discuss Must / Have to / Should with Coach. Day focus: Mon.",
             "prompt_ref": "W12_ROLEPLAY"
           },
           "gate": {
@@ -84,16 +87,19 @@
       "day_id": "W12_D02",
       "goal": "Master Must / Have to / Should",
       "assessment_event": false,
-      "retention_loop": [],
+      "retention_loop": [
+        "Tue: recycle 5 key chunks from previous session.",
+        "Tue: run 3 self-corrections before closing."
+      ],
       "session_script": [
         {
           "step_id": "W12_D02_S01",
           "type": "input_video",
-          "title": "Concept Input",
+          "title": "Input dirigido Tue",
           "difficulty_level": "B1",
           "duration_min": 20,
           "content": {
-            "instructions": "Watch video about Must / Have to / Should",
+            "instructions": "Study guided input on Must / Have to / Should Day focus: Tue.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-12?day=tue&step=w12_d02_s01&field=url"
           },
           "gate": {
@@ -106,11 +112,11 @@
         {
           "step_id": "W12_D02_S02",
           "type": "textbook_drill",
-          "title": "Core Practice",
+          "title": "Practica aplicada Tue",
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Complete Exercises in Unit.",
+            "instructions": "Complete the guided unit exercises and document key corrections. Day focus: Tue.",
             "resource_locator": {
               "book": "American English File 3",
               "unit": 12,
@@ -136,11 +142,11 @@
         {
           "step_id": "W12_D02_S03",
           "type": "ai_roleplay",
-          "title": "Activation",
+          "title": "Activacion conversacional Tue",
           "difficulty_level": "B1",
           "duration_min": 40,
           "content": {
-            "instructions": "Discuss Must / Have to / Should with Coach.",
+            "instructions": "Discuss Must / Have to / Should with Coach. Day focus: Tue.",
             "prompt_ref": "W12_ROLEPLAY"
           },
           "gate": {
@@ -156,16 +162,19 @@
       "day_id": "W12_D03",
       "goal": "Master Must / Have to / Should",
       "assessment_event": false,
-      "retention_loop": [],
+      "retention_loop": [
+        "Wed: recycle 5 key chunks from previous session.",
+        "Wed: run 3 self-corrections before closing."
+      ],
       "session_script": [
         {
           "step_id": "W12_D03_S01",
           "type": "input_video",
-          "title": "Concept Input",
+          "title": "Input dirigido Wed",
           "difficulty_level": "B1",
           "duration_min": 20,
           "content": {
-            "instructions": "Watch video about Must / Have to / Should",
+            "instructions": "Study guided input on Must / Have to / Should Day focus: Wed.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-12?day=wed&step=w12_d03_s01&field=url"
           },
           "gate": {
@@ -178,11 +187,11 @@
         {
           "step_id": "W12_D03_S02",
           "type": "textbook_drill",
-          "title": "Core Practice",
+          "title": "Practica aplicada Wed",
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Complete Exercises in Unit.",
+            "instructions": "Complete the guided unit exercises and document key corrections. Day focus: Wed.",
             "resource_locator": {
               "book": "American English File 3",
               "unit": 12,
@@ -208,11 +217,11 @@
         {
           "step_id": "W12_D03_S03",
           "type": "ai_roleplay",
-          "title": "Activation",
+          "title": "Activacion conversacional Wed",
           "difficulty_level": "B1",
           "duration_min": 40,
           "content": {
-            "instructions": "Discuss Must / Have to / Should with Coach.",
+            "instructions": "Discuss Must / Have to / Should with Coach. Day focus: Wed.",
             "prompt_ref": "W12_ROLEPLAY"
           },
           "gate": {
@@ -228,16 +237,19 @@
       "day_id": "W12_D04",
       "goal": "Master Must / Have to / Should",
       "assessment_event": false,
-      "retention_loop": [],
+      "retention_loop": [
+        "Thu: recycle 5 key chunks from previous session.",
+        "Thu: run 3 self-corrections before closing."
+      ],
       "session_script": [
         {
           "step_id": "W12_D04_S01",
           "type": "input_video",
-          "title": "Concept Input",
+          "title": "Input dirigido Thu",
           "difficulty_level": "B1",
           "duration_min": 20,
           "content": {
-            "instructions": "Watch video about Must / Have to / Should",
+            "instructions": "Study guided input on Must / Have to / Should Day focus: Thu.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-12?day=thu&step=w12_d04_s01&field=url"
           },
           "gate": {
@@ -250,11 +262,11 @@
         {
           "step_id": "W12_D04_S02",
           "type": "textbook_drill",
-          "title": "Core Practice",
+          "title": "Practica aplicada Thu",
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Complete Exercises in Unit.",
+            "instructions": "Complete the guided unit exercises and document key corrections. Day focus: Thu.",
             "resource_locator": {
               "book": "American English File 3",
               "unit": 12,
@@ -280,11 +292,11 @@
         {
           "step_id": "W12_D04_S03",
           "type": "ai_roleplay",
-          "title": "Activation",
+          "title": "Activacion conversacional Thu",
           "difficulty_level": "B1",
           "duration_min": 40,
           "content": {
-            "instructions": "Discuss Must / Have to / Should with Coach.",
+            "instructions": "Discuss Must / Have to / Should with Coach. Day focus: Thu.",
             "prompt_ref": "W12_ROLEPLAY"
           },
           "gate": {
@@ -300,16 +312,19 @@
       "day_id": "W12_D05",
       "goal": "Master Must / Have to / Should",
       "assessment_event": false,
-      "retention_loop": [],
+      "retention_loop": [
+        "Fri: recycle 5 key chunks from previous session.",
+        "Fri: run 3 self-corrections before closing."
+      ],
       "session_script": [
         {
           "step_id": "W12_D05_S01",
           "type": "input_video",
-          "title": "Concept Input",
+          "title": "Input dirigido Fri",
           "difficulty_level": "B1",
           "duration_min": 20,
           "content": {
-            "instructions": "Watch video about Must / Have to / Should",
+            "instructions": "Study guided input on Must / Have to / Should Day focus: Fri.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-12?day=fri&step=w12_d05_s01&field=url"
           },
           "gate": {
@@ -322,11 +337,11 @@
         {
           "step_id": "W12_D05_S02",
           "type": "textbook_drill",
-          "title": "Core Practice",
+          "title": "Practica aplicada Fri",
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Complete Exercises in Unit.",
+            "instructions": "Complete the guided unit exercises and document key corrections. Day focus: Fri.",
             "resource_locator": {
               "book": "American English File 3",
               "unit": 12,
@@ -352,11 +367,11 @@
         {
           "step_id": "W12_D05_S03",
           "type": "ai_roleplay",
-          "title": "Activation",
+          "title": "Activacion conversacional Fri",
           "difficulty_level": "B1",
           "duration_min": 40,
           "content": {
-            "instructions": "Discuss Must / Have to / Should with Coach.",
+            "instructions": "Discuss Must / Have to / Should with Coach. Day focus: Fri.",
             "prompt_ref": "W12_ROLEPLAY"
           },
           "gate": {
@@ -372,16 +387,19 @@
       "day_id": "W12_D06",
       "goal": "Master Must / Have to / Should",
       "assessment_event": false,
-      "retention_loop": [],
+      "retention_loop": [
+        "Sat: recycle 5 key chunks from previous session.",
+        "Sat: run 3 self-corrections before closing."
+      ],
       "session_script": [
         {
           "step_id": "W12_D06_S01",
           "type": "input_video",
-          "title": "Concept Input",
+          "title": "Input dirigido Sat",
           "difficulty_level": "B1",
           "duration_min": 20,
           "content": {
-            "instructions": "Watch video about Must / Have to / Should",
+            "instructions": "Study guided input on Must / Have to / Should Day focus: Sat.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-12?day=sat&step=w12_d06_s01&field=url"
           },
           "gate": {
@@ -394,11 +412,11 @@
         {
           "step_id": "W12_D06_S02",
           "type": "textbook_drill",
-          "title": "Core Practice",
+          "title": "Practica aplicada Sat",
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Complete Exercises in Unit.",
+            "instructions": "Complete the guided unit exercises and document key corrections. Day focus: Sat.",
             "resource_locator": {
               "book": "American English File 3",
               "unit": 12,
@@ -424,11 +442,11 @@
         {
           "step_id": "W12_D06_S03",
           "type": "ai_roleplay",
-          "title": "Activation",
+          "title": "Activacion conversacional Sat",
           "difficulty_level": "B1",
           "duration_min": 40,
           "content": {
-            "instructions": "Discuss Must / Have to / Should with Coach.",
+            "instructions": "Discuss Must / Have to / Should with Coach. Day focus: Sat.",
             "prompt_ref": "W12_ROLEPLAY"
           },
           "gate": {
@@ -444,16 +462,19 @@
       "day_id": "W12_D07",
       "goal": "Master Must / Have to / Should",
       "assessment_event": false,
-      "retention_loop": [],
+      "retention_loop": [
+        "Sun: recycle 5 key chunks from previous session.",
+        "Sun: run 3 self-corrections before closing."
+      ],
       "session_script": [
         {
           "step_id": "W12_D07_S01",
           "type": "input_video",
-          "title": "Concept Input",
+          "title": "Input dirigido Sun",
           "difficulty_level": "B1",
           "duration_min": 20,
           "content": {
-            "instructions": "Watch video about Must / Have to / Should",
+            "instructions": "Study guided input on Must / Have to / Should Day focus: Sun.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-12?day=sun&step=w12_d07_s01&field=url"
           },
           "gate": {
@@ -466,11 +487,11 @@
         {
           "step_id": "W12_D07_S02",
           "type": "textbook_drill",
-          "title": "Core Practice",
+          "title": "Practica aplicada Sun",
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Complete Exercises in Unit.",
+            "instructions": "Complete the guided unit exercises and document key corrections. Day focus: Sun.",
             "resource_locator": {
               "book": "American English File 3",
               "unit": 12,
@@ -496,11 +517,11 @@
         {
           "step_id": "W12_D07_S03",
           "type": "ai_roleplay",
-          "title": "Activation",
+          "title": "Activacion conversacional Sun",
           "difficulty_level": "B1",
           "duration_min": 40,
           "content": {
-            "instructions": "Discuss Must / Have to / Should with Coach.",
+            "instructions": "Discuss Must / Have to / Should with Coach. Day focus: Sun.",
             "prompt_ref": "W12_ROLEPLAY"
           },
           "gate": {

@@ -19,7 +19,7 @@
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Review Units 1-5 Grammar Bank.",
+            "instructions": "Review Units 1-5 Grammar Bank. Day focus: Mon.",
             "resource_locator": {
               "book": "American English File 2",
               "page": 132
@@ -32,7 +32,10 @@
           "evidence_required": "score"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Mon: recycle 5 key chunks from previous session.",
+        "Mon: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Tue": {
@@ -46,7 +49,7 @@
           "difficulty_level": "B1",
           "duration_min": 60,
           "content": {
-            "instructions": "Review Units 6-9 Grammar Bank.",
+            "instructions": "Review Units 6-9 Grammar Bank. Day focus: Tue.",
             "resource_locator": {
               "book": "American English File 2",
               "page": 136
@@ -59,7 +62,10 @@
           "evidence_required": "score"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Tue: recycle 5 key chunks from previous session.",
+        "Tue: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Wed": {
@@ -73,7 +79,7 @@
           "difficulty_level": "B1",
           "duration_min": 45,
           "content": {
-            "instructions": "Record a 3-minute monologue about a past travel experience.",
+            "instructions": "Record a 3-minute monologue about a past travel experience. Day focus: Wed.",
             "prompt_ref": "ASSESS_MONOLOGUE"
           },
           "gate": {
@@ -83,7 +89,10 @@
           "evidence_required": "upload"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Wed: recycle 5 key chunks from previous session.",
+        "Wed: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     },
     "Thu": {
@@ -97,7 +106,7 @@
           "difficulty_level": "B1",
           "duration_min": 45,
           "content": {
-            "instructions": "Complete reinforcement exercises and log key corrections.",
+            "instructions": "Complete reinforcement exercises and log key corrections. Day focus: Thu.",
             "resource_locator": {
               "book": "American English File 2",
               "unit": 10,
@@ -113,7 +122,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Thu: recycle 5 key chunks from previous session.",
+        "Thu: run 3 self-corrections before closing."
+      ],
       "assessment_event": false
     },
     "Fri": {
@@ -127,7 +139,7 @@
           "difficulty_level": "B1",
           "duration_min": 45,
           "content": {
-            "instructions": "Complete reinforcement exercises and log key corrections.",
+            "instructions": "Complete reinforcement exercises and log key corrections. Day focus: Fri.",
             "resource_locator": {
               "book": "American English File 2",
               "unit": 10,
@@ -143,7 +155,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Fri: recycle 5 key chunks from previous session.",
+        "Fri: run 3 self-corrections before closing."
+      ],
       "assessment_event": false
     },
     "Sat": {
@@ -157,7 +172,7 @@
           "difficulty_level": "B1",
           "duration_min": 45,
           "content": {
-            "instructions": "Complete reinforcement exercises and log key corrections.",
+            "instructions": "Complete reinforcement exercises and log key corrections. Day focus: Sat.",
             "resource_locator": {
               "book": "American English File 2",
               "unit": 10,
@@ -173,7 +188,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Sat: recycle 5 key chunks from previous session.",
+        "Sat: run 3 self-corrections before closing."
+      ],
       "assessment_event": false
     },
     "Sun": {
@@ -187,7 +205,7 @@
           "difficulty_level": "B1",
           "duration_min": 300,
           "content": {
-            "instructions": "Complete Full Exam (Reading, Listening, Use of English).",
+            "instructions": "Complete Full Exam (Reading, Listening, Use of English). Day focus: Sun.",
             "url": "https://learnenglish.britishcouncil.org/skills/listening/week-10?day=sun&step=w10_d07_s01&field=url"
           },
           "gate": {
@@ -198,7 +216,10 @@
           "evidence_required": "timer"
         }
       ],
-      "retention_loop": [],
+      "retention_loop": [
+        "Sun: recycle 5 key chunks from previous session.",
+        "Sun: run 3 self-corrections before closing."
+      ],
       "assessment_event": true
     }
   }
