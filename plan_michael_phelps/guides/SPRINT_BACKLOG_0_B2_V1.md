@@ -388,3 +388,17 @@ Backlog phase status:
 1. Content/data contract integrity: completed against current quality gates.
 2. Frontend integration debt (mock-data/scroll/responsive/entrypoint): completed for audited findings.
 3. Next work should be feature evolution and regression protection, not debt carryover.
+
+## 17) Progress checkpoint after S2 Wave-2
+
+Date: 2026-02-11
+
+- Parallel execution completed for `S2-W2-01..S2-W2-03`.
+- Dashboard shell moved from static placeholders to runtime-derived metrics (`program`, `weekSummaries`, `activeDayContent`, `session snapshot`).
+- Regression suite expanded with default-metric derivation checks for `LearningShell`.
+- Canonical quality status preserved: `P0=0`, `P1=0`, `P2=0`.
+
+Backlog phase status update:
+1. S3 frontend integration (`hardcoded removidos`): advanced in shell dashboard lane.
+2. S4 runtime/UX polish (`progreso real visible`): baseline delivered for welcome, sidebar plan, widgets, and today cards.
+3. Next focus should target `S5 Runtime hardening` (`resume robustness + event observability + critical path e2e`).

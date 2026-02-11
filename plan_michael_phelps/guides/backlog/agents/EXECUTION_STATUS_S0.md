@@ -50,3 +50,4 @@ S1 continuation evidence:
 - `guides/backlog/agents/EXECUTION_STATUS_S1_WAVE1.md` (Wave-1 executed, P0 reduced to 46).
 - `guides/backlog/agents/EXECUTION_STATUS_S1_WAVE2.md` (Wave-2 executed, P0 reached zero).
 - `guides/backlog/agents/EXECUTION_STATUS_S2_WAVE1.md` (S2 Wave-1 executed, canonical audit at zero findings).
+- `guides/backlog/agents/EXECUTION_STATUS_S2_WAVE2.md` (S2 Wave-2 executed, shell dashboard now data-driven with regression coverage).

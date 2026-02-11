@@ -78,3 +78,107 @@ test("learning shell renders dashboard metrics without reference errors", () => 
     globalThis.CustomEvent = originalCustomEvent;
   }
 });
+
+test("learning shell derives dashboard defaults from runtime context", () => {
+  const originalDocument = globalThis.document;
+  const originalCustomEvent = globalThis.CustomEvent;
+
+  const fakeContainer = {
+    innerHTML: "",
+    _clickHandler: null,
+    querySelectorAll() {
+      return [];
+    },
+    addEventListener(eventName, handler) {
+      if (eventName === "click") {
+        this._clickHandler = handler;
+      }
+    },
+    removeEventListener(eventName, handler) {
+      if (eventName === "click" && this._clickHandler === handler) {
+        this._clickHandler = null;
+      }
+    }
+  };
+
+  globalThis.CustomEvent = class CustomEvent {
+    constructor(type, init = {}) {
+      this.type = type;
+      this.detail = init.detail;
+    }
+  };
+
+  globalThis.document = {
+    getElementById(id) {
+      return id === "v4-root" ? fakeContainer : null;
+    },
+    dispatchEvent() {}
+  };
+
+  try {
+    const shell = new LearningShell("v4-root", {
+      activeWeekLabel: "w03",
+      activeDayLabel: "Tue",
+      activeDayContent: {
+        day_id: "W03_D02",
+        session_script: [
+          { title: "Input dirigido", duration_min: 10 },
+          { title: "Roleplay guiado", duration_min: 15 }
+        ]
+      },
+      weekSummaries: [
+        {
+          week: 3,
+          week_profile: { cefr_target: "A2", focus_theme: "Past Simple" },
+          days: {
+            Wed: {
+              session_script: [
+                { title: "Shadowing operativo", duration_min: 20 }
+              ]
+            }
+          }
+        }
+      ],
+      program: {
+        weekNumber: 3,
+        programWeeks: 20,
+        sessionMinutes: 120,
+        phases: [{ id: "phase1", title: "Foundation", cefr: "A1 -> A2" }]
+      },
+      config: {
+        pace_mode: "accelerated_sustainable",
+        target_cefr: "B2",
+        user: {
+          name: "QA",
+          level: "Nivel 3",
+          progress: { phase_id: "phase1" }
+        }
+      },
+      getSessionSnapshot: () => ({
+        progressPct: 40,
+        currentStepIndex: 2,
+        totalSteps: 5,
+        status: "active",
+        currentStepTitle: "Roleplay guiado"
+      })
+    });
+
+    const metrics = shell.getDashboardMetrics();
+    assert.equal(metrics.weeklyProgressLabel, "15%");
+    assert.equal(metrics.sessionMinutesLabel, "25 min");
+    assert.equal(metrics.sessionRewardLabel, "2/5 pasos");
+    assert.equal(metrics.rankingTier, "Objetivo A2");
+    assert.equal(metrics.themeTitle, "Past Simple");
+    assert.equal(metrics.upcomingTag, "MIERCOLES");
+
+    const html = shell.renderLayout({ view: "hoy" });
+    assert.match(html, /15%/);
+    assert.match(html, /Past Simple/);
+    assert.match(html, /Objetivo A2/);
+    assert.ok(!/85%/.test(html));
+    assert.ok(!/Word of the Day/.test(html));
+  } finally {
+    globalThis.document = originalDocument;
+    globalThis.CustomEvent = originalCustomEvent;
+  }
+});

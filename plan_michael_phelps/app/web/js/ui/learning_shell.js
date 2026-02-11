@@ -15,15 +15,59 @@ function formatWeekLabel(weekKey) {
   return `W${String(num).padStart(2, "0")}`;
 }
 
+const DAY_SEQUENCE = Object.freeze(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+
+const DAY_LABEL_PRETTY = Object.freeze({
+  Mon: "Lunes",
+  Tue: "Martes",
+  Wed: "Miercoles",
+  Thu: "Jueves",
+  Fri: "Viernes",
+  Sat: "Sabado",
+  Sun: "Domingo"
+});
+
+const DAY_LABEL_ALIASES = Object.freeze({
+  lunes: "Mon",
+  martes: "Tue",
+  miercoles: "Wed",
+  miércoles: "Wed",
+  jueves: "Thu",
+  viernes: "Fri",
+  sabado: "Sat",
+  sábado: "Sat",
+  domingo: "Sun"
+});
+
+function clampPercent(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, Math.min(100, Math.round(numeric)));
+}
+
+function resolveDayCode(dayLabel) {
+  const raw = String(dayLabel || "").trim();
+  if (!raw) return "Mon";
+
+  const normalized = raw.toLowerCase();
+  const fromAlias = DAY_LABEL_ALIASES[normalized];
+  if (fromAlias) return fromAlias;
+
+  const short = normalized.slice(0, 3);
+  const direct = DAY_SEQUENCE.find((dayCode) => dayCode.toLowerCase() === short);
+  return direct || "Mon";
+}
+
 function formatDayLabel(dayKey) {
-  if (!dayKey) return "Hoy";
-  return dayKey.charAt(0).toUpperCase() + dayKey.slice(1);
+  const dayCode = resolveDayCode(dayKey);
+  return DAY_LABEL_PRETTY[dayCode] || dayKey || "Hoy";
 }
 
 function toSentence(str, def) {
   if (!str) return def;
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
 
 export class LearningShell {
   constructor(containerId, context = {}) {
@@ -48,7 +92,9 @@ export class LearningShell {
 
     // State initialization
     this.activeWeek = context.activeWeekLabel || "w01";
-    this.activeDayLabel = context.activeDayLabel || "Lunes";
+    this.activeDayLabel = context.activeDayLabel || "Mon";
+    this.activeDayContent = context.activeDayContent || null;
+    this.fallbackNotice = context.fallbackNotice || "";
     this.activeView = "hoy"; // Default view
 
     // Callbacks
@@ -171,20 +217,171 @@ export class LearningShell {
     document.dispatchEvent(event);
   }
 
+  getActiveWeekSummary() {
+    const activeWeek = this.getActiveWeekNumber();
+    return this.weekSummaries.find((item) => Number(item?.week) === Number(activeWeek)) || null;
+  }
+
+  getCurrentDayContent() {
+    if (this.activeDayContent && typeof this.activeDayContent === "object") {
+      return this.activeDayContent;
+    }
+
+    const summary = this.getActiveWeekSummary();
+    const dayCode = resolveDayCode(this.activeDayLabel);
+    return summary?.days?.[dayCode] || null;
+  }
+
+  getSessionDurationMinutes(dayContent = this.getCurrentDayContent()) {
+    const script = Array.isArray(dayContent?.session_script) ? dayContent.session_script : [];
+    const scriptedDuration = script.reduce((total, step) => {
+      const duration = Number(step?.duration_min);
+      return Number.isFinite(duration) ? total + Math.max(0, duration) : total;
+    }, 0);
+
+    if (scriptedDuration > 0) {
+      return Math.round(scriptedDuration);
+    }
+
+    const fallbackMinutes = Number(this.program?.sessionMinutes);
+    if (Number.isFinite(fallbackMinutes) && fallbackMinutes > 0) {
+      return Math.round(fallbackMinutes);
+    }
+
+    return 15;
+  }
+
+  getUpcomingSession() {
+    const summary = this.getActiveWeekSummary();
+    if (!summary?.days || typeof summary.days !== "object") {
+      return null;
+    }
+
+    const currentIndex = DAY_SEQUENCE.indexOf(resolveDayCode(this.activeDayLabel));
+    for (let i = currentIndex + 1; i < DAY_SEQUENCE.length; i += 1) {
+      const dayCode = DAY_SEQUENCE[i];
+      const dayData = summary.days?.[dayCode];
+      const script = Array.isArray(dayData?.session_script) ? dayData.session_script : [];
+      if (!script.length) continue;
+
+      const firstStep = script.find((step) => step?.title) || script[0];
+      const minutes = this.getSessionDurationMinutes(dayData);
+      return {
+        tag: formatDayLabel(dayCode).toUpperCase(),
+        title: firstStep?.title || `Sesion ${formatDayLabel(dayCode)}`,
+        description: `${minutes} min planificados para la siguiente practica.`
+      };
+    }
+
+    return null;
+  }
+
+  getProgramProgress() {
+    const activeWeek = this.getActiveWeekNumber();
+    const programWeeks = Number(this.program?.programWeeks);
+    const totalWeeks = Number.isFinite(programWeeks) && programWeeks > 0
+      ? Math.round(programWeeks)
+      : Math.max(activeWeek, 1);
+
+    const dayCode = resolveDayCode(this.activeDayLabel);
+    const dayIndex = Math.max(1, DAY_SEQUENCE.indexOf(dayCode) + 1);
+
+    const completedDays = Math.max(0, ((activeWeek - 1) * 7) + (dayIndex - 1));
+    const totalDays = Math.max(1, totalWeeks * 7);
+
+    return {
+      activeWeek,
+      totalWeeks,
+      dayCode,
+      dayIndex,
+      completedDays,
+      totalDays,
+      weekProgressPct: clampPercent((activeWeek / totalWeeks) * 100),
+      dayProgressPct: clampPercent((completedDays / totalDays) * 100)
+    };
+  }
+
+  getSessionSnapshotSafe() {
+    const snapshot = this.getSessionSnapshot() || {};
+    const progressPct = clampPercent(snapshot.progressPct);
+
+    const totalStepsRaw = Number(snapshot.totalSteps);
+    const totalSteps = Number.isFinite(totalStepsRaw) && totalStepsRaw > 0 ? Math.round(totalStepsRaw) : 0;
+
+    const indexRaw = Number(snapshot.currentStepIndex);
+    const currentStepIndex = Number.isFinite(indexRaw) && indexRaw > 0
+      ? Math.min(Math.round(indexRaw), totalSteps || Math.round(indexRaw))
+      : 0;
+
+    return {
+      progressPct,
+      totalSteps,
+      currentStepIndex,
+      status: snapshot.status || (progressPct >= 100 ? "done" : "active"),
+      currentStepTitle: snapshot.currentStepTitle || "Sesion operativa"
+    };
+  }
+
   getDashboardMetrics() {
     const runtimeMetrics = this.context.metrics || {};
+    const programProgress = this.getProgramProgress();
+    const session = this.getSessionSnapshotSafe();
+
+    const activeWeekSummary = this.getActiveWeekSummary();
+    const weekProfile = activeWeekSummary?.week_profile || {};
+    const focusTheme = weekProfile.focus_theme || "Speaking operativo";
+    const cefrTarget = weekProfile.cefr_target || this.program?.targetCEFR || this.config?.target_cefr || "B2";
+
+    const sessionMinutes = this.getSessionDurationMinutes();
+    const upcomingSession = this.getUpcomingSession();
+
+    const stepProgressLabel = session.totalSteps > 0
+      ? `${session.currentStepIndex}/${session.totalSteps} pasos`
+      : "Sesion pendiente";
+
     return {
-      streakLabel: runtimeMetrics.streakLabel || `${Math.max(1, Number(this.program.dayNumber) || 1)} dias`,
-      xpLabel: runtimeMetrics.xpLabel || String((Number(this.program.weekNumber) || 1) * 120),
-      accuracyLabel: runtimeMetrics.accuracyLabel || `${Math.min(99, 80 + ((Number(this.program.weekNumber) || 1) % 20))}%`,
-      rankingTitle: runtimeMetrics.rankingTitle || "Rendimiento en progreso",
-      rankingTier: runtimeMetrics.rankingTier || "Liga activa",
-      heroRewardLabel: runtimeMetrics.heroRewardLabel || "XP acumulado",
-      sessionRewardLabel: runtimeMetrics.sessionRewardLabel || "XP objetivo"
+      planName: runtimeMetrics.planName ?? toSentence(this.config?.pace_mode, "Plan guiado"),
+      planProgressPct: clampPercent(runtimeMetrics.planProgressPct ?? programProgress.weekProgressPct),
+      weeklyProgressPct: clampPercent(runtimeMetrics.weeklyProgressPct ?? programProgress.weekProgressPct),
+      weeklyProgressLabel: runtimeMetrics.weeklyProgressLabel ?? `${clampPercent(runtimeMetrics.weeklyProgressPct ?? programProgress.weekProgressPct)}%`,
+
+      streakTitle: runtimeMetrics.streakTitle ?? "Semana activa",
+      streakLabel: runtimeMetrics.streakLabel ?? `${formatDayLabel(programProgress.dayCode)} (${programProgress.dayIndex}/7)`,
+      xpTitle: runtimeMetrics.xpTitle ?? "Avance sesion",
+      xpLabel: runtimeMetrics.xpLabel ?? stepProgressLabel,
+      accuracyLabel: runtimeMetrics.accuracyLabel ?? `${session.progressPct}%`,
+
+      rankingTitle: runtimeMetrics.rankingTitle ?? `Semana ${formatWeekLabel(String(programProgress.activeWeek))}`,
+      rankingTier: runtimeMetrics.rankingTier ?? `Objetivo ${cefrTarget}`,
+      heroRewardLabel: runtimeMetrics.heroRewardLabel ?? `${session.progressPct}% completado`,
+      sessionRewardLabel: runtimeMetrics.sessionRewardLabel ?? stepProgressLabel,
+      sessionMinutesLabel: runtimeMetrics.sessionMinutesLabel ?? `${sessionMinutes} min`,
+      sessionProgressPct: clampPercent(runtimeMetrics.sessionProgressPct ?? session.progressPct),
+      sessionStatusLabel: runtimeMetrics.sessionStatusLabel ?? toSentence(session.status, "activo"),
+
+      statPrimaryValue: runtimeMetrics.statPrimaryValue ?? `${programProgress.completedDays}/${programProgress.totalDays}`,
+      statPrimaryLabel: runtimeMetrics.statPrimaryLabel ?? "Dias ejecutados",
+      statSecondaryValue: runtimeMetrics.statSecondaryValue ?? `${programProgress.activeWeek}/${programProgress.totalWeeks}`,
+      statSecondaryLabel: runtimeMetrics.statSecondaryLabel ?? "Semanas",
+
+      themeKicker: runtimeMetrics.themeKicker ?? `Tema ${formatWeekLabel(String(programProgress.activeWeek))}`,
+      themeTitle: runtimeMetrics.themeTitle ?? focusTheme,
+      themeDescription: runtimeMetrics.themeDescription ?? `Objetivo CEFR: ${cefrTarget}.`,
+      themeFootnote: runtimeMetrics.themeFootnote ?? `Paso actual: ${session.currentStepTitle}`,
+      peersLabel: runtimeMetrics.peersLabel ?? `Estado: ${toSentence(session.status, "activo")}`,
+
+      upcomingTag: runtimeMetrics.upcomingTag ?? (upcomingSession?.tag || "PROXIMO"),
+      upcomingTitle: runtimeMetrics.upcomingTitle ?? (upcomingSession?.title || "Prepara la siguiente sesion"),
+      upcomingDescription: runtimeMetrics.upcomingDescription ?? (upcomingSession?.description || "Revisa modulos y checklist antes de iniciar."),
+
+      featureTitle: runtimeMetrics.featureTitle ?? `Dominando ${focusTheme}`,
+      featureSubtitle: runtimeMetrics.featureSubtitle ?? `Objetivo: ${cefrTarget}. Mejora tu desempeño con practica guiada.`
     };
   }
 
   renderLayout(state) {
+
+
     const activePhase = this.program.phases?.find((p) => p.id === this.profile.progress?.phase_id) || {
       title: "Foundation",
       id: "phase1",
@@ -218,9 +415,9 @@ export class LearningShell {
           <div class="p-6 border-t border-slate-100">
              <div class="bg-slate-50 p-4 rounded-2xl mb-4 border border-slate-100">
               <p class="text-xs font-bold text-slate-500 uppercase mb-2">Tu Plan</p>
-              <p class="text-sm font-bold text-brand-600">Premium Pro User</p>
+              <p class="text-sm font-bold text-brand-600">${escapeHTML(metrics.planName)}</p>
               <div class="w-full bg-slate-200 h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-brand-500 w-3/4 h-full"></div>
+                <div class="bg-brand-500 h-full" style="width:${clampPercent(metrics.planProgressPct)}%"></div>
               </div>
             </div>
             <button class="flex items-center gap-3 w-full p-3 text-slate-500 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all font-medium">
@@ -275,13 +472,13 @@ export class LearningShell {
             <div class="grid lg-grid-cols-4 gap-6 mb-10">
               <div class="lg-col-span-2">
                 <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">Bienvenido de nuevo, ${escapeHTML(userName.split(' ')[0])}.</h1>
-                <p class="text-slate-500 mt-2 text-lg">Has completado el <span class="text-brand-600 font-bold">85%</span> de tu objetivo semanal. ¡Sigue así!</p>
+                <p class="text-slate-500 mt-2 text-lg">Has completado el <span class="text-brand-600 font-bold">${escapeHTML(metrics.weeklyProgressLabel)}</span> de la ruta 0 -> B2. Sigue construyendo consistencia.</p>
               </div>
               
               <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
                 <div class="p-3 bg-orange-50 text-orange-500 rounded-2xl">${ICONS.flame}</div>
                 <div>
-                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Racha</p>
+                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.streakTitle)}</p>
                   <p class="text-xl font-black text-slate-800">${metrics.streakLabel}</p>
                 </div>
               </div>
@@ -289,7 +486,7 @@ export class LearningShell {
                <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
                 <div class="p-3 bg-yellow-50 text-yellow-500 rounded-2xl">${ICONS.zap}</div>
                 <div>
-                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Puntos XP</p>
+                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.xpTitle)}</p>
                   <p class="text-xl font-black text-slate-800">${metrics.xpLabel}</p>
                 </div>
               </div>
@@ -438,9 +635,9 @@ export class LearningShell {
               <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
               Fase Activa: ${escapeHTML(phase.title)}
             </div>
-            <h2 class="text-4xl md-text-5xl font-black mb-6 leading-[1.1]">Dominando el Speaking Pro</h2>
+            <h2 class="text-4xl md-text-5xl font-black mb-6 leading-[1.1]">${escapeHTML(metrics.featureTitle)}</h2>
             <p class="text-indigo-100 text-lg mb-8 max-w-md font-medium leading-relaxed">
-              Objetivo: ${escapeHTML(phase.cefr)}. Mejora tu entonación y conecta ideas como un nativo.
+              ${escapeHTML(metrics.featureSubtitle)}
             </p>
             <div class="flex flex-wrap gap-4">
               <button data-shell-action="open-session" class="bg-white text-brand-600 px-8 py-4 rounded-2xl font-black hover:scale-105 transition-all shadow-xl shadow-brand-900/20 flex items-center gap-2">
@@ -477,45 +674,41 @@ export class LearningShell {
           
           <div class="grid grid-cols-2 gap-4 mt-8">
             <div class="bg-slate-50 p-4 rounded-2xl">
-              <p class="text-2xl font-black text-brand-600">842</p>
-              <p class="text-[10px] font-bold text-slate-400 uppercase">Días Totales</p>
+              <p class="text-2xl font-black text-brand-600">${escapeHTML(metrics.statPrimaryValue)}</p>
+              <p class="text-[10px] font-bold text-slate-400 uppercase">${escapeHTML(metrics.statPrimaryLabel)}</p>
             </div>
             <div class="bg-slate-50 p-4 rounded-2xl">
-              <p class="text-2xl font-black text-emerald-600">12k</p>
-              <p class="text-[10px] font-bold text-slate-400 uppercase">Palabras</p>
+              <p class="text-2xl font-black text-emerald-600">${escapeHTML(metrics.statSecondaryValue)}</p>
+              <p class="text-[10px] font-bold text-slate-400 uppercase">${escapeHTML(metrics.statSecondaryLabel)}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- WORD OF THE DAY -->
-      <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-slate-200 relative">
-        <div class="flex items-center justify-between mb-8">
-          <h3 class="font-bold text-brand-400 text-sm tracking-widest uppercase">Word of the Day</h3>
-          <button class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
-            <div class="text-yellow-400">${ICONS.zap}</div>
-          </button>
-        </div>
-        <div class="space-y-4">
-          <h4 class="text-4xl font-black italic tracking-tight leading-none">Substantial</h4>
-          <p class="text-slate-400 text-sm font-mono">/səbˈstæn.ʃəl/</p>
-          <p class="text-slate-300 text-lg leading-relaxed">
-            "Of considerable importance, size, or worth."
-          </p>
-          <div class="pt-4 flex items-center gap-3">
-            <div class="flex -space-x-2">
-              <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-[10px] font-bold">A</div>
-              <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-[10px] font-bold">B</div>
-              <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-[10px] font-bold">C</div>
-            </div>
-            <p class="text-xs text-slate-400">+12 amigos aprendieron esto</p>
-          </div>
+    <!-- WEEK THEME -->
+    <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-slate-200 relative">
+      <div class="flex items-center justify-between mb-8">
+        <h3 class="font-bold text-brand-400 text-sm tracking-widest uppercase">${escapeHTML(metrics.themeKicker)}</h3>
+        <button class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors" type="button" aria-label="Estado semanal">
+          <div class="text-yellow-400">${ICONS.zap}</div>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <h4 class="text-4xl font-black italic tracking-tight leading-none">${escapeHTML(metrics.themeTitle)}</h4>
+        <p class="text-slate-400 text-sm font-mono">${escapeHTML(metrics.themeDescription)}</p>
+        <p class="text-slate-300 text-lg leading-relaxed">${escapeHTML(metrics.themeFootnote)}</p>
+        <div class="pt-4 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-[10px] font-bold">OK</div>
+          <p class="text-xs text-slate-400">${escapeHTML(metrics.peersLabel)}</p>
         </div>
       </div>
-    `;
-  }
+    </div>
+  `;
+}
 
   renderTodayView(metrics = this.getDashboardMetrics()) {
+    const sessionProgressPct = clampPercent(metrics.sessionProgressPct);
+
     // Replicating the 'Card' style for the lesson list, but adapting logic
     return `
       <div class="space-y-4">
@@ -530,7 +723,7 @@ export class LearningShell {
             <div class="flex items-center gap-3 mb-2">
               <span class="text-[10px] font-black bg-brand-100 text-brand-700 px-2.5 py-0.5 rounded-full uppercase tracking-widest">DIARIO</span>
               <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
-                ${ICONS.clock} 15 min
+                ${ICONS.clock} ${escapeHTML(metrics.sessionMinutesLabel)}
               </span>
               <span class="text-xs font-bold text-emerald-600">${escapeHTML(metrics.sessionRewardLabel)}</span>
             </div>
@@ -540,9 +733,9 @@ export class LearningShell {
           
           <div class="flex items-center gap-4">
             <div class="text-right hidden md-block">
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">En curso</p>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">${escapeHTML(metrics.sessionStatusLabel)}</p>
               <div class="w-24 bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-brand-500 w-1/5 h-full"></div>
+                <div class="bg-brand-500 h-full" style="width:${sessionProgressPct}%"></div>
               </div>
             </div>
             <div class="p-3 bg-slate-50 rounded-2xl group-hover:bg-brand-600 group-hover:text-white transition-all">
@@ -551,17 +744,17 @@ export class LearningShell {
           </div>
         </div>
 
-        <!-- UPCOMING LESSONS (Mocked for visual balance) -->
+        <!-- UPCOMING LESSON (derived from weekly plan) -->
         <div class="bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer">
            <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-slate-50 text-slate-300">
             ${ICONS.playCircle}
           </div>
            <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
-              <span class="text-[10px] font-black bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full uppercase tracking-widest">PRÁCTICA</span>
+              <span class="text-[10px] font-black bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full uppercase tracking-widest">${escapeHTML(metrics.upcomingTag)}</span>
             </div>
-            <h4 class="text-xl font-bold text-slate-800">Debate: Futuro de la IA</h4>
-            <p class="text-slate-500 text-sm mt-1">Practica tu fluidez discutiendo tendencias.</p>
+            <h4 class="text-xl font-bold text-slate-800">${escapeHTML(metrics.upcomingTitle)}</h4>
+            <p class="text-slate-500 text-sm mt-1">${escapeHTML(metrics.upcomingDescription)}</p>
           </div>
            <div class="p-3 bg-slate-50 rounded-2xl">
               ${ICONS.chevronRight}
