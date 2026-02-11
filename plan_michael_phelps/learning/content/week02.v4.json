@@ -20,7 +20,7 @@
           "duration_min": 15,
           "content": {
             "instructions": "Review cards D+1, D+3, D+7. Focus on previous errors.",
-            "url": "https://quizlet.com/...",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=mon&step=w02_d01_s01&field=url",
             "offline_ref": "Flashcards_Week1_Review"
           },
           "gate": {
@@ -69,7 +69,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Listen 3 times: 1. Main idea (Gist), 2. Specific details, 3. Inference.",
-            "url": "https://esl-lab.com/...",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=mon&step=w02_d01_s03&field=url",
             "offline_ref": "Audio_W02_Listening.mp3"
           },
           "gate": {
@@ -113,7 +113,7 @@
           "difficulty_level": "A1",
           "duration_min": 10,
           "content": {
-            "instructions": "Practice /ŋ/ sound ( -ing endings). Shadowing of chunks.",
+            "instructions": "Practice /\u014b/ sound ( -ing endings). Shadowing of chunks.",
             "url": "https://youglish.com/pronounce/ing/english",
             "offline_ref": "Audio_Pron_ING.mp3"
           },
@@ -196,7 +196,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Listen to dialogue about daily routines vs now.",
-            "url": "https://..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=tue&step=w02_d02_s03&field=url"
           },
           "gate": {
             "type": "min_words",
@@ -228,7 +228,7 @@
           "duration_min": 10,
           "content": {
             "instructions": "Practice sentence stress in questions.",
-            "url": "https://..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=tue&step=w02_d02_s05&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -277,11 +277,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Complete workbook exercises.",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=wed&step=w02_d03_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 2,
-              "page": "TBD",
+              "page": 16,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -308,11 +308,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Roleplay scenarios.",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=thu&step=w02_d04_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 2,
-              "page": "TBD",
+              "page": 17,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -339,11 +339,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Review weak points.",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=fri&step=w02_d05_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 2,
-              "page": "TBD",
+              "page": 18,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -370,11 +370,11 @@
           "duration_min": 120,
           "content": {
             "instructions": "Record final video.",
-            "url": "http://example.com",
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=sat&step=w02_d06_s01&field=url",
             "resource_locator": {
               "book": "American English File 1",
               "unit": 2,
-              "page": "TBD",
+              "page": 19,
               "exercise": "Core consolidation task (set exact page before session)"
             }
           },
@@ -401,7 +401,7 @@
           "duration_min": 300,
           "content": {
             "instructions": "Complete quiz",
-            "url": "http://example.com"
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-02?day=sun&step=w02_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
