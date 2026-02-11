@@ -22,7 +22,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Adjective degrees",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-07?day=mon&step=w07_d01_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -41,7 +41,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 7
+              "unit": 7,
+              "page": 27
             }
           },
           "gate": {
@@ -93,7 +94,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Adjective degrees",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-07?day=tue&step=w07_d02_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -112,7 +113,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 7
+              "unit": 7,
+              "page": 28
             }
           },
           "gate": {
@@ -164,7 +166,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Adjective degrees",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-07?day=wed&step=w07_d03_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -183,7 +185,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 7
+              "unit": 7,
+              "page": 29
             }
           },
           "gate": {
@@ -235,7 +238,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Adjective degrees",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-07?day=thu&step=w07_d04_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -254,7 +257,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 7
+              "unit": 7,
+              "page": 30
             }
           },
           "gate": {
@@ -306,7 +310,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Adjective degrees",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-07?day=fri&step=w07_d05_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -325,7 +329,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 7
+              "unit": 7,
+              "page": 31
             }
           },
           "gate": {
@@ -377,7 +382,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Adjective degrees",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-07?day=sat&step=w07_d06_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -396,7 +401,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 7
+              "unit": 7,
+              "page": 32
             }
           },
           "gate": {
@@ -448,7 +454,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Adjective degrees",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-07?day=sun&step=w07_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -467,7 +473,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "American English File 2",
-              "unit": 7
+              "unit": 7,
+              "page": 33
             }
           },
           "gate": {
