@@ -349,3 +349,16 @@ Resultado Sprint 0: base arquitectonica cerrada. El quality gate de contenido si
 - `guides/backlog/agents/S1_AGENT_ASSIGNMENT_WAVE1.md`
 - `scripts/bootstrap_parallel_agents_s1_wave1.sh`
 - `scripts/parallel_status_s1_wave1.sh`
+
+## 14) Progress checkpoint after S1 Wave-1
+
+Date: 2026-02-10
+
+- Parallel execution completed for `S1-W1-01..S1-W1-09`.
+- Canonical audit improved from `P0=63` to `P0=46`.
+- Wave-1 queue IDs marked `DONE`: `P0-001..P0-010`, `P0-015`, `P0-044..P0-048`, `P0-063`.
+
+Current priority to continue development phases:
+1. Close remaining P0 (46) in S1/S2 before feature expansion.
+2. Then run P1 tracks in parallel (frontend data wiring + curriculum dedup + prompt/content quality).
+3. Keep release strict gate (`P0=0`) reserved for pre-release dispatch.

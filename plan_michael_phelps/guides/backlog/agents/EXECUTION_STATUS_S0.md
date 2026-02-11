@@ -45,3 +45,6 @@ Validation evidence:
 - `node --test app/web/js/tests/main_bootstrap.test.mjs`
 - `python3 scripts/audit_english_sprint.py --repo-root /Users/dfernandez/code/ingles/plan_michael_phelps`
 - Playwright smoke screenshot after boot (`app-shell` visible).
+
+S1 continuation evidence:
+- `guides/backlog/agents/EXECUTION_STATUS_S1_WAVE1.md` (Wave-1 executed, P0 reduced to 46).

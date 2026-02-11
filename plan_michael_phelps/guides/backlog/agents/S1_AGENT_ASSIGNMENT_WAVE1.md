@@ -10,15 +10,15 @@ Objective: execute Wave-1 P0 remediation in parallel with strict file ownership 
 
 | Lane | Agent | Queue IDs | File Ownership | Priority | Status |
 |---|---|---|---|---|---|
-| `S1-W1-01` | `Agent-S1-01` | `P0-001` | `learning/content/week16.v4.json` | Highest | `READY` |
-| `S1-W1-02` | `Agent-S1-02` | `P0-002` | `learning/content/week17.v4.json` | Highest | `READY` |
-| `S1-W1-03` | `Agent-S1-03` | `P0-003` | `learning/content/week18.v4.json` | Highest | `READY` |
-| `S1-W1-04` | `Agent-S1-04` | `P0-004` | `learning/content/week19.v4.json` | Highest | `READY` |
-| `S1-W1-05` | `Agent-S1-05` | `P0-005` | `learning/content/week20.v4.json` | Highest | `READY` |
-| `S1-W1-06` | `Agent-S1-06` | `P0-015`, `P0-063` | `learning/content/week10.v4.json` | Highest | `READY` |
-| `S1-W1-07` | `Agent-S1-07` | `P0-006`, `P0-044` | `learning/content/week01.v4.json` | Highest | `READY` |
-| `S1-W1-08` | `Agent-S1-08` | `P0-007`, `P0-045` | `learning/content/week02.v4.json` | Highest | `READY` |
-| `S1-W1-09` | `Agent-S1-09` | `P0-008..P0-010`, `P0-046..P0-048` | `learning/content/week03.v4.json`, `learning/content/week04.v4.json`, `learning/content/week05.v4.json` | Highest | `READY` |
+| `S1-W1-01` | `Agent-S1-01` | `P0-001` | `learning/content/week16.v4.json` | Highest | `DONE` |
+| `S1-W1-02` | `Agent-S1-02` | `P0-002` | `learning/content/week17.v4.json` | Highest | `DONE` |
+| `S1-W1-03` | `Agent-S1-03` | `P0-003` | `learning/content/week18.v4.json` | Highest | `DONE` |
+| `S1-W1-04` | `Agent-S1-04` | `P0-004` | `learning/content/week19.v4.json` | Highest | `DONE` |
+| `S1-W1-05` | `Agent-S1-05` | `P0-005` | `learning/content/week20.v4.json` | Highest | `DONE` |
+| `S1-W1-06` | `Agent-S1-06` | `P0-015`, `P0-063` | `learning/content/week10.v4.json` | Highest | `DONE` |
+| `S1-W1-07` | `Agent-S1-07` | `P0-006`, `P0-044` | `learning/content/week01.v4.json` | Highest | `DONE` |
+| `S1-W1-08` | `Agent-S1-08` | `P0-007`, `P0-045` | `learning/content/week02.v4.json` | Highest | `DONE` |
+| `S1-W1-09` | `Agent-S1-09` | `P0-008..P0-010`, `P0-046..P0-048` | `learning/content/week03.v4.json`, `learning/content/week04.v4.json`, `learning/content/week05.v4.json` | Highest | `DONE` |
 
 ## Integration Order
 
