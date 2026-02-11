@@ -3,6 +3,7 @@ import { getProgramContext } from "../content/day_model.js";
 import { createHashRouter } from "../routing/hash_router.js";
 import { orchestrator } from "./orchestrator.js";
 import { createTelemetrySink } from "./telemetry_sink.js";
+import { deriveJourneySnapshot, evaluateRuntimeGuard } from "./runtime_flow.js";
 import { SessionWizard } from "../ui/session_wizard.js";
 import { LearningShell } from "../ui/learning_shell.js";
 
@@ -100,6 +101,15 @@ function emitTelemetryDocumentEvent(documentRef, event) {
   documentRef.dispatchEvent(new CustomEvent("runtime:telemetry", { detail: event }));
 }
 
+function isGuardRedirect(guard, routeId) {
+  return Boolean(
+    guard &&
+    guard.level === "warning" &&
+    guard.recommendedRouteId &&
+    guard.recommendedRouteId !== routeId
+  );
+}
+
 export async function bootstrapV4({
   documentRef = document,
   windowRef = window,
@@ -128,6 +138,41 @@ export async function bootstrapV4({
     console.info("[V4 telemetry]", payload);
     emitTelemetryDocumentEvent(documentRef, payload);
     return payload;
+  };
+
+  const getJourneyState = () => {
+    const session = buildSessionSnapshot(orchestrator);
+    const journey = deriveJourneySnapshot(orchestrator);
+    return {
+      ...journey,
+      session
+    };
+  };
+
+  const applyRouteGuard = ({ routeId, source = "runtime" } = {}) => {
+    const journey = getJourneyState();
+    const guard = evaluateRuntimeGuard({ routeId, journey });
+
+    if (shell && typeof shell.setFlowStatus === "function") {
+      shell.setFlowStatus(guard);
+    }
+
+    if (!isGuardRedirect(guard, routeId) || !hashRouter) {
+      return { redirected: false, guard };
+    }
+
+    publishTelemetry({
+      event: "runtime_route_guard_redirect",
+      metadata: {
+        from_route: routeId,
+        to_route: guard.recommendedRouteId,
+        source
+      }
+    });
+
+    routeSource = "guard_redirect";
+    hashRouter.navigate(guard.recommendedRouteId, { replace: true });
+    return { redirected: true, guard };
   };
 
   try {
@@ -195,11 +240,19 @@ export async function bootstrapV4({
       activeDayContent: resolvedDay.dayContent,
       fallbackNotice: resolvedDay.fallbackNotice,
       getSessionSnapshot: () => buildSessionSnapshot(orchestrator),
+      getJourneyState,
       onNavigateRoute: ({ routeId, source }) => {
-        routeSource = source || "shell_nav";
-        if (hashRouter) {
-          hashRouter.navigate(routeId);
+        if (!hashRouter) {
+          return;
         }
+
+        routeSource = source || "shell_nav";
+        const guardResult = applyRouteGuard({ routeId, source: routeSource });
+        if (guardResult.redirected) {
+          return;
+        }
+
+        hashRouter.navigate(routeId);
       },
       onViewChange: ({ viewId }) => {
         if (viewId === "sesion" && wizard) {
@@ -216,6 +269,12 @@ export async function bootstrapV4({
     hashRouter = createHashRouter({
       windowRef,
       onRouteChange: (routeState) => {
+        const source = routeState.redirectedFromLegacy ? "legacy_redirect" : routeSource;
+        const guardResult = applyRouteGuard({ routeId: routeState.routeId, source });
+        if (guardResult.redirected) {
+          return;
+        }
+
         const fromRoute = currentRouteId;
         currentRouteId = routeState.routeId;
         shell?.setRoute(routeState.routeId);
@@ -225,7 +284,8 @@ export async function bootstrapV4({
           metadata: {
             from_route: fromRoute,
             to_route: routeState.routeId,
-            source: routeState.redirectedFromLegacy ? "legacy_redirect" : routeSource
+            source,
+            guard_level: guardResult.guard?.level || "none"
           }
         });
 

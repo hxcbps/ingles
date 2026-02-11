@@ -101,6 +101,8 @@ export class LearningShell {
     this.onViewChange = context.onViewChange || (() => { });
     this.onNavigateRoute = context.onNavigateRoute || (() => { });
     this.getSessionSnapshot = context.getSessionSnapshot || (() => ({}));
+    this.getJourneyState = context.getJourneyState || (() => ({}));
+    this.flowStatus = { level: "none", message: "" };
     this.handleClick = null;
   }
 
@@ -124,6 +126,58 @@ export class LearningShell {
     }
 
     this.updateActiveState(viewId);
+  }
+
+  setFlowStatus(status = {}) {
+    const safe = status && typeof status === "object" ? status : {};
+    this.flowStatus = {
+      level: safe.level || "none",
+      message: safe.message || ""
+    };
+  }
+
+  getJourneyStateSafe() {
+    const fallbackSession = this.getSessionSnapshotSafe();
+    const raw = this.getJourneyState() || {};
+
+    const checklistRaw = raw.checklist && typeof raw.checklist === "object" ? raw.checklist : {};
+    const stageRaw = raw.stage && typeof raw.stage === "object" ? raw.stage : {};
+    const guardRaw = raw.guard && typeof raw.guard === "object" ? raw.guard : this.flowStatus;
+    const primaryRaw = raw.primary && typeof raw.primary === "object" ? raw.primary : {};
+    const sessionRaw = raw.session && typeof raw.session === "object" ? raw.session : {};
+
+    const session = {
+      ...fallbackSession,
+      ...sessionRaw,
+      progressPct: clampPercent(sessionRaw.progressPct ?? fallbackSession.progressPct)
+    };
+
+    const stageFallbackReady = session.progressPct >= 100;
+
+    return {
+      checklist: {
+        listening: Boolean(checklistRaw.listening),
+        speaking: Boolean(checklistRaw.speaking),
+        reading: Boolean(checklistRaw.reading),
+        writing: Boolean(checklistRaw.writing),
+        evidence: Boolean(checklistRaw.evidence)
+      },
+      stage: {
+        closureReady: stageRaw.closureReady !== undefined ? Boolean(stageRaw.closureReady) : stageFallbackReady,
+        evidenceReady: stageRaw.evidenceReady !== undefined ? Boolean(stageRaw.evidenceReady) : stageFallbackReady,
+        evaluationReady: stageRaw.evaluationReady !== undefined ? Boolean(stageRaw.evaluationReady) : stageFallbackReady
+      },
+      primary: {
+        completed: Number(primaryRaw.completed) || 0,
+        total: Number(primaryRaw.total) || session.totalSteps || 0
+      },
+      nextRecommendedRoute: typeof raw.nextRecommendedRoute === "string" ? raw.nextRecommendedRoute : "sesion",
+      guard: {
+        level: guardRaw.level || "none",
+        message: guardRaw.message || ""
+      },
+      session
+    };
   }
 
   navigateTo(viewId, source = "shell") {
@@ -513,6 +567,8 @@ export class LearningShell {
                     </button>
                   </div>
 
+                  ${this.renderFlowStatusBanner()}
+
                   <!-- The Views will be injected here (Hoy, Session, Modules) -->
                   <!-- We wrap them in specific containers to match the new styling -->
                   <div class="view-container" data-view-panel="hoy" ${this.activeView !== "hoy" ? "hidden" : ""}>
@@ -765,25 +821,87 @@ export class LearningShell {
     `;
   }
 
+  renderFlowStatusBanner() {
+    const journey = this.getJourneyStateSafe();
+    const message = journey.guard?.message || "";
+    if (!message) {
+      return "";
+    }
+
+    const title = journey.guard.level === "warning" ? "Ruta guiada" : "Estado de navegacion";
+
+    return `
+      <article class="modules-intro-card">
+        <p class="section-kicker">Navegacion</p>
+        <h4>${escapeHTML(title)}</h4>
+        <p class="muted-text">${escapeHTML(message)}</p>
+      </article>
+    `;
+  }
+
   renderClosureView() {
+    const journey = this.getJourneyStateSafe();
+    const checklist = journey.checklist;
+
+    const checklistRows = [
+      ["listening", "Listening"],
+      ["speaking", "Speaking"],
+      ["reading", "Reading"],
+      ["writing", "Writing"],
+      ["evidence", "Evidencia"]
+    ]
+      .map(([key, label]) => {
+        const done = Boolean(checklist[key]);
+        return `<li><span>${escapeHTML(label)}</span><strong>${done ? "OK" : "Pendiente"}</strong></li>`;
+      })
+      .join("");
+
+    const nextAction = journey.stage.closureReady
+      ? { route: "evaluacion", label: "Ir a evaluacion" }
+      : { route: "sesion", label: "Completar sesion" };
+
     return `
       <article class="modules-intro-card">
         <p class="section-kicker">Cierre diario</p>
         <h4>Consolidacion y checklist</h4>
-        <p class="muted-text">Revisa los bloques ejecutados, documenta evidencia y confirma el plan de cierre antes de evaluar.</p>
+        <p class="muted-text">${journey.stage.closureReady
+          ? "Checklist base completado. Puedes pasar a evaluacion cuando registres evidencia."
+          : "Aun faltan bloques base de ejecucion. Completa sesion antes de cierre."}</p>
+
+        <div class="modules-rhythm">
+          <h5>Checklist de continuidad</h5>
+          <ul>${checklistRows}</ul>
+        </div>
+
+        <button data-shell-route="${nextAction.route}" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition-colors" type="button">
+          ${nextAction.label}
+        </button>
       </article>
     `;
   }
 
   renderEvaluationView() {
-    const snapshot = this.getSessionSnapshot();
-    const progress = Number(snapshot.progressPct) || 0;
+    const journey = this.getJourneyStateSafe();
+    const progress = Number(journey.session.progressPct) || 0;
+
+    const nextAction = journey.stage.evaluationReady
+      ? { route: "evaluacion", label: "Evaluacion habilitada" }
+      : journey.stage.closureReady
+        ? { route: "cierre", label: "Completar evidencia" }
+        : { route: "sesion", label: "Completar sesion" };
 
     return `
       <article class="modules-intro-card">
         <p class="section-kicker">Evaluacion</p>
         <h4>Control de calidad de la sesion</h4>
-        <p class="muted-text">Estado actual: ${escapeHTML(snapshot.status || "locked")} | Avance: ${Math.max(0, Math.min(100, progress))}%</p>
+        <p class="muted-text">Estado: ${escapeHTML(journey.session.status || "locked")} | Avance: ${Math.max(0, Math.min(100, progress))}%</p>
+        <p class="muted-text">${journey.stage.evaluationReady
+          ? "Todo listo para evaluar el dia."
+          : "La evaluacion se habilita al cerrar sesion y registrar evidencia."}</p>
+
+        <button data-shell-route="${nextAction.route}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2 rounded-xl text-sm font-bold transition-colors" type="button" ${nextAction.route === "evaluacion" ? "disabled" : ""}>
+          ${nextAction.label}
+        </button>
       </article>
     `;
   }
@@ -792,12 +910,33 @@ export class LearningShell {
     const activeWeek = this.getActiveWeekNumber();
     const totalWeeks = Number(this.program?.programWeeks) || 20;
     const pct = Math.max(0, Math.min(100, Math.round((activeWeek / totalWeeks) * 100)));
+    const journey = this.getJourneyStateSafe();
+    const modulePlan = this.buildModulePlan();
+
+    const completedModules = modulePlan.filter((module) => module.state === "completed").length;
+    const activeModule = modulePlan.find((module) => module.state === "active")?.title || "Sin modulo activo";
+
+    const flowRows = [
+      ["Hoy", true],
+      ["Sesion", journey.session.progressPct > 0],
+      ["Cierre", journey.stage.closureReady],
+      ["Evaluacion", journey.stage.evaluationReady]
+    ]
+      .map(([label, done]) => `<li><span>${label}</span><strong>${done ? "Listo" : "Pendiente"}</strong></li>`)
+      .join("");
 
     return `
       <article class="modules-intro-card">
         <p class="section-kicker">Progreso</p>
         <h4>Ruta semanal 0 -> B2</h4>
         <p class="muted-text">Semana activa: ${escapeHTML(formatWeekLabel(String(activeWeek)))} de ${totalWeeks}. Progreso estimado: ${pct}%.</p>
+
+        <div class="modules-rhythm">
+          <h5>Continuidad de navegacion</h5>
+          <ul>${flowRows}</ul>
+        </div>
+
+        <p class="muted-text">Modulo activo: ${escapeHTML(activeModule)} | Modulos completados: ${completedModules}/${modulePlan.length || 0}.</p>
       </article>
     `;
   }
@@ -1015,6 +1154,15 @@ export class LearningShell {
         return;
       }
 
+      const routeBtn = e.target.closest("[data-shell-route]");
+      if (routeBtn) {
+        const routeId = routeBtn.dataset.shellRoute;
+        if (VIEW_META[routeId]) {
+          this.navigateTo(routeId, "journey_cta");
+        }
+        return;
+      }
+
       const actionBtn = e.target.closest("[data-shell-action]");
       if (!actionBtn) {
         return;
@@ -1028,6 +1176,16 @@ export class LearningShell {
 
       if (action === "open-roadmap") {
         this.navigateTo("modulos", "hero_cta");
+        return;
+      }
+
+      if (action === "open-closure") {
+        this.navigateTo("cierre", "hero_cta");
+        return;
+      }
+
+      if (action === "open-evaluation") {
+        this.navigateTo("evaluacion", "hero_cta");
       }
     };
 
