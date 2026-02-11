@@ -22,7 +22,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-18?day=mon&step=w18_d01_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -41,7 +41,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "Speakout Upper Intermediate",
-              "unit": 18
+              "unit": 18,
+              "page": 38
             }
           },
           "gate": {
@@ -93,7 +94,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-18?day=tue&step=w18_d02_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -112,7 +113,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "Speakout Upper Intermediate",
-              "unit": 18
+              "unit": 18,
+              "page": 39
             }
           },
           "gate": {
@@ -164,7 +166,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-18?day=wed&step=w18_d03_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -183,7 +185,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "Speakout Upper Intermediate",
-              "unit": 18
+              "unit": 18,
+              "page": 40
             }
           },
           "gate": {
@@ -235,7 +238,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-18?day=thu&step=w18_d04_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -254,7 +257,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "Speakout Upper Intermediate",
-              "unit": 18
+              "unit": 18,
+              "page": 41
             }
           },
           "gate": {
@@ -306,7 +310,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-18?day=fri&step=w18_d05_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -325,7 +329,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "Speakout Upper Intermediate",
-              "unit": 18
+              "unit": 18,
+              "page": 42
             }
           },
           "gate": {
@@ -377,7 +382,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-18?day=sat&step=w18_d06_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -396,7 +401,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "Speakout Upper Intermediate",
-              "unit": 18
+              "unit": 18,
+              "page": 43
             }
           },
           "gate": {
@@ -448,7 +454,7 @@
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
-            "url": "https://youtube.com/..."
+            "url": "https://learnenglish.britishcouncil.org/skills/listening/week-18?day=sun&step=w18_d07_s01&field=url"
           },
           "gate": {
             "type": "timer_complete",
@@ -467,7 +473,8 @@
             "instructions": "Complete Exercises in Unit.",
             "resource_locator": {
               "book": "Speakout Upper Intermediate",
-              "unit": 18
+              "unit": 18,
+              "page": 44
             }
           },
           "gate": {
