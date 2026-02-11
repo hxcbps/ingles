@@ -48,3 +48,4 @@ Validation evidence:
 
 S1 continuation evidence:
 - `guides/backlog/agents/EXECUTION_STATUS_S1_WAVE1.md` (Wave-1 executed, P0 reduced to 46).
+- `guides/backlog/agents/EXECUTION_STATUS_S1_WAVE2.md` (Wave-2 executed, P0 reached zero).
