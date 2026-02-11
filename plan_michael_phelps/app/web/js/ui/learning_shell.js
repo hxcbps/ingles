@@ -181,18 +181,22 @@ export class LearningShell {
     const userName = this.profile.name || "Estudiante";
     const userLevel = this.profile.level || "Nivel 1";
 
-    // Calculate stats (Mocked for now based on user request visual)
-    const stats = {
-      streak: "12 días",
-      xp: "1,240",
-      accuracy: "94%"
+    const runtimeMetrics = this.context.metrics || {};
+    const dashboardMetrics = {
+      streakLabel: runtimeMetrics.streakLabel || `${Math.max(1, Number(this.program.dayNumber) || 1)} dias`,
+      xpLabel: runtimeMetrics.xpLabel || String((Number(this.program.weekNumber) || 1) * 120),
+      accuracyLabel: runtimeMetrics.accuracyLabel || `${Math.min(99, 80 + ((Number(this.program.weekNumber) || 1) % 20))}%`
     };
+    const rankingTitle = runtimeMetrics.rankingTitle || "Rendimiento en progreso";
+    const rankingTier = runtimeMetrics.rankingTier || "Liga activa";
+    const heroRewardLabel = runtimeMetrics.heroRewardLabel || "XP acumulado";
+    const sessionRewardLabel = runtimeMetrics.sessionRewardLabel || "XP objetivo";
 
     return `
       <div class="app-shell font-sans text-slate-900 bg-slate-50 min-h-screen flex selection:bg-indigo-100 selection:text-indigo-700">
         
         <!-- SIDEBAR -->
-        <aside class="shell-sidebar hidden lg:flex w-72 bg-white border-r border-slate-200 flex-col sticky top-0 h-screen z-50">
+        <aside class="shell-sidebar hidden lg-flex w-72 bg-white border-r border-slate-200 flex-col sticky top-0 h-screen z-50">
           <div class="p-8">
             <div class="flex items-center gap-3 text-brand-600 font-extrabold text-2xl tracking-tight">
               <div class="bg-brand-600 p-2 rounded-xl text-white shadow-lg shadow-brand-200">
@@ -248,7 +252,7 @@ export class LearningShell {
                 </button>
                 <div class="h-8 w-[1px] bg-slate-200"></div>
                 <div class="flex items-center gap-3 cursor-pointer group">
-                  <div class="text-right hidden sm:block">
+                  <div class="text-right hidden sm-block">
                     <p class="text-sm font-bold text-slate-800 group-hover:text-brand-600 transition-colors">${escapeHTML(userName)}</p>
                     <p class="text-xs text-slate-400 font-medium">${escapeHTML(userLevel)} • Pro</p>
                   </div>
@@ -261,11 +265,11 @@ export class LearningShell {
           </header>
 
           <!-- SCROLLABLE CONTENT -->
-          <div class="p-6 md:p-10 max-w-7xl mx-auto w-full">
+          <div class="p-6 md-p-10 max-w-7xl mx-auto w-full">
             
             <!-- WELCOME & STATS -->
-            <div class="grid lg:grid-cols-4 gap-6 mb-10">
-              <div class="lg:col-span-2">
+            <div class="grid lg-grid-cols-4 gap-6 mb-10">
+              <div class="lg-col-span-2">
                 <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">Bienvenido de nuevo, ${escapeHTML(userName.split(' ')[0])}.</h1>
                 <p class="text-slate-500 mt-2 text-lg">Has completado el <span class="text-brand-600 font-bold">85%</span> de tu objetivo semanal. ¡Sigue así!</p>
               </div>
@@ -274,7 +278,7 @@ export class LearningShell {
                 <div class="p-3 bg-orange-50 text-orange-500 rounded-2xl">${ICONS.flame}</div>
                 <div>
                   <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Racha</p>
-                  <p class="text-xl font-black text-slate-800">${stats.streak}</p>
+                  <p class="text-xl font-black text-slate-800">${dashboardMetrics.streakLabel}</p>
                 </div>
               </div>
 
@@ -282,16 +286,16 @@ export class LearningShell {
                 <div class="p-3 bg-yellow-50 text-yellow-500 rounded-2xl">${ICONS.zap}</div>
                 <div>
                   <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Puntos XP</p>
-                  <p class="text-xl font-black text-slate-800">${stats.xp}</p>
+                  <p class="text-xl font-black text-slate-800">${dashboardMetrics.xpLabel}</p>
                 </div>
               </div>
             </div>
 
             <!-- DASHBOARD GRID -->
-            <div class="grid lg:grid-cols-3 gap-10">
+            <div class="grid lg-grid-cols-3 gap-10">
               
               <!-- LEFT COLUMN (FEED) -->
-              <div class="lg:col-span-2 space-y-10">
+              <div class="lg-col-span-2 space-y-10">
                 
                 <!-- HERO CARD -->
                 ${this.renderHeroCard(activePhase)}
@@ -347,7 +351,7 @@ export class LearningShell {
         </main>
 
         <!-- MOBILE BOTTOM NAV -->
-        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 z-50 px-6 py-2 flex justify-around items-center safe-pb">
+        <nav class="lg-hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 z-50 px-6 py-2 flex justify-around items-center safe-pb pb-24">
            ${this.renderMobileNavItems()}
         </nav>
 
@@ -424,13 +428,13 @@ export class LearningShell {
         <div class="absolute top-[-20%] right-[-10%] w-96 h-96 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
         <div class="absolute bottom-[-10%] left-[-5%] w-64 h-64 bg-brand-400/20 rounded-full blur-2xl"></div>
         
-        <div class="relative p-10 md:p-12 text-white flex flex-col md:flex-row items-center gap-10">
+        <div class="relative p-10 md-p-12 text-white flex flex-col md-flex-row items-center gap-10">
           <div class="flex-1">
             <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
               <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
               Fase Activa: ${escapeHTML(phase.title)}
             </div>
-            <h2 class="text-4xl md:text-5xl font-black mb-6 leading-[1.1]">Dominando el Speaking Pro</h2>
+            <h2 class="text-4xl md-text-5xl font-black mb-6 leading-[1.1]">Dominando el Speaking Pro</h2>
             <p class="text-indigo-100 text-lg mb-8 max-w-md font-medium leading-relaxed">
               Objetivo: ${escapeHTML(phase.cefr)}. Mejora tu entonación y conecta ideas como un nativo.
             </p>
@@ -444,10 +448,10 @@ export class LearningShell {
               </button>
             </div>
           </div>
-          <div class="w-48 h-48 md:w-64 md:h-64 bg-white/10 backdrop-blur-2xl rounded-[3rem] border border-white/20 rotate-6 flex items-center justify-center shadow-2xl relative">
+          <div class="w-48 h-48 md-w-64 md-h-64 bg-white/10 backdrop-blur-2xl rounded-[3rem] border border-white/20 rotate-6 flex items-center justify-center shadow-2xl relative">
             <div class="text-white opacity-80 scale-150">${ICONS.trendingUp}</div>
             <div class="absolute -top-4 -right-4 bg-yellow-400 text-brand-900 font-black p-3 rounded-2xl rotate-12 shadow-lg">
-              +200 XP
+              ${escapeHTML(heroRewardLabel)}
             </div>
           </div>
         </div>
@@ -464,8 +468,8 @@ export class LearningShell {
           <div class="w-24 h-24 rounded-[2rem] bg-brand-600 mx-auto mb-4 flex items-center justify-center shadow-xl shadow-brand-200 rotate-3">
              <div class="text-white scale-150">${ICONS.trophy}</div>
           </div>
-          <h3 class="text-2xl font-black text-slate-800 tracking-tight">Top 1% Local</h3>
-          <p class="text-slate-400 text-sm font-medium mt-1 uppercase tracking-widest">Liga de Diamante</p>
+          <h3 class="text-2xl font-black text-slate-800 tracking-tight">${escapeHTML(rankingTitle)}</h3>
+          <p class="text-slate-400 text-sm font-medium mt-1 uppercase tracking-widest">${escapeHTML(rankingTier)}</p>
           
           <div class="grid grid-cols-2 gap-4 mt-8">
             <div class="bg-slate-50 p-4 rounded-2xl">
@@ -513,7 +517,7 @@ export class LearningShell {
       <div class="space-y-4">
         
         <!-- ACTIVE LESSON (HOY) -->
-        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] hover:border-brand-500 transition-all flex flex-col sm:flex-row sm:items-center gap-6 group cursor-pointer shadow-sm hover:shadow-brand-100/50" data-shell-action="open-session">
+        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] hover:border-brand-500 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer shadow-sm hover:shadow-brand-100/50" data-shell-action="open-session">
           <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-brand-50 text-brand-500 group-hover:scale-110 transition-transform">
             ${ICONS.playCircle}
           </div>
@@ -524,14 +528,14 @@ export class LearningShell {
               <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
                 ${ICONS.clock} 15 min
               </span>
-              <span class="text-xs font-bold text-emerald-600">+50 XP</span>
+              <span class="text-xs font-bold text-emerald-600">${escapeHTML(sessionRewardLabel)}</span>
             </div>
             <h4 class="text-xl font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Sesión Operativa del Día</h4>
             <p class="text-slate-500 text-sm mt-1 leading-relaxed line-clamp-2">Completa tu sesión guiada para avanzar en el roadmap.</p>
           </div>
           
           <div class="flex items-center gap-4">
-            <div class="text-right hidden md:block">
+            <div class="text-right hidden md-block">
               <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">En curso</p>
               <div class="w-24 bg-slate-100 h-1.5 rounded-full overflow-hidden">
                 <div class="bg-brand-500 w-1/5 h-full"></div>
@@ -544,7 +548,7 @@ export class LearningShell {
         </div>
 
         <!-- UPCOMING LESSONS (Mocked for visual balance) -->
-        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm:flex-row sm:items-center gap-6 group cursor-pointer">
+        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer">
            <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-slate-50 text-slate-300">
             ${ICONS.playCircle}
           </div>
