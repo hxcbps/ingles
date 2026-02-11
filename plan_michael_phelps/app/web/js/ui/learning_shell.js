@@ -171,6 +171,19 @@ export class LearningShell {
     document.dispatchEvent(event);
   }
 
+  getDashboardMetrics() {
+    const runtimeMetrics = this.context.metrics || {};
+    return {
+      streakLabel: runtimeMetrics.streakLabel || `${Math.max(1, Number(this.program.dayNumber) || 1)} dias`,
+      xpLabel: runtimeMetrics.xpLabel || String((Number(this.program.weekNumber) || 1) * 120),
+      accuracyLabel: runtimeMetrics.accuracyLabel || `${Math.min(99, 80 + ((Number(this.program.weekNumber) || 1) % 20))}%`,
+      rankingTitle: runtimeMetrics.rankingTitle || "Rendimiento en progreso",
+      rankingTier: runtimeMetrics.rankingTier || "Liga activa",
+      heroRewardLabel: runtimeMetrics.heroRewardLabel || "XP acumulado",
+      sessionRewardLabel: runtimeMetrics.sessionRewardLabel || "XP objetivo"
+    };
+  }
+
   renderLayout(state) {
     const activePhase = this.program.phases?.find((p) => p.id === this.profile.progress?.phase_id) || {
       title: "Foundation",
@@ -181,16 +194,7 @@ export class LearningShell {
     const userName = this.profile.name || "Estudiante";
     const userLevel = this.profile.level || "Nivel 1";
 
-    const runtimeMetrics = this.context.metrics || {};
-    const dashboardMetrics = {
-      streakLabel: runtimeMetrics.streakLabel || `${Math.max(1, Number(this.program.dayNumber) || 1)} dias`,
-      xpLabel: runtimeMetrics.xpLabel || String((Number(this.program.weekNumber) || 1) * 120),
-      accuracyLabel: runtimeMetrics.accuracyLabel || `${Math.min(99, 80 + ((Number(this.program.weekNumber) || 1) % 20))}%`
-    };
-    const rankingTitle = runtimeMetrics.rankingTitle || "Rendimiento en progreso";
-    const rankingTier = runtimeMetrics.rankingTier || "Liga activa";
-    const heroRewardLabel = runtimeMetrics.heroRewardLabel || "XP acumulado";
-    const sessionRewardLabel = runtimeMetrics.sessionRewardLabel || "XP objetivo";
+    const metrics = this.getDashboardMetrics();
 
     return `
       <div class="app-shell font-sans text-slate-900 bg-slate-50 min-h-screen flex selection:bg-indigo-100 selection:text-indigo-700">
@@ -278,7 +282,7 @@ export class LearningShell {
                 <div class="p-3 bg-orange-50 text-orange-500 rounded-2xl">${ICONS.flame}</div>
                 <div>
                   <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Racha</p>
-                  <p class="text-xl font-black text-slate-800">${dashboardMetrics.streakLabel}</p>
+                  <p class="text-xl font-black text-slate-800">${metrics.streakLabel}</p>
                 </div>
               </div>
 
@@ -286,7 +290,7 @@ export class LearningShell {
                 <div class="p-3 bg-yellow-50 text-yellow-500 rounded-2xl">${ICONS.zap}</div>
                 <div>
                   <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Puntos XP</p>
-                  <p class="text-xl font-black text-slate-800">${dashboardMetrics.xpLabel}</p>
+                  <p class="text-xl font-black text-slate-800">${metrics.xpLabel}</p>
                 </div>
               </div>
             </div>
@@ -298,7 +302,7 @@ export class LearningShell {
               <div class="lg-col-span-2 space-y-10">
                 
                 <!-- HERO CARD -->
-                ${this.renderHeroCard(activePhase)}
+                ${this.renderHeroCard(activePhase, metrics)}
 
                 <!-- WORKSPACE AREA (Dynamic View Content) -->
                 <section id="shell-workspace" class="workspace-area">
@@ -315,7 +319,7 @@ export class LearningShell {
                   <!-- The Views will be injected here (Hoy, Session, Modules) -->
                   <!-- We wrap them in specific containers to match the new styling -->
                   <div class="view-container" data-view-panel="hoy" ${this.activeView !== "hoy" ? "hidden" : ""}>
-                     ${this.renderTodayView()}
+                     ${this.renderTodayView(metrics)}
                   </div>
 
                   <div class="view-container" data-view-panel="sesion" ${this.activeView !== "sesion" ? "hidden" : ""}>
@@ -343,7 +347,7 @@ export class LearningShell {
 
               <!-- RIGHT COLUMN (WIDGETS) -->
               <aside class="space-y-10">
-                ${this.renderWidgets()}
+                ${this.renderWidgets(metrics)}
               </aside>
 
             </div>
@@ -420,7 +424,7 @@ export class LearningShell {
     }).join("");
   }
 
-  renderHeroCard(phase) {
+  renderHeroCard(phase, metrics = this.getDashboardMetrics()) {
     return `
       <section class="relative rounded-[2.5rem] overflow-hidden group">
         <div class="absolute inset-0 bg-gradient-to-r from-brand-700 via-brand-600 to-violet-600"></div>
@@ -451,7 +455,7 @@ export class LearningShell {
           <div class="w-48 h-48 md-w-64 md-h-64 bg-white/10 backdrop-blur-2xl rounded-[3rem] border border-white/20 rotate-6 flex items-center justify-center shadow-2xl relative">
             <div class="text-white opacity-80 scale-150">${ICONS.trendingUp}</div>
             <div class="absolute -top-4 -right-4 bg-yellow-400 text-brand-900 font-black p-3 rounded-2xl rotate-12 shadow-lg">
-              ${escapeHTML(heroRewardLabel)}
+              ${escapeHTML(metrics.heroRewardLabel)}
             </div>
           </div>
         </div>
@@ -459,7 +463,7 @@ export class LearningShell {
     `;
   }
 
-  renderWidgets() {
+  renderWidgets(metrics = this.getDashboardMetrics()) {
     return `
       <!-- PROFILE CARD -->
       <div class="bg-white border border-slate-200 p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden">
@@ -468,8 +472,8 @@ export class LearningShell {
           <div class="w-24 h-24 rounded-[2rem] bg-brand-600 mx-auto mb-4 flex items-center justify-center shadow-xl shadow-brand-200 rotate-3">
              <div class="text-white scale-150">${ICONS.trophy}</div>
           </div>
-          <h3 class="text-2xl font-black text-slate-800 tracking-tight">${escapeHTML(rankingTitle)}</h3>
-          <p class="text-slate-400 text-sm font-medium mt-1 uppercase tracking-widest">${escapeHTML(rankingTier)}</p>
+          <h3 class="text-2xl font-black text-slate-800 tracking-tight">${escapeHTML(metrics.rankingTitle)}</h3>
+          <p class="text-slate-400 text-sm font-medium mt-1 uppercase tracking-widest">${escapeHTML(metrics.rankingTier)}</p>
           
           <div class="grid grid-cols-2 gap-4 mt-8">
             <div class="bg-slate-50 p-4 rounded-2xl">
@@ -511,7 +515,7 @@ export class LearningShell {
     `;
   }
 
-  renderTodayView() {
+  renderTodayView(metrics = this.getDashboardMetrics()) {
     // Replicating the 'Card' style for the lesson list, but adapting logic
     return `
       <div class="space-y-4">
@@ -528,7 +532,7 @@ export class LearningShell {
               <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
                 ${ICONS.clock} 15 min
               </span>
-              <span class="text-xs font-bold text-emerald-600">${escapeHTML(sessionRewardLabel)}</span>
+              <span class="text-xs font-bold text-emerald-600">${escapeHTML(metrics.sessionRewardLabel)}</span>
             </div>
             <h4 class="text-xl font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Sesión Operativa del Día</h4>
             <p class="text-slate-500 text-sm mt-1 leading-relaxed line-clamp-2">Completa tu sesión guiada para avanzar en el roadmap.</p>
