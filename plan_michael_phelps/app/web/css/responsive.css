@@ -1,73 +1,74 @@
-@media (max-width: 1280px) {
-  .method-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .week-catalog-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .book-grid.book-grid-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 1100px) {
-  .learning-shell {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .shell-sidebar {
-    position: static;
-    height: auto;
-    max-height: none;
-    box-shadow: var(--shadow-soft);
-  }
-
-  .module-nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .panel-grid-2,
-  .phase-grid,
-  .progress-overview {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
-  .topbar-chip-grid,
-  .day-grid,
-  .metrics-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+/* Responsive contract for utility-like classes used by the shell. */
 
 @media (max-width: 640px) {
   .app-shell-root {
     padding: 0.62rem;
   }
+}
 
-  .module-nav,
-  .topbar-chip-grid,
-  .week-catalog-grid,
-  .day-grid,
-  .metrics-grid,
-  .book-grid,
-  .book-grid.book-grid-3 {
-    grid-template-columns: minmax(0, 1fr);
+@media (min-width: 640px) {
+  .sm-block {
+    display: block !important;
   }
 
-  .button-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
+  .sm-flex-row {
+    flex-direction: row !important;
   }
 
-  .week-controls {
-    align-items: flex-start;
+  .sm-items-center {
+    align-items: center !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .md-block {
+    display: block !important;
   }
 
-  .week-controls select {
-    min-width: 100%;
+  .md-flex-row {
+    flex-direction: row !important;
+  }
+
+  .md-h-64 {
+    height: 16rem !important;
+  }
+
+  .md-p-10 {
+    padding: 2.5rem !important;
+  }
+
+  .md-p-12 {
+    padding: 3rem !important;
+  }
+
+  .md-text-5xl {
+    font-size: 3rem !important;
+    line-height: 1 !important;
+  }
+
+  .md-w-64 {
+    width: 16rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg-flex {
+    display: flex !important;
+  }
+
+  .lg-hidden {
+    display: none !important;
+  }
+
+  .lg-col-span-2 {
+    grid-column: span 2 / span 2 !important;
+  }
+
+  .lg-grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .lg-grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }
