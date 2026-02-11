@@ -18,7 +18,7 @@
           "step_id": "W18_D01_S01",
           "type": "input_video",
           "title": "Concept Input",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
@@ -35,7 +35,7 @@
           "step_id": "W18_D01_S02",
           "type": "textbook_drill",
           "title": "Core Practice",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 60,
           "content": {
             "instructions": "Complete Exercises in Unit.",
@@ -64,7 +64,7 @@
           "step_id": "W18_D01_S03",
           "type": "ai_roleplay",
           "title": "Activation",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 40,
           "content": {
             "instructions": "Discuss Who / Which / That with Coach.",
@@ -89,7 +89,7 @@
           "step_id": "W18_D02_S01",
           "type": "input_video",
           "title": "Concept Input",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
@@ -106,7 +106,7 @@
           "step_id": "W18_D02_S02",
           "type": "textbook_drill",
           "title": "Core Practice",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 60,
           "content": {
             "instructions": "Complete Exercises in Unit.",
@@ -135,7 +135,7 @@
           "step_id": "W18_D02_S03",
           "type": "ai_roleplay",
           "title": "Activation",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 40,
           "content": {
             "instructions": "Discuss Who / Which / That with Coach.",
@@ -160,7 +160,7 @@
           "step_id": "W18_D03_S01",
           "type": "input_video",
           "title": "Concept Input",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
@@ -177,7 +177,7 @@
           "step_id": "W18_D03_S02",
           "type": "textbook_drill",
           "title": "Core Practice",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 60,
           "content": {
             "instructions": "Complete Exercises in Unit.",
@@ -206,7 +206,7 @@
           "step_id": "W18_D03_S03",
           "type": "ai_roleplay",
           "title": "Activation",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 40,
           "content": {
             "instructions": "Discuss Who / Which / That with Coach.",
@@ -231,7 +231,7 @@
           "step_id": "W18_D04_S01",
           "type": "input_video",
           "title": "Concept Input",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
@@ -248,7 +248,7 @@
           "step_id": "W18_D04_S02",
           "type": "textbook_drill",
           "title": "Core Practice",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 60,
           "content": {
             "instructions": "Complete Exercises in Unit.",
@@ -277,7 +277,7 @@
           "step_id": "W18_D04_S03",
           "type": "ai_roleplay",
           "title": "Activation",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 40,
           "content": {
             "instructions": "Discuss Who / Which / That with Coach.",
@@ -302,7 +302,7 @@
           "step_id": "W18_D05_S01",
           "type": "input_video",
           "title": "Concept Input",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
@@ -319,7 +319,7 @@
           "step_id": "W18_D05_S02",
           "type": "textbook_drill",
           "title": "Core Practice",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 60,
           "content": {
             "instructions": "Complete Exercises in Unit.",
@@ -348,7 +348,7 @@
           "step_id": "W18_D05_S03",
           "type": "ai_roleplay",
           "title": "Activation",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 40,
           "content": {
             "instructions": "Discuss Who / Which / That with Coach.",
@@ -373,7 +373,7 @@
           "step_id": "W18_D06_S01",
           "type": "input_video",
           "title": "Concept Input",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
@@ -390,7 +390,7 @@
           "step_id": "W18_D06_S02",
           "type": "textbook_drill",
           "title": "Core Practice",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 60,
           "content": {
             "instructions": "Complete Exercises in Unit.",
@@ -419,7 +419,7 @@
           "step_id": "W18_D06_S03",
           "type": "ai_roleplay",
           "title": "Activation",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 40,
           "content": {
             "instructions": "Discuss Who / Which / That with Coach.",
@@ -444,7 +444,7 @@
           "step_id": "W18_D07_S01",
           "type": "input_video",
           "title": "Concept Input",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 20,
           "content": {
             "instructions": "Watch video about Who / Which / That",
@@ -461,7 +461,7 @@
           "step_id": "W18_D07_S02",
           "type": "textbook_drill",
           "title": "Core Practice",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 60,
           "content": {
             "instructions": "Complete Exercises in Unit.",
@@ -490,7 +490,7 @@
           "step_id": "W18_D07_S03",
           "type": "ai_roleplay",
           "title": "Activation",
-          "difficulty_level": "B1",
+          "difficulty_level": "B2",
           "duration_min": 40,
           "content": {
             "instructions": "Discuss Who / Which / That with Coach.",
