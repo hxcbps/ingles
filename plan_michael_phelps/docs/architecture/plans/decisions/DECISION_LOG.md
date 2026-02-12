@@ -46,3 +46,9 @@ Status: active
 - Context: The `frontend-ux` gate failed in CI with limited diagnostics and predictable runner prerequisite gaps.
 - Decision: Add `Agent Quality Guardian` script and workflow jobs to enforce frontend-ux prerequisites and validate agent-orchestration quality contracts.
 - Consequence: Predictable failures (missing prerequisites, workflow drift, orchestration inconsistencies) are detected early with structured artifacts.
+
+### D-2026-02-12-008
+
+- Context: Product feedback reported low visual impact and unclear navigation even after planning artifacts were created.
+- Decision: Apply an immediate S7 visual hotfix layer (`reboot_s7.css`) plus navigation label clarity and button reset, while keeping Figma-first Wave 1 as the strategic design phase.
+- Consequence: The app gains immediate UX clarity and stronger CTA hierarchy without waiting for full redesign, but token-hardcode debt remains and must be reduced in subsequent implementation waves.

@@ -470,7 +470,7 @@ export class LearningShell {
           </div>
 
           <nav class="flex-1 px-6 space-y-2 mt-4">
-            <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Menú Principal</p>
+            <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Navegacion</p>
             ${this.renderNavItems()}
           </nav>
 
@@ -626,14 +626,15 @@ export class LearningShell {
 
   renderNavItems() {
     return NAV_GROUPS.map((group) => {
+      const heading = group.label || group.groupId;
       const items = VIEW_IDS.filter((viewId) => VIEW_META[viewId]?.group === group.groupId).map((viewId) => {
         const meta = VIEW_META[viewId];
         const isActive = this.activeView === viewId;
-        const iconKey = meta.icon || "layout"; // Add icon keys to view meta later
+        const iconKey = meta.icon || "layout";
         const iconSvg = ICONS[iconKey] || ICONS.layout;
 
         return `
-          <button 
+          <button
             data-view-nav="${viewId}"
             class="flex items-center gap-4 w-full px-4 py-3.5 rounded-2xl transition-all duration-300 group relative ${isActive
             ? 'bg-brand-600 text-white shadow-xl shadow-brand-200'
@@ -651,37 +652,42 @@ export class LearningShell {
         `;
       }).join("");
 
-      return `<div class="nav-group mb-6">${items}</div>`;
+      if (!items) return "";
+
+      return `
+        <section class="nav-group mb-6" aria-label="${escapeHTML(heading)}">
+          <p class="nav-group-label">${escapeHTML(heading)}</p>
+          ${items}
+        </section>
+      `;
     }).join("");
   }
 
   renderMobileNavItems() {
-    // Flatten groups for mobile bar, usually just want key destinations
-    // For now, render all top-level views defined in VIEW_IDS matching the groups
     const mobileViews = VIEW_IDS;
 
-    return mobileViews.map(viewId => {
+    return mobileViews.map((viewId) => {
       const meta = VIEW_META[viewId];
       if (!meta) return "";
+
       const isActive = this.activeView === viewId;
       const iconKey = meta.icon || "layout";
       const iconSvg = ICONS[iconKey] || ICONS.layout;
 
       return `
-        <button 
+        <button
           data-view-nav="${viewId}"
-          class="flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive ? 'text-brand-600' : 'text-slate-400'
-        }"
+          class="flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive ? 'text-brand-600' : 'text-slate-500'}"
         >
           <div class="${isActive ? 'scale-110' : ''} transition-transform">
              ${iconSvg}
           </div>
-          <span class="text-[10px] font-bold mt-1 ${isActive ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'} transition-all">
+          <span class="text-[10px] font-bold mt-1 transition-opacity ${isActive ? 'opacity-100' : 'opacity-75'}">
             ${escapeHTML(meta.label)}
           </span>
-           ${isActive ? '<div class="w-1 h-1 bg-brand-600 rounded-full mt-1"></div>' : ''}
+          <div class="w-1 h-1 rounded-full mt-1 ${isActive ? 'bg-brand-600' : 'bg-slate-300'}"></div>
         </button>
-       `;
+      `;
     }).join("");
   }
 

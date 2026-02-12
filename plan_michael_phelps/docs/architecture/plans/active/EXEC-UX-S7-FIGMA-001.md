@@ -29,7 +29,7 @@ Commands executed:
 
 Result:
 - Gate suite: `PASS` funcional/técnico.
-- UX debt: `WARN` (125 valores de color hard-coded fuera de tokens).
+- UX debt: `WARN` (179 valores de color hard-coded fuera de tokens, incluidos overrides S7).
 - Agent guardian: `PASS` con warnings heredados de assignments antiguos.
 
 ## Findings (severity-first)
@@ -51,13 +51,15 @@ Result:
 | W3 | Publicar assignment multi-agente S7 para diseño en paralelo | Done |
 | W4 | Publicar comandos/scripts de orquestación S7 (`bootstrap`/`status`) | Done |
 | W5 | Ejecutar Wave 1 Figma pages 00-07 | Todo |
-| W6 | Integrar handoff aprobado en ola de implementación frontend | Todo |
+| W6 | Integrar handoff aprobado en ola de implementación frontend | In Progress |
+| W7 | Aplicar hotfix visual inmediato S7 (navegacion, botoneria, shell/wizard cohesion) | Done |
 
 ## Progress Log
 
 - 2026-02-12: Se ejecutaron gates frontend y se confirmó brecha visual (deuda de color hard-coded + inconsistencia shell/sesión).
 - 2026-02-12: Se versionó plan activo S7 Figma-first con ruta de ejecución.
 - 2026-02-12: Se publicaron assignment, launch commands y scripts de worktree para orquestación paralela de agentes.
+- 2026-02-12: Se aplicó hotfix visual S7 en código (reset de botones nativos, sidebar más legible, labels móviles visibles, CTA con mayor jerarquía y cohesión shell/wizard) y se revalidó con gates en verde.
 
 ## Decision Log
 
