@@ -109,6 +109,13 @@ Must work primarily under:
 - `plan_michael_phelps/app/web/css/`
 - `plan_michael_phelps/app/web/js/ui/`
 
+### Agent Quality Guardian
+
+Owns predictable-error prevention for `frontend-ux` and checks orchestration quality of agents.
+Must run:
+
+- `python3 plan_michael_phelps/scripts/agent_quality_guardian.py --repo-root plan_michael_phelps`
+
 ### Documentation Review Agent
 
 Owns freshness and structure of architecture docs.
@@ -134,6 +141,7 @@ A task is done only if all conditions are true:
 - `python3 plan_michael_phelps/scripts/audit_english_sprint.py --repo-root plan_michael_phelps`
 - `node --test plan_michael_phelps/app/web/js/tests/*.test.mjs`
 - `bash plan_michael_phelps/scripts/run_frontend_ux_gates.sh plan_michael_phelps`
+- `python3 plan_michael_phelps/scripts/agent_quality_guardian.py --repo-root plan_michael_phelps`
 
 ## Commit Policy
 

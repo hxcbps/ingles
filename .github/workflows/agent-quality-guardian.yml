@@ -1,0 +1,51 @@
+name: agent-quality-guardian
+
+on:
+  schedule:
+    - cron: "0 9 * * 1-5"
+  workflow_dispatch:
+
+jobs:
+  agent-quality-guardian:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install ripgrep
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ripgrep
+
+      - name: Run agent quality guardian
+        run: |
+          python3 plan_michael_phelps/scripts/agent_quality_guardian.py \
+            --repo-root plan_michael_phelps \
+            --json-out "$RUNNER_TEMP/agent_quality_guardian.json"
+
+      - name: Run frontend UX gates snapshot
+        run: |
+          bash plan_michael_phelps/scripts/run_frontend_ux_gates.sh plan_michael_phelps \
+            | tee "$RUNNER_TEMP/frontend_ux_guardian.log"
+
+      - name: Upload guardian artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-quality-guardian-artifacts
+          path: |
+            ${{ runner.temp }}/agent_quality_guardian.json
+            ${{ runner.temp }}/frontend_ux_guardian.log
+          if-no-files-found: error

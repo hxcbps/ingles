@@ -57,3 +57,4 @@ Related decisions are recorded in:
 - [x] `bash scripts/run_frontend_ux_gates.sh .`
 - [x] `node --test app/web/js/tests/*.test.mjs`
 - [x] `python3 scripts/audit_english_sprint.py --repo-root .`
+- 2026-02-12: Se incorpora `Agent Quality Guardian` para diagnostico recurrente de `frontend-ux` y validacion de calidad de agentes.

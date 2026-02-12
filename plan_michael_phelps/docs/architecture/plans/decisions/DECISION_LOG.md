@@ -40,3 +40,9 @@ Status: active
 - Context: The session wizard could lose its mount target after shell route re-render, producing an apparently empty `Sesion` module.
 - Decision: Remount wizard explicitly when route/view enters `sesion` from bootstrap runtime wiring.
 - Consequence: Session execution remains visible and actionable after navigation changes.
+
+### D-2026-02-12-007
+
+- Context: The `frontend-ux` gate failed in CI with limited diagnostics and predictable runner prerequisite gaps.
+- Decision: Add `Agent Quality Guardian` script and workflow jobs to enforce frontend-ux prerequisites and validate agent-orchestration quality contracts.
+- Consequence: Predictable failures (missing prerequisites, workflow drift, orchestration inconsistencies) are detected early with structured artifacts.

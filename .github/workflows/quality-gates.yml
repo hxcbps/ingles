@@ -158,6 +158,70 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install ripgrep
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ripgrep
+
       - name: Run frontend UX gates
         run: |
           bash plan_michael_phelps/scripts/run_frontend_ux_gates.sh plan_michael_phelps
+
+  agent-quality-guardian:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs:
+      - content-audit
+      - architecture-docs
+      - frontend-ux
+    if: always()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install ripgrep
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ripgrep
+
+      - name: Run agent quality guardian
+        run: |
+          python3 plan_michael_phelps/scripts/agent_quality_guardian.py \
+            --repo-root plan_michael_phelps \
+            --json-out "$RUNNER_TEMP/agent_quality_guardian.json"
+
+      - name: Diagnose frontend-ux failure context
+        if: ${{ needs.frontend-ux.result != 'success' }}
+        run: |
+          set +e
+          bash plan_michael_phelps/scripts/run_frontend_ux_gates.sh plan_michael_phelps | tee "$RUNNER_TEMP/frontend_ux_diagnosis.log"
+          echo "diagnosis_exit_code=$?" > "$RUNNER_TEMP/frontend_ux_diagnosis_meta.txt"
+          exit 0
+
+      - name: Upload guardian reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-quality-guardian-report
+          path: |
+            ${{ runner.temp }}/agent_quality_guardian.json
+            ${{ runner.temp }}/frontend_ux_diagnosis.log
+            ${{ runner.temp }}/frontend_ux_diagnosis_meta.txt
+          if-no-files-found: ignore
+
+      - name: Fail when frontend-ux failed upstream
+        if: ${{ needs.frontend-ux.result != 'success' }}
+        run: |
+          echo "frontend-ux failed upstream. See 'agent-quality-guardian-report' artifact for diagnosis."
+          exit 1
