@@ -6,6 +6,8 @@ export const ICONS = {
   logOut: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>`,
   search: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>`,
   bell: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"></path><path d="M9 17a3 3 0 0 0 6 0"></path></svg>`,
+  sun: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>`,
+  moon: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><path d="M12 3a7 7 0 1 0 9 9 9 9 0 1 1-9-9z"></path></svg>`,
   flame: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><path d="M8.5 14.5A3.5 3.5 0 1 0 12 8c0 2.5 2 3.5 2 5.5a3.5 3.5 0 0 1-5.5 1"></path><path d="M12 2s5 3 5 9a5 5 0 1 1-10 0c0-4 2-6.5 5-9"></path></svg>`,
   zap: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7z"></path></svg>`,
   playCircle: `<svg ${ICON_BASE} width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m10 8 6 4-6 4Z"></path></svg>`,

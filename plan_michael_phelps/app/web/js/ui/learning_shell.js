@@ -39,6 +39,13 @@ const DAY_LABEL_ALIASES = Object.freeze({
   domingo: "Sun"
 });
 
+const UI_THEMES = Object.freeze({
+  DARK: "dark",
+  LIGHT: "light"
+});
+
+const THEME_STORAGE_KEY = "hxc_ui_theme";
+
 function clampPercent(value) {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return 0;
@@ -72,6 +79,7 @@ function toSentence(str, def) {
 export class LearningShell {
   constructor(containerId, context = {}) {
     this.container = document.getElementById(containerId);
+    this.windowRef = context.windowRef || (typeof window !== "undefined" ? window : null);
 
     // Context mapping from bootstrap_v4
     this.context = context;
@@ -96,6 +104,7 @@ export class LearningShell {
     this.activeDayContent = context.activeDayContent || null;
     this.fallbackNotice = context.fallbackNotice || "";
     this.activeView = "hoy"; // Default view
+    this.theme = this.resolveInitialTheme(context.themePreference);
 
     // Callbacks
     this.onViewChange = context.onViewChange || (() => { });
@@ -112,6 +121,69 @@ export class LearningShell {
 
   getSessionHostId() {
     return this.sessionHostId || "session-host";
+  }
+
+  resolveInitialTheme(preferredTheme) {
+    const preferred = String(preferredTheme || "").toLowerCase();
+    if (preferred === UI_THEMES.DARK || preferred === UI_THEMES.LIGHT) {
+      return preferred;
+    }
+
+    try {
+      const stored = this.windowRef?.localStorage?.getItem(THEME_STORAGE_KEY);
+      if (stored === UI_THEMES.DARK || stored === UI_THEMES.LIGHT) {
+        return stored;
+      }
+    } catch {
+      // Ignore storage read failures in restricted environments/tests.
+    }
+
+    if (this.windowRef?.matchMedia?.("(prefers-color-scheme: dark)")?.matches) {
+      return UI_THEMES.DARK;
+    }
+
+    return UI_THEMES.LIGHT;
+  }
+
+  applyTheme() {
+    if (!document?.body) return;
+
+    document.body.setAttribute("data-ui-theme", this.theme);
+    document.body.classList.toggle("theme-dark", this.theme === UI_THEMES.DARK);
+    document.body.classList.toggle("theme-light", this.theme === UI_THEMES.LIGHT);
+  }
+
+  setTheme(nextTheme, { persist = true, rerender = true } = {}) {
+    const normalized = String(nextTheme || "").toLowerCase();
+    if (normalized !== UI_THEMES.DARK && normalized !== UI_THEMES.LIGHT) {
+      return;
+    }
+
+    this.theme = normalized;
+    this.applyTheme();
+
+    if (persist) {
+      try {
+        this.windowRef?.localStorage?.setItem(THEME_STORAGE_KEY, this.theme);
+      } catch {
+        // Ignore storage write failures in restricted environments/tests.
+      }
+    }
+
+    if (rerender) {
+      this.render({ view: this.activeView });
+    }
+  }
+
+  toggleTheme() {
+    const nextTheme = this.theme === UI_THEMES.DARK ? UI_THEMES.LIGHT : UI_THEMES.DARK;
+    this.setTheme(nextTheme, { persist: true, rerender: true });
+  }
+
+  getThemeToggleCopy() {
+    return this.theme === UI_THEMES.DARK
+      ? { label: "Modo Luz", icon: ICONS.sun }
+      : { label: "Modo Oscuro", icon: ICONS.moon };
   }
 
   setRoute(viewId) {
@@ -215,6 +287,8 @@ export class LearningShell {
 
   render(state = {}) {
     if (!this.container) return;
+
+    this.applyTheme();
 
     // If state is empty, use current state
     const view = state.view || this.activeView;
@@ -454,9 +528,11 @@ export class LearningShell {
     const userLevel = this.profile.level || "Nivel 1";
 
     const metrics = this.getDashboardMetrics();
+    const isDark = this.theme === UI_THEMES.DARK;
+    const themeToggleCopy = this.getThemeToggleCopy();
 
     return `
-      <div class="app-shell font-sans text-slate-900 bg-slate-50 min-h-screen flex selection:bg-indigo-100 selection:text-indigo-700">
+      <div class="app-shell font-sans text-slate-900 bg-slate-50 min-h-screen flex selection:bg-indigo-100 selection:text-indigo-700" data-ui-theme="${this.theme}">
         
         <!-- SIDEBAR -->
         <aside class="shell-sidebar hidden lg-flex w-72 bg-white border-r border-slate-200 flex-col sticky top-0 h-screen z-50">
@@ -508,10 +584,20 @@ export class LearningShell {
               </div>
 
               <!-- Right Actions -->
-              <div class="flex items-center gap-5">
+              <div class="flex items-center gap-4">
+                <button
+                  data-shell-action="toggle-theme"
+                  type="button"
+                  class="theme-toggle-btn flex items-center gap-2 px-4 py-2 rounded-2xl border transition-all"
+                  aria-label="Cambiar tema visual"
+                  title="Cambiar tema"
+                >
+                  <span class="theme-toggle-icon">${themeToggleCopy.icon}</span>
+                  <span class="theme-toggle-label text-[10px] font-black uppercase tracking-widest">${themeToggleCopy.label}</span>
+                </button>
                 <button class="relative p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
                   ${ICONS.bell}
-                  <span class="absolute top-1 right-1.5 w-2.5 h-2.5 bg-rose-500 border-2 border-white rounded-full"></span>
+                  <span class="absolute top-1 right-1.5 w-2.5 h-2.5 ${isDark ? 'bg-rose-400 border-slate-900' : 'bg-rose-500 border-white'} border-2 rounded-full"></span>
                 </button>
                 <div class="h-8 w-[1px] bg-slate-200"></div>
                 <div class="flex items-center gap-3 cursor-pointer group">
@@ -1255,6 +1341,11 @@ export class LearningShell {
       }
 
       const action = actionBtn.dataset.shellAction;
+      if (action === "toggle-theme") {
+        this.toggleTheme();
+        return;
+      }
+
       if (action === "open-session") {
         this.navigateTo("sesion", "hero_cta");
         return;

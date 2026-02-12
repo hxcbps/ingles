@@ -182,3 +182,104 @@ test("learning shell derives dashboard defaults from runtime context", () => {
     globalThis.CustomEvent = originalCustomEvent;
   }
 });
+
+test("learning shell reads persisted theme and toggles ui mode", () => {
+  const originalDocument = globalThis.document;
+  const originalCustomEvent = globalThis.CustomEvent;
+
+  const bodyAttributes = new Map();
+  const bodyClasses = new Set();
+  const fakeBody = {
+    setAttribute(name, value) {
+      bodyAttributes.set(name, value);
+    },
+    classList: {
+      toggle(className, force) {
+        if (force) {
+          bodyClasses.add(className);
+        } else {
+          bodyClasses.delete(className);
+        }
+      }
+    }
+  };
+
+  const fakeContainer = {
+    innerHTML: "",
+    _clickHandler: null,
+    querySelectorAll() {
+      return [];
+    },
+    addEventListener(eventName, handler) {
+      if (eventName === "click") {
+        this._clickHandler = handler;
+      }
+    },
+    removeEventListener(eventName, handler) {
+      if (eventName === "click" && this._clickHandler === handler) {
+        this._clickHandler = null;
+      }
+    }
+  };
+
+  let persistedTheme = "dark";
+  const fakeWindow = {
+    localStorage: {
+      getItem(key) {
+        return key === "hxc_ui_theme" ? persistedTheme : null;
+      },
+      setItem(key, value) {
+        if (key === "hxc_ui_theme") {
+          persistedTheme = value;
+        }
+      }
+    }
+  };
+
+  globalThis.CustomEvent = class CustomEvent {
+    constructor(type, init = {}) {
+      this.type = type;
+      this.detail = init.detail;
+    }
+  };
+
+  globalThis.document = {
+    body: fakeBody,
+    getElementById(id) {
+      return id === "v4-root" ? fakeContainer : null;
+    },
+    dispatchEvent() {}
+  };
+
+  try {
+    const shell = new LearningShell("v4-root", {
+      activeWeekLabel: "w01",
+      activeDayLabel: "Mon",
+      windowRef: fakeWindow,
+      program: {
+        weekNumber: 1,
+        phases: [{ id: "phase1", title: "Foundation", cefr: "A1" }]
+      },
+      config: {
+        user: {
+          name: "QA",
+          level: "Nivel 1",
+          progress: { phase_id: "phase1" }
+        }
+      }
+    });
+
+    shell.render({ view: "hoy" });
+    assert.equal(bodyAttributes.get("data-ui-theme"), "dark");
+    assert.match(fakeContainer.innerHTML, /Modo Luz/);
+
+    shell.toggleTheme();
+    assert.equal(bodyAttributes.get("data-ui-theme"), "light");
+    assert.equal(persistedTheme, "light");
+    assert.equal(bodyClasses.has("theme-light"), true);
+    assert.match(fakeContainer.innerHTML, /Modo Oscuro/);
+  } finally {
+    globalThis.document = originalDocument;
+    globalThis.CustomEvent = originalCustomEvent;
+  }
+});

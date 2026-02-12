@@ -209,3 +209,36 @@
     transform: rotate(360deg);
   }
 }
+
+/* ---- Dual Theme Button States ---- */
+body.app-mode-v4[data-ui-theme="dark"] :where(
+  .btn-secondary,
+  button[data-shell-action="open-roadmap"],
+  #btn-timer-toggle,
+  button[data-shell-route]:not([data-shell-route="sesion"]):not([data-shell-route="cierre"]):not([data-shell-route="evaluacion"])
+) {
+  background: linear-gradient(180deg, rgb(15 23 42 / 0.94) 0%, rgb(15 23 42 / 0.7) 100%);
+  color: #d7e7ff;
+  border-color: rgb(96 165 250 / 0.3);
+  box-shadow: 0 14px 30px -24px rgb(2 6 23 / 0.82);
+}
+
+body.app-mode-v4[data-ui-theme="dark"] :where(
+  .btn-secondary,
+  button[data-shell-action="open-roadmap"],
+  #btn-timer-toggle,
+  button[data-shell-route]:not([data-shell-route="sesion"]):not([data-shell-route="cierre"]):not([data-shell-route="evaluacion"])
+):hover:not(:disabled) {
+  border-color: rgb(var(--story-primary-rgb) / 0.62);
+  background: linear-gradient(180deg, rgb(30 41 59 / 0.94) 0%, rgb(15 23 42 / 0.8) 100%);
+  color: #e2ecff;
+}
+
+body.app-mode-v4[data-ui-theme="dark"] :where(.btn-ghost, #btn-timer-reset) {
+  color: #8fa8cd;
+}
+
+body.app-mode-v4[data-ui-theme="dark"] :where(.btn-ghost, #btn-timer-reset):hover:not(:disabled) {
+  background: rgb(59 130 246 / 0.12);
+  color: #dbeafe;
+}
