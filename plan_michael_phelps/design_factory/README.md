@@ -14,6 +14,7 @@ It follows a monorepo-style package model so each visual skeleton can be evolved
 - `packages/motion/`: timing/easing contracts + reduced-motion behavior.
 - `packages/buttons/`: CTA hierarchy + interaction states + accessibility focus.
 - `packages/story/`: shell, wizard, module cards, and route-level visual storytelling.
+- `packages/progress/`: premium progreso dashboard styles (dual-theme cards, heatmap, table, metrics hierarchy).
 
 ## Build output
 

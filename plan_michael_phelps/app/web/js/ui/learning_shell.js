@@ -1,5 +1,6 @@
 import { VIEW_META, VIEW_IDS, NAV_GROUPS } from "./views.js";
 import { ICONS } from "./icons.js";
+import { buildProgressHeatmap, buildProgressHistory, renderProgressPremiumView } from "./renderers/progress_premium_renderer.js";
 
 function escapeHTML(str) {
   return String(str || "")
@@ -1078,55 +1079,28 @@ export class LearningShell {
     `;
   }
 
-  buildProgressHeatmap(seed = 0) {
-    return Array.from({ length: 14 }, (_, index) => {
-      const raw = Math.sin((index + 1) * 1.31 + seed * 0.17);
-      return Math.max(0, Math.min(4, Math.round(Math.abs(raw) * 4)));
-    });
-  }
-
-  buildProgressHistory(journey, limit = 4) {
-    const steps = Array.isArray(journey?.steps) ? journey.steps : [];
-    const fallbackTitle = steps.find((step) => step?.status === "active")?.title || steps[0]?.title || "Sesion operativa";
-    const baselineMinutes = this.getSessionDurationMinutes();
-    const scoreScale = ["A", "A-", "B+", "B"];
-
-    return Array.from({ length: limit }, (_, offset) => {
-      const stamp = new Date();
-      stamp.setDate(stamp.getDate() - offset);
-      const isoDate = stamp.toISOString().slice(0, 10);
-      const focus = steps[offset % Math.max(steps.length, 1)]?.title || fallbackTitle;
-      const minutes = Math.max(15, Math.round(baselineMinutes - offset * 4));
-
-      return {
-        isoDate,
-        focus,
-        minutes,
-        score: scoreScale[offset % scoreScale.length]
-      };
-    });
-  }
-
   renderProgressView() {
     const activeWeek = this.getActiveWeekNumber();
     const totalWeeks = Number(this.program?.programWeeks) || 20;
     const journey = this.getJourneyStateSafe();
     const modulePlan = this.buildModulePlan();
-    const session = journey.session || {};
+
+    const activePhase = this.program.phases?.find((phase) => phase.id === this.profile?.progress?.phase_id) || null;
+    const currentBand = activePhase?.cefr || "A1";
+    const targetCEFR = this.program?.targetCEFR || this.config?.target_cefr || "B2";
 
     const programProgress = this.getProgramProgress();
-    const sessionPct = clampPercent(session.progressPct);
+    const sessionPct = clampPercent(journey?.session?.progressPct);
+    const overallPct = clampPercent((((activeWeek - 1) + (sessionPct / 100)) / Math.max(totalWeeks, 1)) * 100);
+
     const completedModules = modulePlan.filter((module) => module.state === "completed").length;
     const activeModule = modulePlan.find((module) => module.state === "active")?.title || "Foundation Core";
-
-    const overallPct = clampPercent((((activeWeek - 1) + (sessionPct / 100)) / Math.max(1, totalWeeks)) * 100);
-    const ringRadius = 68;
-    const ringCircumference = 2 * Math.PI * ringRadius;
-    const ringDash = (overallPct / 100) * ringCircumference;
 
     const sessions7d = Math.max(1, Math.min(7, Number(programProgress.dayIndex) || 1));
     const minutesPerSession = this.getSessionDurationMinutes();
     const minutes7d = sessions7d * minutesPerSession;
+    const accuracyPct = clampPercent(Math.max(sessionPct, journey.stage?.evaluationReady ? 92 : sessionPct + 18));
+    const vocabTotal = Math.max(180, (completedModules * 120) + (activeWeek * 36));
 
     const milestones = [
       {
@@ -1146,163 +1120,39 @@ export class LearningShell {
       }
     ];
 
-    const heatmap = this.buildProgressHeatmap(activeWeek + sessionPct);
-    const historyRows = this.buildProgressHistory(journey, 4);
-
     const flowRows = [
-      ["Hoy", true],
-      ["Sesion", sessionPct > 0],
-      ["Cierre", journey.stage?.closureReady],
-      ["Evaluacion", journey.stage?.evaluationReady]
-    ]
-      .map(([label, done]) => `
-        <li class="progress-activity-item">
-          <span>${label}</span>
-          <strong class="progress-pill ${done ? "is-good" : ""}">${done ? "Listo" : "Pendiente"}</strong>
-        </li>
-      `)
-      .join("");
+      { label: "Hoy", done: true },
+      { label: "Sesion", done: sessionPct > 0 },
+      { label: "Cierre", done: Boolean(journey.stage?.closureReady) },
+      { label: "Evaluacion", done: Boolean(journey.stage?.evaluationReady) }
+    ];
 
-    const milestoneMarkup = milestones
-      .map((item) => `
-        <li class="progress-milestone-item">
-          <div class="progress-milestone-copy">
-            <strong>${escapeHTML(item.title)}</strong>
-            <span>${escapeHTML(item.note)}</span>
-          </div>
-          <span class="progress-pill">~${escapeHTML(String(item.etaDays))} dias</span>
-        </li>
-      `)
-      .join("");
+    const heatmap = buildProgressHeatmap(activeWeek + sessionPct);
+    const historyRows = buildProgressHistory({
+      journey,
+      baselineMinutes: minutesPerSession,
+      limit: 4
+    });
 
-    const historyMarkup = historyRows
-      .map((row) => `
-        <tr>
-          <td>${escapeHTML(row.isoDate)}</td>
-          <td>${escapeHTML(row.focus)}</td>
-          <td>${escapeHTML(String(row.minutes))} min</td>
-          <td>${escapeHTML(row.score)}</td>
-        </tr>
-      `)
-      .join("");
-
-    const heatMarkup = heatmap
-      .map((level) => `<span class="progress-heat-cell" data-level="${level}" title="Actividad ${level}/4"></span>`)
-      .join("");
-
-    return `
-      <section class="progress-shell">
-        <header class="progress-hero">
-          <div>
-            <p class="section-kicker">Progreso operativo</p>
-            <h3 class="progress-title">Progreso <em>Premium</em></h3>
-            <p class="progress-subtitle">Semana ${escapeHTML(formatWeekLabel(String(activeWeek)))} de ${totalWeeks}. Medimos consistencia, ejecucion y calidad real de sesion.</p>
-          </div>
-          <div class="progress-actions">
-            <button data-shell-action="open-session" type="button" class="btn-primary">Iniciar sesion</button>
-            <button data-shell-route="modulos" type="button" class="btn-secondary">Ver roadmap</button>
-          </div>
-        </header>
-
-        <div class="progress-grid">
-          <article class="progress-card progress-main">
-            <div class="progress-main-head">
-              <div>
-                <p class="progress-chip">Ruta 0 -> B2</p>
-                <h4 class="progress-section-title">Resumen ejecutivo</h4>
-                <p class="muted-text">Signal over noise: enfocate en continuidad y avance de checkpoints.</p>
-              </div>
-            </div>
-
-            <div class="progress-kpi-row">
-              <article class="progress-kpi">
-                <span class="progress-kpi-label">Minutos 7 dias</span>
-                <strong class="progress-kpi-value">${minutes7d}</strong>
-              </article>
-              <article class="progress-kpi">
-                <span class="progress-kpi-label">Sesiones 7 dias</span>
-                <strong class="progress-kpi-value">${sessions7d}/7</strong>
-              </article>
-              <article class="progress-kpi">
-                <span class="progress-kpi-label">Modulos</span>
-                <strong class="progress-kpi-value">${completedModules}/${modulePlan.length || 0}</strong>
-              </article>
-            </div>
-
-            <div class="progress-ring-wrap">
-              <div class="progress-ring">
-                <svg viewBox="0 0 160 160" aria-hidden="true">
-                  <circle class="progress-ring-track" cx="80" cy="80" r="${ringRadius}" />
-                  <circle class="progress-ring-fill" cx="80" cy="80" r="${ringRadius}" style="stroke-dasharray:${ringDash.toFixed(2)} ${ringCircumference.toFixed(2)}" />
-                </svg>
-                <div class="progress-ring-center">
-                  <strong class="progress-ring-value">${overallPct}%</strong>
-                  <span class="progress-ring-label">hacia B2</span>
-                </div>
-              </div>
-
-              <div class="progress-stats-compact">
-                <article class="progress-stat-line">
-                  <span>Modulo activo</span>
-                  <strong>${escapeHTML(activeModule)}</strong>
-                </article>
-                <article class="progress-stat-line">
-                  <span>Sesion actual</span>
-                  <strong>${sessionPct}%</strong>
-                </article>
-                <article class="progress-stat-line">
-                  <span>Estado</span>
-                  <strong>${escapeHTML(toSentence(session.status || "active", "Active"))}</strong>
-                </article>
-              </div>
-            </div>
-
-            <div class="progress-divider"></div>
-
-            <div>
-              <h4 class="progress-section-title">Hitos proximos</h4>
-              <ul class="progress-milestone-list">${milestoneMarkup}</ul>
-            </div>
-          </article>
-
-          <aside class="progress-side">
-            <article class="progress-card">
-              <h4 class="progress-section-title">Continuidad</h4>
-              <ul class="progress-activity-list">${flowRows}</ul>
-            </article>
-
-            <article class="progress-card">
-              <h4 class="progress-section-title">Heatmap 14 dias</h4>
-              <div class="progress-heatmap">${heatMarkup}</div>
-            </article>
-          </aside>
-        </div>
-
-        <article class="progress-card progress-table-card">
-          <div class="progress-main-head">
-            <div>
-              <h4 class="progress-section-title">Historial reciente</h4>
-              <p class="muted-text">Tabla limpia para detectar patrones de ejecucion y foco semanal.</p>
-            </div>
-            <button data-shell-action="open-session" type="button" class="btn-ghost">Registrar nueva sesion</button>
-          </div>
-
-          <div class="progress-table-wrap">
-            <table class="progress-table" aria-label="Historial reciente">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Foco</th>
-                  <th>Duracion</th>
-                  <th>Score</th>
-                </tr>
-              </thead>
-              <tbody>${historyMarkup}</tbody>
-            </table>
-          </div>
-        </article>
-      </section>
-    `;
+    return renderProgressPremiumView({
+      activeWeek,
+      totalWeeks,
+      targetCEFR,
+      currentBand,
+      sessionPct,
+      overallPct,
+      sessions7d,
+      minutes7d,
+      accuracyPct,
+      vocabTotal,
+      completedModules,
+      totalModules: modulePlan.length,
+      activeModule,
+      flowRows,
+      milestones,
+      heatmap,
+      historyRows
+    });
   }
 
   getActiveWeekNumber() {

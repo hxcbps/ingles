@@ -17,7 +17,7 @@ cat > "$OUT_FILE" <<'HEADER'
 */
 HEADER
 
-for part in palette typography motion buttons story; do
+for part in palette typography motion buttons story progress; do
   SRC="$FACTORY_ROOT/packages/$part/$part.css"
   if [ -f "$SRC" ]; then
     printf "\n/* ---- %s ---- */\n" "$part" >> "$OUT_FILE"

@@ -361,9 +361,11 @@ test("learning shell renders progreso dashboard with premium structure", () => {
 
     const html = shell.renderLayout({ view: "progreso" });
     assert.match(html, /progress-shell/);
-    assert.match(html, /Heatmap 14 dias/);
+    assert.match(html, /Ultimos 14 dias/);
     assert.match(html, /Historial reciente/);
-    assert.match(html, /stroke-dasharray:/);
+    assert.match(html, /Progreso <em>Premium<\/em>/);
+    assert.match(html, /role="switch"/);
+    assert.match(html, /stroke-dasharray="/);
   } finally {
     globalThis.document = originalDocument;
     globalThis.CustomEvent = originalCustomEvent;

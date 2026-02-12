@@ -88,3 +88,9 @@ Status: active
 - Context: Styling key sections (hero/widgets/journey cards) via utility-only selectors was brittle for long-term governance.
 - Decision: Add semantic hooks in runtime markup (`hero-banner`, `widget-card`, `journey-card`) and target them from Design Factory story package.
 - Consequence: Frontend visual changes become more deterministic, maintainable, and less dependent on broad utility overrides.
+
+### D-2026-02-12-015
+
+- Context: Product requested direct adoption of a premium dual-theme progreso visual system with cleaner architecture than inline shell templates.
+- Decision: Extract progreso rendering into `app/web/js/ui/renderers/progress_premium_renderer.js` and add `design_factory/packages/progress/progress.css`, wired in the factory build pipeline.
+- Consequence: Progreso UI now follows a dedicated renderer + package contract, reducing shell coupling and enabling independent evolution of premium visual patterns.
