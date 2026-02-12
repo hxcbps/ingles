@@ -517,7 +517,12 @@ export class LearningShell {
   }
 
   renderLayout(state) {
+    const view = state?.view || this.activeView;
+    const isDark = this.theme === UI_THEMES.DARK;
 
+    if (view === "progreso") {
+      return this.renderProgressStandaloneLayout({ isDark });
+    }
 
     const activePhase = this.program.phases?.find((p) => p.id === this.profile.progress?.phase_id) || {
       title: "Foundation",
@@ -529,7 +534,6 @@ export class LearningShell {
     const userLevel = this.profile.level || "Nivel 1";
 
     const metrics = this.getDashboardMetrics();
-    const isDark = this.theme === UI_THEMES.DARK;
     const themeToggleCopy = this.getThemeToggleCopy();
 
     return `
@@ -712,6 +716,64 @@ export class LearningShell {
            ${this.renderMobileNavItems()}
         </nav>
 
+      </div>
+    `;
+  }
+
+  renderProgressStandaloneLayout({ isDark }) {
+    const topNavViews = ["hoy", "sesion", "cierre", "progreso"];
+    const navMarkup = topNavViews
+      .map((viewId) => {
+        const meta = VIEW_META[viewId];
+        if (!meta) return "";
+
+        const activeClass = this.activeView === viewId ? "is-active" : "";
+        return `<button data-view-nav="${viewId}" class="progress-top-nav-link ${activeClass}" type="button">${escapeHTML(meta.label)}</button>`;
+      })
+      .join("");
+
+    const themeLabel = isDark ? "Dark" : "Light";
+    const themeIcon = isDark ? ICONS.moon : ICONS.sun;
+
+    return `
+      <div class="progress-app-shell" data-ui-theme="${this.theme}">
+        <header class="progress-topbar">
+          <div class="progress-topbar-inner">
+            <div class="progress-brand">
+              <span class="progress-brand-mark" aria-hidden="true"></span>
+              <div class="progress-brand-copy">
+                <strong>English Sprint</strong>
+                <span>Progreso • Ruta 0 -> B2</span>
+              </div>
+            </div>
+
+            <nav class="progress-top-nav" aria-label="Navegacion principal">
+              ${navMarkup}
+            </nav>
+
+            <div class="progress-top-actions">
+              <button
+                data-shell-action="toggle-theme"
+                type="button"
+                role="switch"
+                aria-checked="${isDark ? "true" : "false"}"
+                class="progress-theme-toggle"
+                aria-label="Cambiar tema visual"
+                title="Cambiar tema"
+              >
+                <span class="progress-theme-copy">
+                  <span class="progress-theme-icon">${themeIcon}</span>
+                  <span class="progress-theme-label">${themeLabel}</span>
+                </span>
+                <span class="progress-theme-pill" aria-hidden="true"><span class="progress-theme-dot"></span></span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main class="progress-top-main">
+          ${this.renderProgressView()}
+        </main>
       </div>
     `;
   }

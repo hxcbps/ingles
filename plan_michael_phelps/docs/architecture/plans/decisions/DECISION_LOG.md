@@ -94,3 +94,9 @@ Status: active
 - Context: Product requested direct adoption of a premium dual-theme progreso visual system with cleaner architecture than inline shell templates.
 - Decision: Extract progreso rendering into `app/web/js/ui/renderers/progress_premium_renderer.js` and add `design_factory/packages/progress/progress.css`, wired in the factory build pipeline.
 - Consequence: Progreso UI now follows a dedicated renderer + package contract, reducing shell coupling and enabling independent evolution of premium visual patterns.
+
+### D-2026-02-12-016
+
+- Context: Product required the `#/modulo/progreso` experience to match a premium standalone dual-theme layout (topbar navigation, no sidebar shell) aligned with provided visual reference.
+- Decision: Route `progreso` now renders through a dedicated standalone shell (`renderProgressStandaloneLayout`) while preserving existing shell for other views.
+- Consequence: Progreso visual identity is no longer constrained by shared sidebar/dashboard chrome, enabling direct parity with premium dual-theme composition without regressing route contracts.
