@@ -402,3 +402,24 @@ Backlog phase status update:
 1. S3 frontend integration (`hardcoded removidos`): advanced in shell dashboard lane.
 2. S4 runtime/UX polish (`progreso real visible`): baseline delivered for welcome, sidebar plan, widgets, and today cards.
 3. Next focus should target `S5 Runtime hardening` (`resume robustness + event observability + critical path e2e`).
+
+## 14) S6 UI UX Director Wave 1 (actualizacion 2026-02-12)
+
+Objetivo: cerrar brechas de usabilidad percibida y accionabilidad pedagogica en flujo diario (`Hoy -> Sesion -> Cierre -> Evaluacion`).
+
+Historias ejecutadas:
+
+- `S6-UX-01` Accessibility baseline (`:focus-visible`, reduced-motion global).
+- `S6-UX-02` Navigation stability (eliminacion de pulse distractor + paridad route/view).
+- `S6-UX-03` Session continuity hardening (remount seguro de wizard al entrar a `Sesion`).
+- `S6-UX-04` Session actionability panel (progreso, paso activo, CTA siguiente ruta).
+- `S6-UX-05` UX gates in CI (`scripts/run_frontend_ux_gates.sh` + workflow wiring).
+- `S6-UX-06` Parallel agent orchestration package (assignment + launch + status scripts).
+
+Artefactos de orquestacion:
+
+- `guides/backlog/agents/S6_AGENT_ASSIGNMENT_UIUX_WAVE1.md`
+- `guides/backlog/agents/EXECUTION_STATUS_S6_UIUX_WAVE1.md`
+- `guides/backlog/agents/AGENT_LAUNCH_COMMANDS_S6_UIUX.md`
+- `scripts/bootstrap_parallel_agents_s6_uiux.sh`
+- `scripts/parallel_status_s6_uiux.sh`

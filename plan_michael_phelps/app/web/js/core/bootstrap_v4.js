@@ -131,6 +131,17 @@ export async function bootstrapV4({
   let routeSource = "startup";
   let scrollHandler = null;
 
+  const mountWizard = () => {
+    if (!shell) return;
+
+    if (wizard && typeof wizard.dispose === "function") {
+      wizard.dispose();
+    }
+
+    wizard = new SessionWizard(shell.getSessionHostId(), { orchestrator });
+    wizard.render();
+  };
+
   const telemetrySink = createTelemetrySink();
   const publishTelemetry = (event) => {
     const payload = telemetrySink.write(event);
@@ -259,16 +270,15 @@ export async function bootstrapV4({
         hashRouter.navigate(routeId);
       },
       onViewChange: ({ viewId }) => {
-        if (viewId === "sesion" && wizard) {
-          wizard.render();
+        if (viewId === "sesion") {
+          mountWizard();
         }
       }
     });
 
     shell.render();
 
-    wizard = new SessionWizard(shell.getSessionHostId(), { orchestrator });
-    wizard.render();
+    mountWizard();
 
     hashRouter = createHashRouter({
       windowRef,
@@ -282,6 +292,10 @@ export async function bootstrapV4({
         const fromRoute = currentRouteId;
         currentRouteId = routeState.routeId;
         shell?.setRoute(routeState.routeId);
+
+        if (routeState.routeId === "sesion") {
+          mountWizard();
+        }
 
         orchestrator.emit("route_changed", {
           routeId: routeState.routeId,

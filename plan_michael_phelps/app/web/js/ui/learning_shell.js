@@ -584,7 +584,7 @@ export class LearningShell {
                   </div>
 
                   <div class="view-container" data-view-panel="sesion" ${this.activeView !== "sesion" ? "hidden" : ""}>
-                    <div id="${this.getSessionHostId()}"></div>
+                    ${this.renderSessionView()}
                   </div>
 
                   <div class="view-container" data-view-panel="cierre" ${this.activeView !== "cierre" ? "hidden" : ""}>
@@ -626,7 +626,7 @@ export class LearningShell {
 
   renderNavItems() {
     return NAV_GROUPS.map((group) => {
-      const items = VIEW_IDS.filter((viewId) => VIEW_META[viewId]?.group === group.id).map((viewId) => {
+      const items = VIEW_IDS.filter((viewId) => VIEW_META[viewId]?.group === group.groupId).map((viewId) => {
         const meta = VIEW_META[viewId];
         const isActive = this.activeView === viewId;
         const iconKey = meta.icon || "layout"; // Add icon keys to view meta later
@@ -646,7 +646,7 @@ export class LearningShell {
             <span class="font-bold text-sm tracking-tight ${isActive ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}">
               ${escapeHTML(meta.label)}
             </span>
-            ${isActive ? '<div class="absolute right-3 w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>' : ''}
+            ${isActive ? '<div class="absolute right-3 w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
           </button>
         `;
       }).join("");
@@ -696,7 +696,7 @@ export class LearningShell {
         <div class="relative p-10 md-p-12 text-white flex flex-col md-flex-row items-center gap-10">
           <div class="flex-1">
             <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
-              <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+              <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
               Fase Activa: ${escapeHTML(phase.title)}
             </div>
             <h2 class="text-4xl md-text-5xl font-black mb-6 leading-[1.1]">${escapeHTML(metrics.featureTitle)}</h2>
@@ -857,6 +857,45 @@ export class LearningShell {
       </div>
     `;
   }
+  renderSessionView(metrics = this.getDashboardMetrics()) {
+    const journey = this.getJourneyStateSafe();
+    const session = journey.session || {};
+    const primary = journey.primary || {};
+    const progressPct = clampPercent(session.progressPct);
+
+    const nextRoute = journey.nextRecommendedRoute && VIEW_META[journey.nextRecommendedRoute]
+      ? journey.nextRecommendedRoute
+      : (session.progressPct >= 100 ? "cierre" : "sesion");
+
+    const nextRouteLabel = VIEW_META[nextRoute]?.label || "Sesion";
+
+    return `
+      <div class="space-y-4">
+        <article class="modules-intro-card session-intro-card">
+          <p class="section-kicker">Sesion guiada</p>
+          <h4>Ruta operativa de hoy</h4>
+          <p class="muted-text">
+            Ejecuta los pasos en orden: practica, valida gate y registra evidencia para desbloquear cierre y evaluacion.
+          </p>
+
+          <div class="modules-rhythm">
+            <ul>
+              <li><span>Progreso actual</span><strong>${progressPct}%</strong></li>
+              <li><span>Paso activo</span><strong>${escapeHTML(session.currentStepTitle || "Pendiente")}</strong></li>
+              <li><span>Bloques completados</span><strong>${Number(primary.completed) || 0}/${Number(primary.total) || 0}</strong></li>
+            </ul>
+          </div>
+
+          <button data-shell-route="${nextRoute}" class="session-mini-cta" type="button">
+            Continuar en ${escapeHTML(nextRouteLabel)}
+          </button>
+        </article>
+
+        <div id="${this.getSessionHostId()}"></div>
+      </div>
+    `;
+  }
+
   renderFlowStatusBanner() {
     const journey = this.getJourneyStateSafe();
     const message = journey.guard?.message || "";

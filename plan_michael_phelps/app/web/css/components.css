@@ -340,3 +340,69 @@ select:focus {
   background: var(--palette-brand-50);
   border-color: var(--palette-brand-100);
 }
+/* --- SHELL JOURNEY CARDS --- */
+.modules-intro-card {
+  background: linear-gradient(160deg, var(--surface-card) 0%, var(--palette-slate-50) 100%);
+  border: 1px solid var(--border-default);
+  border-radius: 1.4rem;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: 0.65rem;
+}
+
+.modules-intro-card h4 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+.modules-rhythm {
+  margin-top: 0.35rem;
+  background: var(--surface-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 0.9rem;
+}
+
+.modules-rhythm ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.modules-rhythm li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.modules-rhythm li strong {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.modules-intro-card .session-mini-cta {
+  justify-self: start;
+  margin-top: 0.25rem;
+  border: 1px solid var(--border-brand);
+  color: var(--text-brand);
+  background: var(--palette-brand-50);
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+}
+
+.modules-intro-card .session-mini-cta:hover {
+  background: var(--palette-indigo-100);
+}

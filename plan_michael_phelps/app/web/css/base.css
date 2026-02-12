@@ -147,6 +147,28 @@ textarea {
   font-size: inherit;
 }
 
+:where(a, button, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid var(--border-brand);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--palette-brand-100);
+}
+
+:where(a, button, input, select, textarea, [role="button"], [tabindex]):focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

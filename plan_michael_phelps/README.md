@@ -77,6 +77,7 @@ Fuente de verdad:
 - `python3 scripts/lint_architecture_docs.py --repo-root .`
 - `python3 scripts/check_docs_drift.py --repo-root .`
 - `python3 scripts/audit_english_sprint.py --repo-root .`
+- `bash scripts/run_frontend_ux_gates.sh .`
 
 ## Legacy
 

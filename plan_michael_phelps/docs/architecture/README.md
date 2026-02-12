@@ -29,17 +29,18 @@ Use this order to avoid context overload:
 
 ## Mechanical Validation
 
-The knowledge base is validated in CI using:
+The knowledge base and UI contracts are validated in CI using:
 
 - `python3 scripts/lint_architecture_docs.py --repo-root .`
 - `python3 scripts/check_docs_drift.py --repo-root .`
+- `bash scripts/run_frontend_ux_gates.sh .`
 
 These checks run in:
 
-- `.github/workflows/quality-gates.yml` (`architecture-docs` job on push/PR)
+- `.github/workflows/quality-gates.yml` (`architecture-docs` and `frontend-ux` jobs on push/PR)
 - `.github/workflows/docs-review.yml` (scheduled documentation review)
 
-Both commands must pass before release.
+All checks must pass before release.
 
 ## Update Protocol
 

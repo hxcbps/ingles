@@ -25,6 +25,7 @@ Orden de lectura recomendado para agentes y humanos:
 - `./plan_michael_phelps/bin/validate_content`
 - `python3 plan_michael_phelps/scripts/lint_architecture_docs.py --repo-root plan_michael_phelps`
 - `python3 plan_michael_phelps/scripts/check_docs_drift.py --repo-root plan_michael_phelps`
+- `bash plan_michael_phelps/scripts/run_frontend_ux_gates.sh plan_michael_phelps`
 
 ## Publicacion en GitHub Pages
 

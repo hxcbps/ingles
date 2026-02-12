@@ -139,3 +139,25 @@ jobs:
           path: |
             ${{ runner.temp }}/docs_drift_report.json
           if-no-files-found: error
+
+  frontend-ux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run frontend UX gates
+        run: |
+          bash plan_michael_phelps/scripts/run_frontend_ux_gates.sh plan_michael_phelps

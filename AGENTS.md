@@ -100,6 +100,15 @@ Must pass:
 Owns route/session/progression coherence and runtime resilience.
 Must preserve runtime contracts and pass JS tests.
 
+### UI UX Director Agent
+
+Owns visual coherence, interaction clarity, accessibility baseline, and responsive quality.
+Must preserve layer boundaries and pass UX gates.
+Must work primarily under:
+
+- `plan_michael_phelps/app/web/css/`
+- `plan_michael_phelps/app/web/js/ui/`
+
 ### Documentation Review Agent
 
 Owns freshness and structure of architecture docs.
@@ -124,6 +133,7 @@ A task is done only if all conditions are true:
 - `python3 plan_michael_phelps/scripts/check_docs_drift.py --repo-root plan_michael_phelps`
 - `python3 plan_michael_phelps/scripts/audit_english_sprint.py --repo-root plan_michael_phelps`
 - `node --test plan_michael_phelps/app/web/js/tests/*.test.mjs`
+- `bash plan_michael_phelps/scripts/run_frontend_ux_gates.sh plan_michael_phelps`
 
 ## Commit Policy
 

@@ -1,6 +1,6 @@
 export const NAV_GROUPS = Object.freeze([
-  Object.freeze({ id: "main", label: "Principal" }),
-  Object.freeze({ id: "journey", label: "Seguimiento" })
+  Object.freeze({ groupId: "main", label: "Principal" }),
+  Object.freeze({ groupId: "journey", label: "Seguimiento" })
 ]);
 
 export const VIEW_META = Object.freeze({

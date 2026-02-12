@@ -28,3 +28,15 @@ Status: active
 - Context: Documentation can drift between pushes even when content quality gates pass.
 - Decision: Add scheduled `docs-review` workflow to run lint + drift + canonical audit snapshot on weekdays.
 - Consequence: Drift is detected recurrently without relying on manual checks or PR-only workflows.
+
+### D-2026-02-12-005
+
+- Context: UX quality checks existed as manual guidance but were not part of repository-owned delivery gates.
+- Decision: Version `scripts/run_frontend_ux_gates.sh` in the project and wire it into `quality-gates` workflows.
+- Consequence: Frontend fluidez, accesibilidad baseline y contratos de UI se validan mecánicamente en cada integración.
+
+### D-2026-02-12-006
+
+- Context: The session wizard could lose its mount target after shell route re-render, producing an apparently empty `Sesion` module.
+- Decision: Remount wizard explicitly when route/view enters `sesion` from bootstrap runtime wiring.
+- Consequence: Session execution remains visible and actionable after navigation changes.
