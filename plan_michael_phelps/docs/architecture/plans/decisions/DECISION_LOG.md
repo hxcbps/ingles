@@ -76,3 +76,15 @@ Status: active
 - Context: Style ownership remained concentrated in `app/web/css` without package-level governance, making reuse and parallel specialization fragile.
 - Decision: Introduce `design_factory/` as a monorepo-style package layout and generate `app/web/css/factory.css` through `scripts/build_design_factory_css.sh`, imported by the canonical CSS entrypoint.
 - Consequence: Each design skeleton can evolve independently while the app consumes one controlled output artifact.
+
+### D-2026-02-12-013
+
+- Context: Design Factory Wave-1 established package scaffolding but product feedback requested deeper quality and clearer trust signals in visual execution.
+- Decision: Launch S8 Wave-2 deep refinement with package-level hardening for palette, typography, buttons, motion, and story coverage over shell/wizard/module artifacts.
+- Consequence: Visual system moves from scaffold quality to production-grade contract with tighter state and semantic control.
+
+### D-2026-02-12-014
+
+- Context: Styling key sections (hero/widgets/journey cards) via utility-only selectors was brittle for long-term governance.
+- Decision: Add semantic hooks in runtime markup (`hero-banner`, `widget-card`, `journey-card`) and target them from Design Factory story package.
+- Consequence: Frontend visual changes become more deterministic, maintainable, and less dependent on broad utility overrides.

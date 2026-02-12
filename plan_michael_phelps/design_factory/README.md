@@ -4,28 +4,54 @@ Last reviewed: 2026-02-12
 
 ## Purpose
 
-Monorepo-style style factory for English Sprint. Each package owns one design skeleton and exports CSS that is merged into `app/web/css/factory.css`.
+Design Factory is the style governance workspace for English Sprint.
+It follows a monorepo-style package model so each visual skeleton can be evolved independently and then merged into one runtime artifact consumed by the web app.
 
-## Packages
+## Package ownership
 
-- `packages/palette/`: color primitives and semantic tokens.
-- `packages/typography/`: type ramp and semantic typography roles.
-- `packages/motion/`: timing/easing rules and reduced-motion guardrails.
-- `packages/buttons/`: CTA hierarchy and interaction states.
-- `packages/story/`: route-level visual storytelling and shell cohesion.
+- `packages/palette/`: primitives + semantic color tokens + legacy bridges.
+- `packages/typography/`: type ramp + semantic text roles + utility alignment.
+- `packages/motion/`: timing/easing contracts + reduced-motion behavior.
+- `packages/buttons/`: CTA hierarchy + interaction states + accessibility focus.
+- `packages/story/`: shell, wizard, module cards, and route-level visual storytelling.
 
-## Build
+## Build output
+
+Run:
 
 ```bash
 bash scripts/build_design_factory_css.sh
 ```
 
-This command generates:
+Generated artifacts:
 - `design_factory/dist/factory.css`
 - `app/web/css/factory.css`
 
-## Governance
+The app imports `app/web/css/factory.css` from `app/web/css/index.css` as the last override layer.
 
-- Each package should change independently.
-- No hard-coded brand colors outside `packages/palette/palette.css`.
-- App styles should consume semantic tokens before adding local overrides.
+## Quality contract
+
+1. Palette contract:
+- one primary hue family
+- one accent hue family
+- semantic status hues isolated from CTA brand colors
+
+2. Button contract:
+- `primary`, `secondary`, `ghost`, route CTA handling
+- states: default, hover, focus-visible, active, disabled, loading
+
+3. Typography contract:
+- fixed ramp tokens only
+- heading/body/label role mapping
+
+4. Motion contract:
+- purposeful transitions only
+- mandatory `prefers-reduced-motion` fallback
+
+5. Story contract:
+- one coherent visual language across sidebar, hero, widgets, wizard, and module artifacts
+
+## Execution notes
+
+- Any package update must rebuild `factory.css` before validation.
+- If package-level changes alter behavior, update architecture plan and decision log in the same commit.

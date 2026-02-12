@@ -1,20 +1,143 @@
 :root {
+  --motion-instant: 90ms;
   --motion-fast: 140ms;
   --motion-standard: 220ms;
   --motion-slow: 320ms;
+  --motion-xslow: 460ms;
+
   --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-:where(.btn-primary, .btn-secondary, .btn-ghost, [data-view-nav], .card, .surface-card) {
+:where(
+  a,
+  button,
+  [role="button"],
+  [data-view-nav],
+  [data-shell-action],
+  [data-shell-route],
+  .card,
+  .surface-card,
+  .modules-intro-card,
+  .module-card-pro,
+  .step-rail-item,
+  .toast-notification
+) {
+  transition-timing-function: var(--motion-ease-standard);
+}
+
+:where(button, [role="button"], [data-view-nav], [data-shell-route]) {
+  transition-property: transform, box-shadow, background-color, color, border-color, opacity;
   transition-duration: var(--motion-standard);
-  transition-timing-function: var(--motion-ease-out);
+}
+
+:where(.card, .surface-card, .modules-intro-card, .module-card-pro, .step-rail-item) {
+  transition-property: transform, box-shadow, border-color, background-color;
+  transition-duration: var(--motion-standard);
+}
+
+.view-container {
+  animation: df-view-enter var(--motion-slow) var(--motion-ease-emphasis) both;
+}
+
+.animate-fade-in {
+  animation: df-fade-up var(--motion-standard) var(--motion-ease-standard) both;
+}
+
+.delay-1 {
+  animation-delay: 70ms;
+}
+
+.delay-2 {
+  animation-delay: 140ms;
+}
+
+.animate-in {
+  animation: df-scale-in var(--motion-slow) var(--motion-ease-emphasis) both;
+}
+
+.toast-notification {
+  animation: df-toast-in var(--motion-standard) var(--motion-ease-emphasis) both;
+}
+
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.06);
+}
+
+.hover\:scale-105:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+@keyframes df-view-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes df-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes df-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes df-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :where(.btn-primary, .btn-secondary, .btn-ghost, [data-view-nav], .card, .surface-card) {
-    transition-duration: 0.001ms !important;
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .view-container,
+  .animate-fade-in,
+  .animate-in,
+  .toast-notification {
+    animation: none !important;
+  }
+
+  .group:hover .group-hover\:scale-110,
+  .hover\:scale-105:hover {
+    transform: none !important;
   }
 }

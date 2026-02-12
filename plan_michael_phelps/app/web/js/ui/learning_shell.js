@@ -693,13 +693,13 @@ export class LearningShell {
 
   renderHeroCard(phase, metrics = this.getDashboardMetrics()) {
     return `
-      <section class="relative rounded-[2.5rem] overflow-hidden group">
-        <div class="absolute inset-0 bg-gradient-to-r from-brand-700 via-brand-600 to-violet-600"></div>
+      <section class="hero-banner relative rounded-[2.5rem] overflow-hidden group">
+        <div class="hero-banner-bg absolute inset-0 bg-gradient-to-r from-brand-700 via-brand-600 to-violet-600"></div>
         <!-- Decorative shapes -->
-        <div class="absolute top-[-20%] right-[-10%] w-96 h-96 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
-        <div class="absolute bottom-[-10%] left-[-5%] w-64 h-64 bg-brand-400/20 rounded-full blur-2xl"></div>
+        <div class="hero-orb hero-orb-primary absolute top-[-20%] right-[-10%] w-96 h-96 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
+        <div class="hero-orb hero-orb-secondary absolute bottom-[-10%] left-[-5%] w-64 h-64 bg-brand-400/20 rounded-full blur-2xl"></div>
         
-        <div class="relative p-10 md-p-12 text-white flex flex-col md-flex-row items-center gap-10">
+        <div class="hero-banner-content relative p-10 md-p-12 text-white flex flex-col md-flex-row items-center gap-10">
           <div class="flex-1">
             <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
               <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
@@ -719,9 +719,9 @@ export class LearningShell {
               </button>
             </div>
           </div>
-          <div class="w-48 h-48 md-w-64 md-h-64 bg-white/10 backdrop-blur-2xl rounded-[3rem] border border-white/20 rotate-6 flex items-center justify-center shadow-2xl relative">
+          <div class="hero-banner-emblem w-48 h-48 md-w-64 md-h-64 bg-white/10 backdrop-blur-2xl rounded-[3rem] border border-white/20 rotate-6 flex items-center justify-center shadow-2xl relative">
             <div class="text-white opacity-80 scale-150">${ICONS.trendingUp}</div>
-            <div class="absolute -top-4 -right-4 bg-yellow-400 text-brand-900 font-black p-3 rounded-2xl rotate-12 shadow-lg">
+            <div class="hero-banner-reward absolute -top-4 -right-4 bg-yellow-400 text-brand-900 font-black p-3 rounded-2xl rotate-12 shadow-lg">
               ${escapeHTML(metrics.heroRewardLabel)}
             </div>
           </div>
@@ -733,7 +733,7 @@ export class LearningShell {
   renderWidgets(metrics = this.getDashboardMetrics()) {
     return `
       <!-- PROFILE CARD -->
-      <div class="bg-white border border-slate-200 p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden">
+      <div class="widget-card widget-card-profile bg-white border border-slate-200 p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden">
         <div class="absolute top-0 right-0 w-24 h-24 bg-brand-50 rounded-bl-[4rem] -z-0"></div>
         <div class="relative z-10 text-center">
           <div class="w-24 h-24 rounded-[2rem] bg-brand-600 mx-auto mb-4 flex items-center justify-center shadow-xl shadow-brand-200 rotate-3">
@@ -756,7 +756,7 @@ export class LearningShell {
       </div>
 
     <!-- WEEK THEME -->
-    <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-slate-200 relative">
+    <div class="widget-card widget-card-theme bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-slate-200 relative">
       <div class="flex items-center justify-between mb-8">
         <h3 class="font-bold text-brand-400 text-sm tracking-widest uppercase">${escapeHTML(metrics.themeKicker)}</h3>
         <button class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors" type="button" aria-label="Estado semanal">
@@ -800,7 +800,7 @@ export class LearningShell {
     return `
       <div class="space-y-4">
 
-        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] hover:border-brand-500 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group shadow-sm hover:shadow-brand-100/50" data-shell-action="open-session">
+        <div class="journey-card journey-card-session bg-white border border-slate-200 p-6 rounded-[2rem] hover:border-brand-500 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group shadow-sm hover:shadow-brand-100/50" data-shell-action="open-session">
           <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-brand-50 text-brand-500 group-hover:scale-110 transition-transform">
             ${ICONS.playCircle}
           </div>
@@ -844,7 +844,7 @@ export class LearningShell {
           </div>
         </article>
 
-        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer" data-shell-action="open-roadmap">
+        <div class="journey-card journey-card-roadmap bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer" data-shell-action="open-roadmap">
           <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-slate-50 text-slate-300">
             ${ICONS.playCircle}
           </div>
@@ -877,7 +877,7 @@ export class LearningShell {
 
     return `
       <div class="space-y-4">
-        <article class="modules-intro-card session-intro-card">
+        <article class="modules-intro-card session-intro-card journey-card journey-card-session-overview">
           <p class="section-kicker">Sesion guiada</p>
           <h4>Ruta operativa de hoy</h4>
           <p class="muted-text">
@@ -942,7 +942,7 @@ export class LearningShell {
       : { route: "sesion", label: "Completar sesion" };
 
     return `
-      <article class="modules-intro-card">
+      <article class="modules-intro-card journey-card journey-card-governance">
         <p class="section-kicker">Cierre diario</p>
         <h4>Consolidacion y checklist</h4>
         <p class="muted-text">${journey.stage.closureReady
@@ -972,7 +972,7 @@ export class LearningShell {
         : { route: "sesion", label: "Completar sesion" };
 
     return `
-      <article class="modules-intro-card">
+      <article class="modules-intro-card journey-card journey-card-governance">
         <p class="section-kicker">Evaluacion</p>
         <h4>Control de calidad de la sesion</h4>
         <p class="muted-text">Estado: ${escapeHTML(journey.session.status || "locked")} | Avance: ${Math.max(0, Math.min(100, progress))}%</p>
@@ -1007,7 +1007,7 @@ export class LearningShell {
       .join("");
 
     return `
-      <article class="modules-intro-card">
+      <article class="modules-intro-card journey-card journey-card-governance">
         <p class="section-kicker">Progreso</p>
         <h4>Ruta semanal 0 -> B2</h4>
         <p class="muted-text">Semana activa: ${escapeHTML(formatWeekLabel(String(activeWeek)))} de ${totalWeeks}. Progreso estimado: ${pct}%.</p>
@@ -1117,7 +1117,7 @@ export class LearningShell {
 
     return `
       <section class="modules-hub">
-        <article class="modules-intro-card">
+        <article class="modules-intro-card modules-overview-card">
           <p class="section-kicker">Arquitectura Curricular</p>
           <h4>Ruta 0 -> B2 con TBLT + IA Conversacional</h4>
           <p class="muted-text">Plan granular con input comprensible, tareas comunicativas, practica de voz y checkpoints de desempeno.</p>
