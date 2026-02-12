@@ -1,0 +1,47 @@
+name: docs-review
+
+on:
+  schedule:
+    - cron: "0 10 * * 1-5"
+  workflow_dispatch:
+
+jobs:
+  docs-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Lint architecture docs
+        run: |
+          python3 scripts/lint_architecture_docs.py \
+            --repo-root .
+
+      - name: Check docs drift
+        run: |
+          python3 scripts/check_docs_drift.py \
+            --repo-root . \
+            --json-out "$RUNNER_TEMP/docs_drift_report.json"
+
+      - name: Run canonical audit snapshot
+        run: |
+          python3 scripts/audit_english_sprint.py \
+            --repo-root . \
+            | tee "$RUNNER_TEMP/official_audit.txt"
+
+      - name: Upload docs review artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-review-report
+          path: |
+            ${{ runner.temp }}/docs_drift_report.json
+            ${{ runner.temp }}/official_audit.txt
+          if-no-files-found: error
