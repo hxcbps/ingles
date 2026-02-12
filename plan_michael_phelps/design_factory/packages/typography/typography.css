@@ -151,3 +151,51 @@ p {
 .evidence-card h4 {
   font-family: var(--font-display);
 }
+
+.progress-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 3.3rem);
+  font-weight: 800;
+  letter-spacing: -0.048em;
+  line-height: 0.98;
+}
+
+.progress-subtitle {
+  font-size: var(--type-body-md);
+  line-height: var(--leading-body);
+}
+
+.progress-section-title {
+  font-family: var(--font-display);
+  font-size: var(--type-headline-md);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.02em;
+}
+
+.progress-kpi-label,
+.progress-chip,
+.progress-pill,
+.progress-table th,
+.progress-ring-label {
+  font-family: var(--font-mono);
+  font-size: var(--type-label-xs);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.progress-kpi-value,
+.progress-ring-value,
+.progress-stat-line strong {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.034em;
+}
+
+.progress-kpi-value {
+  font-size: var(--type-headline-lg);
+}
+
+.progress-ring-value {
+  font-size: clamp(1.8rem, 2.6vw, 2.35rem);
+}

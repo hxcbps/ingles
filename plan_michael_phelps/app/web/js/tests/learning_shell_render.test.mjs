@@ -283,3 +283,89 @@ test("learning shell reads persisted theme and toggles ui mode", () => {
     globalThis.CustomEvent = originalCustomEvent;
   }
 });
+
+test("learning shell renders progreso dashboard with premium structure", () => {
+  const originalDocument = globalThis.document;
+  const originalCustomEvent = globalThis.CustomEvent;
+
+  const fakeContainer = {
+    innerHTML: "",
+    _clickHandler: null,
+    querySelectorAll() {
+      return [];
+    },
+    addEventListener(eventName, handler) {
+      if (eventName === "click") {
+        this._clickHandler = handler;
+      }
+    },
+    removeEventListener(eventName, handler) {
+      if (eventName === "click" && this._clickHandler === handler) {
+        this._clickHandler = null;
+      }
+    }
+  };
+
+  globalThis.CustomEvent = class CustomEvent {
+    constructor(type, init = {}) {
+      this.type = type;
+      this.detail = init.detail;
+    }
+  };
+
+  globalThis.document = {
+    body: {
+      setAttribute() {},
+      classList: { toggle() {} }
+    },
+    getElementById(id) {
+      return id === "v4-root" ? fakeContainer : null;
+    },
+    dispatchEvent() {}
+  };
+
+  try {
+    const shell = new LearningShell("v4-root", {
+      activeWeekLabel: "w08",
+      activeDayLabel: "Thu",
+      program: {
+        weekNumber: 8,
+        programWeeks: 20,
+        sessionMinutes: 40,
+        phases: [{ id: "phase1", title: "Foundation", cefr: "A1 -> A2" }]
+      },
+      config: {
+        user: {
+          name: "QA",
+          level: "Nivel 8",
+          progress: { phase_id: "phase1" }
+        }
+      },
+      getSessionSnapshot: () => ({
+        progressPct: 64,
+        currentStepIndex: 1,
+        totalSteps: 3,
+        status: "active",
+        currentStepTitle: "Roleplay tecnico"
+      }),
+      getJourneyState: () => ({
+        checklist: { listening: true, speaking: true, reading: false, writing: false, evidence: false },
+        stage: { closureReady: false, evidenceReady: false, evaluationReady: false },
+        session: { progressPct: 64, status: "active", currentStepTitle: "Roleplay tecnico" },
+        steps: [
+          { stepId: "s1", title: "Roleplay tecnico", status: "active", durationMin: 20 },
+          { stepId: "s2", title: "Validation", status: "locked", durationMin: 10 }
+        ]
+      })
+    });
+
+    const html = shell.renderLayout({ view: "progreso" });
+    assert.match(html, /progress-shell/);
+    assert.match(html, /Heatmap 14 dias/);
+    assert.match(html, /Historial reciente/);
+    assert.match(html, /stroke-dasharray:/);
+  } finally {
+    globalThis.document = originalDocument;
+    globalThis.CustomEvent = originalCustomEvent;
+  }
+});

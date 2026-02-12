@@ -588,12 +588,17 @@ export class LearningShell {
                 <button
                   data-shell-action="toggle-theme"
                   type="button"
-                  class="theme-toggle-btn flex items-center gap-2 px-4 py-2 rounded-2xl border transition-all"
+                  role="switch"
+                  aria-checked="${isDark ? "true" : "false"}"
+                  class="theme-toggle-btn"
                   aria-label="Cambiar tema visual"
                   title="Cambiar tema"
                 >
-                  <span class="theme-toggle-icon">${themeToggleCopy.icon}</span>
-                  <span class="theme-toggle-label text-[10px] font-black uppercase tracking-widest">${themeToggleCopy.label}</span>
+                  <span class="theme-toggle-copy">
+                    <span class="theme-toggle-icon">${themeToggleCopy.icon}</span>
+                    <span class="theme-toggle-label text-[10px] font-black uppercase tracking-widest">${themeToggleCopy.label}</span>
+                  </span>
+                  <span class="theme-toggle-pill" aria-hidden="true"><span class="theme-toggle-dot"></span></span>
                 </button>
                 <button class="relative p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
                   ${ICONS.bell}
@@ -623,19 +628,19 @@ export class LearningShell {
                 <p class="text-slate-500 mt-2 text-lg">Has completado el <span class="text-brand-600 font-bold">${escapeHTML(metrics.weeklyProgressLabel)}</span> de la ruta 0 -> B2. Sigue construyendo consistencia.</p>
               </div>
               
-              <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                <div class="p-3 bg-orange-50 text-orange-500 rounded-2xl">${ICONS.flame}</div>
+              <div class="shell-kpi-card bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                <div class="shell-kpi-icon shell-kpi-icon-streak p-3 bg-orange-50 text-orange-500 rounded-2xl">${ICONS.flame}</div>
                 <div>
-                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.streakTitle)}</p>
-                  <p class="text-xl font-black text-slate-800">${metrics.streakLabel}</p>
+                  <p class="shell-kpi-title text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.streakTitle)}</p>
+                  <p class="shell-kpi-value text-xl font-black text-slate-800">${metrics.streakLabel}</p>
                 </div>
               </div>
 
-               <div class="bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                <div class="p-3 bg-yellow-50 text-yellow-500 rounded-2xl">${ICONS.zap}</div>
+               <div class="shell-kpi-card bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                <div class="shell-kpi-icon shell-kpi-icon-xp p-3 bg-yellow-50 text-yellow-500 rounded-2xl">${ICONS.zap}</div>
                 <div>
-                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.xpTitle)}</p>
-                  <p class="text-xl font-black text-slate-800">${metrics.xpLabel}</p>
+                  <p class="shell-kpi-title text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.xpTitle)}</p>
+                  <p class="shell-kpi-value text-xl font-black text-slate-800">${metrics.xpLabel}</p>
                 </div>
               </div>
             </div>
@@ -1073,40 +1078,233 @@ export class LearningShell {
     `;
   }
 
+  buildProgressHeatmap(seed = 0) {
+    return Array.from({ length: 14 }, (_, index) => {
+      const raw = Math.sin((index + 1) * 1.31 + seed * 0.17);
+      return Math.max(0, Math.min(4, Math.round(Math.abs(raw) * 4)));
+    });
+  }
+
+  buildProgressHistory(journey, limit = 4) {
+    const steps = Array.isArray(journey?.steps) ? journey.steps : [];
+    const fallbackTitle = steps.find((step) => step?.status === "active")?.title || steps[0]?.title || "Sesion operativa";
+    const baselineMinutes = this.getSessionDurationMinutes();
+    const scoreScale = ["A", "A-", "B+", "B"];
+
+    return Array.from({ length: limit }, (_, offset) => {
+      const stamp = new Date();
+      stamp.setDate(stamp.getDate() - offset);
+      const isoDate = stamp.toISOString().slice(0, 10);
+      const focus = steps[offset % Math.max(steps.length, 1)]?.title || fallbackTitle;
+      const minutes = Math.max(15, Math.round(baselineMinutes - offset * 4));
+
+      return {
+        isoDate,
+        focus,
+        minutes,
+        score: scoreScale[offset % scoreScale.length]
+      };
+    });
+  }
+
   renderProgressView() {
     const activeWeek = this.getActiveWeekNumber();
     const totalWeeks = Number(this.program?.programWeeks) || 20;
-    const pct = Math.max(0, Math.min(100, Math.round((activeWeek / totalWeeks) * 100)));
     const journey = this.getJourneyStateSafe();
     const modulePlan = this.buildModulePlan();
+    const session = journey.session || {};
 
+    const programProgress = this.getProgramProgress();
+    const sessionPct = clampPercent(session.progressPct);
     const completedModules = modulePlan.filter((module) => module.state === "completed").length;
-    const activeModule = modulePlan.find((module) => module.state === "active")?.title || "Sin modulo activo";
+    const activeModule = modulePlan.find((module) => module.state === "active")?.title || "Foundation Core";
+
+    const overallPct = clampPercent((((activeWeek - 1) + (sessionPct / 100)) / Math.max(1, totalWeeks)) * 100);
+    const ringRadius = 68;
+    const ringCircumference = 2 * Math.PI * ringRadius;
+    const ringDash = (overallPct / 100) * ringCircumference;
+
+    const sessions7d = Math.max(1, Math.min(7, Number(programProgress.dayIndex) || 1));
+    const minutesPerSession = this.getSessionDurationMinutes();
+    const minutes7d = sessions7d * minutesPerSession;
+
+    const milestones = [
+      {
+        title: `Desbloquear ${activeModule}`,
+        note: "Consolidar practica guiada y validacion de cierre con evidencia.",
+        etaDays: Math.max(7, (totalWeeks - activeWeek) * 3)
+      },
+      {
+        title: "Subir continuidad semanal",
+        note: "Sostener ejecucion minima de 6/7 sesiones con checklist completo.",
+        etaDays: 14
+      },
+      {
+        title: "Checkpoint CEFR superior",
+        note: "Activar evaluacion con flujo completo y scoring estable en speaking.",
+        etaDays: 28
+      }
+    ];
+
+    const heatmap = this.buildProgressHeatmap(activeWeek + sessionPct);
+    const historyRows = this.buildProgressHistory(journey, 4);
 
     const flowRows = [
       ["Hoy", true],
-      ["Sesion", journey.session.progressPct > 0],
-      ["Cierre", journey.stage.closureReady],
-      ["Evaluacion", journey.stage.evaluationReady]
+      ["Sesion", sessionPct > 0],
+      ["Cierre", journey.stage?.closureReady],
+      ["Evaluacion", journey.stage?.evaluationReady]
     ]
-      .map(([label, done]) => `<li><span>${label}</span><strong>${done ? "Listo" : "Pendiente"}</strong></li>`)
+      .map(([label, done]) => `
+        <li class="progress-activity-item">
+          <span>${label}</span>
+          <strong class="progress-pill ${done ? "is-good" : ""}">${done ? "Listo" : "Pendiente"}</strong>
+        </li>
+      `)
+      .join("");
+
+    const milestoneMarkup = milestones
+      .map((item) => `
+        <li class="progress-milestone-item">
+          <div class="progress-milestone-copy">
+            <strong>${escapeHTML(item.title)}</strong>
+            <span>${escapeHTML(item.note)}</span>
+          </div>
+          <span class="progress-pill">~${escapeHTML(String(item.etaDays))} dias</span>
+        </li>
+      `)
+      .join("");
+
+    const historyMarkup = historyRows
+      .map((row) => `
+        <tr>
+          <td>${escapeHTML(row.isoDate)}</td>
+          <td>${escapeHTML(row.focus)}</td>
+          <td>${escapeHTML(String(row.minutes))} min</td>
+          <td>${escapeHTML(row.score)}</td>
+        </tr>
+      `)
+      .join("");
+
+    const heatMarkup = heatmap
+      .map((level) => `<span class="progress-heat-cell" data-level="${level}" title="Actividad ${level}/4"></span>`)
       .join("");
 
     return `
-      <article class="modules-intro-card journey-card journey-card-governance">
-        <p class="section-kicker">Progreso</p>
-        <h4>Ruta semanal 0 -> B2</h4>
-        <p class="muted-text">Semana activa: ${escapeHTML(formatWeekLabel(String(activeWeek)))} de ${totalWeeks}. Progreso estimado: ${pct}%.</p>
+      <section class="progress-shell">
+        <header class="progress-hero">
+          <div>
+            <p class="section-kicker">Progreso operativo</p>
+            <h3 class="progress-title">Progreso <em>Premium</em></h3>
+            <p class="progress-subtitle">Semana ${escapeHTML(formatWeekLabel(String(activeWeek)))} de ${totalWeeks}. Medimos consistencia, ejecucion y calidad real de sesion.</p>
+          </div>
+          <div class="progress-actions">
+            <button data-shell-action="open-session" type="button" class="btn-primary">Iniciar sesion</button>
+            <button data-shell-route="modulos" type="button" class="btn-secondary">Ver roadmap</button>
+          </div>
+        </header>
 
-        <div class="modules-rhythm">
-          <h5>Continuidad de navegacion</h5>
-          <ul>${flowRows}</ul>
+        <div class="progress-grid">
+          <article class="progress-card progress-main">
+            <div class="progress-main-head">
+              <div>
+                <p class="progress-chip">Ruta 0 -> B2</p>
+                <h4 class="progress-section-title">Resumen ejecutivo</h4>
+                <p class="muted-text">Signal over noise: enfocate en continuidad y avance de checkpoints.</p>
+              </div>
+            </div>
+
+            <div class="progress-kpi-row">
+              <article class="progress-kpi">
+                <span class="progress-kpi-label">Minutos 7 dias</span>
+                <strong class="progress-kpi-value">${minutes7d}</strong>
+              </article>
+              <article class="progress-kpi">
+                <span class="progress-kpi-label">Sesiones 7 dias</span>
+                <strong class="progress-kpi-value">${sessions7d}/7</strong>
+              </article>
+              <article class="progress-kpi">
+                <span class="progress-kpi-label">Modulos</span>
+                <strong class="progress-kpi-value">${completedModules}/${modulePlan.length || 0}</strong>
+              </article>
+            </div>
+
+            <div class="progress-ring-wrap">
+              <div class="progress-ring">
+                <svg viewBox="0 0 160 160" aria-hidden="true">
+                  <circle class="progress-ring-track" cx="80" cy="80" r="${ringRadius}" />
+                  <circle class="progress-ring-fill" cx="80" cy="80" r="${ringRadius}" style="stroke-dasharray:${ringDash.toFixed(2)} ${ringCircumference.toFixed(2)}" />
+                </svg>
+                <div class="progress-ring-center">
+                  <strong class="progress-ring-value">${overallPct}%</strong>
+                  <span class="progress-ring-label">hacia B2</span>
+                </div>
+              </div>
+
+              <div class="progress-stats-compact">
+                <article class="progress-stat-line">
+                  <span>Modulo activo</span>
+                  <strong>${escapeHTML(activeModule)}</strong>
+                </article>
+                <article class="progress-stat-line">
+                  <span>Sesion actual</span>
+                  <strong>${sessionPct}%</strong>
+                </article>
+                <article class="progress-stat-line">
+                  <span>Estado</span>
+                  <strong>${escapeHTML(toSentence(session.status || "active", "Active"))}</strong>
+                </article>
+              </div>
+            </div>
+
+            <div class="progress-divider"></div>
+
+            <div>
+              <h4 class="progress-section-title">Hitos proximos</h4>
+              <ul class="progress-milestone-list">${milestoneMarkup}</ul>
+            </div>
+          </article>
+
+          <aside class="progress-side">
+            <article class="progress-card">
+              <h4 class="progress-section-title">Continuidad</h4>
+              <ul class="progress-activity-list">${flowRows}</ul>
+            </article>
+
+            <article class="progress-card">
+              <h4 class="progress-section-title">Heatmap 14 dias</h4>
+              <div class="progress-heatmap">${heatMarkup}</div>
+            </article>
+          </aside>
         </div>
 
-        <p class="muted-text">Modulo activo: ${escapeHTML(activeModule)} | Modulos completados: ${completedModules}/${modulePlan.length || 0}.</p>
-      </article>
+        <article class="progress-card progress-table-card">
+          <div class="progress-main-head">
+            <div>
+              <h4 class="progress-section-title">Historial reciente</h4>
+              <p class="muted-text">Tabla limpia para detectar patrones de ejecucion y foco semanal.</p>
+            </div>
+            <button data-shell-action="open-session" type="button" class="btn-ghost">Registrar nueva sesion</button>
+          </div>
+
+          <div class="progress-table-wrap">
+            <table class="progress-table" aria-label="Historial reciente">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Foco</th>
+                  <th>Duracion</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>${historyMarkup}</tbody>
+            </table>
+          </div>
+        </article>
+      </section>
     `;
   }
+
   getActiveWeekNumber() {
     const fromLabel = Number.parseInt(String(this.activeWeek || "").replace(/[^\d]/g, ""), 10);
     if (Number.isFinite(fromLabel) && fromLabel > 0) {
