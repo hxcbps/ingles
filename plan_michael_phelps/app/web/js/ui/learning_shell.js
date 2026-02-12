@@ -145,6 +145,7 @@ export class LearningShell {
     const guardRaw = raw.guard && typeof raw.guard === "object" ? raw.guard : this.flowStatus;
     const primaryRaw = raw.primary && typeof raw.primary === "object" ? raw.primary : {};
     const sessionRaw = raw.session && typeof raw.session === "object" ? raw.session : {};
+    const stepsRaw = Array.isArray(raw.steps) ? raw.steps : [];
 
     const session = {
       ...fallbackSession,
@@ -176,6 +177,14 @@ export class LearningShell {
         level: guardRaw.level || "none",
         message: guardRaw.message || ""
       },
+      steps: stepsRaw
+        .filter((step) => step && typeof step === "object")
+        .map((step, index) => ({
+          stepId: typeof step.stepId === "string" ? step.stepId : "step_" + (index + 1),
+          title: typeof step.title === "string" ? step.title : "Paso " + (index + 1),
+          status: typeof step.status === "string" ? step.status : "locked",
+          durationMin: Number(step.durationMin) || 0
+        })),
       session
     };
   }
@@ -183,8 +192,7 @@ export class LearningShell {
   navigateTo(viewId, source = "shell") {
     if (!VIEW_META[viewId]) return;
 
-    this.activeView = viewId;
-    this.render({ view: viewId });
+    // Route is the source of truth. Rendering happens when router confirms route change.
     this.onNavigateRoute({ routeId: viewId, source });
   }
 
@@ -764,17 +772,33 @@ export class LearningShell {
 
   renderTodayView(metrics = this.getDashboardMetrics()) {
     const sessionProgressPct = clampPercent(metrics.sessionProgressPct);
+    const journey = this.getJourneyStateSafe();
+    const itinerarySteps = Array.isArray(journey.steps) ? journey.steps : [];
 
-    // Replicating the 'Card' style for the lesson list, but adapting logic
+    const stepStatusLabel = (status) => {
+      if (status === "done") return "Completado";
+      if (status === "active") return "En curso";
+      if (status === "failed") return "Requiere ajuste";
+      return "Pendiente";
+    };
+
+    const itineraryMarkup = itinerarySteps.length
+      ? itinerarySteps
+          .map((step, index) => {
+            const duration = Number(step.durationMin) > 0 ? `${Number(step.durationMin)} min` : "sin tiempo";
+            return `<li><span>Paso ${index + 1}: ${escapeHTML(step.title)} (${duration})</span><strong>${stepStatusLabel(step.status)}</strong></li>`;
+          })
+          .join("")
+      : "<li><span>Sin pasos cargados para hoy.</span><strong>Bloqueado</strong></li>";
+
     return `
       <div class="space-y-4">
-        
-        <!-- ACTIVE LESSON (HOY) -->
-        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] hover:border-brand-500 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer shadow-sm hover:shadow-brand-100/50" data-shell-action="open-session">
+
+        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] hover:border-brand-500 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group shadow-sm hover:shadow-brand-100/50" data-shell-action="open-session">
           <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-brand-50 text-brand-500 group-hover:scale-110 transition-transform">
             ${ICONS.playCircle}
           </div>
-          
+
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
               <span class="text-[10px] font-black bg-brand-100 text-brand-700 px-2.5 py-0.5 rounded-full uppercase tracking-widest">DIARIO</span>
@@ -783,10 +807,15 @@ export class LearningShell {
               </span>
               <span class="text-xs font-bold text-emerald-600">${escapeHTML(metrics.sessionRewardLabel)}</span>
             </div>
-            <h4 class="text-xl font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Sesión Operativa del Día</h4>
-            <p class="text-slate-500 text-sm mt-1 leading-relaxed line-clamp-2">Completa tu sesión guiada para avanzar en el roadmap.</p>
+            <h4 class="text-xl font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Sesion Operativa del Dia</h4>
+            <p class="text-slate-500 text-sm mt-1 leading-relaxed">Abre la sesion guiada para completar pasos medibles y destrabar cierre/evaluacion.</p>
+            <div class="mt-4">
+              <button data-shell-action="open-session" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors" type="button">
+                Abrir sesion guiada
+              </button>
+            </div>
           </div>
-          
+
           <div class="flex items-center gap-4">
             <div class="text-right hidden md-block">
               <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">${escapeHTML(metrics.sessionStatusLabel)}</p>
@@ -800,27 +829,34 @@ export class LearningShell {
           </div>
         </div>
 
-        <!-- UPCOMING LESSON (derived from weekly plan) -->
-        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer">
-           <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-slate-50 text-slate-300">
+        <article class="modules-intro-card">
+          <p class="section-kicker">Itinerario del dia</p>
+          <h4>Ruta accionable paso a paso</h4>
+          <p class="muted-text">Cada paso tiene estado y criterio de avance para que sepas exactamente como progresar.</p>
+          <div class="modules-rhythm">
+            <ul>${itineraryMarkup}</ul>
+          </div>
+        </article>
+
+        <div class="bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer" data-shell-action="open-roadmap">
+          <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-slate-50 text-slate-300">
             ${ICONS.playCircle}
           </div>
-           <div class="flex-1">
+          <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
               <span class="text-[10px] font-black bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full uppercase tracking-widest">${escapeHTML(metrics.upcomingTag)}</span>
             </div>
             <h4 class="text-xl font-bold text-slate-800">${escapeHTML(metrics.upcomingTitle)}</h4>
             <p class="text-slate-500 text-sm mt-1">${escapeHTML(metrics.upcomingDescription)}</p>
           </div>
-           <div class="p-3 bg-slate-50 rounded-2xl">
-              ${ICONS.chevronRight}
-            </div>
+          <div class="p-3 bg-slate-50 rounded-2xl">
+            ${ICONS.chevronRight}
+          </div>
         </div>
 
       </div>
     `;
   }
-
   renderFlowStatusBanner() {
     const journey = this.getJourneyStateSafe();
     const message = journey.guard?.message || "";
@@ -1143,7 +1179,12 @@ export class LearningShell {
     }
 
     this.handleClick = (e) => {
-      const navBtn = e.target.closest("[data-view-nav]");
+      const eventTarget = e.target instanceof Element ? e.target : e.target?.parentElement;
+      if (!eventTarget) {
+        return;
+      }
+
+      const navBtn = eventTarget.closest("[data-view-nav]");
       if (navBtn) {
         const viewId = navBtn.dataset.viewNav;
         if (!VIEW_META[viewId]) {
@@ -1154,7 +1195,7 @@ export class LearningShell {
         return;
       }
 
-      const routeBtn = e.target.closest("[data-shell-route]");
+      const routeBtn = eventTarget.closest("[data-shell-route]");
       if (routeBtn) {
         const routeId = routeBtn.dataset.shellRoute;
         if (VIEW_META[routeId]) {
@@ -1163,7 +1204,7 @@ export class LearningShell {
         return;
       }
 
-      const actionBtn = e.target.closest("[data-shell-action]");
+      const actionBtn = eventTarget.closest("[data-shell-action]");
       if (!actionBtn) {
         return;
       }

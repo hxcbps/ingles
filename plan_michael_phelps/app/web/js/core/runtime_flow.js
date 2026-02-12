@@ -37,6 +37,13 @@ function isCompletedStatus(status) {
   return status === STEP_STATUS.DONE || status === STEP_STATUS.RECOVERED;
 }
 
+function normalizeJourneyStepStatus(status) {
+  if (status === STEP_STATUS.DONE || status === STEP_STATUS.RECOVERED) return "done";
+  if (status === STEP_STATUS.ACTIVE) return "active";
+  if (status === STEP_STATUS.FAILED) return "failed";
+  return "locked";
+}
+
 function hasEvidencePayload(payload) {
   if (!payload || typeof payload !== "object") return false;
 
@@ -106,6 +113,7 @@ export function deriveJourneySnapshot(orchestratorRef) {
 
   const skillAvailable = { listening: 0, speaking: 0, reading: 0, writing: 0 };
   const skillDone = { listening: 0, speaking: 0, reading: 0, writing: 0 };
+  const steps = [];
 
   let evidenceRequired = false;
 
@@ -116,7 +124,17 @@ export function deriveJourneySnapshot(orchestratorRef) {
     }
 
     const tags = resolveSkillTags(step);
-    const completed = isCompletedStatus(stepStates[stepId]);
+    const rawStatus = stepStates[stepId];
+    const completed = isCompletedStatus(rawStatus);
+
+    steps.push({
+      stepId,
+      title: typeof step?.title === "string" && step.title.trim() ? step.title.trim() : `Paso ${steps.length + 1}`,
+      type: asStepType(step?.type) || "step",
+      durationMin: Number(step?.duration_min) || 0,
+      status: normalizeJourneyStepStatus(rawStatus),
+      done: completed
+    });
 
     for (const tag of tags) {
       if (!Object.prototype.hasOwnProperty.call(skillAvailable, tag)) {
@@ -167,7 +185,8 @@ export function deriveJourneySnapshot(orchestratorRef) {
       evidenceReady,
       evaluationReady
     },
-    nextRecommendedRoute: evaluationReady ? "evaluacion" : closureReady ? "cierre" : "sesion"
+    nextRecommendedRoute: evaluationReady ? "evaluacion" : closureReady ? "cierre" : "sesion",
+    steps
   };
 }
 

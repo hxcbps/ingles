@@ -127,7 +127,6 @@ export async function bootstrapV4({
   let wizard = null;
   let hashRouter = null;
   let unloadHandler = null;
-  let refreshInterval = null;
   let currentRouteId = null;
   let routeSource = "startup";
   let scrollHandler = null;
@@ -216,6 +215,9 @@ export async function bootstrapV4({
     orchestrator.init(resolvedDay.dayContent, {
       onEvent: (event) => {
         publishTelemetry(event);
+        if (shell && typeof shell.refresh === "function") {
+          shell.refresh();
+        }
       }
     });
 
@@ -242,11 +244,13 @@ export async function bootstrapV4({
       getSessionSnapshot: () => buildSessionSnapshot(orchestrator),
       getJourneyState,
       onNavigateRoute: ({ routeId, source }) => {
+        routeSource = source || "shell_nav";
+
         if (!hashRouter) {
+          shell?.setRoute(routeId);
           return;
         }
 
-        routeSource = source || "shell_nav";
         const guardResult = applyRouteGuard({ routeId, source: routeSource });
         if (guardResult.redirected) {
           return;
@@ -314,12 +318,6 @@ export async function bootstrapV4({
     scrollHandler();
     windowRef.addEventListener("scroll", scrollHandler, { passive: true });
 
-    refreshInterval = windowRef.setInterval(() => {
-      if (shell) {
-        shell.refresh();
-      }
-    }, 1000);
-
     unloadHandler = () => {
       orchestrator.abandon("before_unload");
     };
@@ -347,9 +345,6 @@ export async function bootstrapV4({
     },
 
     dispose() {
-      if (refreshInterval) {
-        clearInterval(refreshInterval);
-      }
       if (hashRouter && typeof hashRouter.dispose === "function") {
         hashRouter.dispose();
       }

@@ -71,6 +71,10 @@ test("runtime flow derives incomplete checklist and closure lock", () => {
   assert.equal(journey.checklist.writing, false);
   assert.equal(journey.stage.closureReady, false);
   assert.equal(journey.stage.evaluationReady, false);
+  assert.equal(Array.isArray(journey.steps), true);
+  assert.equal(journey.steps.length, 4);
+  assert.equal(journey.steps[0].status, "done");
+  assert.equal(journey.steps[2].status, "active");
 
   const guard = evaluateRuntimeGuard({
     routeId: "cierre",
@@ -98,6 +102,7 @@ test("runtime flow opens evaluacion when full day is completed", () => {
   assert.equal(journey.stage.closureReady, true);
   assert.equal(journey.stage.evidenceReady, true);
   assert.equal(journey.stage.evaluationReady, true);
+  assert.equal(journey.steps.every((step) => step.status === "done"), true);
 
   const guard = evaluateRuntimeGuard({
     routeId: "evaluacion",
