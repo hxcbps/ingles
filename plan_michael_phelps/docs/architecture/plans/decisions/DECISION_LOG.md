@@ -64,3 +64,15 @@ Status: active
 - Context: Product requested explicit specialist execution by design skeleton domains (palette, buttons, typography, motion, color storytelling).
 - Decision: Execute Sprint 7 Wave 2 specialist lanes and publish a unified design merge artifact (`S7-W2-06`) as implementation baseline.
 - Consequence: Visual decisions become traceable by domain, enabling controlled implementation and reducing style inconsistency drift.
+
+### D-2026-02-12-011
+
+- Context: Product feedback reports persistent lack of professional visual consistency despite S7 improvements.
+- Decision: Base the next UI wave on official benchmark references (Tailwind ecosystem, leading product sites, accessibility standards, Figma variable workflows) and codify them into hard agent acceptance gates.
+- Consequence: Subjective design debate is reduced by measurable criteria for palette, typography, CTA hierarchy, motion, and color storytelling.
+
+### D-2026-02-12-012
+
+- Context: Style ownership remained concentrated in `app/web/css` without package-level governance, making reuse and parallel specialization fragile.
+- Decision: Introduce `design_factory/` as a monorepo-style package layout and generate `app/web/css/factory.css` through `scripts/build_design_factory_css.sh`, imported by the canonical CSS entrypoint.
+- Consequence: Each design skeleton can evolve independently while the app consumes one controlled output artifact.

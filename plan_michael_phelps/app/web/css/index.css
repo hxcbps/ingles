@@ -20,3 +20,6 @@
 
 @import "reboot_s7.css" layer(overrides);
 /* S7 visual reboot overrides */
+
+@import "factory.css" layer(overrides);
+/* S8 design factory generated overrides */

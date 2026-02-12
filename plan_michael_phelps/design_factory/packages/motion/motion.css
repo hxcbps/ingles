@@ -1,0 +1,20 @@
+:root {
+  --motion-fast: 140ms;
+  --motion-standard: 220ms;
+  --motion-slow: 320ms;
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:where(.btn-primary, .btn-secondary, .btn-ghost, [data-view-nav], .card, .surface-card) {
+  transition-duration: var(--motion-standard);
+  transition-timing-function: var(--motion-ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.btn-primary, .btn-secondary, .btn-ghost, [data-view-nav], .card, .surface-card) {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}

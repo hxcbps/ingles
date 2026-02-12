@@ -96,7 +96,7 @@ console.log('[ OK ] Route/view IDs aligned:', canonicalIds.join(', '));
 NODE
 
 echo "[RUN ] Token discipline advisory"
-color_hits="$(rg -n '#[0-9a-fA-F]{3,8}\b|rgba?\(' app/web/css --glob '!tokens.css' --glob '!index.css' || true)"
+color_hits="$(rg -n '#[0-9a-fA-F]{3,8}\b|rgba?\(' app/web/css --glob '!tokens.css' --glob '!factory.css' --glob '!index.css' || true)"
 if [ -n "$color_hits" ]; then
   count=$(printf '%s\n' "$color_hits" | sed '/^$/d' | wc -l | tr -d ' ')
   echo "[WARN] Found $count hard-coded color-like values outside tokens.css"

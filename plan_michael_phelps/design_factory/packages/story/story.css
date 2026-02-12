@@ -1,0 +1,32 @@
+body.app-mode-v4 {
+  background:
+    radial-gradient(circle at 5% -10%, rgb(var(--story-primary-rgb) / 0.2), transparent 42%),
+    radial-gradient(circle at 96% -4%, rgb(var(--story-secondary-rgb) / 0.14), transparent 48%),
+    linear-gradient(160deg, var(--surface-base) 0%, #eef4fd 56%, #e8f0fb 100%);
+}
+
+body.app-mode-v4 .shell-sidebar {
+  background: linear-gradient(180deg, #081126 0%, #0f1e3a 100%);
+  border-right: 1px solid rgb(148 163 184 / 0.2);
+}
+
+body.app-mode-v4 .shell-sidebar [data-view-nav] {
+  border: 1px solid rgb(148 163 184 / 0.26);
+  background: rgb(15 23 42 / 0.44);
+}
+
+body.app-mode-v4 .shell-sidebar [data-view-nav].bg-brand-600 {
+  background: linear-gradient(135deg, var(--story-primary-600) 0%, var(--story-primary-700) 58%, var(--story-secondary-500) 100%);
+  border-color: rgb(var(--story-primary-rgb) / 0.6);
+}
+
+body.app-mode-v4 .modules-intro-card,
+body.app-mode-v4 .wizard-workspace .step-card,
+body.app-mode-v4 .wizard-workspace .step-rail-item {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f9ff 100%);
+  border-color: var(--border-default);
+}
+
+body.app-mode-v4 .wizard-workspace .wizard-top {
+  background: linear-gradient(140deg, #0f1e3a 0%, var(--story-primary-700) 56%, var(--story-secondary-500) 100%);
+}

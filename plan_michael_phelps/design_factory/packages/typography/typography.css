@@ -1,0 +1,29 @@
+:root {
+  --font-display: "Geist", "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Geist", "DM Sans", "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", monospace;
+
+  --type-display-xl: clamp(2.2rem, 3.9vw, 3.5rem);
+  --type-display-lg: clamp(1.8rem, 2.6vw, 2.45rem);
+  --type-title-md: clamp(1.28rem, 1.5vw, 1.45rem);
+  --type-body-md: 1rem;
+  --type-body-sm: 0.93rem;
+  --type-label-xs: 0.74rem;
+
+  --leading-display: 1.06;
+  --leading-title: 1.15;
+  --leading-body: 1.55;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.028em;
+}
+
+p {
+  line-height: var(--leading-body);
+}
