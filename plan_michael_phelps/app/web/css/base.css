@@ -98,14 +98,19 @@ h5,
 h6 {
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.15;
   color: var(--text-primary);
   letter-spacing: -0.02em;
 }
 
+h1 { font-size: var(--type-display-xl); }
+h2 { font-size: var(--type-display-lg); }
+h3 { font-size: var(--type-title-md); }
+
 p {
   margin-bottom: 1rem;
   color: var(--text-secondary);
+  font-size: var(--type-body-md);
 }
 
 a {

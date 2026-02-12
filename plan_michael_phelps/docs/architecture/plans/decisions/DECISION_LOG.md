@@ -58,3 +58,9 @@ Status: active
 - Context: The visual hotfix improved the interface, but product direction still requires stronger consistency and explicit ownership by design skeleton domains.
 - Decision: Create Sprint 7 Wave 2 specialist lanes for palette, button system, typography, motion, and color storytelling with independent Figma artifacts and controlled merge rules.
 - Consequence: Design quality becomes accountable per specialist lane, reducing ambiguity and accelerating convergence to a professional and coherent UI system.
+
+### D-2026-02-12-010
+
+- Context: Product requested explicit specialist execution by design skeleton domains (palette, buttons, typography, motion, color storytelling).
+- Decision: Execute Sprint 7 Wave 2 specialist lanes and publish a unified design merge artifact (`S7-W2-06`) as implementation baseline.
+- Consequence: Visual decisions become traceable by domain, enabling controlled implementation and reducing style inconsistency drift.

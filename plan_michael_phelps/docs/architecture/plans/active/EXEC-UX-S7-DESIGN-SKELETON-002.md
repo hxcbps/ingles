@@ -47,14 +47,15 @@ Result:
 | W1 | Definir la ola S7 de agentes especialistas de esqueleto de diseño | Done |
 | W2 | Publicar assignment de 5 agentes con ownership no solapado | Done |
 | W3 | Publicar launch commands y scripts de worktree para ejecución paralela | Done |
-| W4 | Ejecutar producción de artefactos Figma por cada especialista | Todo |
-| W5 | Consolidar output en decisión visual unificada y ruta de implementación | Todo |
+| W4 | Ejecutar producción de artefactos Figma por cada especialista | Done |
+| W5 | Consolidar output en decisión visual unificada y ruta de implementación | Done |
 
 ## Progress Log
 
 - 2026-02-12: Se confirma que la app mejora respecto al estado previo, pero no alcanza consistencia premium integral.
 - 2026-02-12: Se crea ejecución especializada por esqueletos de diseño (5 agentes).
 - 2026-02-12: Se versionan assignment, launch commands, status y scripts de orquestación.
+- 2026-02-12: Se ejecutan lanes S7-DS-01..05 y se publica merge unificado (`S7-W2-06`).
 
 ## Decision Log
 
