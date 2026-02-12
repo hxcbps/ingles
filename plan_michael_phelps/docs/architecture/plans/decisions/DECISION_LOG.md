@@ -52,3 +52,9 @@ Status: active
 - Context: Product feedback reported low visual impact and unclear navigation even after planning artifacts were created.
 - Decision: Apply an immediate S7 visual hotfix layer (`reboot_s7.css`) plus navigation label clarity and button reset, while keeping Figma-first Wave 1 as the strategic design phase.
 - Consequence: The app gains immediate UX clarity and stronger CTA hierarchy without waiting for full redesign, but token-hardcode debt remains and must be reduced in subsequent implementation waves.
+
+### D-2026-02-12-009
+
+- Context: The visual hotfix improved the interface, but product direction still requires stronger consistency and explicit ownership by design skeleton domains.
+- Decision: Create Sprint 7 Wave 2 specialist lanes for palette, button system, typography, motion, and color storytelling with independent Figma artifacts and controlled merge rules.
+- Consequence: Design quality becomes accountable per specialist lane, reducing ambiguity and accelerating convergence to a professional and coherent UI system.
