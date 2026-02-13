@@ -823,38 +823,40 @@ export class LearningShell {
         `;
 
     return `
-      <section class="es-section">
-        <div class="es-section__head">
-          <h2>Hoy</h2>
-          <p>Bloque operativo con acción inmediata.</p>
-        </div>
-
-        <div class="es-list">
-          <div class="es-list__item">
-            <div>
-              <strong>Sesion operativa del dia</strong>
-              <p>${escapeHTML(metrics.sessionMinutesLabel)} • ${escapeHTML(metrics.sessionRewardLabel)} • ${escapeHTML(metrics.sessionStatusLabel)}</p>
-            </div>
-            <button data-shell-action="open-session" class="es-btn es-btn--primary" type="button">Abrir sesión</button>
+      <section class="es-section es-view-stack">
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h2>Hoy</h2>
+            <p>Bloque operativo con acción inmediata.</p>
           </div>
 
-          <div class="es-list__item">
-            <div>
-              <strong>Próximo bloque</strong>
-              <p>${escapeHTML(metrics.upcomingTitle)}</p>
+          <div class="es-list">
+            <div class="es-list__item">
+              <div>
+                <strong>Sesion operativa del dia</strong>
+                <p>${escapeHTML(metrics.sessionMinutesLabel)} • ${escapeHTML(metrics.sessionRewardLabel)} • ${escapeHTML(metrics.sessionStatusLabel)}</p>
+              </div>
+              <button data-shell-action="open-session" class="es-btn es-btn--primary" type="button">Abrir sesion</button>
             </div>
-            <button data-shell-route="modulos" class="es-btn es-btn--ghost" type="button">Ver roadmap</button>
+
+            <div class="es-list__item">
+              <div>
+                <strong>Proximo bloque</strong>
+                <p>${escapeHTML(metrics.upcomingTitle)}</p>
+              </div>
+              <button data-shell-route="modulos" class="es-btn es-btn--ghost" type="button">Ver roadmap</button>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <div class="es-divider"></div>
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h3>Itinerario del dia</h3>
+            <p>Cada paso con estado explicito y duracion.</p>
+          </div>
 
-        <div class="es-section__head">
-          <h3>Itinerario del dia</h3>
-          <p>Cada paso con estado explícito y duración.</p>
-        </div>
-
-        <div class="es-list">${itineraryMarkup}</div>
+          <div class="es-list">${itineraryMarkup}</div>
+        </article>
       </section>
     `;
   }
@@ -873,47 +875,53 @@ export class LearningShell {
     const nextRouteLabel = VIEW_META[nextRoute]?.label || "Sesion";
 
     return `
-      <section class="es-section">
-        <div class="es-section__head">
-          <h2>Sesión guiada</h2>
-          <p>Secuencia operativa para completar el día con evidencia.</p>
-        </div>
-
-        <div class="es-kpis es-kpis--session">
-          <article>
-            <span>Progreso</span>
-            <strong>${progressPct}%</strong>
-          </article>
-          <article>
-            <span>Paso activo</span>
-            <strong>${escapeHTML(session.currentStepTitle || "Pendiente")}</strong>
-          </article>
-          <article>
-            <span>Bloques</span>
-            <strong>${Number(primary.completed) || 0}/${Number(primary.total) || 0}</strong>
-          </article>
-        </div>
-
-        <div class="es-list">
-          <div class="es-list__item">
-            <div>
-              <strong>Siguiente acción</strong>
-              <p>Ruta recomendada por guardrails runtime.</p>
-            </div>
-            <button data-shell-route="${nextRoute}" class="es-btn es-btn--primary" type="button">Continuar en ${escapeHTML(nextRouteLabel)}</button>
+      <section class="es-section es-view-stack">
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h2>Sesion guiada</h2>
+            <p>Secuencia operativa para completar el dia con evidencia.</p>
           </div>
-          <div class="es-list__item">
-            <div>
-              <strong>Duración objetivo</strong>
-              <p>${escapeHTML(metrics.sessionMinutesLabel)}</p>
-            </div>
-            <span>${escapeHTML(metrics.sessionRewardLabel)}</span>
+
+          <div class="es-kpis es-kpis--session">
+            <article>
+              <span>Progreso</span>
+              <strong>${progressPct}%</strong>
+            </article>
+            <article>
+              <span>Paso activo</span>
+              <strong>${escapeHTML(session.currentStepTitle || "Pendiente")}</strong>
+            </article>
+            <article>
+              <span>Bloques</span>
+              <strong>${Number(primary.completed) || 0}/${Number(primary.total) || 0}</strong>
+            </article>
           </div>
-        </div>
 
-        <div class="es-divider"></div>
+          <div class="es-list">
+            <div class="es-list__item">
+              <div>
+                <strong>Siguiente accion</strong>
+                <p>Ruta recomendada por guardrails runtime.</p>
+              </div>
+              <button data-shell-route="${nextRoute}" class="es-btn es-btn--primary" type="button">Continuar en ${escapeHTML(nextRouteLabel)}</button>
+            </div>
+            <div class="es-list__item">
+              <div>
+                <strong>Duracion objetivo</strong>
+                <p>${escapeHTML(metrics.sessionMinutesLabel)}</p>
+              </div>
+              <span>${escapeHTML(metrics.sessionRewardLabel)}</span>
+            </div>
+          </div>
+        </article>
 
-        <div id="${this.getSessionHostId()}" class="es-session-host"></div>
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h3>Ejecucion guiada</h3>
+            <p>Workspace operativo para completar pasos y registrar evidencia.</p>
+          </div>
+          <div id="${this.getSessionHostId()}" class="es-session-host"></div>
+        </article>
       </section>
     `;
   }
@@ -966,17 +974,19 @@ export class LearningShell {
       : { route: "sesion", label: "Completar sesion" };
 
     return `
-      <section class="es-section">
-        <div class="es-section__head">
-          <h2>Cierre diario</h2>
-          <p>Checklist de continuidad antes de evaluar.</p>
-        </div>
+      <section class="es-section es-view-stack">
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h2>Cierre diario</h2>
+            <p>Checklist de continuidad antes de evaluar.</p>
+          </div>
 
-        <div class="es-list">${checklistRows}</div>
+          <div class="es-list">${checklistRows}</div>
 
-        <div class="es-divider"></div>
-
-        <button data-shell-route="${nextAction.route}" class="es-btn es-btn--primary" type="button">${nextAction.label}</button>
+          <div class="es-actions-row">
+            <button data-shell-route="${nextAction.route}" class="es-btn es-btn--primary" type="button">${nextAction.label}</button>
+          </div>
+        </article>
       </section>
     `;
   }
@@ -993,31 +1003,33 @@ export class LearningShell {
         : { route: "sesion", label: "Completar sesión" };
 
     return `
-      <section class="es-section">
-        <div class="es-section__head">
-          <h2>Evaluación</h2>
-          <p>Control de calidad y readiness de sesión.</p>
-        </div>
-
-        <div class="es-list">
-          <div class="es-list__item">
-            <div>
-              <strong>Estado actual</strong>
-              <p>${escapeHTML(journey.session.status || "locked")}</p>
-            </div>
-            <span>${Math.max(0, Math.min(100, progress))}%</span>
+      <section class="es-section es-view-stack">
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h2>Evaluacion</h2>
+            <p>Control de calidad y readiness de sesion.</p>
           </div>
 
-          <div class="es-list__item">
-            <div>
-              <strong>Habilitación</strong>
-              <p>${journey.stage.evaluationReady
-                ? "Todo listo para evaluar el día."
-                : "La evaluación se habilita al cerrar sesión y registrar evidencia."}</p>
+          <div class="es-list">
+            <div class="es-list__item">
+              <div>
+                <strong>Estado actual</strong>
+                <p>${escapeHTML(journey.session.status || "locked")}</p>
+              </div>
+              <span>${Math.max(0, Math.min(100, progress))}%</span>
             </div>
-            <button data-shell-route="${nextAction.route}" class="es-btn es-btn--ghost" type="button" ${nextAction.route === "evaluacion" ? "disabled" : ""}>${nextAction.label}</button>
+
+            <div class="es-list__item">
+              <div>
+                <strong>Habilitacion</strong>
+                <p>${journey.stage.evaluationReady
+                  ? "Todo listo para evaluar el dia."
+                  : "La evaluacion se habilita al cerrar sesion y registrar evidencia."}</p>
+              </div>
+              <button data-shell-route="${nextAction.route}" class="es-btn es-btn--ghost" type="button" ${nextAction.route === "evaluacion" ? "disabled" : ""}>${nextAction.label}</button>
+            </div>
           </div>
-        </div>
+        </article>
       </section>
     `;
   }
@@ -1194,31 +1206,36 @@ export class LearningShell {
     const pillarsMarkup = pillars.map((pillar) => `<span class="es-badge">${escapeHTML(pillar)}</span>`).join("");
 
     const rhythmMarkup = rhythm
-      .map((line) => `
-        <div class="es-list__item">
-          <div>
-            <strong>${escapeHTML(line)}</strong>
-            <p>Cadencia semanal oficial.</p>
-          </div>
-          <span>Ritmo</span>
-        </div>
-      `)
+      .map((line) => `<li class="es-rhythm-item">${escapeHTML(line)}</li>`)
       .join("");
 
     const cardsMarkup = modulePlan.map((module) => this.renderModuleCard(module)).join("");
 
     return `
-      <section class="es-section">
-        <div class="es-section__head">
-          <h2>Módulos curriculares</h2>
-          <p>Ruta granular por semanas con estado de ejecución.</p>
-        </div>
+      <section class="es-section es-view-stack">
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h2>Modulos curriculares</h2>
+            <p>Ruta granular por semanas con estado de ejecucion.</p>
+          </div>
 
-        <div class="es-badges">${pillarsMarkup || '<span class="es-badge">Sin pilares definidos</span>'}</div>
+          <div class="es-badges">${pillarsMarkup || '<span class="es-badge">Sin pilares definidos</span>'}</div>
 
-        <div class="es-list">${rhythmMarkup || '<div class="es-list__item"><div><strong>Sin ritmo definido</strong><p>Agrega weekly_rhythm en el blueprint.</p></div><span>Pendiente</span></div>'}</div>
+          <section class="es-rhythm-block" aria-label="Cadencia semanal">
+            <h3 class="es-rhythm-title">Cadencia semanal</h3>
+            ${rhythmMarkup
+              ? `<ul class="es-rhythm-grid">${rhythmMarkup}</ul>`
+              : '<div class="es-list"><div class="es-list__item"><div><strong>Sin ritmo definido</strong><p>Agrega weekly_rhythm en el blueprint.</p></div><span>Pendiente</span></div></div>'}
+          </section>
+        </article>
 
-        <div class="es-modules-grid">${cardsMarkup}</div>
+        <article class="es-panel">
+          <div class="es-section__head">
+            <h3>Mapa de modulos</h3>
+            <p>Cada modulo contiene objetivo, KPIs, foco metodologico y semanas asociadas.</p>
+          </div>
+          <div class="es-modules-grid">${cardsMarkup}</div>
+        </article>
       </section>
     `;
   }
@@ -1245,15 +1262,15 @@ export class LearningShell {
 
     return `
       <article class="es-module-card" data-state="${escapeHTML(module.state)}">
-        <div class="es-module-card__head">
+        <header class="es-module-card__head">
           <div>
-            <h3>${escapeHTML(module.title || "Módulo")}</h3>
+            <h3>${escapeHTML(module.title || "Modulo")}</h3>
             <p>${escapeHTML(module.objective || "Sin objetivo definido")}</p>
           </div>
           <span>${escapeHTML(stateLabel)}</span>
-        </div>
+        </header>
 
-        <div class="es-badges">
+        <div class="es-module-card__meta">
           <span class="es-badge">${escapeHTML(module.cefr_band || "A1")}</span>
           <span class="es-badge">${escapeHTML(this.formatWeekRange(module.startWeek, module.endWeek))}</span>
           <span class="es-badge">${module.spanWeeks} semanas</span>
@@ -1267,9 +1284,18 @@ export class LearningShell {
           <article><span>Cycles</span><strong>${Number(kpis.task_cycles) || 0}</strong></article>
         </div>
 
-        <div class="es-chips-row">${focusMarkup || '<span class="es-chip">Sin focus points</span>'}</div>
-        <div class="es-chips-row">${checkpointsMarkup || '<span class="es-chip">Sin checkpoints</span>'}</div>
-        <div class="es-chips-row">${attachedWeekMarkup || '<span class="es-chip">Sin semanas adjuntas</span>'}</div>
+        <section class="es-module-card__group">
+          <h4>Focus</h4>
+          <div class="es-chips-row">${focusMarkup || '<span class="es-chip">Sin focus points</span>'}</div>
+        </section>
+        <section class="es-module-card__group">
+          <h4>Checkpoints</h4>
+          <div class="es-chips-row">${checkpointsMarkup || '<span class="es-chip">Sin checkpoints</span>'}</div>
+        </section>
+        <section class="es-module-card__group">
+          <h4>Semanas</h4>
+          <div class="es-chips-row">${attachedWeekMarkup || '<span class="es-chip">Sin semanas adjuntas</span>'}</div>
+        </section>
       </article>
     `;
   }

@@ -79,6 +79,9 @@ Result:
 - 2026-02-13: Simplified shell background composition in `app/web/css/shell_rethink.css` (flat body backdrop + minimal shell overlay) and replaced per-route heading jumps with one shared typography scale for stable rhythm between `hoy` and `sesion`.
 - 2026-02-13: Scoped residual legacy dark-state/button/story selectors in `app/web/css/factory.css` to `.app-shell` only, preventing collisions with `es-*` shell controls and background contracts.
 - 2026-02-13: Final shell rhythm pass in `app/web/css/shell_rethink.css`: lower display/section heading scales, reduced card contrast/shadow density, removed route-specific `es-shell--progress` chrome variance, and aligned spacing cadence across route panels.
+- 2026-02-13: Refactored route skeletons in `app/web/js/ui/learning_shell.js` (`hoy`, `sesion`, `cierre`, `evaluacion`, `modulos`) to semantic panel-based structure (`es-view-stack`, `es-panel`, `es-actions-row`, rhythm grid) for coherent section hierarchy.
+- 2026-02-13: Rebuilt progreso standalone markup in `app/web/js/ui/renderers/progress_premium_renderer.js` to `es-*` contracts and removed dependence on legacy `progress-shell` class naming.
+- 2026-02-13: Extended `app/web/css/shell_rethink.css` with shared semantic primitives (panel, rhythm, pill, heatmap, table, progress summary layout) and rebalanced heading scale (`hero > section > card`) for clearer typographic order.
 
 ## Decision Log
 

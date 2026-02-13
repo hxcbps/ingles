@@ -142,3 +142,9 @@ Status: active
 - Context: A final visual audit still found legacy dark-theme rules in `factory.css` applying to broad selectors (`button[data-shell-route]`, `body.app-mode-v4` story background) and creating style collisions with the `es-*` shell (CTA contrast drift, route contour mismatch, side glow perception).
 - Decision: Scope the remaining legacy selectors to `.app-shell` only and keep `shell_rethink.css` as the sole authority for `es-*` shell visuals, while further reducing heading scale, card contrast, and route-specific variance (including removal of `es-shell--progress` special chrome overrides).
 - Consequence: Current runtime shell now keeps one deterministic visual contract across `hoy/sesion/cierre/evaluacion/modulos/progreso`, with no broad legacy selectors overriding navigation/buttons/backgrounds in the modern shell path.
+
+### D-2026-02-13-024
+
+- Context: Product feedback still identified weak information hierarchy and inconsistent skeleton semantics across routes (`hoy`, `sesion`, `modulos`, `progreso`), especially in module rhythm blocks and progress standalone renderer.
+- Decision: Standardize route content on one semantic UI grammar (`es-section`, `es-panel`, `es-list`, `es-table`, `es-kpis`) and retire legacy `progress-shell` markup in favor of `es-*` renderer contracts, while tuning heading hierarchy (`hero > section > card`) and spacing rhythm.
+- Consequence: The app now renders from a single structural system with predictable typography and section order, reducing route-to-route visual drift and making the HTML skeleton materially clearer for future UX iterations.
