@@ -15,6 +15,9 @@ export function renderBootFailure({
   const root = documentRef?.getElementById?.("v4-root");
   if (!root) return;
 
+  root.classList?.remove?.("loading-shell");
+  root.classList?.add?.("learning-shell");
+
   root.innerHTML = `
     <section class="fatal-shell" aria-live="assertive">
       <article class="fatal-card">

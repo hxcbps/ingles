@@ -809,7 +809,7 @@ p {
 }
 
 /* ---- Dual Theme Button States ---- */
-body.app-mode-v4[data-ui-theme="dark"] :where(
+body.app-mode-v4[data-ui-theme="dark"] .app-shell :where(
   .btn-secondary,
   button[data-shell-action="open-roadmap"],
   #btn-timer-toggle,
@@ -821,7 +821,7 @@ body.app-mode-v4[data-ui-theme="dark"] :where(
   box-shadow: 0 14px 30px -24px rgb(2 6 23 / 0.82);
 }
 
-body.app-mode-v4[data-ui-theme="dark"] :where(
+body.app-mode-v4[data-ui-theme="dark"] .app-shell :where(
   .btn-secondary,
   button[data-shell-action="open-roadmap"],
   #btn-timer-toggle,
@@ -832,25 +832,25 @@ body.app-mode-v4[data-ui-theme="dark"] :where(
   color: #e2ecff;
 }
 
-body.app-mode-v4[data-ui-theme="dark"] :where(.btn-ghost, #btn-timer-reset) {
+body.app-mode-v4[data-ui-theme="dark"] .app-shell :where(.btn-ghost, #btn-timer-reset) {
   color: #8fa8cd;
 }
 
-body.app-mode-v4[data-ui-theme="dark"] :where(.btn-ghost, #btn-timer-reset):hover:not(:disabled) {
+body.app-mode-v4[data-ui-theme="dark"] .app-shell :where(.btn-ghost, #btn-timer-reset):hover:not(:disabled) {
   background: rgb(59 130 246 / 0.12);
   color: #dbeafe;
 }
 
 
 /* ---- story ---- */
-body.app-mode-v4 {
+body.app-mode-v4 .app-shell {
   background:
     radial-gradient(circle at 6% -14%, rgb(var(--story-primary-rgb) / 0.2), transparent 40%),
     radial-gradient(circle at 96% -5%, rgb(var(--story-secondary-rgb) / 0.14), transparent 46%),
     linear-gradient(158deg, var(--surface-base) 0%, var(--surface-canvas) 54%, var(--surface-sunken) 100%);
 }
 
-body.app-mode-v4::before {
+body.app-mode-v4 .app-shell::before {
   opacity: 0.34;
 }
 

@@ -75,6 +75,10 @@ Result:
 - 2026-02-13: Applied shell-level contrast hardening in `app/web/css/shell_rethink.css` (explicit heading colors, dark-mode accent-ink CTAs, muted glow/background balancing, stronger surface contrast) to fix low-visibility text and button states across `hoy`, `sesion`, `modulos` and `progreso`.
 - 2026-02-13: Isolated legacy Wave-3 shell theming in `app/web/css/factory.css` under `.app-shell` scope to stop style collision with `es-*` shell routes.
 - 2026-02-13: Added micro-typography and spacing rhythm contracts in `app/web/css/shell_rethink.css` using `data-view-panel` selectors (line-height, weight, heading scale, and per-view gap behavior with responsive clamps).
+- 2026-02-13: Removed runtime inheritance of `loading-shell` layout in `v4-root` mount path (`bootstrap_v4.js`, `main.js`) to eliminate centered/slab-like rendering artifacts after app boot.
+- 2026-02-13: Simplified shell background composition in `app/web/css/shell_rethink.css` (flat body backdrop + minimal shell overlay) and replaced per-route heading jumps with one shared typography scale for stable rhythm between `hoy` and `sesion`.
+- 2026-02-13: Scoped residual legacy dark-state/button/story selectors in `app/web/css/factory.css` to `.app-shell` only, preventing collisions with `es-*` shell controls and background contracts.
+- 2026-02-13: Final shell rhythm pass in `app/web/css/shell_rethink.css`: lower display/section heading scales, reduced card contrast/shadow density, removed route-specific `es-shell--progress` chrome variance, and aligned spacing cadence across route panels.
 
 ## Decision Log
 

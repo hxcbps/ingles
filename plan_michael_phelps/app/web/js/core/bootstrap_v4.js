@@ -81,6 +81,9 @@ function buildSessionSnapshot(orchestratorRef) {
 function renderFatal(container, title, message) {
   if (!container) return;
 
+  container.classList?.remove?.("loading-shell");
+  container.classList?.add?.("learning-shell");
+
   container.innerHTML = `
     <section class="fatal-shell" aria-live="assertive">
       <article class="fatal-card">
@@ -137,6 +140,9 @@ export async function bootstrapV4({
     console.error("Critical: #v4-root not found in DOM");
     return { dispose() {} };
   }
+
+  rootContainer.classList?.remove?.("loading-shell", "fatal-shell");
+  rootContainer.classList?.add?.("learning-shell");
 
   documentRef.body.classList.add(MODE_CLASS);
 

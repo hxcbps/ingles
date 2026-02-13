@@ -130,3 +130,15 @@ Status: active
 - Context: Residual legacy rules in `app/web/css/factory.css` still owned global theme/background selectors and broad utility recoloring (`.text-slate-*`, `.bg-*`, `.border-*`) that could compete with the new `es-*` shell contract.
 - Decision: Isolate Wave-3 legacy shell theming to `.app-shell` scope in `factory.css` and keep `es-*` visual authority in `shell_rethink.css`; in parallel, add route-specific micro-typography and spacing rhythm via `data-view-panel` contracts.
 - Consequence: Legacy styling no longer leaks into the modern shell, while `hoy/sesion/cierre/evaluacion/modulos` gain explicit line-height/weight/spacing behavior per viewport for a cleaner and more consistent enterprise-grade reading rhythm.
+
+### D-2026-02-13-022
+
+- Context: Product feedback still reported an intrusive background slab and inconsistent visual rhythm between modules, with oversized headings and spacing/border shifts after route changes.
+- Decision: Normalize boot container state by removing legacy `loading-shell` class at runtime mount, and simplify `shell_rethink.css` toward a flat surface baseline (no aggressive radial body glows) with one consistent typography scale across views instead of per-route heading jumps.
+- Consequence: The shell now renders from a stable full-width container without inherited loading layout artifacts, and route transitions preserve a unified contour/spacing system with calmer visual hierarchy.
+
+### D-2026-02-13-023
+
+- Context: A final visual audit still found legacy dark-theme rules in `factory.css` applying to broad selectors (`button[data-shell-route]`, `body.app-mode-v4` story background) and creating style collisions with the `es-*` shell (CTA contrast drift, route contour mismatch, side glow perception).
+- Decision: Scope the remaining legacy selectors to `.app-shell` only and keep `shell_rethink.css` as the sole authority for `es-*` shell visuals, while further reducing heading scale, card contrast, and route-specific variance (including removal of `es-shell--progress` special chrome overrides).
+- Consequence: Current runtime shell now keeps one deterministic visual contract across `hoy/sesion/cierre/evaluacion/modulos/progreso`, with no broad legacy selectors overriding navigation/buttons/backgrounds in the modern shell path.
