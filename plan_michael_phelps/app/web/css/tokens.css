@@ -1,53 +1,142 @@
 /*
-  GOVERNED DESIGN SYSTEM - TOKENS
-  Layer: tokens
-  Strategy: Primitives -> Semantics -> Component usage
+  DESIGN SYSTEM TOKENS — Stripe / Notion Aesthetic
+  Single source of truth for palette, type, spacing, surfaces.
+  Themes applied via [data-ui-theme] on body.
 */
 
 :root {
-  /* --- PRIMITIVES (PALETTE) --- */
+  /* ── Typography ─────────────────────────────────────── */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", "Fira Code", monospace;
+
+  /* Display uses same family, just with tighter tracking */
+  --font-display: var(--font-sans);
+  --font-body: var(--font-sans);
+
+  --type-display-xl: clamp(2.25rem, 3.6vw, 3rem);
+  --type-display-lg: clamp(1.5rem, 2vw, 1.875rem);
+  --type-title-md: 1.25rem;
+  --type-body-md: 0.9375rem;
+  --type-body-sm: 0.875rem;
+  --type-caption: 0.8125rem;
+  --type-micro: 0.6875rem;
+
+  /* ── Spacing (4px grid) ─────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Radius ─────────────────────────────────────────── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  /* ── Motion ─────────────────────────────────────────── */
+  --motion-fast: 120ms;
+  --motion-standard: 200ms;
+  --motion-slow: 350ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Legacy aliases for components.css and JS interop */
+  --motion-ease-out: var(--ease-out);
+}
+
+/* ═══════════════════════════════════════════════════════
+   LIGHT THEME
+   ═══════════════════════════════════════════════════════ */
+body[data-ui-theme="light"],
+body[data-ui-theme="light"] .es-shell {
+  --es-bg: 249 250 251;
+  --es-bg-soft: 243 244 246;
+  --es-surface: 255 255 255;
+  --es-surface-2: 249 250 251;
+  --es-text: 17 24 39;
+  --es-muted: 107 114 128;
+  --es-border: 229 231 235;
+  --es-shadow: 0 0 0;
+  --es-accent: 79 70 229;
+  --es-accent-2: 99 102 241;
+  --es-success: 16 185 129;
+  --es-danger: 239 68 68;
+  --es-warning: 245 158 11;
+  --es-accent-ink: 255 255 255;
+}
+
+/* ═══════════════════════════════════════════════════════
+   DARK THEME
+   ═══════════════════════════════════════════════════════ */
+body[data-ui-theme="dark"],
+body[data-ui-theme="dark"] .es-shell {
+  --es-bg: 9 9 11;
+  --es-bg-soft: 24 24 27;
+  --es-surface: 24 24 27;
+  --es-surface-2: 39 39 42;
+  --es-text: 250 250 250;
+  --es-muted: 161 161 170;
+  --es-border: 63 63 70;
+  --es-shadow: 0 0 0;
+  --es-accent: 129 140 248;
+  --es-accent-2: 165 180 252;
+  --es-success: 52 211 153;
+  --es-danger: 248 113 113;
+  --es-warning: 251 191 36;
+  --es-accent-ink: 17 24 39;
+}
+
+/* ═══════════════════════════════════════════════════════
+   LEGACY ALIASES (backward compat for non-es- selectors)
+   ═══════════════════════════════════════════════════════ */
+:root {
+  /* Legacy palette references used by base.css and some utilities */
   --palette-white: #ffffff;
-  --palette-black: #020617;
+  --palette-black: #09090b;
 
-  --palette-slate-50: #f8fafc;
-  --palette-slate-100: #f1f5f9;
-  --palette-slate-200: #e2e8f0;
-  --palette-slate-300: #cbd5e1;
-  --palette-slate-400: #94a3b8;
-  --palette-slate-500: #64748b;
-  --palette-slate-600: #475569;
-  --palette-slate-700: #334155;
-  --palette-slate-800: #1e293b;
-  --palette-slate-900: #0f172a;
+  --palette-slate-50: #f9fafb;
+  --palette-slate-100: #f3f4f6;
+  --palette-slate-200: #e5e7eb;
+  --palette-slate-300: #d1d5db;
+  --palette-slate-400: #9ca3af;
+  --palette-slate-500: #6b7280;
+  --palette-slate-600: #4b5563;
+  --palette-slate-700: #374151;
+  --palette-slate-800: #1f2937;
+  --palette-slate-900: #111827;
 
-  --palette-indigo-50: #eff6ff;
-  --palette-indigo-100: #dbeafe;
-  --palette-indigo-200: #bfdbfe;
-  --palette-indigo-300: #93c5fd;
-  --palette-indigo-400: #60a5fa;
-  --palette-indigo-500: #3b82f6;
-  --palette-indigo-600: #2563eb;
-  --palette-indigo-700: #1d4ed8;
-  --palette-indigo-800: #1e40af;
-  --palette-indigo-900: #1e3a8a;
-
-  --palette-cyan-300: #67e8f9;
-  --palette-cyan-400: #22d3ee;
-  --palette-cyan-500: #06b6d4;
+  --palette-indigo-50: #eef2ff;
+  --palette-indigo-100: #e0e7ff;
+  --palette-indigo-200: #c7d2fe;
+  --palette-indigo-300: #a5b4fc;
+  --palette-indigo-400: #818cf8;
+  --palette-indigo-500: #6366f1;
+  --palette-indigo-600: #4f46e5;
+  --palette-indigo-700: #4338ca;
+  --palette-indigo-800: #3730a3;
+  --palette-indigo-900: #312e81;
 
   --palette-emerald-50: #ecfdf5;
   --palette-emerald-400: #34d399;
   --palette-emerald-600: #059669;
 
-  --palette-amber-50: #fffbeb;
-  --palette-amber-400: #facc15;
+  --palette-amber-400: #fbbf24;
   --palette-amber-500: #f59e0b;
-  --palette-yellow-50: #fefce8;
+  --palette-amber-50: #fffbeb;
   --palette-orange-50: #fff7ed;
   --palette-orange-500: #f97316;
-
   --palette-rose-50: #fff1f2;
   --palette-rose-500: #f43f5e;
+  --palette-cyan-300: #67e8f9;
+  --palette-cyan-400: #22d3ee;
+  --palette-cyan-500: #06b6d4;
 
   --palette-success-100: #dcfce7;
   --palette-success-700: #15803d;
@@ -56,112 +145,24 @@
   --palette-danger-100: #fee2e2;
   --palette-danger-700: #b91c1c;
 
-  /* --- STORY SYSTEM (S7) --- */
-  --story-midnight-950: #0b1224;
-  --story-midnight-900: #111c33;
-  --story-primary-700: var(--palette-indigo-700);
-  --story-primary-600: var(--palette-indigo-600);
-  --story-primary-500: var(--palette-indigo-500);
-  --story-secondary-500: var(--palette-cyan-500);
-  --story-secondary-400: var(--palette-cyan-400);
-  --story-accent-500: var(--palette-amber-400);
-
-  --story-midnight-rgb: 11 18 36;
-  --story-primary-rgb: 37 99 235;
-  --story-secondary-rgb: 6 182 212;
-
-  /* Legacy aliases */
-  --palette-brand-950: var(--palette-slate-900);
-  --palette-brand-900: var(--palette-slate-800);
-  --palette-brand-800: var(--palette-slate-700);
-  --palette-brand-700: var(--palette-indigo-700);
-  --palette-brand-600: var(--palette-indigo-600);
-  --palette-brand-500: var(--palette-indigo-500);
-  --palette-brand-400: var(--palette-indigo-400);
-  --palette-brand-100: var(--palette-indigo-100);
-  --palette-brand-50: var(--palette-indigo-50);
-
-  --palette-accent-600: #d97706;
-  --palette-accent-500: #f59e0b;
-  --palette-accent-100: #fef3c7;
-
-  --palette-ink-950: #020617;
-  --palette-ink-900: var(--palette-slate-900);
-  --palette-ink-700: var(--palette-slate-700);
-  --palette-ink-500: var(--palette-slate-500);
-  --palette-ink-300: var(--palette-slate-300);
-  --palette-ink-200: var(--palette-slate-200);
-  --palette-ink-100: var(--palette-slate-100);
-  --palette-ink-050: var(--palette-slate-50);
-
-  /* App aliases referenced by legacy CSS */
-  --canvas-100: var(--palette-slate-50);
-  --canvas-200: var(--palette-slate-200);
-  --ink-900: var(--palette-slate-900);
-  --ink-500: var(--palette-slate-500);
-  --brand-700: var(--palette-indigo-700);
-  --brand-600: var(--palette-indigo-600);
-  --accent-500: var(--palette-accent-500);
-  --success-700: var(--palette-emerald-600);
-
-  /* Typography */
-  --font-display: "Space Grotesk", "DM Sans", sans-serif;
-  --font-body: "DM Sans", "Inter", sans-serif;
-  --font-mono: "IBM Plex Mono", "JetBrains Mono", monospace;
-
-  --type-display-xl: clamp(2rem, 3.4vw, 3.25rem);
-  --type-display-lg: clamp(1.65rem, 2.2vw, 2.25rem);
-  --type-title-md: 1.2rem;
-  --type-body-md: 1rem;
-  --type-body-sm: 0.92rem;
-  --type-label-xs: 0.72rem;
-
-  /* Surfaces */
-  --surface-base: #f4f7fc;
-  --surface-card: var(--palette-white);
-  --surface-sunken: #eef3fa;
-  --surface-overlay: rgb(var(--story-midnight-rgb) / 0.62);
-  --surface-glass-88: rgb(255 255 255 / 0.88);
-  --surface-skeleton-top: rgb(255 255 255 / 0.74);
-  --surface-skeleton-bottom: rgb(245 248 255 / 0.9);
-  --surface-skeleton-line: rgb(226 233 245 / 0.8);
-  --surface-skeleton-highlight: rgb(255 255 255 / 0.62);
-  --surface-brand-400-20: rgba(99, 102, 241, 0.2);
-  --surface-brand-500-30: rgba(99, 102, 241, 0.3);
-  --surface-brand-500-50: rgba(99, 102, 241, 0.5);
-  --surface-white-10: rgba(255, 255, 255, 0.1);
-  --surface-white-20: rgba(255, 255, 255, 0.2);
-  --surface-white-80: rgba(255, 255, 255, 0.8);
-  --surface-white-90: rgba(255, 255, 255, 0.9);
-
-  /* Text */
+  /* Semantic aliases */
   --text-primary: var(--palette-slate-900);
   --text-secondary: var(--palette-slate-500);
   --text-tertiary: var(--palette-slate-400);
   --text-inverse: var(--palette-white);
-  --text-brand: var(--story-primary-600);
-  --text-danger-strong: #7f1d1d;
+  --text-brand: var(--palette-indigo-600);
 
-  /* Borders */
-  --border-subtle: #e5ebf5;
-  --border-default: #d7e0ee;
-  --border-strong: #b9c9e0;
-  --border-brand: var(--story-primary-500);
-  --border-brand-soft: rgb(191 219 254 / 0.7);
-  --border-white-soft: rgba(255, 255, 255, 0.2);
-  --border-brand-400-soft: rgba(99, 102, 241, 0.3);
+  --border-subtle: var(--palette-slate-200);
+  --border-default: var(--palette-slate-200);
+  --border-brand: var(--palette-indigo-500);
 
-  /* Actions */
-  --action-primary-bg: var(--story-primary-600);
+  --surface-base: var(--palette-slate-50);
+  --surface-card: var(--palette-white);
+  --surface-sunken: var(--palette-slate-100);
+
+  --action-primary-bg: var(--palette-indigo-600);
   --action-primary-fg: var(--palette-white);
-  --action-primary-hover: var(--story-primary-700);
 
-  --action-secondary-bg: var(--palette-white);
-  --action-secondary-fg: var(--palette-slate-700);
-  --action-secondary-border: #c3d2e8;
-  --action-secondary-hover: #f4f8ff;
-
-  /* Status */
   --status-success-bg: var(--palette-emerald-50);
   --status-success-txt: var(--palette-emerald-600);
   --status-warning-bg: var(--palette-amber-50);
@@ -169,68 +170,15 @@
   --status-danger-bg: var(--palette-danger-100);
   --status-danger-txt: var(--palette-danger-700);
 
-  /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 32px;
-  --radius-pill: 9999px;
-
-  /* Elevation */
+  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-soft: 0 14px 34px -20px rgb(var(--story-midnight-rgb) / 0.42);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  --shadow-brand-100-soft: rgba(224, 231, 255, 0.5);
-  --shadow-brand-900-soft: rgba(49, 46, 129, 0.2);
+  --shadow-md: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 
-  /* Base/background composition */
-  --base-body-bg-gradient:
-    radial-gradient(circle at 10% -12%, rgb(var(--df-primary-rgb) / 0.16), transparent 38%),
-    radial-gradient(circle at 92% 0%, rgb(var(--df-accent-rgb) / 0.12), transparent 42%),
-    linear-gradient(155deg, var(--canvas-100) 0%, #edf2f7 52%, var(--canvas-200) 100%);
-  --base-grid-overlay:
-    linear-gradient(to right, rgb(var(--story-midnight-rgb) / 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(var(--story-midnight-rgb) / 0.03) 1px, transparent 1px);
-  --base-skeleton-card-gradient: linear-gradient(180deg, var(--surface-skeleton-top) 0%, var(--surface-skeleton-bottom) 100%);
-  --base-skeleton-shimmer-gradient: linear-gradient(90deg, transparent 0%, var(--surface-skeleton-highlight) 50%, transparent 100%);
-
-  /* Layout effects */
-  --layout-glass-header-bg: rgba(255, 255, 255, 0.7);
-  --layout-glass-header-bg-strong: rgba(255, 255, 255, 0.9);
-  --layout-glass-header-border: rgba(226, 232, 240, 0.6);
-  --layout-glass-header-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  --layout-progress-stripe-gradient: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.15) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0.15) 75%,
-    transparent 75%,
-    transparent
-  );
-
-  /* Component gradients */
-  --btn-secondary-gradient: linear-gradient(180deg, var(--action-secondary-bg) 0%, #f7faff 100%);
-
-  /* Utility bridge values */
-  --utility-focus-ring-brand-soft: 0 0 0 2px rgba(99, 102, 241, 0.2);
-
-  /* Shell rethink semantic channels */
-  --shell-hero-ink: #031228;
-  --shell-hero-ink-rgb: 3 18 40;
+  /* Shell rethink legacy channels */
   --shell-white-rgb: 255 255 255;
   --shell-danger-rgb: 239 68 68;
   --shell-warning-rgb: 245 158 11;
-
-  /* Motion */
-  --motion-fast: 160ms;
-  --motion-standard: 280ms;
-  --motion-slow: 420ms;
-  --motion-ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --story-midnight-rgb: 9 9 11;
+  --story-midnight-950: #09090b;
 }

@@ -1,24 +1,11 @@
-/* Canonical stylesheet entrypoint for the web shell. */
-@layer reset, tokens, base, components, utilities, overrides;
+/*
+  ENGLISH SPRINT — Main CSS Entry
+  4 files, ordered by cascade layer.
+*/
+
+@layer reset, tokens, base, shell, utilities;
 
 @import "tokens.css" layer(tokens);
-@import "tailwind.generated.css" layer(components);
 @import "base.css" layer(base);
-@import "layout.css" layer(components);
-/* Structural layouts */
-@import "components.css" layer(components);
-/* BEM Components */
-@import "wizard_polish.css" layer(components);
-
+@import "components.css" layer(shell);
 @import "utilities.css" layer(utilities);
-/* Atomic Utility Classes */
-@import "utilities_patch.css" layer(utilities);
-/* Backward-compatible utility fixes */
-@import "responsive.css" layer(utilities);
-/* Media Query Overrides */
-
-@import "factory.css" layer(overrides);
-/* S8 design factory generated overrides */
-
-@import "shell_rethink.css" layer(overrides);
-/* S9 namespaced redesign for enterprise-grade visual coherence */

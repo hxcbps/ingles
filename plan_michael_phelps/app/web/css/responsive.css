@@ -1,9 +1,0 @@
-/* Responsive guardrails for shell root only.
-   Legacy utility alias selectors were removed because they are unused.
-*/
-
-@media (max-width: 640px) {
-  .app-shell-root {
-    padding: 0.62rem;
-  }
-}
