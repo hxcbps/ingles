@@ -1451,7 +1451,7 @@ body.app-mode-v4 .wizard-workspace .completion-text {
 }
 
 /* ---- Dual Theme Cohesion (Wave 3) ---- */
-body.app-mode-v4[data-ui-theme="light"] {
+body.app-mode-v4[data-ui-theme="light"] .app-shell {
   --shell-bg-radial-a: rgb(var(--story-primary-rgb) / 0.18);
   --shell-bg-radial-b: rgb(var(--story-secondary-rgb) / 0.14);
   --shell-bg-base-a: #f6f9ff;
@@ -1501,7 +1501,7 @@ body.app-mode-v4[data-ui-theme="light"] {
   --shell-mobile-border: rgb(148 163 184 / 0.22);
 }
 
-body.app-mode-v4[data-ui-theme="dark"] {
+body.app-mode-v4[data-ui-theme="dark"] .app-shell {
   --shell-bg-radial-a: rgb(59 130 246 / 0.22);
   --shell-bg-radial-b: rgb(34 211 238 / 0.16);
   --shell-bg-base-a: #020617;
@@ -1551,7 +1551,7 @@ body.app-mode-v4[data-ui-theme="dark"] {
   --shell-mobile-border: rgb(59 130 246 / 0.2);
 }
 
-body.app-mode-v4[data-ui-theme] {
+body.app-mode-v4[data-ui-theme] .app-shell {
   background:
     radial-gradient(circle at 7% -12%, var(--shell-bg-radial-a), transparent 40%),
     radial-gradient(circle at 95% -2%, var(--shell-bg-radial-b), transparent 46%),
@@ -1689,31 +1689,31 @@ body.app-mode-v4[data-ui-theme] .wizard-workspace .step-rail-item {
   box-shadow: var(--shell-card-shadow) !important;
 }
 
-body.app-mode-v4[data-ui-theme="dark"] .widget-card .text-slate-800,
-body.app-mode-v4[data-ui-theme="dark"] .journey-card .text-slate-800,
-body.app-mode-v4[data-ui-theme="dark"] .modules-intro-card h4,
-body.app-mode-v4[data-ui-theme="dark"] .module-card-pro h4,
-body.app-mode-v4[data-ui-theme="dark"] .glass-header .text-slate-800,
-body.app-mode-v4[data-ui-theme="dark"] .text-slate-900 {
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .widget-card .text-slate-800,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .journey-card .text-slate-800,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .modules-intro-card h4,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .module-card-pro h4,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .glass-header .text-slate-800,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .text-slate-900 {
   color: #e2ecff !important;
 }
 
-body.app-mode-v4[data-ui-theme="dark"] .text-slate-500,
-body.app-mode-v4[data-ui-theme="dark"] .text-slate-400,
-body.app-mode-v4[data-ui-theme="dark"] .muted-text,
-body.app-mode-v4[data-ui-theme="dark"] .module-goal,
-body.app-mode-v4[data-ui-theme="dark"] .instruction-sub-text {
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .text-slate-500,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .text-slate-400,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .muted-text,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .module-goal,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .instruction-sub-text {
   color: #90a8cc !important;
 }
 
-body.app-mode-v4[data-ui-theme="dark"] .bg-white,
-body.app-mode-v4[data-ui-theme="dark"] .bg-slate-50,
-body.app-mode-v4[data-ui-theme="dark"] .bg-slate-100 {
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .bg-white,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .bg-slate-50,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .bg-slate-100 {
   background: rgb(15 23 42 / 0.66) !important;
 }
 
-body.app-mode-v4[data-ui-theme="dark"] .border-slate-100,
-body.app-mode-v4[data-ui-theme="dark"] .border-slate-200 {
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .border-slate-100,
+body.app-mode-v4[data-ui-theme="dark"] .app-shell .border-slate-200 {
   border-color: rgb(59 130 246 / 0.2) !important;
 }
 
@@ -3134,4 +3134,3 @@ body.app-mode-v4[data-ui-theme] .progress-shell .badge {
     font-size: clamp(40px, 13vw, 66px);
   }
 }
-

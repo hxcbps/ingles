@@ -72,6 +72,9 @@ Result:
 - 2026-02-13: Session wizard now inherits shell-level visual language (tokens, buttons, focus, surfaces) via final override layer in `app/web/css/shell_rethink.css`.
 - 2026-02-13: Consolidated CSS layers by removing legacy overrides (`reboot_s7.css`, `shell_unified.css`, `wizard.css`) from canonical entrypoint and repository.
 - 2026-02-13: Token discipline now reports only true hard-coded colors (hex and non-tokenized rgb/rgba) and passes with zero findings after tokenizing `base/layout/components/utilities`.
+- 2026-02-13: Applied shell-level contrast hardening in `app/web/css/shell_rethink.css` (explicit heading colors, dark-mode accent-ink CTAs, muted glow/background balancing, stronger surface contrast) to fix low-visibility text and button states across `hoy`, `sesion`, `modulos` and `progreso`.
+- 2026-02-13: Isolated legacy Wave-3 shell theming in `app/web/css/factory.css` under `.app-shell` scope to stop style collision with `es-*` shell routes.
+- 2026-02-13: Added micro-typography and spacing rhythm contracts in `app/web/css/shell_rethink.css` using `data-view-panel` selectors (line-height, weight, heading scale, and per-view gap behavior with responsive clamps).
 
 ## Decision Log
 

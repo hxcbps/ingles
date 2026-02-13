@@ -118,3 +118,15 @@ Status: active
 - Context: Token discipline warnings remained noisy because legacy CSS layers were still versioned and the advisory flagged any `rgb/rgba(...)` usage, including tokenized channel patterns (`rgb(var(--token-rgb) / x)`).
 - Decision: Remove obsolete visual layers (`reboot_s7.css`, `shell_unified.css`, `wizard.css`), keep one canonical active shell override, and refine `run_frontend_ux_gates.sh` token advisory to detect only true hard-coded literals (hex + non-tokenized `rgb/rgba`) while excluding generated artifacts.
 - Consequence: UX gate signal became actionable; token discipline now passes with zero findings after semantic tokenization of active base/layout/component utility styles.
+
+### D-2026-02-13-020
+
+- Context: Product feedback reported unreadable typography and low-contrast CTAs in multiple routes (`hoy`, `sesion`, `modulos`, `progreso`) due global heading inheritance and dark-mode accent-ink mismatch.
+- Decision: Harden `app/web/css/shell_rethink.css` as the explicit contrast contract: force route-shell heading colors, introduce theme-specific accent ink for primary CTAs/wizard states, and dampen dark-mode background glows/surface opacity balance.
+- Consequence: Cross-route shell readability is now deterministic and no longer dependent on global `base.css` heading defaults, improving visual coherence without changing runtime or routing boundaries.
+
+### D-2026-02-13-021
+
+- Context: Residual legacy rules in `app/web/css/factory.css` still owned global theme/background selectors and broad utility recoloring (`.text-slate-*`, `.bg-*`, `.border-*`) that could compete with the new `es-*` shell contract.
+- Decision: Isolate Wave-3 legacy shell theming to `.app-shell` scope in `factory.css` and keep `es-*` visual authority in `shell_rethink.css`; in parallel, add route-specific micro-typography and spacing rhythm via `data-view-panel` contracts.
+- Consequence: Legacy styling no longer leaks into the modern shell, while `hoy/sesion/cierre/evaluacion/modulos` gain explicit line-height/weight/spacing behavior per viewport for a cleaner and more consistent enterprise-grade reading rhythm.
