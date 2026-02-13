@@ -148,3 +148,9 @@ Status: active
 - Context: Product feedback still identified weak information hierarchy and inconsistent skeleton semantics across routes (`hoy`, `sesion`, `modulos`, `progreso`), especially in module rhythm blocks and progress standalone renderer.
 - Decision: Standardize route content on one semantic UI grammar (`es-section`, `es-panel`, `es-list`, `es-table`, `es-kpis`) and retire legacy `progress-shell` markup in favor of `es-*` renderer contracts, while tuning heading hierarchy (`hero > section > card`) and spacing rhythm.
 - Consequence: The app now renders from a single structural system with predictable typography and section order, reducing route-to-route visual drift and making the HTML skeleton materially clearer for future UX iterations.
+
+### D-2026-02-13-025
+
+- Context: Post-refactor product review still showed broken visual grouping in runtime screens (notably side-card headings split across columns) and residual technical debt from dead `progress-shell` CSS blocks in `factory.css`.
+- Decision: Remove the full dead legacy `progress-shell/progress-app-shell` block from `app/web/css/factory.css`, fix side-card heading semantics in `learning_shell.js` (`es-card__head > div` contract), and increase panel/card contrast boundaries in `shell_rethink.css` to restore explicit section framing.
+- Consequence: Shell presentation now relies on one active styling system without legacy progress overrides, and route cards/panels recover clear visual containment and readable heading/subtitle alignment.

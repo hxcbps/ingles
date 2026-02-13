@@ -709,8 +709,10 @@ export class LearningShell {
             <aside class="es-side" aria-label="Panel lateral">
               <article class="es-card">
                 <div class="es-card__head">
-                  <h2>Operational Signal</h2>
-                  <p>Estado de ejecución y continuidad.</p>
+                  <div>
+                    <h2>Operational Signal</h2>
+                    <p>Estado de ejecución y continuidad.</p>
+                  </div>
                 </div>
 
                 <div class="es-kpis">
@@ -748,8 +750,10 @@ export class LearningShell {
 
               <article class="es-card">
                 <div class="es-card__head">
-                  <h2>Quick Routes</h2>
-                  <p>Navegación directa de alta frecuencia.</p>
+                  <div>
+                    <h2>Quick Routes</h2>
+                    <p>Navegación directa de alta frecuencia.</p>
+                  </div>
                 </div>
 
                 <div class="es-actions-list">

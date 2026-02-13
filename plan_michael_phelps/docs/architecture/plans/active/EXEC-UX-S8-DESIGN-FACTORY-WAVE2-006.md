@@ -82,6 +82,9 @@ Result:
 - 2026-02-13: Refactored route skeletons in `app/web/js/ui/learning_shell.js` (`hoy`, `sesion`, `cierre`, `evaluacion`, `modulos`) to semantic panel-based structure (`es-view-stack`, `es-panel`, `es-actions-row`, rhythm grid) for coherent section hierarchy.
 - 2026-02-13: Rebuilt progreso standalone markup in `app/web/js/ui/renderers/progress_premium_renderer.js` to `es-*` contracts and removed dependence on legacy `progress-shell` class naming.
 - 2026-02-13: Extended `app/web/css/shell_rethink.css` with shared semantic primitives (panel, rhythm, pill, heatmap, table, progress summary layout) and rebalanced heading scale (`hero > section > card`) for clearer typographic order.
+- 2026-02-13: Removed dead legacy `progress-shell/progress-app-shell` CSS from `app/web/css/factory.css` to eliminate residual style collisions and reduce visual debt.
+- 2026-02-13: Fixed side-card semantic mismatch in `app/web/js/ui/learning_shell.js` (`Operational Signal`, `Quick Routes`) so `es-card__head` no longer splits title/subtitle in separate columns.
+- 2026-02-13: Increased structural contrast in `app/web/css/shell_rethink.css` (`es-card`, `es-card--main`, `es-panel`, list/table surfaces) to restore explicit section framing and reduce “text floating” perception.
 
 ## Decision Log
 

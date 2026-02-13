@@ -324,30 +324,30 @@ body.app-mode-v4[data-ui-theme] .es-btn--ghost:hover {
 body.app-mode-v4[data-ui-theme] .es-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
-  gap: 14px;
+  gap: 16px;
 }
 
 body.app-mode-v4[data-ui-theme] .es-card {
   border: 1px solid rgba(var(--es-border), 0.88);
   border-radius: 18px;
-  background: rgba(var(--es-surface), 0.68);
-  box-shadow: 0 18px 40px -34px rgba(var(--es-shadow), 0.34);
+  background: rgba(var(--es-surface), 0.8);
+  box-shadow: 0 18px 42px -32px rgba(var(--es-shadow), 0.42);
   padding: 14px;
 }
 
 body.app-mode-v4[data-ui-theme="dark"] .es-card {
-  background: linear-gradient(165deg, rgba(var(--es-surface), 0.76), rgba(var(--es-surface-2), 0.72));
-  border-color: rgba(var(--es-border), 0.82);
-  box-shadow: 0 18px 42px -34px rgba(var(--story-midnight-rgb), 0.72);
+  background: linear-gradient(165deg, rgba(var(--es-surface), 0.92), rgba(var(--es-surface-2), 0.88));
+  border-color: rgba(var(--es-border), 0.92);
+  box-shadow: 0 18px 42px -34px rgba(var(--story-midnight-rgb), 0.84);
 }
 
 body.app-mode-v4[data-ui-theme] .es-card--main {
   display: grid;
   gap: 14px;
-  border-color: transparent;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
+  border-color: rgba(var(--es-border), 0.84);
+  background: rgba(var(--es-surface), 0.74);
+  box-shadow: 0 20px 44px -34px rgba(var(--es-shadow), 0.44);
+  padding: 14px;
 }
 
 body.app-mode-v4[data-ui-theme] .es-side {
@@ -381,7 +381,7 @@ body.app-mode-v4[data-ui-theme] .es-card__head > div {
 body.app-mode-v4[data-ui-theme] .es-card__head h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(24px, 1.8vw, 30px);
+  font-size: clamp(22px, 1.5vw, 27px);
   letter-spacing: -0.02em;
   line-height: 1.12;
   font-weight: 670;
@@ -404,6 +404,7 @@ body.app-mode-v4[data-ui-theme] .es-section__head p {
   color: rgb(var(--es-muted));
   font-size: 14px;
   line-height: 1.52;
+  max-width: 60ch;
 }
 
 body.app-mode-v4[data-ui-theme] .es-section {
@@ -413,16 +414,17 @@ body.app-mode-v4[data-ui-theme] .es-section {
 
 body.app-mode-v4[data-ui-theme] .es-view-stack {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 body.app-mode-v4[data-ui-theme] .es-panel {
   border: 1px solid rgba(var(--es-border), 0.8);
   border-radius: 14px;
-  background: rgba(var(--es-surface-2), 0.66);
+  background: rgba(var(--es-surface-2), 0.82);
   padding: 14px;
   display: grid;
   gap: 12px;
+  box-shadow: 0 12px 30px -26px rgba(var(--es-shadow), 0.42);
 }
 
 body.app-mode-v4[data-ui-theme] .es-actions-row {
@@ -484,7 +486,7 @@ body.app-mode-v4[data-ui-theme] .es-list {
 body.app-mode-v4[data-ui-theme] .es-list__item {
   border: 1px solid rgba(var(--es-border), 0.8);
   border-radius: 12px;
-  background: rgba(var(--es-surface-2), 0.72);
+  background: rgba(var(--es-surface-2), 0.86);
   padding: 11px;
   display: flex;
   align-items: center;
@@ -603,7 +605,7 @@ body.app-mode-v4[data-ui-theme] .es-module-card {
   border: 1px solid rgba(var(--es-border), 0.84);
   border-radius: 14px;
   padding: 12px;
-  background: rgba(var(--es-surface), 0.88);
+  background: rgba(var(--es-surface), 0.92);
   display: grid;
   gap: 10px;
 }
@@ -714,7 +716,7 @@ body.app-mode-v4[data-ui-theme] .es-rhythm-grid {
 body.app-mode-v4[data-ui-theme] .es-rhythm-item {
   border: 1px solid rgba(var(--es-border), 0.78);
   border-radius: 10px;
-  background: rgba(var(--es-bg-soft), 0.78);
+  background: rgba(var(--es-bg-soft), 0.9);
   padding: 9px 10px;
   font-size: 13px;
   line-height: 1.45;
@@ -878,7 +880,7 @@ body.app-mode-v4[data-ui-theme] .es-table td {
   border-bottom: 1px solid rgba(var(--es-border), 0.65);
   font-size: 13px;
   text-align: left;
-  background: rgba(var(--es-surface-2), 0.72);
+  background: rgba(var(--es-surface-2), 0.88);
 }
 
 body.app-mode-v4[data-ui-theme] .es-table th {
@@ -901,7 +903,7 @@ body.app-mode-v4[data-ui-theme="dark"] .es-rhythm-item,
 body.app-mode-v4[data-ui-theme="dark"] .es-table th,
 body.app-mode-v4[data-ui-theme="dark"] .es-table td,
 body.app-mode-v4[data-ui-theme="dark"] .es-banner {
-  background: rgba(var(--es-surface-2), 0.8);
+  background: rgba(var(--es-surface-2), 0.9);
   border-color: rgba(var(--es-border), 0.82);
 }
 
