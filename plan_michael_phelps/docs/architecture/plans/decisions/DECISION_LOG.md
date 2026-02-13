@@ -1,6 +1,6 @@
 # Architecture Decision Log
 
-Last reviewed: 2026-02-12
+Last reviewed: 2026-02-13
 Status: active
 
 ## Decision Entries
@@ -100,3 +100,21 @@ Status: active
 - Context: Product required the `#/modulo/progreso` experience to match a premium standalone dual-theme layout (topbar navigation, no sidebar shell) aligned with provided visual reference.
 - Decision: Route `progreso` now renders through a dedicated standalone shell (`renderProgressStandaloneLayout`) while preserving existing shell for other views.
 - Consequence: Progreso visual identity is no longer constrained by shared sidebar/dashboard chrome, enabling direct parity with premium dual-theme composition without regressing route contracts.
+
+### D-2026-02-12-017
+
+- Context: Product requested an Apple/Stripe-grade redesign and explicitly reported a disconnected experience (white/empty shell risk, poor load/error feedback).
+- Decision: Harden the Design Factory token baseline (palette/typography/buttons/progress) and add first-class resilience states in UI runtime (`skeleton loading`, `offline banner + retry`, `friendly fatal state`).
+- Consequence: The app preserves perceived continuity during load/connectivity failures, reduces visual inconsistency across views, and keeps UX quality aligned with premium interface expectations without breaking routing/runtime contracts.
+
+### D-2026-02-13-018
+
+- Context: Product requested full-app visual maturity and reported that `progreso` and `sesion` still felt stylistically disconnected from the rest of the app.
+- Decision: Standardize route chrome on the shared `es-*` shell header (including `progreso`) and enforce wizard cohesion through a final override contract in `app/web/css/shell_rethink.css`, while preserving renderer/runtime boundaries.
+- Consequence: Navigation, theming controls, and session execution now present one coherent visual language across all primary routes without introducing cross-layer dependency violations.
+
+### D-2026-02-13-019
+
+- Context: Token discipline warnings remained noisy because legacy CSS layers were still versioned and the advisory flagged any `rgb/rgba(...)` usage, including tokenized channel patterns (`rgb(var(--token-rgb) / x)`).
+- Decision: Remove obsolete visual layers (`reboot_s7.css`, `shell_unified.css`, `wizard.css`), keep one canonical active shell override, and refine `run_frontend_ux_gates.sh` token advisory to detect only true hard-coded literals (hex + non-tokenized `rgb/rgba`) while excluding generated artifacts.
+- Consequence: UX gate signal became actionable; token discipline now passes with zero findings after semantic tokenization of active base/layout/component utility styles.

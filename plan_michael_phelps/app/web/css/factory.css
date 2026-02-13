@@ -7,30 +7,30 @@
 :root {
   /* ---- FOUNDATION: neutrals ---- */
   --df-neutral-000: #ffffff;
-  --df-neutral-025: #f9fbff;
-  --df-neutral-050: #f3f7fd;
-  --df-neutral-100: #eaf0f9;
-  --df-neutral-200: #d8e2f0;
-  --df-neutral-300: #c4d1e4;
-  --df-neutral-400: #9aaac2;
-  --df-neutral-500: #6e8098;
-  --df-neutral-600: #4b5e77;
-  --df-neutral-700: #33475f;
-  --df-neutral-800: #1f3149;
-  --df-neutral-900: #101d32;
-  --df-neutral-950: #0a1324;
+  --df-neutral-025: #fbfcff;
+  --df-neutral-050: #f7f9fc;
+  --df-neutral-100: #eff3f8;
+  --df-neutral-200: #e3e9f2;
+  --df-neutral-300: #d2dae7;
+  --df-neutral-400: #9aa7bb;
+  --df-neutral-500: #697386;
+  --df-neutral-600: #4e5a71;
+  --df-neutral-700: #3c4257;
+  --df-neutral-800: #262d44;
+  --df-neutral-900: #1a1f36;
+  --df-neutral-950: #0f172a;
 
   /* ---- FOUNDATION: primary ---- */
-  --df-primary-050: #eff6ff;
-  --df-primary-100: #dbeafe;
-  --df-primary-200: #bfdbfe;
-  --df-primary-300: #93c5fd;
-  --df-primary-400: #60a5fa;
-  --df-primary-500: #3b82f6;
-  --df-primary-600: #2563eb;
-  --df-primary-700: #1d4ed8;
-  --df-primary-800: #1e40af;
-  --df-primary-900: #1e3a8a;
+  --df-primary-050: #f2f1ff;
+  --df-primary-100: #e5e3ff;
+  --df-primary-200: #c9c6ff;
+  --df-primary-300: #aba5ff;
+  --df-primary-400: #8b82ff;
+  --df-primary-500: #635bff;
+  --df-primary-600: #5851df;
+  --df-primary-700: #4943c2;
+  --df-primary-800: #3b369f;
+  --df-primary-900: #2e2a7e;
 
   /* ---- FOUNDATION: accent ---- */
   --df-accent-050: #ecfeff;
@@ -43,11 +43,11 @@
   --df-accent-700: #0e7490;
 
   /* ---- FOUNDATION: status ---- */
-  --df-success-050: #f0fdf4;
-  --df-success-100: #dcfce7;
-  --df-success-500: #22c55e;
-  --df-success-600: #16a34a;
-  --df-success-700: #15803d;
+  --df-success-050: #ecfdf5;
+  --df-success-100: #d1fae5;
+  --df-success-500: #10b981;
+  --df-success-600: #059669;
+  --df-success-700: #047857;
 
   --df-warning-050: #fffbeb;
   --df-warning-100: #fef3c7;
@@ -62,60 +62,61 @@
   --df-danger-700: #be123c;
 
   /* ---- FOUNDATION: dark story ---- */
-  --df-midnight-900: #0f1d37;
-  --df-midnight-950: #081126;
+  --df-midnight-900: #101c34;
+  --df-midnight-950: #090f20;
 
   /* ---- RGB channels ---- */
-  --df-neutral-rgb: 16 29 50;
-  --df-primary-rgb: 37 99 235;
+  --df-neutral-rgb: 26 31 54;
+  --df-primary-rgb: 99 91 255;
   --df-accent-rgb: 6 182 212;
-  --df-success-rgb: 22 163 74;
+  --df-success-rgb: 5 150 105;
   --df-warning-rgb: 217 119 6;
   --df-danger-rgb: 225 29 72;
-  --df-midnight-rgb: 8 17 38;
+  --df-midnight-rgb: 9 15 32;
 
   /* ---- SURFACES ---- */
-  --surface-base: var(--df-neutral-050);
-  --surface-canvas: var(--df-neutral-025);
+  --surface-base: #f7f9fc;
+  --surface-canvas: #f4f7fc;
   --surface-card: var(--df-neutral-000);
   --surface-card-muted: var(--df-neutral-025);
-  --surface-sunken: var(--df-neutral-100);
+  --surface-sunken: #edf2f8;
+  --surface-glass: rgb(255 255 255 / 0.74);
   --surface-overlay: rgb(var(--df-midnight-rgb) / 0.66);
   --surface-dark: var(--df-midnight-900);
 
   /* ---- TEXT ---- */
-  --text-primary: var(--df-neutral-900);
-  --text-secondary: var(--df-neutral-600);
-  --text-tertiary: var(--df-neutral-500);
+  --text-primary: #1a1f36;
+  --text-secondary: #3c4257;
+  --text-tertiary: #697386;
   --text-quaternary: var(--df-neutral-400);
   --text-inverse: var(--df-neutral-000);
-  --text-brand: var(--df-primary-700);
+  --text-brand: var(--df-primary-600);
   --text-success: var(--df-success-700);
   --text-warning: var(--df-warning-700);
   --text-danger: var(--df-danger-700);
 
   /* ---- BORDERS ---- */
-  --border-subtle: var(--df-neutral-100);
-  --border-default: var(--df-neutral-200);
-  --border-strong: var(--df-neutral-300);
-  --border-brand: var(--df-primary-500);
+  --border-subtle: rgb(15 23 42 / 0.06);
+  --border-default: rgb(26 31 54 / 0.1);
+  --border-strong: rgb(26 31 54 / 0.18);
+  --border-brand: rgb(var(--df-primary-rgb) / 0.42);
   --border-danger: var(--df-danger-500);
 
   /* ---- ACTIONS ---- */
-  --action-primary-bg: var(--df-primary-600);
-  --action-primary-hover: var(--df-primary-700);
-  --action-primary-active: var(--df-primary-800);
+  --action-primary-bg: var(--df-primary-500);
+  --action-primary-hover: var(--df-primary-600);
+  --action-primary-active: var(--df-primary-700);
   --action-primary-fg: var(--df-neutral-000);
   --action-primary-border: rgb(var(--df-primary-rgb) / 0.36);
 
   --action-secondary-bg: var(--df-neutral-000);
-  --action-secondary-hover: var(--df-neutral-025);
-  --action-secondary-active: var(--df-neutral-100);
-  --action-secondary-fg: var(--df-neutral-800);
-  --action-secondary-border: #c3d2e8;
+  --action-secondary-hover: #f6f8ff;
+  --action-secondary-active: #ecf0ff;
+  --action-secondary-fg: var(--df-neutral-700);
+  --action-secondary-border: rgb(26 31 54 / 0.16);
 
   --action-ghost-bg: transparent;
-  --action-ghost-hover: rgb(var(--df-primary-rgb) / 0.09);
+  --action-ghost-hover: rgb(var(--df-primary-rgb) / 0.12);
   --action-ghost-fg: var(--df-neutral-700);
 
   --action-danger-bg: var(--df-danger-600);
@@ -139,14 +140,14 @@
   --radius-xs: 6px;
   --radius-sm: 10px;
   --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
   --radius-pill: 9999px;
 
-  --shadow-soft: 0 10px 30px -22px rgb(var(--df-neutral-rgb) / 0.38);
-  --shadow-md: 0 16px 38px -24px rgb(var(--df-neutral-rgb) / 0.34);
-  --shadow-lg: 0 24px 52px -30px rgb(var(--df-neutral-rgb) / 0.4);
-  --shadow-glow: 0 18px 40px -24px rgb(var(--df-primary-rgb) / 0.46);
+  --shadow-soft: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -1px rgb(15 23 42 / 0.05);
+  --shadow-md: 0 20px 25px -5px rgb(15 23 42 / 0.16), 0 10px 10px -5px rgb(15 23 42 / 0.08);
+  --shadow-lg: 0 28px 46px -24px rgb(15 23 42 / 0.22), 0 16px 22px -20px rgb(15 23 42 / 0.18);
+  --shadow-glow: 0 18px 36px -24px rgb(var(--df-primary-rgb) / 0.45);
 
   /* ---- FOCUS ---- */
   --focus-ring-color: rgb(var(--df-primary-rgb) / 0.32);
@@ -246,33 +247,33 @@
 
 /* ---- typography ---- */
 :root {
-  --font-display: "Space Grotesk", "DM Sans", "Segoe UI", sans-serif;
-  --font-body: "DM Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", "Consolas", monospace;
 
-  --type-display-2xl: clamp(2.4rem, 4.2vw, 3.9rem);
-  --type-display-xl: clamp(2.1rem, 3.6vw, 3.3rem);
-  --type-display-lg: clamp(1.8rem, 2.8vw, 2.5rem);
+  --type-display-2xl: clamp(3rem, 5.2vw, 4.8rem);
+  --type-display-xl: clamp(2.25rem, 4vw, 3.5rem);
+  --type-display-lg: clamp(1.82rem, 2.8vw, 2.5rem);
 
-  --type-headline-lg: clamp(1.42rem, 1.9vw, 1.72rem);
-  --type-headline-md: clamp(1.22rem, 1.45vw, 1.38rem);
+  --type-headline-lg: clamp(1.35rem, 1.95vw, 1.82rem);
+  --type-headline-md: clamp(1.18rem, 1.4vw, 1.38rem);
 
-  --type-title-lg: 1.14rem;
-  --type-title-md: 1.02rem;
-  --type-body-lg: 1.04rem;
-  --type-body-md: 0.98rem;
-  --type-body-sm: 0.9rem;
+  --type-title-lg: 1.125rem;
+  --type-title-md: 1rem;
+  --type-body-lg: 1rem;
+  --type-body-md: 1rem;
+  --type-body-sm: 0.875rem;
   --type-label-sm: 0.78rem;
   --type-label-xs: 0.72rem;
 
-  --leading-display: 1.05;
-  --leading-heading: 1.14;
-  --leading-body: 1.55;
+  --leading-display: 1.04;
+  --leading-heading: 1.18;
+  --leading-body: 1.6;
   --leading-label: 1.3;
 
-  --tracking-display: -0.034em;
-  --tracking-heading: -0.02em;
-  --tracking-label: 0.07em;
+  --tracking-display: -0.022em;
+  --tracking-heading: -0.012em;
+  --tracking-label: 0.06em;
 }
 
 h1,
@@ -401,9 +402,9 @@ p {
 
 .progress-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.6vw, 3.3rem);
+  font-size: clamp(2.2rem, 4.1vw, 3.8rem);
   font-weight: 800;
-  letter-spacing: -0.048em;
+  letter-spacing: -0.024em;
   line-height: 0.98;
 }
 
@@ -416,7 +417,7 @@ p {
   font-family: var(--font-display);
   font-size: var(--type-headline-md);
   line-height: var(--leading-heading);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.016em;
 }
 
 .progress-kpi-label,
@@ -436,7 +437,7 @@ p {
 .progress-stat-line strong {
   font-family: var(--font-display);
   font-weight: 800;
-  letter-spacing: -0.034em;
+  letter-spacing: -0.024em;
 }
 
 .progress-kpi-value {
@@ -444,7 +445,7 @@ p {
 }
 
 .progress-ring-value {
-  font-size: clamp(1.8rem, 2.6vw, 2.35rem);
+  font-size: clamp(1.9rem, 2.8vw, 2.45rem);
 }
 
 
@@ -611,19 +612,19 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.52rem;
-  min-height: 2.65rem;
-  padding: 0.62rem 1.12rem;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   font-family: var(--font-body);
   font-size: var(--type-body-sm);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: 0.01em;
   text-decoration: none;
   box-shadow: none;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 :where(
@@ -636,7 +637,7 @@ p {
   button[data-shell-route="cierre"],
   button[data-shell-route="evaluacion"]
 ) {
-  background: linear-gradient(135deg, var(--story-primary-600) 0%, var(--story-primary-700) 62%, var(--story-secondary-500) 100%);
+  background: linear-gradient(135deg, var(--action-primary-bg) 0%, var(--action-primary-hover) 100%);
   color: var(--action-primary-fg);
   border-color: var(--action-primary-border);
   box-shadow: var(--shadow-glow);
@@ -653,8 +654,8 @@ p {
   button[data-shell-route="evaluacion"]
 ):hover:not(:disabled) {
   transform: translateY(-1px);
-  background: linear-gradient(135deg, var(--action-primary-hover) 0%, var(--action-primary-active) 62%, var(--story-secondary-500) 100%);
-  box-shadow: 0 20px 38px -22px rgb(var(--story-primary-rgb) / 0.64);
+  background: linear-gradient(135deg, var(--action-primary-hover) 0%, var(--action-primary-active) 100%);
+  box-shadow: 0 22px 34px -24px rgb(var(--story-primary-rgb) / 0.56);
 }
 
 :where(
@@ -704,7 +705,7 @@ p {
   #btn-timer-reset,
   #btn-reload-session
 ):active:not(:disabled) {
-  transform: translateY(0);
+  transform: scale(0.98);
   filter: saturate(0.97);
 }
 
@@ -2175,64 +2176,63 @@ body.app-mode-v4[data-ui-theme] .progress-table tr:last-child td {
 :root {
   --accent: var(--story-primary-rgb);
   --accent-2: var(--story-secondary-rgb);
-  --progress-radius-xl: 20px;
-  --progress-radius-lg: 16px;
+  --progress-radius-xl: 16px;
+  --progress-radius-lg: 14px;
   --progress-radius-md: 12px;
   --progress-radius-sm: 10px;
 
-  --progress-space-1: 6px;
-  --progress-space-2: 10px;
-  --progress-space-3: 14px;
-  --progress-space-4: 18px;
+  --progress-space-1: 4px;
+  --progress-space-2: 8px;
+  --progress-space-3: 12px;
+  --progress-space-4: 16px;
   --progress-space-5: 24px;
   --progress-space-6: 32px;
 
   --progress-font-xs: 12px;
-  --progress-font-sm: 13px;
-  --progress-font-md: 15px;
-  --progress-font-lg: 17px;
-  --progress-font-xl: 22px;
+  --progress-font-sm: 14px;
+  --progress-font-md: 16px;
+  --progress-font-lg: 18px;
+  --progress-font-xl: 24px;
 
   --progress-line-tight: 1.08;
-  --progress-line-normal: 1.4;
-  --progress-line-relaxed: 1.6;
+  --progress-line-normal: 1.45;
+  --progress-line-relaxed: 1.62;
 
   --progress-ease-out: cubic-bezier(.2, .8, .2, 1);
 }
 
 body.app-mode-v4[data-ui-theme="light"] {
-  --progress-bg: 248 250 252;
-  --progress-bg-2: 241 245 249;
+  --progress-bg: 247 249 252;
+  --progress-bg-2: 241 245 251;
   --progress-surface: 255 255 255;
-  --progress-surface-2: 255 255 255;
-  --progress-text: 10 12 16;
-  --progress-muted: 71 85 105;
-  --progress-border: 226 232 240;
+  --progress-surface-2: 248 250 255;
+  --progress-text: 26 31 54;
+  --progress-muted: 105 115 134;
+  --progress-border: 226 233 245;
   --progress-shadow: 15 23 42;
 
   --progress-glass: 255 255 255;
-  --progress-glass-alpha: 0.72;
-  --progress-elevation-1: 0 10px 30px rgba(var(--progress-shadow), 0.10);
-  --progress-elevation-2: 0 20px 60px rgba(var(--progress-shadow), 0.12);
+  --progress-glass-alpha: 0.84;
+  --progress-elevation-1: 0 4px 6px -1px rgba(var(--progress-shadow), 0.06), 0 2px 4px -1px rgba(var(--progress-shadow), 0.04);
+  --progress-elevation-2: 0 20px 25px -5px rgba(var(--progress-shadow), 0.14), 0 10px 10px -5px rgba(var(--progress-shadow), 0.08);
   --progress-ring: 0 0 0 4px rgba(var(--accent), 0.12);
 }
 
 body.app-mode-v4[data-ui-theme="dark"] {
-  --progress-bg: 2 6 23;
-  --progress-bg-2: 15 23 42;
-  --progress-surface: 11 15 28;
-  --progress-surface-2: 17 24 39;
-  --progress-text: 226 232 240;
-  --progress-muted: 148 163 184;
-  --progress-border: 30 41 59;
+  --progress-bg: 7 11 22;
+  --progress-bg-2: 12 18 33;
+  --progress-surface: 14 19 34;
+  --progress-surface-2: 18 24 41;
+  --progress-text: 227 233 245;
+  --progress-muted: 156 171 195;
+  --progress-border: 49 66 93;
 
   --progress-glass: 17 24 39;
-  --progress-glass-alpha: 0.62;
+  --progress-glass-alpha: 0.66;
   --progress-elevation-1: 0 10px 30px rgba(0, 0, 0, 0.45);
   --progress-elevation-2: 0 22px 70px rgba(0, 0, 0, 0.55);
-  --progress-ring: 0 0 0 4px rgba(var(--accent), 0.18);
+  --progress-ring: 0 0 0 4px rgba(var(--accent), 0.2);
 }
-
 /* Toggle switch style aligned with reference */
 body.app-mode-v4[data-ui-theme] .theme-toggle-btn {
   display: inline-flex;
@@ -2728,7 +2728,7 @@ body.app-mode-v4[data-ui-theme] .progress-shell .motion {
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .motion:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   border-color: rgba(var(--accent), 0.45);
   box-shadow: var(--progress-elevation-2);
 }
@@ -2792,14 +2792,14 @@ body.app-mode-v4[data-ui-theme] .progress-topbar {
   z-index: 40;
   background: rgba(var(--progress-glass), var(--progress-glass-alpha));
   border-bottom: 1px solid rgba(var(--progress-border), 0.8);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-topbar-inner {
   max-width: 1220px;
   margin: 0 auto;
-  padding: 12px 18px;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2966,13 +2966,13 @@ body.app-mode-v4[data-ui-theme] .progress-app-shell .progress-shell::before {
   }
 }
 
-/* Wave 5 cohesion overrides: width, hierarchy, contrast, typography */
+/* Shell cohesion overrides: width, hierarchy, contrast, typography */
 :root {
-  --progress-shell-max-width: min(1720px, calc(100vw - 40px));
+  --progress-shell-max-width: min(1400px, calc(100vw - 32px));
 }
 
 body.app-mode-v4[data-ui-theme] .progress-app-shell {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -2985,81 +2985,80 @@ body.app-mode-v4[data-ui-theme] .progress-top-main .page {
 }
 
 body.app-mode-v4[data-ui-theme] .progress-top-main .page {
-  padding: clamp(24px, 2.2vw, 40px) clamp(16px, 1.8vw, 34px) 72px;
+  padding: clamp(24px, 2vw, 32px) clamp(16px, 1.6vw, 28px) 64px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-topbar {
   border-bottom-color: rgba(var(--progress-border), 0.95);
-  box-shadow: 0 14px 36px -28px rgba(var(--progress-border), 0.45);
+  box-shadow: 0 14px 36px -28px rgba(var(--progress-shadow), 0.2);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-brand-copy strong {
   font-family: var(--font-display);
-  font-size: clamp(22px, 1.8vw, 34px);
-  font-weight: 860;
+  font-size: clamp(20px, 1.8vw, 28px);
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-brand-copy span {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-top-nav-link {
-  font-family: var(--font-sans);
-  font-weight: 620;
-  font-size: 18px;
-  letter-spacing: -0.01em;
-  padding: 9px 16px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0;
+  padding: 8px 14px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-theme-label {
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .pageTitle {
-  font-size: clamp(54px, 5.6vw, 92px);
-  letter-spacing: -0.05em;
-  line-height: 0.92;
+  font-size: clamp(40px, 4.8vw, 74px);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .pageKicker {
-  font-size: clamp(20px, 1.8vw, 34px);
-  max-width: 72ch;
+  font-size: clamp(16px, 1.4vw, 24px);
+  max-width: 68ch;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .grid {
-  grid-template-columns: minmax(0, 1.28fr) minmax(340px, 0.72fr);
-  gap: 24px;
-  margin-top: 22px;
+  grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
+  gap: 16px;
+  margin-top: 16px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .card {
-  border-width: 1.2px;
+  border-width: 1px;
 }
 
 body.app-mode-v4[data-ui-theme="dark"] .progress-shell .card {
-  background:
-    linear-gradient(168deg, rgba(11, 24, 53, 0.9) 0%, rgba(6, 17, 41, 0.92) 100%);
-  border-color: rgba(96, 165, 250, 0.3);
-  box-shadow: 0 24px 52px -34px rgba(2, 6, 23, 0.88);
+  background: linear-gradient(168deg, rgba(11, 24, 53, 0.88) 0%, rgba(6, 17, 41, 0.92) 100%);
+  border-color: rgba(96, 165, 250, 0.28);
+  box-shadow: 0 24px 52px -34px rgba(2, 6, 23, 0.84);
 }
 
 body.app-mode-v4[data-ui-theme="light"] .progress-shell .card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 251, 255, 0.9) 100%);
-  border-color: rgba(148, 163, 184, 0.34);
-  box-shadow: 0 24px 52px -38px rgba(15, 23, 42, 0.24);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(249, 251, 255, 0.9) 100%);
+  border-color: rgba(26, 31, 54, 0.12);
+  box-shadow: 0 24px 52px -38px rgba(15, 23, 42, 0.2);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .cardInner {
-  padding: clamp(26px, 2.2vw, 40px);
+  padding: clamp(20px, 2vw, 32px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue {
-  font-size: clamp(56px, 6vw, 112px);
-  line-height: 0.92;
+  font-size: clamp(48px, 5.6vw, 92px);
+  line-height: 0.93;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue span {
@@ -3071,68 +3070,68 @@ body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue span {
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .statRow {
-  gap: 14px;
+  gap: 12px;
   margin-top: 16px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .mini {
-  padding: 14px;
+  padding: 12px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .miniValue {
   font-family: var(--font-display);
-  font-size: clamp(28px, 2.4vw, 42px);
+  font-size: clamp(24px, 2vw, 36px);
   letter-spacing: -0.03em;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .ring {
-  width: 206px;
-  height: 206px;
+  width: 188px;
+  height: 188px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .ringPct {
   font-family: var(--font-display);
-  font-size: clamp(42px, 3.2vw, 58px);
+  font-size: clamp(38px, 2.8vw, 52px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .listItem strong,
 body.app-mode-v4[data-ui-theme] .progress-shell .cardTitle {
   font-family: var(--font-display);
-  font-size: clamp(22px, 1.6vw, 30px);
-  letter-spacing: -0.02em;
+  font-size: clamp(20px, 1.5vw, 28px);
+  letter-spacing: -0.015em;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .cardSubtitle,
 body.app-mode-v4[data-ui-theme] .progress-shell .listItem span,
 body.app-mode-v4[data-ui-theme] .progress-shell .ringLabel,
 body.app-mode-v4[data-ui-theme] .progress-shell .table td {
-  font-size: clamp(15px, 1vw, 18px);
+  font-size: clamp(14px, 1vw, 16px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .btn,
 body.app-mode-v4[data-ui-theme] .progress-shell .badge {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 @media (max-width: 980px) {
   :root {
-    --progress-shell-max-width: calc(100vw - 20px);
+    --progress-shell-max-width: calc(100vw - 16px);
   }
 
   body.app-mode-v4[data-ui-theme] .progress-top-main .page {
-    padding: 18px 10px 44px;
+    padding: 16px 8px 40px;
   }
 
   body.app-mode-v4[data-ui-theme] .progress-shell .pageTitle {
-    font-size: clamp(34px, 10vw, 56px);
+    font-size: clamp(34px, 10vw, 52px);
   }
 
   body.app-mode-v4[data-ui-theme] .progress-shell .pageKicker {
-    font-size: clamp(16px, 4.8vw, 22px);
+    font-size: clamp(15px, 4.8vw, 20px);
   }
 
   body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue {
-    font-size: clamp(40px, 14vw, 72px);
+    font-size: clamp(40px, 13vw, 66px);
   }
 }
 

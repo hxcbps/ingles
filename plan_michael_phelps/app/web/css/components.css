@@ -222,7 +222,7 @@
 .btn-primary {
   background: linear-gradient(135deg, var(--story-primary-600) 0%, var(--story-primary-700) 56%, var(--story-secondary-500) 100%);
   color: var(--action-primary-fg);
-  border-color: rgb(191 219 254 / 0.7);
+  border-color: var(--border-brand-soft);
   box-shadow: 0 16px 30px -18px rgb(var(--story-primary-rgb) / 0.82);
 }
 
@@ -233,7 +233,7 @@
 }
 
 .btn-secondary {
-  background: linear-gradient(180deg, var(--action-secondary-bg) 0%, #f7faff 100%);
+  background: var(--btn-secondary-gradient);
   color: var(--action-secondary-fg);
   border-color: var(--action-secondary-border);
 }

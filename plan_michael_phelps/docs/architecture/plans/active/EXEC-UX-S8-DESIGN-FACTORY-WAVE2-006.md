@@ -3,7 +3,7 @@
 Status: active
 Owner: UI UX Director Agent
 Started: 2026-02-12
-Updated: 2026-02-12
+Updated: 2026-02-13
 
 ## Objective
 
@@ -66,6 +66,12 @@ Result:
 - 2026-02-12: Palette/typography/buttons/motion/story packages upgraded with stricter contracts.
 - 2026-02-12: Wave-2 worktrees provisioned for lanes S8-DF2-01..06.
 - 2026-02-12: Mandatory validation suite passed (lint, drift, audit, tests, frontend-ux, guardian).
+- 2026-02-12: Token baseline shifted toward Apple/Stripe semantics (text hierarchy, surfaces, borders, elevation, CTA weight) in `design_factory` packages.
+- 2026-02-12: Resilience UX hardened with skeleton loading shell, offline banner with retry action, and friendlier fatal-state rendering.
+- 2026-02-13: Unified shell chrome for all routes (including `progreso`) through shared `es-*` header contract and removed legacy dead render paths from `learning_shell.js`.
+- 2026-02-13: Session wizard now inherits shell-level visual language (tokens, buttons, focus, surfaces) via final override layer in `app/web/css/shell_rethink.css`.
+- 2026-02-13: Consolidated CSS layers by removing legacy overrides (`reboot_s7.css`, `shell_unified.css`, `wizard.css`) from canonical entrypoint and repository.
+- 2026-02-13: Token discipline now reports only true hard-coded colors (hex and non-tokenized rgb/rgba) and passes with zero findings after tokenizing `base/layout/components/utilities`.
 
 ## Decision Log
 

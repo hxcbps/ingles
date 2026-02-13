@@ -1,74 +1,9 @@
-/* Responsive contract for utility-like classes used by the shell. */
+/* Responsive guardrails for shell root only.
+   Legacy utility alias selectors were removed because they are unused.
+*/
 
 @media (max-width: 640px) {
   .app-shell-root {
     padding: 0.62rem;
-  }
-}
-
-@media (min-width: 640px) {
-  .sm-block {
-    display: block !important;
-  }
-
-  .sm-flex-row {
-    flex-direction: row !important;
-  }
-
-  .sm-items-center {
-    align-items: center !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .md-block {
-    display: block !important;
-  }
-
-  .md-flex-row {
-    flex-direction: row !important;
-  }
-
-  .md-h-64 {
-    height: 16rem !important;
-  }
-
-  .md-p-10 {
-    padding: 2.5rem !important;
-  }
-
-  .md-p-12 {
-    padding: 3rem !important;
-  }
-
-  .md-text-5xl {
-    font-size: 3rem !important;
-    line-height: 1 !important;
-  }
-
-  .md-w-64 {
-    width: 16rem !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  .lg-flex {
-    display: flex !important;
-  }
-
-  .lg-hidden {
-    display: none !important;
-  }
-
-  .lg-col-span-2 {
-    grid-column: span 2 / span 2 !important;
-  }
-
-  .lg-grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
-
-  .lg-grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }

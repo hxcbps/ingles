@@ -1,64 +1,63 @@
 :root {
   --accent: var(--story-primary-rgb);
   --accent-2: var(--story-secondary-rgb);
-  --progress-radius-xl: 20px;
-  --progress-radius-lg: 16px;
+  --progress-radius-xl: 16px;
+  --progress-radius-lg: 14px;
   --progress-radius-md: 12px;
   --progress-radius-sm: 10px;
 
-  --progress-space-1: 6px;
-  --progress-space-2: 10px;
-  --progress-space-3: 14px;
-  --progress-space-4: 18px;
+  --progress-space-1: 4px;
+  --progress-space-2: 8px;
+  --progress-space-3: 12px;
+  --progress-space-4: 16px;
   --progress-space-5: 24px;
   --progress-space-6: 32px;
 
   --progress-font-xs: 12px;
-  --progress-font-sm: 13px;
-  --progress-font-md: 15px;
-  --progress-font-lg: 17px;
-  --progress-font-xl: 22px;
+  --progress-font-sm: 14px;
+  --progress-font-md: 16px;
+  --progress-font-lg: 18px;
+  --progress-font-xl: 24px;
 
   --progress-line-tight: 1.08;
-  --progress-line-normal: 1.4;
-  --progress-line-relaxed: 1.6;
+  --progress-line-normal: 1.45;
+  --progress-line-relaxed: 1.62;
 
   --progress-ease-out: cubic-bezier(.2, .8, .2, 1);
 }
 
 body.app-mode-v4[data-ui-theme="light"] {
-  --progress-bg: 248 250 252;
-  --progress-bg-2: 241 245 249;
+  --progress-bg: 247 249 252;
+  --progress-bg-2: 241 245 251;
   --progress-surface: 255 255 255;
-  --progress-surface-2: 255 255 255;
-  --progress-text: 10 12 16;
-  --progress-muted: 71 85 105;
-  --progress-border: 226 232 240;
+  --progress-surface-2: 248 250 255;
+  --progress-text: 26 31 54;
+  --progress-muted: 105 115 134;
+  --progress-border: 226 233 245;
   --progress-shadow: 15 23 42;
 
   --progress-glass: 255 255 255;
-  --progress-glass-alpha: 0.72;
-  --progress-elevation-1: 0 10px 30px rgba(var(--progress-shadow), 0.10);
-  --progress-elevation-2: 0 20px 60px rgba(var(--progress-shadow), 0.12);
+  --progress-glass-alpha: 0.84;
+  --progress-elevation-1: 0 4px 6px -1px rgba(var(--progress-shadow), 0.06), 0 2px 4px -1px rgba(var(--progress-shadow), 0.04);
+  --progress-elevation-2: 0 20px 25px -5px rgba(var(--progress-shadow), 0.14), 0 10px 10px -5px rgba(var(--progress-shadow), 0.08);
   --progress-ring: 0 0 0 4px rgba(var(--accent), 0.12);
 }
 
 body.app-mode-v4[data-ui-theme="dark"] {
-  --progress-bg: 2 6 23;
-  --progress-bg-2: 15 23 42;
-  --progress-surface: 11 15 28;
-  --progress-surface-2: 17 24 39;
-  --progress-text: 226 232 240;
-  --progress-muted: 148 163 184;
-  --progress-border: 30 41 59;
+  --progress-bg: 7 11 22;
+  --progress-bg-2: 12 18 33;
+  --progress-surface: 14 19 34;
+  --progress-surface-2: 18 24 41;
+  --progress-text: 227 233 245;
+  --progress-muted: 156 171 195;
+  --progress-border: 49 66 93;
 
   --progress-glass: 17 24 39;
-  --progress-glass-alpha: 0.62;
+  --progress-glass-alpha: 0.66;
   --progress-elevation-1: 0 10px 30px rgba(0, 0, 0, 0.45);
   --progress-elevation-2: 0 22px 70px rgba(0, 0, 0, 0.55);
-  --progress-ring: 0 0 0 4px rgba(var(--accent), 0.18);
+  --progress-ring: 0 0 0 4px rgba(var(--accent), 0.2);
 }
-
 /* Toggle switch style aligned with reference */
 body.app-mode-v4[data-ui-theme] .theme-toggle-btn {
   display: inline-flex;
@@ -554,7 +553,7 @@ body.app-mode-v4[data-ui-theme] .progress-shell .motion {
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .motion:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   border-color: rgba(var(--accent), 0.45);
   box-shadow: var(--progress-elevation-2);
 }
@@ -618,14 +617,14 @@ body.app-mode-v4[data-ui-theme] .progress-topbar {
   z-index: 40;
   background: rgba(var(--progress-glass), var(--progress-glass-alpha));
   border-bottom: 1px solid rgba(var(--progress-border), 0.8);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-topbar-inner {
   max-width: 1220px;
   margin: 0 auto;
-  padding: 12px 18px;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -792,13 +791,13 @@ body.app-mode-v4[data-ui-theme] .progress-app-shell .progress-shell::before {
   }
 }
 
-/* Wave 5 cohesion overrides: width, hierarchy, contrast, typography */
+/* Shell cohesion overrides: width, hierarchy, contrast, typography */
 :root {
-  --progress-shell-max-width: min(1720px, calc(100vw - 40px));
+  --progress-shell-max-width: min(1400px, calc(100vw - 32px));
 }
 
 body.app-mode-v4[data-ui-theme] .progress-app-shell {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -811,81 +810,80 @@ body.app-mode-v4[data-ui-theme] .progress-top-main .page {
 }
 
 body.app-mode-v4[data-ui-theme] .progress-top-main .page {
-  padding: clamp(24px, 2.2vw, 40px) clamp(16px, 1.8vw, 34px) 72px;
+  padding: clamp(24px, 2vw, 32px) clamp(16px, 1.6vw, 28px) 64px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-topbar {
   border-bottom-color: rgba(var(--progress-border), 0.95);
-  box-shadow: 0 14px 36px -28px rgba(var(--progress-border), 0.45);
+  box-shadow: 0 14px 36px -28px rgba(var(--progress-shadow), 0.2);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-brand-copy strong {
   font-family: var(--font-display);
-  font-size: clamp(22px, 1.8vw, 34px);
-  font-weight: 860;
+  font-size: clamp(20px, 1.8vw, 28px);
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-brand-copy span {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-top-nav-link {
-  font-family: var(--font-sans);
-  font-weight: 620;
-  font-size: 18px;
-  letter-spacing: -0.01em;
-  padding: 9px 16px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0;
+  padding: 8px 14px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-theme-label {
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .pageTitle {
-  font-size: clamp(54px, 5.6vw, 92px);
-  letter-spacing: -0.05em;
-  line-height: 0.92;
+  font-size: clamp(40px, 4.8vw, 74px);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .pageKicker {
-  font-size: clamp(20px, 1.8vw, 34px);
-  max-width: 72ch;
+  font-size: clamp(16px, 1.4vw, 24px);
+  max-width: 68ch;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .grid {
-  grid-template-columns: minmax(0, 1.28fr) minmax(340px, 0.72fr);
-  gap: 24px;
-  margin-top: 22px;
+  grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
+  gap: 16px;
+  margin-top: 16px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .card {
-  border-width: 1.2px;
+  border-width: 1px;
 }
 
 body.app-mode-v4[data-ui-theme="dark"] .progress-shell .card {
-  background:
-    linear-gradient(168deg, rgba(11, 24, 53, 0.9) 0%, rgba(6, 17, 41, 0.92) 100%);
-  border-color: rgba(96, 165, 250, 0.3);
-  box-shadow: 0 24px 52px -34px rgba(2, 6, 23, 0.88);
+  background: linear-gradient(168deg, rgba(11, 24, 53, 0.88) 0%, rgba(6, 17, 41, 0.92) 100%);
+  border-color: rgba(96, 165, 250, 0.28);
+  box-shadow: 0 24px 52px -34px rgba(2, 6, 23, 0.84);
 }
 
 body.app-mode-v4[data-ui-theme="light"] .progress-shell .card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 251, 255, 0.9) 100%);
-  border-color: rgba(148, 163, 184, 0.34);
-  box-shadow: 0 24px 52px -38px rgba(15, 23, 42, 0.24);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(249, 251, 255, 0.9) 100%);
+  border-color: rgba(26, 31, 54, 0.12);
+  box-shadow: 0 24px 52px -38px rgba(15, 23, 42, 0.2);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .cardInner {
-  padding: clamp(26px, 2.2vw, 40px);
+  padding: clamp(20px, 2vw, 32px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue {
-  font-size: clamp(56px, 6vw, 112px);
-  line-height: 0.92;
+  font-size: clamp(48px, 5.6vw, 92px);
+  line-height: 0.93;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue span {
@@ -897,67 +895,67 @@ body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue span {
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .statRow {
-  gap: 14px;
+  gap: 12px;
   margin-top: 16px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .mini {
-  padding: 14px;
+  padding: 12px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .miniValue {
   font-family: var(--font-display);
-  font-size: clamp(28px, 2.4vw, 42px);
+  font-size: clamp(24px, 2vw, 36px);
   letter-spacing: -0.03em;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .ring {
-  width: 206px;
-  height: 206px;
+  width: 188px;
+  height: 188px;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .ringPct {
   font-family: var(--font-display);
-  font-size: clamp(42px, 3.2vw, 58px);
+  font-size: clamp(38px, 2.8vw, 52px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .listItem strong,
 body.app-mode-v4[data-ui-theme] .progress-shell .cardTitle {
   font-family: var(--font-display);
-  font-size: clamp(22px, 1.6vw, 30px);
-  letter-spacing: -0.02em;
+  font-size: clamp(20px, 1.5vw, 28px);
+  letter-spacing: -0.015em;
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .cardSubtitle,
 body.app-mode-v4[data-ui-theme] .progress-shell .listItem span,
 body.app-mode-v4[data-ui-theme] .progress-shell .ringLabel,
 body.app-mode-v4[data-ui-theme] .progress-shell .table td {
-  font-size: clamp(15px, 1vw, 18px);
+  font-size: clamp(14px, 1vw, 16px);
 }
 
 body.app-mode-v4[data-ui-theme] .progress-shell .btn,
 body.app-mode-v4[data-ui-theme] .progress-shell .badge {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 @media (max-width: 980px) {
   :root {
-    --progress-shell-max-width: calc(100vw - 20px);
+    --progress-shell-max-width: calc(100vw - 16px);
   }
 
   body.app-mode-v4[data-ui-theme] .progress-top-main .page {
-    padding: 18px 10px 44px;
+    padding: 16px 8px 40px;
   }
 
   body.app-mode-v4[data-ui-theme] .progress-shell .pageTitle {
-    font-size: clamp(34px, 10vw, 56px);
+    font-size: clamp(34px, 10vw, 52px);
   }
 
   body.app-mode-v4[data-ui-theme] .progress-shell .pageKicker {
-    font-size: clamp(16px, 4.8vw, 22px);
+    font-size: clamp(15px, 4.8vw, 20px);
   }
 
   body.app-mode-v4[data-ui-theme] .progress-shell .bigStatValue {
-    font-size: clamp(40px, 14vw, 72px);
+    font-size: clamp(40px, 13vw, 66px);
   }
 }

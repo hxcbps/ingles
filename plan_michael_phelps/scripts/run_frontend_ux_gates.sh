@@ -96,7 +96,11 @@ console.log('[ OK ] Route/view IDs aligned:', canonicalIds.join(', '));
 NODE
 
 echo "[RUN ] Token discipline advisory"
-color_hits="$(rg -n '#[0-9a-fA-F]{3,8}\b|rgba?\(' app/web/css --glob '!tokens.css' --glob '!factory.css' --glob '!index.css' || true)"
+# Report hard-coded values only:
+# - hex literals
+# - rgb()/rgba() that do not start with var(...) channels
+# This avoids flagging tokenized channel usage like rgb(var(--token-rgb) / 0.6).
+color_hits="$(rg -n -P '#[0-9a-fA-F]{3,8}\b|rgba?\(\s*(?!var\()' app/web/css --glob '!tokens.css' --glob '!factory.css' --glob '!tailwind.generated.css' --glob '!index.css' || true)"
 if [ -n "$color_hits" ]; then
   count=$(printf '%s\n' "$color_hits" | sed '/^$/d' | wc -l | tr -d ' ')
   echo "[WARN] Found $count hard-coded color-like values outside tokens.css"

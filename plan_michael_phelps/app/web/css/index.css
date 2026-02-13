@@ -2,13 +2,12 @@
 @layer reset, tokens, base, components, utilities, overrides;
 
 @import "tokens.css" layer(tokens);
+@import "tailwind.generated.css" layer(components);
 @import "base.css" layer(base);
 @import "layout.css" layer(components);
 /* Structural layouts */
 @import "components.css" layer(components);
 /* BEM Components */
-@import "wizard.css" layer(components);
-/* Wizard Specifics */
 @import "wizard_polish.css" layer(components);
 
 @import "utilities.css" layer(utilities);
@@ -18,8 +17,8 @@
 @import "responsive.css" layer(utilities);
 /* Media Query Overrides */
 
-@import "reboot_s7.css" layer(overrides);
-/* S7 visual reboot overrides */
-
 @import "factory.css" layer(overrides);
 /* S8 design factory generated overrides */
+
+@import "shell_rethink.css" layer(overrides);
+/* S9 namespaced redesign for enterprise-grade visual coherence */

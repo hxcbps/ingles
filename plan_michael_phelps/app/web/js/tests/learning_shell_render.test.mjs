@@ -284,6 +284,84 @@ test("learning shell reads persisted theme and toggles ui mode", () => {
   }
 });
 
+test("learning shell renders offline banner with retry action when navigator is offline", () => {
+  const originalDocument = globalThis.document;
+  const originalCustomEvent = globalThis.CustomEvent;
+
+  const fakeContainer = {
+    innerHTML: "",
+    _clickHandler: null,
+    querySelectorAll() {
+      return [];
+    },
+    addEventListener(eventName, handler) {
+      if (eventName === "click") {
+        this._clickHandler = handler;
+      }
+    },
+    removeEventListener(eventName, handler) {
+      if (eventName === "click" && this._clickHandler === handler) {
+        this._clickHandler = null;
+      }
+    }
+  };
+
+  const fakeWindow = {
+    navigator: { onLine: false },
+    localStorage: {
+      getItem() {
+        return "light";
+      },
+      setItem() {}
+    }
+  };
+
+  globalThis.CustomEvent = class CustomEvent {
+    constructor(type, init = {}) {
+      this.type = type;
+      this.detail = init.detail;
+    }
+  };
+
+  globalThis.document = {
+    body: {
+      setAttribute() {},
+      classList: { toggle() {} }
+    },
+    getElementById(id) {
+      return id === "v4-root" ? fakeContainer : null;
+    },
+    dispatchEvent() {}
+  };
+
+  try {
+    const shell = new LearningShell("v4-root", {
+      activeWeekLabel: "w05",
+      activeDayLabel: "Fri",
+      windowRef: fakeWindow,
+      program: {
+        weekNumber: 5,
+        phases: [{ id: "phase1", title: "Foundation", cefr: "A1" }]
+      },
+      config: {
+        user: {
+          name: "QA",
+          level: "Nivel 5",
+          progress: { phase_id: "phase1" }
+        }
+      }
+    });
+
+    shell.render({ view: "hoy" });
+    assert.match(fakeContainer.innerHTML, /Sin conexion/);
+    assert.match(fakeContainer.innerHTML, /data-shell-action="retry-connection"/);
+    assert.match(fakeContainer.innerHTML, /Seguir en modo local/);
+  } finally {
+    globalThis.document = originalDocument;
+    globalThis.CustomEvent = originalCustomEvent;
+  }
+});
+
 test("learning shell renders progreso dashboard with premium structure", () => {
   const originalDocument = globalThis.document;
   const originalCustomEvent = globalThis.CustomEvent;

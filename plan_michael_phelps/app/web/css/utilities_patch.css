@@ -122,11 +122,11 @@
 }
 
 .bg-white\/90 {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--surface-white-90);
 }
 
 .hover\:bg-white\/20:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--surface-white-20);
 }
 
 .hover\:bg-rose-50:hover {
@@ -139,7 +139,7 @@
 
 .focus\:ring-2:focus,
 .focus\:ring-brand-500\/20:focus {
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  box-shadow: var(--utility-focus-ring-brand-soft);
 }
 
 .placeholder\:text-slate-400::placeholder {
@@ -151,7 +151,7 @@
 }
 
 .hover\:shadow-brand-100\/50:hover {
-  --tw-shadow-color: rgba(224, 231, 255, 0.5);
+  --tw-shadow-color: var(--shadow-brand-100-soft);
   box-shadow: 0 10px 15px -3px var(--tw-shadow-color);
 }
 

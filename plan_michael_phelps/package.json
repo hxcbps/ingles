@@ -1,0 +1,25 @@
+{
+  "name": "plan_michael_phelps",
+  "version": "1.0.0",
+  "description": "Objetivo: Basico -> B2 conversacional con foco en desempeno real (rubrica + metricas + gates + adaptacion). Estado tecnico: frontend modular interno (ESM por feature), local-first, uso externo sin cambios.",
+  "main": "index.js",
+  "bin": {
+    "plan_michael_phelps": "bin/scaffold_v4_content.js"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "node --test app/web/js/tests/*.test.mjs",
+    "tw:build": "tailwindcss -i app/web/css/tailwind.input.css -o app/web/css/tailwind.generated.css --minify",
+    "tw:watch": "tailwindcss -i app/web/css/tailwind.input.css -o app/web/css/tailwind.generated.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  }
+}

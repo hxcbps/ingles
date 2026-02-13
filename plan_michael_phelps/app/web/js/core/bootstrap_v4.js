@@ -25,6 +25,15 @@ function formatDayLabel(dayLabel) {
   return DAY_LABEL_ES[dayLabel] || dayLabel || "Dia";
 }
 
+function escapeHTML(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 function hasExecutableSession(dayData) {
   return Boolean(Array.isArray(dayData?.session_script) && dayData.session_script.length > 0);
 }
@@ -75,9 +84,17 @@ function renderFatal(container, title, message) {
   container.innerHTML = `
     <section class="fatal-shell" aria-live="assertive">
       <article class="fatal-card">
+        <div class="fatal-illustration" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="presentation" focusable="false">
+            <path d="M32 6c14.3 0 26 11.7 26 26S46.3 58 32 58 6 46.3 6 32 17.7 6 32 6z" fill="currentColor" opacity="0.12"></path>
+            <path d="M32 17c-8.3 0-15 6.7-15 15 0 5.7 3.2 10.7 7.9 13.3l2.2-3.8A10.9 10.9 0 0 1 21 32c0-6.1 4.9-11 11-11a11 11 0 0 1 9.7 16.2l3.8 2.2A15.2 15.2 0 0 0 47 32c0-8.3-6.7-15-15-15z" fill="currentColor"></path>
+            <path d="m21 47 4-6.8h14.2L43 47H21z" fill="currentColor"></path>
+          </svg>
+        </div>
         <p class="section-kicker">Error de inicializacion</p>
-        <h2>${title}</h2>
-        <p>${message}</p>
+        <h2>${escapeHTML(title)}</h2>
+        <p>No pudimos conectar con tu ruta de aprendizaje.</p>
+        <p>${escapeHTML(message)}</p>
         <button id="btn-reload-app" class="btn-primary" type="button">Reintentar</button>
       </article>
     </section>
@@ -130,6 +147,7 @@ export async function bootstrapV4({
   let currentRouteId = null;
   let routeSource = "startup";
   let scrollHandler = null;
+  let connectivityHandler = null;
 
   const mountWizard = () => {
     if (!shell) return;
@@ -332,6 +350,13 @@ export async function bootstrapV4({
     scrollHandler();
     windowRef.addEventListener("scroll", scrollHandler, { passive: true });
 
+    connectivityHandler = () => {
+      if (!shell) return;
+      shell.render({ view: shell.activeView || "hoy" });
+    };
+    windowRef.addEventListener("online", connectivityHandler);
+    windowRef.addEventListener("offline", connectivityHandler);
+
     unloadHandler = () => {
       orchestrator.abandon("before_unload");
     };
@@ -373,6 +398,10 @@ export async function bootstrapV4({
       }
       if (scrollHandler) {
         windowRef.removeEventListener("scroll", scrollHandler);
+      }
+      if (connectivityHandler) {
+        windowRef.removeEventListener("online", connectivityHandler);
+        windowRef.removeEventListener("offline", connectivityHandler);
       }
     }
   };

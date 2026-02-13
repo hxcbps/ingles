@@ -1,4 +1,4 @@
-import { VIEW_META, VIEW_IDS, NAV_GROUPS } from "./views.js";
+import { VIEW_META, VIEW_IDS } from "./views.js";
 import { ICONS } from "./icons.js";
 import { buildProgressHeatmap, buildProgressHistory, renderProgressPremiumView } from "./renderers/progress_premium_renderer.js";
 
@@ -208,6 +208,31 @@ export class LearningShell {
       message: safe.message || ""
     };
   }
+
+  getConnectionState() {
+    const online = this.windowRef?.navigator?.onLine;
+    return online === false ? "offline" : "online";
+  }
+
+  renderConnectionBanner() {
+    if (this.getConnectionState() !== "offline") {
+      return "";
+    }
+
+    return `
+      <article class="shell-network-banner" role="status" aria-live="polite">
+        <div>
+          <strong>Sin conexion</strong>
+          <p>No pudimos conectar con tu ruta de aprendizaje. Puedes reintentar ahora.</p>
+          <div class="shell-network-actions">
+            <button class="es-btn es-btn--primary" data-shell-action="retry-connection" type="button">Reintentar</button>
+            <button class="es-btn es-btn--ghost" data-shell-route="hoy" type="button">Seguir en modo local</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
 
   getJourneyStateSafe() {
     const fallbackSession = this.getSessionSnapshotSafe();
@@ -516,422 +541,252 @@ export class LearningShell {
     };
   }
 
+  renderHeader({ subtitle = "Conversation System", shellTone = "default" } = {}) {
+    const isDark = this.theme === UI_THEMES.DARK;
+    const themeToggleCopy = this.getThemeToggleCopy();
+
+    const navMarkup = VIEW_IDS.map((viewId) => {
+      const meta = VIEW_META[viewId];
+      if (!meta) return "";
+      const isActive = this.activeView === viewId;
+      return `
+        <button data-view-nav="${viewId}" class="es-nav__link ${isActive ? "is-active" : ""}" type="button">
+          ${escapeHTML(meta.label)}
+        </button>
+      `;
+    }).join("");
+
+    return `
+      <header class="es-header glass-header ${shellTone === "progress" ? "es-header--progress" : ""}">
+        <div class="es-header__inner">
+          <div class="es-brand">
+            <span class="es-brand__mark" aria-hidden="true"></span>
+            <div class="es-brand__copy">
+              <strong>English Sprint</strong>
+              <span>${escapeHTML(subtitle)}</span>
+            </div>
+          </div>
+
+          <nav class="es-nav" aria-label="Navegación principal">
+            ${navMarkup}
+          </nav>
+
+          <div class="es-header__actions">
+            <button
+              data-shell-action="toggle-theme"
+              type="button"
+              role="switch"
+              aria-checked="${isDark ? "true" : "false"}"
+              class="es-theme-toggle"
+              aria-label="Cambiar tema visual"
+              title="Cambiar tema"
+            >
+              <span class="es-theme-toggle__copy">
+                <span class="es-theme-toggle__icon">${themeToggleCopy.icon}</span>
+                <span class="es-theme-toggle__label">${themeToggleCopy.label}</span>
+              </span>
+              <span class="es-theme-toggle__pill" aria-hidden="true"><span class="es-theme-toggle__dot"></span></span>
+            </button>
+          </div>
+        </div>
+      </header>
+    `;
+  }
+
   renderLayout(state) {
     const view = state?.view || this.activeView;
-    const isDark = this.theme === UI_THEMES.DARK;
 
     if (view === "progreso") {
-      return this.renderProgressStandaloneLayout({ isDark });
+      return this.renderProgressStandaloneLayout();
     }
 
-    const activePhase = this.program.phases?.find((p) => p.id === this.profile.progress?.phase_id) || {
+    const activePhase = this.program.phases?.find((phase) => phase.id === this.profile.progress?.phase_id) || {
       title: "Foundation",
       id: "phase1",
       cefr: "A0 -> A2"
     };
 
-    const userName = this.profile.name || "Estudiante";
-    const userLevel = this.profile.level || "Nivel 1";
-
     const metrics = this.getDashboardMetrics();
-    const themeToggleCopy = this.getThemeToggleCopy();
+    const journey = this.getJourneyStateSafe();
+    const heroCopyByView = {
+      hoy: {
+        title: "Execution Hub",
+        kicker: `Semana activa ${metrics.weeklyProgressLabel}. Enfoque actual: ${metrics.themeTitle}.`,
+        ctaRoute: "sesion",
+        ctaLabel: "Iniciar sesión"
+      },
+      sesion: {
+        title: "Sesión Guiada",
+        kicker: "Sigue la secuencia operativa y desbloquea cierre con evidencia verificable.",
+        ctaRoute: "sesion",
+        ctaLabel: "Continuar sesión"
+      },
+      cierre: {
+        title: "Cierre Diario",
+        kicker: "Consolida checklist, valida gate y prepara evaluación sin fricción.",
+        ctaRoute: "cierre",
+        ctaLabel: "Revisar cierre"
+      },
+      evaluacion: {
+        title: "Evaluación",
+        kicker: "Control de calidad orientado a desempeño real conversacional.",
+        ctaRoute: "evaluacion",
+        ctaLabel: "Abrir evaluación"
+      },
+      modulos: {
+        title: "Roadmap 0 → B2",
+        kicker: "Módulos semanales con ritmo, KPI y checkpoints explícitos.",
+        ctaRoute: "modulos",
+        ctaLabel: "Ver módulos"
+      }
+    };
+
+    const heroCopy = heroCopyByView[view] || heroCopyByView.hoy;
+
+    const checklistDone = [
+      journey.checklist?.listening,
+      journey.checklist?.speaking,
+      journey.checklist?.reading,
+      journey.checklist?.writing,
+      journey.checklist?.evidence
+    ].filter(Boolean).length;
+
+    const checklistTotal = 5;
 
     return `
-      <div class="app-shell font-sans text-slate-900 bg-slate-50 min-h-screen flex selection:bg-indigo-100 selection:text-indigo-700" data-ui-theme="${this.theme}">
-        
-        <!-- SIDEBAR -->
-        <aside class="shell-sidebar hidden lg-flex w-72 bg-white border-r border-slate-200 flex-col sticky top-0 h-screen z-50">
-          <div class="p-8">
-            <div class="flex items-center gap-3 text-brand-600 font-extrabold text-2xl tracking-tight">
-              <div class="bg-brand-600 p-2 rounded-xl text-white shadow-lg shadow-brand-200">
-                ${ICONS.bookOpen}
-              </div>
-              <span>HXC<span class="text-slate-400 font-light underline decoration-brand-300 underline-offset-4">ENGLISH</span></span>
-            </div>
-          </div>
+      <div class="es-shell" data-ui-theme="${this.theme}">
+        ${this.renderHeader({ subtitle: "Conversation System" })}
 
-          <nav class="flex-1 px-6 space-y-2 mt-4">
-            <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Navegacion</p>
-            ${this.renderNavItems()}
-          </nav>
-
-          <div class="p-6 border-t border-slate-100">
-             <div class="bg-slate-50 p-4 rounded-2xl mb-4 border border-slate-100">
-              <p class="text-xs font-bold text-slate-500 uppercase mb-2">Tu Plan</p>
-              <p class="text-sm font-bold text-brand-600">${escapeHTML(metrics.planName)}</p>
-              <div class="w-full bg-slate-200 h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-brand-500 h-full" style="width:${clampPercent(metrics.planProgressPct)}%"></div>
-              </div>
-            </div>
-            <button class="flex items-center gap-3 w-full p-3 text-slate-500 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all font-medium">
-              ${ICONS.logOut}
-              <span>Cerrar Sesión</span>
-            </button>
-          </div>
-        </aside>
-
-        <!-- MAIN CONTENT AREA -->
-        <main class="shell-main flex-1 flex flex-col min-w-0">
-          
-          <!-- GLASS HEADER -->
-          <header class="glass-header sticky top-0 z-40 px-6 py-4 bg-white/80 backdrop-blur-md border-b border-slate-200">
-            <div class="max-w-7xl mx-auto flex items-center justify-between gap-8">
-              <!-- Search Bar -->
-              <div class="flex-1 max-w-md relative group">
-                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-500 transition-colors">
-                  ${ICONS.search}
-                </div>
-                <input 
-                  type="text" 
-                  placeholder="Busca lecciones, vocabulario o guías..." 
-                  class="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-none rounded-2xl text-sm focus:ring-2 focus:ring-brand-500/20 focus:bg-white transition-all outline-none text-slate-700 placeholder:text-slate-400"
-                />
-              </div>
-
-              <!-- Right Actions -->
-              <div class="flex items-center gap-4">
-                <button
-                  data-shell-action="toggle-theme"
-                  type="button"
-                  role="switch"
-                  aria-checked="${isDark ? "true" : "false"}"
-                  class="theme-toggle-btn"
-                  aria-label="Cambiar tema visual"
-                  title="Cambiar tema"
-                >
-                  <span class="theme-toggle-copy">
-                    <span class="theme-toggle-icon">${themeToggleCopy.icon}</span>
-                    <span class="theme-toggle-label text-[10px] font-black uppercase tracking-widest">${themeToggleCopy.label}</span>
-                  </span>
-                  <span class="theme-toggle-pill" aria-hidden="true"><span class="theme-toggle-dot"></span></span>
-                </button>
-                <button class="relative p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
-                  ${ICONS.bell}
-                  <span class="absolute top-1 right-1.5 w-2.5 h-2.5 ${isDark ? 'bg-rose-400 border-slate-900' : 'bg-rose-500 border-white'} border-2 rounded-full"></span>
-                </button>
-                <div class="h-8 w-[1px] bg-slate-200"></div>
-                <div class="flex items-center gap-3 cursor-pointer group">
-                  <div class="text-right hidden sm-block">
-                    <p class="text-sm font-bold text-slate-800 group-hover:text-brand-600 transition-colors">${escapeHTML(userName)}</p>
-                    <p class="text-xs text-slate-400 font-medium">${escapeHTML(userLevel)} • Pro</p>
-                  </div>
-                  <div class="w-10 h-10 rounded-full bg-brand-100 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center text-brand-700 font-bold">
-                    ${userName.charAt(0)}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <!-- SCROLLABLE CONTENT -->
-          <div class="p-6 md-p-10 max-w-7xl mx-auto w-full">
-            
-            <!-- WELCOME & STATS -->
-            <div class="grid lg-grid-cols-4 gap-6 mb-10">
-              <div class="lg-col-span-2">
-                <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">Bienvenido de nuevo, ${escapeHTML(userName.split(' ')[0])}.</h1>
-                <p class="text-slate-500 mt-2 text-lg">Has completado el <span class="text-brand-600 font-bold">${escapeHTML(metrics.weeklyProgressLabel)}</span> de la ruta 0 -> B2. Sigue construyendo consistencia.</p>
-              </div>
-              
-              <div class="shell-kpi-card bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                <div class="shell-kpi-icon shell-kpi-icon-streak p-3 bg-orange-50 text-orange-500 rounded-2xl">${ICONS.flame}</div>
-                <div>
-                  <p class="shell-kpi-title text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.streakTitle)}</p>
-                  <p class="shell-kpi-value text-xl font-black text-slate-800">${metrics.streakLabel}</p>
-                </div>
-              </div>
-
-               <div class="shell-kpi-card bg-white p-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                <div class="shell-kpi-icon shell-kpi-icon-xp p-3 bg-yellow-50 text-yellow-500 rounded-2xl">${ICONS.zap}</div>
-                <div>
-                  <p class="shell-kpi-title text-xs text-slate-400 font-bold uppercase tracking-widest">${escapeHTML(metrics.xpTitle)}</p>
-                  <p class="shell-kpi-value text-xl font-black text-slate-800">${metrics.xpLabel}</p>
-                </div>
-              </div>
+        <main class="es-main">
+          <section class="es-hero">
+            <div class="es-hero__copy">
+              <p class="es-kicker">English Sprint Platform</p>
+              <h1 class="es-title">${escapeHTML(heroCopy.title)}</h1>
+              <p class="es-subtitle">${escapeHTML(heroCopy.kicker)}</p>
             </div>
 
-            <!-- DASHBOARD GRID -->
-            <div class="grid lg-grid-cols-3 gap-10">
-              
-              <!-- LEFT COLUMN (FEED) -->
-              <div class="lg-col-span-2 space-y-10">
-                
-                <!-- HERO CARD -->
-                ${this.renderHeroCard(activePhase, metrics)}
+            <div class="es-hero__rail">
+              <div class="es-badges">
+                <span class="es-badge">${escapeHTML(metrics.rankingTitle)}</span>
+                <span class="es-badge">${escapeHTML(metrics.rankingTier)}</span>
+                <span class="es-badge">${escapeHTML(metrics.heroRewardLabel)}</span>
+                ${this.fallbackNotice ? `<span class="es-badge">${escapeHTML(this.fallbackNotice)}</span>` : ""}
+              </div>
 
-                <!-- WORKSPACE AREA (Dynamic View Content) -->
-                <section id="shell-workspace" class="workspace-area">
-                  <div class="flex items-center justify-between mb-8">
+              <div class="es-hero__actions">
+                <button class="es-btn es-btn--ghost" data-shell-route="progreso" type="button">Ver progreso</button>
+                <button class="es-btn es-btn--primary" data-shell-route="${heroCopy.ctaRoute}" type="button">${escapeHTML(heroCopy.ctaLabel)}</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="es-grid">
+            <article class="es-card es-card--main">
+              ${this.renderConnectionBanner()}
+              ${this.renderFlowStatusBanner()}
+
+              <div class="view-container" data-view-panel="hoy" ${this.activeView !== "hoy" ? "hidden" : ""}>
+                ${this.renderTodayView(metrics)}
+              </div>
+
+              <div class="view-container" data-view-panel="sesion" ${this.activeView !== "sesion" ? "hidden" : ""}>
+                ${this.renderSessionView(metrics)}
+              </div>
+
+              <div class="view-container" data-view-panel="cierre" ${this.activeView !== "cierre" ? "hidden" : ""}>
+                ${this.renderClosureView()}
+              </div>
+
+              <div class="view-container" data-view-panel="evaluacion" ${this.activeView !== "evaluacion" ? "hidden" : ""}>
+                ${this.renderEvaluationView()}
+              </div>
+
+              <div class="view-container" data-view-panel="modulos" ${this.activeView !== "modulos" ? "hidden" : ""}>
+                ${this.renderModulesView()}
+              </div>
+            </article>
+
+            <aside class="es-side" aria-label="Panel lateral">
+              <article class="es-card">
+                <div class="es-card__head">
+                  <h2>Operational Signal</h2>
+                  <p>Estado de ejecución y continuidad.</p>
+                </div>
+
+                <div class="es-kpis">
+                  <article>
+                    <span>Semana</span>
+                    <strong>${escapeHTML(metrics.weeklyProgressLabel)}</strong>
+                  </article>
+                  <article>
+                    <span>Sesión</span>
+                    <strong>${escapeHTML(metrics.sessionRewardLabel)}</strong>
+                  </article>
+                  <article>
+                    <span>Checklist</span>
+                    <strong>${checklistDone}/${checklistTotal}</strong>
+                  </article>
+                </div>
+
+                <div class="es-list">
+                  <div class="es-list__item">
                     <div>
-                      <h3 class="text-2xl font-black text-slate-800 tracking-tight">Tu Itinerario</h3>
-                      <p class="text-slate-400 text-sm font-medium">Basado en tu nivel actual ${activePhase.title}</p>
+                      <strong>Fase activa</strong>
+                      <p>${escapeHTML(activePhase.title)} • ${escapeHTML(activePhase.cefr || "")}</p>
                     </div>
-                    <button class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-5 py-2 rounded-xl text-sm font-bold transition-colors">
-                      Ver Historial
-                    </button>
+                    <span>${escapeHTML(metrics.planName)}</span>
                   </div>
-
-                  ${this.renderFlowStatusBanner()}
-
-                  <!-- The Views will be injected here (Hoy, Session, Modules) -->
-                  <!-- We wrap them in specific containers to match the new styling -->
-                  <div class="view-container" data-view-panel="hoy" ${this.activeView !== "hoy" ? "hidden" : ""}>
-                     ${this.renderTodayView(metrics)}
+                  <div class="es-list__item">
+                    <div>
+                      <strong>Siguiente foco</strong>
+                      <p>${escapeHTML(metrics.upcomingTitle)}</p>
+                    </div>
+                    <span>${escapeHTML(metrics.upcomingTag)}</span>
                   </div>
+                </div>
+              </article>
 
-                  <div class="view-container" data-view-panel="sesion" ${this.activeView !== "sesion" ? "hidden" : ""}>
-                    ${this.renderSessionView()}
-                  </div>
+              <article class="es-card">
+                <div class="es-card__head">
+                  <h2>Quick Routes</h2>
+                  <p>Navegación directa de alta frecuencia.</p>
+                </div>
 
-                  <div class="view-container" data-view-panel="cierre" ${this.activeView !== "cierre" ? "hidden" : ""}>
-                    ${this.renderClosureView()}
-                  </div>
-
-                  <div class="view-container" data-view-panel="evaluacion" ${this.activeView !== "evaluacion" ? "hidden" : ""}>
-                    ${this.renderEvaluationView()}
-                  </div>
-
-                  <div class="view-container" data-view-panel="modulos" ${this.activeView !== "modulos" ? "hidden" : ""}>
-                     ${this.renderModulesView()}
-                  </div>
-
-                  <div class="view-container" data-view-panel="progreso" ${this.activeView !== "progreso" ? "hidden" : ""}>
-                    ${this.renderProgressView()}
-                  </div>
-
-                </section>
-              </div>
-
-              <!-- RIGHT COLUMN (WIDGETS) -->
-              <aside class="space-y-10">
-                ${this.renderWidgets(metrics)}
-              </aside>
-
-            </div>
-          </div>
+                <div class="es-actions-list">
+                  <button class="es-action" type="button" data-shell-route="sesion">
+                    <strong>Continuar sesión</strong>
+                    <span>Ejecuta pasos guiados del día</span>
+                  </button>
+                  <button class="es-action" type="button" data-shell-route="cierre">
+                    <strong>Completar cierre</strong>
+                    <span>Checklist + evidencia</span>
+                  </button>
+                  <button class="es-action" type="button" data-shell-route="progreso">
+                    <strong>Analizar progreso</strong>
+                    <span>Métricas y tendencia semanal</span>
+                  </button>
+                </div>
+              </article>
+            </aside>
+          </section>
         </main>
-
-        <!-- MOBILE BOTTOM NAV -->
-        <nav class="lg-hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 z-50 px-6 py-2 flex justify-around items-center safe-pb pb-24">
-           ${this.renderMobileNavItems()}
-        </nav>
-
       </div>
     `;
   }
 
-  renderProgressStandaloneLayout({ isDark }) {
-    const topNavViews = ["hoy", "sesion", "cierre", "progreso"];
-    const navMarkup = topNavViews
-      .map((viewId) => {
-        const meta = VIEW_META[viewId];
-        if (!meta) return "";
 
-        const activeClass = this.activeView === viewId ? "is-active" : "";
-        return `<button data-view-nav="${viewId}" class="progress-top-nav-link ${activeClass}" type="button">${escapeHTML(meta.label)}</button>`;
-      })
-      .join("");
-
-    const themeLabel = isDark ? "Dark" : "Light";
-    const themeIcon = isDark ? ICONS.moon : ICONS.sun;
-
+  renderProgressStandaloneLayout() {
     return `
-      <div class="progress-app-shell" data-ui-theme="${this.theme}">
-        <header class="progress-topbar">
-          <div class="progress-topbar-inner">
-            <div class="progress-brand">
-              <span class="progress-brand-mark" aria-hidden="true"></span>
-              <div class="progress-brand-copy">
-                <strong>English Sprint</strong>
-                <span>Progreso • Ruta 0 -> B2</span>
-              </div>
-            </div>
-
-            <nav class="progress-top-nav" aria-label="Navegacion principal">
-              ${navMarkup}
-            </nav>
-
-            <div class="progress-top-actions">
-              <button
-                data-shell-action="toggle-theme"
-                type="button"
-                role="switch"
-                aria-checked="${isDark ? "true" : "false"}"
-                class="progress-theme-toggle"
-                aria-label="Cambiar tema visual"
-                title="Cambiar tema"
-              >
-                <span class="progress-theme-copy">
-                  <span class="progress-theme-icon">${themeIcon}</span>
-                  <span class="progress-theme-label">${themeLabel}</span>
-                </span>
-                <span class="progress-theme-pill" aria-hidden="true"><span class="progress-theme-dot"></span></span>
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <main class="progress-top-main">
+      <div class="es-shell es-shell--progress" data-ui-theme="${this.theme}">
+        ${this.renderHeader({ subtitle: "Progreso • Ruta 0 -> B2", shellTone: "progress" })}
+        <main class="es-main es-main--progress">
           ${this.renderProgressView()}
         </main>
       </div>
     `;
   }
 
-  renderNavItems() {
-    return NAV_GROUPS.map((group) => {
-      const heading = group.label || group.groupId;
-      const items = VIEW_IDS.filter((viewId) => VIEW_META[viewId]?.group === group.groupId).map((viewId) => {
-        const meta = VIEW_META[viewId];
-        const isActive = this.activeView === viewId;
-        const iconKey = meta.icon || "layout";
-        const iconSvg = ICONS[iconKey] || ICONS.layout;
-
-        return `
-          <button
-            data-view-nav="${viewId}"
-            class="flex items-center gap-4 w-full px-4 py-3.5 rounded-2xl transition-all duration-300 group relative ${isActive
-            ? 'bg-brand-600 text-white shadow-xl shadow-brand-200'
-            : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-          }"
-          >
-            <span class="${isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-600 group-hover:rotate-6'} transition-all duration-300">
-              ${iconSvg}
-            </span>
-            <span class="font-bold text-sm tracking-tight ${isActive ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}">
-              ${escapeHTML(meta.label)}
-            </span>
-            ${isActive ? '<div class="absolute right-3 w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
-          </button>
-        `;
-      }).join("");
-
-      if (!items) return "";
-
-      return `
-        <section class="nav-group mb-6" aria-label="${escapeHTML(heading)}">
-          <p class="nav-group-label">${escapeHTML(heading)}</p>
-          ${items}
-        </section>
-      `;
-    }).join("");
-  }
-
-  renderMobileNavItems() {
-    const mobileViews = VIEW_IDS;
-
-    return mobileViews.map((viewId) => {
-      const meta = VIEW_META[viewId];
-      if (!meta) return "";
-
-      const isActive = this.activeView === viewId;
-      const iconKey = meta.icon || "layout";
-      const iconSvg = ICONS[iconKey] || ICONS.layout;
-
-      return `
-        <button
-          data-view-nav="${viewId}"
-          class="flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive ? 'text-brand-600' : 'text-slate-500'}"
-        >
-          <div class="${isActive ? 'scale-110' : ''} transition-transform">
-             ${iconSvg}
-          </div>
-          <span class="text-[10px] font-bold mt-1 transition-opacity ${isActive ? 'opacity-100' : 'opacity-75'}">
-            ${escapeHTML(meta.label)}
-          </span>
-          <div class="w-1 h-1 rounded-full mt-1 ${isActive ? 'bg-brand-600' : 'bg-slate-300'}"></div>
-        </button>
-      `;
-    }).join("");
-  }
-
-  renderHeroCard(phase, metrics = this.getDashboardMetrics()) {
-    return `
-      <section class="hero-banner relative rounded-[2.5rem] overflow-hidden group">
-        <div class="hero-banner-bg absolute inset-0 bg-gradient-to-r from-brand-700 via-brand-600 to-violet-600"></div>
-        <!-- Decorative shapes -->
-        <div class="hero-orb hero-orb-primary absolute top-[-20%] right-[-10%] w-96 h-96 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
-        <div class="hero-orb hero-orb-secondary absolute bottom-[-10%] left-[-5%] w-64 h-64 bg-brand-400/20 rounded-full blur-2xl"></div>
-        
-        <div class="hero-banner-content relative p-10 md-p-12 text-white flex flex-col md-flex-row items-center gap-10">
-          <div class="flex-1">
-            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
-              <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
-              Fase Activa: ${escapeHTML(phase.title)}
-            </div>
-            <h2 class="text-4xl md-text-5xl font-black mb-6 leading-[1.1]">${escapeHTML(metrics.featureTitle)}</h2>
-            <p class="text-indigo-100 text-lg mb-8 max-w-md font-medium leading-relaxed">
-              ${escapeHTML(metrics.featureSubtitle)}
-            </p>
-            <div class="flex flex-wrap gap-4">
-              <button data-shell-action="open-session" class="bg-white text-brand-600 px-8 py-4 rounded-2xl font-black hover:scale-105 transition-all shadow-xl shadow-brand-900/20 flex items-center gap-2">
-                Comenzar Ahora - Dia ${formatDayLabel(this.activeDayLabel)}
-                ${ICONS.playCircle}
-              </button>
-              <button data-shell-action="open-roadmap" class="bg-brand-500/30 backdrop-blur-md text-white border border-brand-400/30 px-8 py-4 rounded-2xl font-bold hover:bg-brand-500/50 transition-all">
-                Ver Programa
-              </button>
-            </div>
-          </div>
-          <div class="hero-banner-emblem w-48 h-48 md-w-64 md-h-64 bg-white/10 backdrop-blur-2xl rounded-[3rem] border border-white/20 rotate-6 flex items-center justify-center shadow-2xl relative">
-            <div class="text-white opacity-80 scale-150">${ICONS.trendingUp}</div>
-            <div class="hero-banner-reward absolute -top-4 -right-4 bg-yellow-400 text-brand-900 font-black p-3 rounded-2xl rotate-12 shadow-lg">
-              ${escapeHTML(metrics.heroRewardLabel)}
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-
-  renderWidgets(metrics = this.getDashboardMetrics()) {
-    return `
-      <!-- PROFILE CARD -->
-      <div class="widget-card widget-card-profile bg-white border border-slate-200 p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-50 rounded-bl-[4rem] -z-0"></div>
-        <div class="relative z-10 text-center">
-          <div class="w-24 h-24 rounded-[2rem] bg-brand-600 mx-auto mb-4 flex items-center justify-center shadow-xl shadow-brand-200 rotate-3">
-             <div class="text-white scale-150">${ICONS.trophy}</div>
-          </div>
-          <h3 class="text-2xl font-black text-slate-800 tracking-tight">${escapeHTML(metrics.rankingTitle)}</h3>
-          <p class="text-slate-400 text-sm font-medium mt-1 uppercase tracking-widest">${escapeHTML(metrics.rankingTier)}</p>
-          
-          <div class="grid grid-cols-2 gap-4 mt-8">
-            <div class="bg-slate-50 p-4 rounded-2xl">
-              <p class="text-2xl font-black text-brand-600">${escapeHTML(metrics.statPrimaryValue)}</p>
-              <p class="text-[10px] font-bold text-slate-400 uppercase">${escapeHTML(metrics.statPrimaryLabel)}</p>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-2xl">
-              <p class="text-2xl font-black text-emerald-600">${escapeHTML(metrics.statSecondaryValue)}</p>
-              <p class="text-[10px] font-bold text-slate-400 uppercase">${escapeHTML(metrics.statSecondaryLabel)}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <!-- WEEK THEME -->
-    <div class="widget-card widget-card-theme bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-slate-200 relative">
-      <div class="flex items-center justify-between mb-8">
-        <h3 class="font-bold text-brand-400 text-sm tracking-widest uppercase">${escapeHTML(metrics.themeKicker)}</h3>
-        <button class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors" type="button" aria-label="Estado semanal">
-          <div class="text-yellow-400">${ICONS.zap}</div>
-        </button>
-      </div>
-      <div class="space-y-4">
-        <h4 class="text-4xl font-black italic tracking-tight leading-none">${escapeHTML(metrics.themeTitle)}</h4>
-        <p class="text-slate-400 text-sm font-mono">${escapeHTML(metrics.themeDescription)}</p>
-        <p class="text-slate-300 text-lg leading-relaxed">${escapeHTML(metrics.themeFootnote)}</p>
-        <div class="pt-4 flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-[10px] font-bold">OK</div>
-          <p class="text-xs text-slate-400">${escapeHTML(metrics.peersLabel)}</p>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
   renderTodayView(metrics = this.getDashboardMetrics()) {
-    const sessionProgressPct = clampPercent(metrics.sessionProgressPct);
     const journey = this.getJourneyStateSafe();
     const itinerarySteps = Array.isArray(journey.steps) ? journey.steps : [];
 
@@ -946,77 +801,65 @@ export class LearningShell {
       ? itinerarySteps
           .map((step, index) => {
             const duration = Number(step.durationMin) > 0 ? `${Number(step.durationMin)} min` : "sin tiempo";
-            return `<li><span>Paso ${index + 1}: ${escapeHTML(step.title)} (${duration})</span><strong>${stepStatusLabel(step.status)}</strong></li>`;
+            return `
+              <div class="es-list__item">
+                <div>
+                  <strong>Paso ${index + 1}: ${escapeHTML(step.title)}</strong>
+                  <p>${duration}</p>
+                </div>
+                <span>${stepStatusLabel(step.status)}</span>
+              </div>
+            `;
           })
           .join("")
-      : "<li><span>Sin pasos cargados para hoy.</span><strong>Bloqueado</strong></li>";
+      : `
+          <div class="es-list__item">
+            <div>
+              <strong>Sin pasos cargados para hoy</strong>
+              <p>Verifica el contenido semanal para habilitar ejecución.</p>
+            </div>
+            <span>Bloqueado</span>
+          </div>
+        `;
 
     return `
-      <div class="space-y-4">
+      <section class="es-section">
+        <div class="es-section__head">
+          <h2>Hoy</h2>
+          <p>Bloque operativo con acción inmediata.</p>
+        </div>
 
-        <div class="journey-card journey-card-session bg-white border border-slate-200 p-6 rounded-[2rem] hover:border-brand-500 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group shadow-sm hover:shadow-brand-100/50" data-shell-action="open-session">
-          <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-brand-50 text-brand-500 group-hover:scale-110 transition-transform">
-            ${ICONS.playCircle}
+        <div class="es-list">
+          <div class="es-list__item">
+            <div>
+              <strong>Sesion operativa del dia</strong>
+              <p>${escapeHTML(metrics.sessionMinutesLabel)} • ${escapeHTML(metrics.sessionRewardLabel)} • ${escapeHTML(metrics.sessionStatusLabel)}</p>
+            </div>
+            <button data-shell-action="open-session" class="es-btn es-btn--primary" type="button">Abrir sesión</button>
           </div>
 
-          <div class="flex-1">
-            <div class="flex items-center gap-3 mb-2">
-              <span class="text-[10px] font-black bg-brand-100 text-brand-700 px-2.5 py-0.5 rounded-full uppercase tracking-widest">DIARIO</span>
-              <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
-                ${ICONS.clock} ${escapeHTML(metrics.sessionMinutesLabel)}
-              </span>
-              <span class="text-xs font-bold text-emerald-600">${escapeHTML(metrics.sessionRewardLabel)}</span>
+          <div class="es-list__item">
+            <div>
+              <strong>Próximo bloque</strong>
+              <p>${escapeHTML(metrics.upcomingTitle)}</p>
             </div>
-            <h4 class="text-xl font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Sesion Operativa del Dia</h4>
-            <p class="text-slate-500 text-sm mt-1 leading-relaxed">Abre la sesion guiada para completar pasos medibles y destrabar cierre/evaluacion.</p>
-            <div class="mt-4">
-              <button data-shell-action="open-session" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors" type="button">
-                Abrir sesion guiada
-              </button>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-4">
-            <div class="text-right hidden md-block">
-              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">${escapeHTML(metrics.sessionStatusLabel)}</p>
-              <div class="w-24 bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-brand-500 h-full" style="width:${sessionProgressPct}%"></div>
-              </div>
-            </div>
-            <div class="p-3 bg-slate-50 rounded-2xl group-hover:bg-brand-600 group-hover:text-white transition-all">
-              ${ICONS.chevronRight}
-            </div>
+            <button data-shell-route="modulos" class="es-btn es-btn--ghost" type="button">Ver roadmap</button>
           </div>
         </div>
 
-        <article class="modules-intro-card">
-          <p class="section-kicker">Itinerario del dia</p>
-          <h4>Ruta accionable paso a paso</h4>
-          <p class="muted-text">Cada paso tiene estado y criterio de avance para que sepas exactamente como progresar.</p>
-          <div class="modules-rhythm">
-            <ul>${itineraryMarkup}</ul>
-          </div>
-        </article>
+        <div class="es-divider"></div>
 
-        <div class="journey-card journey-card-roadmap bg-white border border-slate-200 p-6 rounded-[2rem] opacity-75 grayscale hover:grayscale-0 hover:opacity-100 transition-all flex flex-col sm-flex-row sm-items-center gap-6 group cursor-pointer" data-shell-action="open-roadmap">
-          <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-slate-50 text-slate-300">
-            ${ICONS.playCircle}
-          </div>
-          <div class="flex-1">
-            <div class="flex items-center gap-3 mb-2">
-              <span class="text-[10px] font-black bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full uppercase tracking-widest">${escapeHTML(metrics.upcomingTag)}</span>
-            </div>
-            <h4 class="text-xl font-bold text-slate-800">${escapeHTML(metrics.upcomingTitle)}</h4>
-            <p class="text-slate-500 text-sm mt-1">${escapeHTML(metrics.upcomingDescription)}</p>
-          </div>
-          <div class="p-3 bg-slate-50 rounded-2xl">
-            ${ICONS.chevronRight}
-          </div>
+        <div class="es-section__head">
+          <h3>Itinerario del dia</h3>
+          <p>Cada paso con estado explícito y duración.</p>
         </div>
 
-      </div>
+        <div class="es-list">${itineraryMarkup}</div>
+      </section>
     `;
   }
+
+
   renderSessionView(metrics = this.getDashboardMetrics()) {
     const journey = this.getJourneyStateSafe();
     const session = journey.session || {};
@@ -1030,49 +873,68 @@ export class LearningShell {
     const nextRouteLabel = VIEW_META[nextRoute]?.label || "Sesion";
 
     return `
-      <div class="space-y-4">
-        <article class="modules-intro-card session-intro-card journey-card journey-card-session-overview">
-          <p class="section-kicker">Sesion guiada</p>
-          <h4>Ruta operativa de hoy</h4>
-          <p class="muted-text">
-            Ejecuta los pasos en orden: practica, valida gate y registra evidencia para desbloquear cierre y evaluacion.
-          </p>
+      <section class="es-section">
+        <div class="es-section__head">
+          <h2>Sesión guiada</h2>
+          <p>Secuencia operativa para completar el día con evidencia.</p>
+        </div>
 
-          <div class="modules-rhythm">
-            <ul>
-              <li><span>Progreso actual</span><strong>${progressPct}%</strong></li>
-              <li><span>Paso activo</span><strong>${escapeHTML(session.currentStepTitle || "Pendiente")}</strong></li>
-              <li><span>Bloques completados</span><strong>${Number(primary.completed) || 0}/${Number(primary.total) || 0}</strong></li>
-            </ul>
+        <div class="es-kpis es-kpis--session">
+          <article>
+            <span>Progreso</span>
+            <strong>${progressPct}%</strong>
+          </article>
+          <article>
+            <span>Paso activo</span>
+            <strong>${escapeHTML(session.currentStepTitle || "Pendiente")}</strong>
+          </article>
+          <article>
+            <span>Bloques</span>
+            <strong>${Number(primary.completed) || 0}/${Number(primary.total) || 0}</strong>
+          </article>
+        </div>
+
+        <div class="es-list">
+          <div class="es-list__item">
+            <div>
+              <strong>Siguiente acción</strong>
+              <p>Ruta recomendada por guardrails runtime.</p>
+            </div>
+            <button data-shell-route="${nextRoute}" class="es-btn es-btn--primary" type="button">Continuar en ${escapeHTML(nextRouteLabel)}</button>
           </div>
+          <div class="es-list__item">
+            <div>
+              <strong>Duración objetivo</strong>
+              <p>${escapeHTML(metrics.sessionMinutesLabel)}</p>
+            </div>
+            <span>${escapeHTML(metrics.sessionRewardLabel)}</span>
+          </div>
+        </div>
 
-          <button data-shell-route="${nextRoute}" class="session-mini-cta" type="button">
-            Continuar en ${escapeHTML(nextRouteLabel)}
-          </button>
-        </article>
+        <div class="es-divider"></div>
 
-        <div id="${this.getSessionHostId()}"></div>
-      </div>
+        <div id="${this.getSessionHostId()}" class="es-session-host"></div>
+      </section>
     `;
   }
+
 
   renderFlowStatusBanner() {
     const journey = this.getJourneyStateSafe();
     const message = journey.guard?.message || "";
-    if (!message) {
-      return "";
-    }
+    if (!message) return "";
 
-    const title = journey.guard.level === "warning" ? "Ruta guiada" : "Estado de navegacion";
+    const level = journey.guard.level === "warning" ? "warning" : "info";
+    const title = level === "warning" ? "Ruta guiada" : "Estado runtime";
 
     return `
-      <article class="modules-intro-card">
-        <p class="section-kicker">Navegacion</p>
-        <h4>${escapeHTML(title)}</h4>
-        <p class="muted-text">${escapeHTML(message)}</p>
+      <article class="es-banner es-banner--${level}">
+        <strong>${escapeHTML(title)}</strong>
+        <p>${escapeHTML(message)}</p>
       </article>
     `;
   }
+
 
   renderClosureView() {
     const journey = this.getJourneyStateSafe();
@@ -1087,7 +949,15 @@ export class LearningShell {
     ]
       .map(([key, label]) => {
         const done = Boolean(checklist[key]);
-        return `<li><span>${escapeHTML(label)}</span><strong>${done ? "OK" : "Pendiente"}</strong></li>`;
+        return `
+          <div class="es-list__item">
+            <div>
+              <strong>${escapeHTML(label)}</strong>
+              <p>${done ? "Gate validado" : "Pendiente"}</p>
+            </div>
+            <span class="${done ? "is-good" : ""}">${done ? "OK" : "Pendiente"}</span>
+          </div>
+        `;
       })
       .join("");
 
@@ -1096,50 +966,62 @@ export class LearningShell {
       : { route: "sesion", label: "Completar sesion" };
 
     return `
-      <article class="modules-intro-card journey-card journey-card-governance">
-        <p class="section-kicker">Cierre diario</p>
-        <h4>Consolidacion y checklist</h4>
-        <p class="muted-text">${journey.stage.closureReady
-          ? "Checklist base completado. Puedes pasar a evaluacion cuando registres evidencia."
-          : "Aun faltan bloques base de ejecucion. Completa sesion antes de cierre."}</p>
-
-        <div class="modules-rhythm">
-          <h5>Checklist de continuidad</h5>
-          <ul>${checklistRows}</ul>
+      <section class="es-section">
+        <div class="es-section__head">
+          <h2>Cierre diario</h2>
+          <p>Checklist de continuidad antes de evaluar.</p>
         </div>
 
-        <button data-shell-route="${nextAction.route}" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition-colors" type="button">
-          ${nextAction.label}
-        </button>
-      </article>
+        <div class="es-list">${checklistRows}</div>
+
+        <div class="es-divider"></div>
+
+        <button data-shell-route="${nextAction.route}" class="es-btn es-btn--primary" type="button">${nextAction.label}</button>
+      </section>
     `;
   }
+
 
   renderEvaluationView() {
     const journey = this.getJourneyStateSafe();
     const progress = Number(journey.session.progressPct) || 0;
 
     const nextAction = journey.stage.evaluationReady
-      ? { route: "evaluacion", label: "Evaluacion habilitada" }
+      ? { route: "evaluacion", label: "Evaluación habilitada" }
       : journey.stage.closureReady
         ? { route: "cierre", label: "Completar evidencia" }
-        : { route: "sesion", label: "Completar sesion" };
+        : { route: "sesion", label: "Completar sesión" };
 
     return `
-      <article class="modules-intro-card journey-card journey-card-governance">
-        <p class="section-kicker">Evaluacion</p>
-        <h4>Control de calidad de la sesion</h4>
-        <p class="muted-text">Estado: ${escapeHTML(journey.session.status || "locked")} | Avance: ${Math.max(0, Math.min(100, progress))}%</p>
-        <p class="muted-text">${journey.stage.evaluationReady
-          ? "Todo listo para evaluar el dia."
-          : "La evaluacion se habilita al cerrar sesion y registrar evidencia."}</p>
+      <section class="es-section">
+        <div class="es-section__head">
+          <h2>Evaluación</h2>
+          <p>Control de calidad y readiness de sesión.</p>
+        </div>
 
-        <button data-shell-route="${nextAction.route}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2 rounded-xl text-sm font-bold transition-colors" type="button" ${nextAction.route === "evaluacion" ? "disabled" : ""}>
-          ${nextAction.label}
-        </button>
-      </article>
+        <div class="es-list">
+          <div class="es-list__item">
+            <div>
+              <strong>Estado actual</strong>
+              <p>${escapeHTML(journey.session.status || "locked")}</p>
+            </div>
+            <span>${Math.max(0, Math.min(100, progress))}%</span>
+          </div>
+
+          <div class="es-list__item">
+            <div>
+              <strong>Habilitación</strong>
+              <p>${journey.stage.evaluationReady
+                ? "Todo listo para evaluar el día."
+                : "La evaluación se habilita al cerrar sesión y registrar evidencia."}</p>
+            </div>
+            <button data-shell-route="${nextAction.route}" class="es-btn es-btn--ghost" type="button" ${nextAction.route === "evaluacion" ? "disabled" : ""}>${nextAction.label}</button>
+          </div>
+        </div>
+      </section>
     `;
   }
+
 
   renderProgressView() {
     const activeWeek = this.getActiveWeekNumber();
@@ -1283,11 +1165,21 @@ export class LearningShell {
 
     if (modulePlan.length === 0) {
       return `
-        <article class="modules-intro-card">
-          <p class="section-kicker">Ruta 0 -> B2</p>
-          <h4>Blueprint no disponible</h4>
-          <p class="muted-text">No se encontro la definicion curricular. Verifica learning/syllabus/modules_0_b2.v1.json.</p>
-        </article>
+        <section class="es-section">
+          <div class="es-section__head">
+            <h2>Roadmap</h2>
+            <p>Blueprint curricular no disponible.</p>
+          </div>
+          <div class="es-list">
+            <div class="es-list__item">
+              <div>
+                <strong>Sin blueprint cargado</strong>
+                <p>Verifica learning/syllabus/modules_0_b2.v1.json.</p>
+              </div>
+              <span>Bloqueado</span>
+            </div>
+          </div>
+        </section>
       `;
     }
 
@@ -1299,34 +1191,34 @@ export class LearningShell {
       ? this.moduleBlueprint.weekly_rhythm
       : [];
 
-    const pillarsMarkup = pillars
-      .map((pillar) => `<span class="module-pillar-chip">${escapeHTML(pillar)}</span>`)
-      .join("");
+    const pillarsMarkup = pillars.map((pillar) => `<span class="es-badge">${escapeHTML(pillar)}</span>`).join("");
 
     const rhythmMarkup = rhythm
-      .map((line) => `<li>${escapeHTML(line)}</li>`)
+      .map((line) => `
+        <div class="es-list__item">
+          <div>
+            <strong>${escapeHTML(line)}</strong>
+            <p>Cadencia semanal oficial.</p>
+          </div>
+          <span>Ritmo</span>
+        </div>
+      `)
       .join("");
 
-    const cardsMarkup = modulePlan
-      .map((module) => this.renderModuleCard(module))
-      .join("");
+    const cardsMarkup = modulePlan.map((module) => this.renderModuleCard(module)).join("");
 
     return `
-      <section class="modules-hub">
-        <article class="modules-intro-card modules-overview-card">
-          <p class="section-kicker">Arquitectura Curricular</p>
-          <h4>Ruta 0 -> B2 con TBLT + IA Conversacional</h4>
-          <p class="muted-text">Plan granular con input comprensible, tareas comunicativas, practica de voz y checkpoints de desempeno.</p>
+      <section class="es-section">
+        <div class="es-section__head">
+          <h2>Módulos curriculares</h2>
+          <p>Ruta granular por semanas con estado de ejecución.</p>
+        </div>
 
-          <div class="modules-pillars">${pillarsMarkup}</div>
+        <div class="es-badges">${pillarsMarkup || '<span class="es-badge">Sin pilares definidos</span>'}</div>
 
-          <div class="modules-rhythm">
-            <h5>Cadencia semanal de ejecucion</h5>
-            <ul>${rhythmMarkup}</ul>
-          </div>
-        </article>
+        <div class="es-list">${rhythmMarkup || '<div class="es-list__item"><div><strong>Sin ritmo definido</strong><p>Agrega weekly_rhythm en el blueprint.</p></div><span>Pendiente</span></div>'}</div>
 
-        <div class="modules-grid">${cardsMarkup}</div>
+        <div class="es-modules-grid">${cardsMarkup}</div>
       </section>
     `;
   }
@@ -1337,80 +1229,51 @@ export class LearningShell {
         ? "Completado"
         : module.state === "active"
           ? "Activo"
-          : "Proximo";
+          : "Próximo";
 
-    const focusPoints = Array.isArray(module.focus_points) ? module.focus_points.slice(0, 4) : [];
+    const focusPoints = Array.isArray(module.focus_points) ? module.focus_points.slice(0, 3) : [];
     const checkpoints = Array.isArray(module.checkpoints) ? module.checkpoints.slice(0, 2) : [];
     const kpis = module.kpis || {};
 
-    const focusMarkup = focusPoints
-      .map((point) => `<li>${escapeHTML(point)}</li>`)
-      .join("");
-
-    const checkpointsMarkup = checkpoints
-      .map((checkpoint) => `<li>${escapeHTML(checkpoint)}</li>`)
-      .join("");
+    const focusMarkup = focusPoints.map((point) => `<span class="es-chip">${escapeHTML(point)}</span>`).join("");
+    const checkpointsMarkup = checkpoints.map((checkpoint) => `<span class="es-chip">${escapeHTML(checkpoint)}</span>`).join("");
 
     const attachedWeekMarkup = (module.attachedWeeks || [])
       .slice(0, 4)
-      .map((week) => `<span class="module-week-pill">${escapeHTML(formatWeekLabel(String(week.week)))} ${escapeHTML(week.cefr || "")}</span>`)
+      .map((week) => `<span class="es-chip">${escapeHTML(formatWeekLabel(String(week.week)))} ${escapeHTML(week.cefr || "")}</span>`)
       .join("");
 
     return `
-      <article class="module-card-pro" data-state="${escapeHTML(module.state)}">
-        <div class="module-card-head">
-          <span class="module-level-badge">${escapeHTML(module.cefr_band || "A1")}</span>
-          <span class="module-state-badge">${escapeHTML(stateLabel)}</span>
+      <article class="es-module-card" data-state="${escapeHTML(module.state)}">
+        <div class="es-module-card__head">
+          <div>
+            <h3>${escapeHTML(module.title || "Módulo")}</h3>
+            <p>${escapeHTML(module.objective || "Sin objetivo definido")}</p>
+          </div>
+          <span>${escapeHTML(stateLabel)}</span>
         </div>
 
-        <h4>${escapeHTML(module.title || "Modulo")}</h4>
-        <p class="module-goal">${escapeHTML(module.objective || "Sin objetivo definido.")}</p>
-
-        <div class="module-range-row">
-          <span>${escapeHTML(this.formatWeekRange(module.startWeek, module.endWeek))}</span>
-          <span>${module.spanWeeks} semanas</span>
+        <div class="es-badges">
+          <span class="es-badge">${escapeHTML(module.cefr_band || "A1")}</span>
+          <span class="es-badge">${escapeHTML(this.formatWeekRange(module.startWeek, module.endWeek))}</span>
+          <span class="es-badge">${module.spanWeeks} semanas</span>
         </div>
 
-        <div class="module-progress-track" aria-hidden="true">
-          <div class="module-progress-fill" style="width: ${module.completionPct}%"></div>
+        <div class="es-progress" aria-hidden="true"><span style="width:${module.completionPct}%"></span></div>
+
+        <div class="es-kpis es-kpis--module">
+          <article><span>Speaking</span><strong>${Number(kpis.speaking_min_minutes) || 0}m</strong></article>
+          <article><span>IA Voice</span><strong>${Number(kpis.ai_voice_min_minutes) || 0}m</strong></article>
+          <article><span>Cycles</span><strong>${Number(kpis.task_cycles) || 0}</strong></article>
         </div>
 
-        <div class="module-kpi-grid">
-          <article>
-            <strong>${Number(kpis.speaking_min_minutes) || 0}m</strong>
-            <span>Speaking</span>
-          </article>
-          <article>
-            <strong>${Number(kpis.ai_voice_min_minutes) || 0}m</strong>
-            <span>IA Voice</span>
-          </article>
-          <article>
-            <strong>${Number(kpis.task_cycles) || 0}</strong>
-            <span>Task Cycles</span>
-          </article>
-        </div>
-
-        <div class="module-method-box">
-          <p><strong>Metodo:</strong> ${escapeHTML(module.primary_method || "N/A")}</p>
-          <p><strong>IA:</strong> ${escapeHTML(module.ai_usecase || "N/A")}</p>
-          <p><strong>Output:</strong> ${escapeHTML(module.weekly_output || "N/A")}</p>
-          <p><strong>Afectivo:</strong> ${escapeHTML(module.anxiety_protocol || "N/A")}</p>
-        </div>
-
-        <div class="module-list-block">
-          <h5>Focus operativo</h5>
-          <ul>${focusMarkup}</ul>
-        </div>
-
-        <div class="module-list-block">
-          <h5>Checkpoints</h5>
-          <ul>${checkpointsMarkup}</ul>
-        </div>
-
-        <div class="module-week-strip">${attachedWeekMarkup}</div>
+        <div class="es-chips-row">${focusMarkup || '<span class="es-chip">Sin focus points</span>'}</div>
+        <div class="es-chips-row">${checkpointsMarkup || '<span class="es-chip">Sin checkpoints</span>'}</div>
+        <div class="es-chips-row">${attachedWeekMarkup || '<span class="es-chip">Sin semanas adjuntas</span>'}</div>
       </article>
     `;
   }
+
 
   bindEvents() {
     if (!this.container) return;
@@ -1453,6 +1316,13 @@ export class LearningShell {
       const action = actionBtn.dataset.shellAction;
       if (action === "toggle-theme") {
         this.toggleTheme();
+        return;
+      }
+
+      if (action === "retry-connection") {
+        if (this.windowRef?.location && typeof this.windowRef.location.reload === "function") {
+          this.windowRef.location.reload();
+        }
         return;
       }
 

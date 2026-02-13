@@ -252,7 +252,7 @@ export class SessionWizard {
   renderShell() {
     if (!this.container) return;
     this.container.innerHTML = `
-      <section class="session-shell" aria-label="Ejecución guiada">
+      <section class="session-shell es-wizard-shell" aria-label="Ejecución guiada">
         <div id="toast-container" class="toast-container"></div>
         
         <header class="wizard-top">
@@ -303,12 +303,12 @@ export class SessionWizard {
                 <div id="wizard-timer" class="timer-value">00:00</div>
              </div>
              <div class="timer-actions">
-               <button id="btn-timer-toggle" class="btn-secondary" type="button">INICIAR</button>
-               <button id="btn-timer-reset" class="btn-ghost" type="button">REINICIAR</button>
+               <button id="btn-timer-toggle" class="btn-secondary es-btn" type="button">INICIAR</button>
+               <button id="btn-timer-reset" class="btn-ghost es-btn es-btn--ghost" type="button">REINICIAR</button>
              </div>
           </div>
 
-          <button id="btn-submit-step" class="btn-primary" type="button" disabled>
+          <button id="btn-submit-step" class="btn-primary es-btn es-btn--primary" type="button" disabled>
             Validar y continuar
           </button>
         </footer>
@@ -568,7 +568,7 @@ export class SessionWizard {
               <h3>${ICONS.idea} Prompt IA</h3>
               <p class="resource-help">Copia el prompt y ejecuta la práctica sin traducir.</p>
               <textarea id="prompt-text" class="prompt-text" readonly>${escapeHTML(prompt)}</textarea>
-              <button id="copy-prompt-v4" class="btn-secondary" type="button">Copiar prompt</button>
+              <button id="copy-prompt-v4" class="btn-secondary es-btn" type="button">Copiar prompt</button>
             </article>
           `;
     } else {
@@ -681,7 +681,7 @@ export class SessionWizard {
   renderCompletion() {
     const progress = this.orchestrator.getProgress();
     this.container.innerHTML = `
-      <section class="wizard-complete animate-in" aria-label="Sesión completada">
+      <section class="wizard-complete es-wizard-complete animate-in" aria-label="Sesión completada">
         <div class="completion-card">
             <p class="kicker">Sesión completada</p>
             <h1>Excelente trabajo.</h1>
@@ -692,7 +692,7 @@ export class SessionWizard {
                 <span class="timer-complete">${ICONS.check} Sincronizado</span>
             </div>
             <div class="completion-actions">
-                <button id="btn-reload-session" class="btn-primary" type="button">Recargar sesión</button>
+                <button id="btn-reload-session" class="btn-primary es-btn es-btn--primary" type="button">Recargar sesión</button>
             </div>
         </div>
       </section>

@@ -42,6 +42,9 @@
   --palette-amber-50: #fffbeb;
   --palette-amber-400: #facc15;
   --palette-amber-500: #f59e0b;
+  --palette-yellow-50: #fefce8;
+  --palette-orange-50: #fff7ed;
+  --palette-orange-500: #f97316;
 
   --palette-rose-50: #fff1f2;
   --palette-rose-500: #f43f5e;
@@ -118,6 +121,18 @@
   --surface-card: var(--palette-white);
   --surface-sunken: #eef3fa;
   --surface-overlay: rgb(var(--story-midnight-rgb) / 0.62);
+  --surface-glass-88: rgb(255 255 255 / 0.88);
+  --surface-skeleton-top: rgb(255 255 255 / 0.74);
+  --surface-skeleton-bottom: rgb(245 248 255 / 0.9);
+  --surface-skeleton-line: rgb(226 233 245 / 0.8);
+  --surface-skeleton-highlight: rgb(255 255 255 / 0.62);
+  --surface-brand-400-20: rgba(99, 102, 241, 0.2);
+  --surface-brand-500-30: rgba(99, 102, 241, 0.3);
+  --surface-brand-500-50: rgba(99, 102, 241, 0.5);
+  --surface-white-10: rgba(255, 255, 255, 0.1);
+  --surface-white-20: rgba(255, 255, 255, 0.2);
+  --surface-white-80: rgba(255, 255, 255, 0.8);
+  --surface-white-90: rgba(255, 255, 255, 0.9);
 
   /* Text */
   --text-primary: var(--palette-slate-900);
@@ -125,12 +140,16 @@
   --text-tertiary: var(--palette-slate-400);
   --text-inverse: var(--palette-white);
   --text-brand: var(--story-primary-600);
+  --text-danger-strong: #7f1d1d;
 
   /* Borders */
   --border-subtle: #e5ebf5;
   --border-default: #d7e0ee;
   --border-strong: #b9c9e0;
   --border-brand: var(--story-primary-500);
+  --border-brand-soft: rgb(191 219 254 / 0.7);
+  --border-white-soft: rgba(255, 255, 255, 0.2);
+  --border-brand-400-soft: rgba(99, 102, 241, 0.3);
 
   /* Actions */
   --action-primary-bg: var(--story-primary-600);
@@ -163,6 +182,49 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-soft: 0 14px 34px -20px rgb(var(--story-midnight-rgb) / 0.42);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-brand-100-soft: rgba(224, 231, 255, 0.5);
+  --shadow-brand-900-soft: rgba(49, 46, 129, 0.2);
+
+  /* Base/background composition */
+  --base-body-bg-gradient:
+    radial-gradient(circle at 10% -12%, rgb(var(--df-primary-rgb) / 0.16), transparent 38%),
+    radial-gradient(circle at 92% 0%, rgb(var(--df-accent-rgb) / 0.12), transparent 42%),
+    linear-gradient(155deg, var(--canvas-100) 0%, #edf2f7 52%, var(--canvas-200) 100%);
+  --base-grid-overlay:
+    linear-gradient(to right, rgb(var(--story-midnight-rgb) / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--story-midnight-rgb) / 0.03) 1px, transparent 1px);
+  --base-skeleton-card-gradient: linear-gradient(180deg, var(--surface-skeleton-top) 0%, var(--surface-skeleton-bottom) 100%);
+  --base-skeleton-shimmer-gradient: linear-gradient(90deg, transparent 0%, var(--surface-skeleton-highlight) 50%, transparent 100%);
+
+  /* Layout effects */
+  --layout-glass-header-bg: rgba(255, 255, 255, 0.7);
+  --layout-glass-header-bg-strong: rgba(255, 255, 255, 0.9);
+  --layout-glass-header-border: rgba(226, 232, 240, 0.6);
+  --layout-glass-header-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --layout-progress-stripe-gradient: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+
+  /* Component gradients */
+  --btn-secondary-gradient: linear-gradient(180deg, var(--action-secondary-bg) 0%, #f7faff 100%);
+
+  /* Utility bridge values */
+  --utility-focus-ring-brand-soft: 0 0 0 2px rgba(99, 102, 241, 0.2);
+
+  /* Shell rethink semantic channels */
+  --shell-hero-ink: #031228;
+  --shell-hero-ink-rgb: 3 18 40;
+  --shell-white-rgb: 255 255 255;
+  --shell-danger-rgb: 239 68 68;
+  --shell-warning-rgb: 245 158 11;
 
   /* Motion */
   --motion-fast: 160ms;

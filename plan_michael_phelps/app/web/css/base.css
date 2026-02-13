@@ -14,10 +14,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   background-color: var(--surface-base);
-  background:
-    radial-gradient(circle at 10% -12%, rgba(79, 70, 229, 0.2), transparent 36%),
-    radial-gradient(circle at 92% 0%, rgba(2, 132, 199, 0.16), transparent 40%),
-    linear-gradient(155deg, var(--canvas-100) 0%, #edf2f7 52%, var(--canvas-200) 100%);
+  background: var(--base-body-bg-gradient);
   overflow-x: hidden;
   position: relative;
 }
@@ -27,9 +24,7 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-image: var(--base-grid-overlay);
   background-size: 52px 52px;
   mask-image: radial-gradient(circle at center, black 26%, transparent 90%);
   z-index: 0;
@@ -59,14 +54,16 @@ body::before {
 
 .loading-card,
 .fatal-card {
-  width: min(640px, 100%);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  width: min(760px, 100%);
+  background: var(--surface-glass-88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-default);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
   padding: 2rem;
+  display: grid;
+  gap: 1rem;
 }
 
 .loading-card h1,
@@ -88,6 +85,120 @@ body::before {
 .loading-card p + p,
 .fatal-card p + p {
   margin-top: 0.75rem;
+}
+
+.loading-headline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.loading-headline .section-kicker {
+  margin: 0;
+}
+
+.loading-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgb(var(--df-primary-rgb) / 0.22);
+  color: var(--text-brand);
+  background: rgb(var(--df-primary-rgb) / 0.08);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.loading-pill::before {
+  content: "";
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: rgb(var(--df-primary-rgb));
+  animation: loading-pulse 1.2s ease-in-out infinite;
+}
+
+.loading-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.loading-skeleton-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--base-skeleton-card-gradient);
+  padding: 1rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.loading-skeleton-line {
+  position: relative;
+  display: block;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--surface-skeleton-line);
+}
+
+.loading-skeleton-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: var(--base-skeleton-shimmer-gradient);
+  animation: loading-shimmer 1.2s ease infinite;
+}
+
+.loading-skeleton-line.is-lg {
+  height: 14px;
+  width: 68%;
+}
+
+.loading-skeleton-line.is-md {
+  width: 88%;
+}
+
+.loading-skeleton-line.is-sm {
+  width: 52%;
+}
+
+.fatal-illustration {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgb(var(--df-warning-rgb) / 0.15);
+  color: rgb(var(--df-warning-rgb));
+}
+
+.fatal-illustration svg {
+  width: 34px;
+  height: 34px;
+}
+
+@keyframes loading-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes loading-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 h1,
@@ -174,6 +285,12 @@ button:disabled {
 :where(a, button, input, select, textarea, [role="button"], [tabindex]):focus:not(:focus-visible) {
   outline: none;
   box-shadow: none;
+}
+
+@media (max-width: 760px) {
+  .loading-skeleton-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
